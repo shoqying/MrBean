@@ -5,3 +5,4 @@
         SELECT 'Test' AS result
     </select>
 </mapper>
+
