@@ -3,10 +3,9 @@
 <mapper namespace="com.example.mapper.TestMapper">
 	<!-- ResultMap 정의 -->
 	<resultMap id="warehouseResultMap" type="com.mrbean.">
-	
+		
 	</resultMap>
 	
-
     <!-- 창고 등록 -->
     <insert id="insertWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
 		INSERT INTO warehouses (
@@ -22,4 +21,5 @@
 		    #{wDescription}
 		);
     </insert>
+    
 </mapper>
