@@ -1,5 +1,5 @@
 package com.mrbean.rawMaterials;
 
-public class RawMaterialsDAO {
+public interface RawMaterialsDAO {
 
 }
