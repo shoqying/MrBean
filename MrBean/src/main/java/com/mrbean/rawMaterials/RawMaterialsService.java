@@ -1,5 +1,5 @@
 package com.mrbean.rawMaterials;
 
-public class RawMaterialsService {
+public interface RawMaterialsService {
 
 }
