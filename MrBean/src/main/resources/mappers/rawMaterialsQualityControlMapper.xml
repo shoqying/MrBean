@@ -3,17 +3,17 @@
 
 <mapper namespace="com.mrbean.mappers.rawMaterialsQualityControlMapper">
 
-	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RMQCVO" id="RMQCMap">
+	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO" id="RMQCMap">
 		<id property="rqcBno" column="rqc_bno"/> <!-- PK 값 -->
 		<result property="rmlDate" column="rml_date"/>
-		<result property="rmlNo" column="rmlNo"/>
-		<result property="rmCode" column="rmCode"/>
-		<result property="WCode" column="WCode"/>
-		<result property="rqcDate" column="rqcDate"/>
-		<result property="rqcQualityCheck" column="rqcQualityCheck"/>
-		<result property="rqcStatus" column="rqcStatus"/>
-		<result property="workOrderNo" column="workOrderNo"/>
-		<result property="workQty" column="workQty"/>
+		<result property="rmlNo" column="rml_no"/>
+		<result property="rmCode" column="rm_code"/>
+		<result property="WCode" column="W_code"/>
+		<result property="rqcDate" column="rqc_date"/>
+		<result property="rqcQualityCheck" column="rqc_quality_check"/>
+		<result property="rqcStatus" column="rqc_status"/>
+		<result property="workOrderNo" column="work_orderNo"/>
+		<result property="workQty" column="work_qty"/>
 			
 <!-- 		<collection property="authList" resultMap="authMap"/> -->
 <!-- 	</resultMap> -->

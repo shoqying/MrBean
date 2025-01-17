@@ -3,7 +3,31 @@
 
 <mapper namespace="com.mrbean.mappers.finishedProductsControlMapper">
 
-
+	<resultMap type="com.mrbean.finishedproductscontrol.FinishedProductsControlVO" id="FPCMap">
+		<id property="fpcBno" column="fpc_bno"/> <!-- PK 값 -->
+		<result property="fpcDate" column="fpc_date"/>
+		<result property="fpcLotbno" column="fpc_lotbno"/>
+		<result property="bomId" column="bom_id"/>
+		<result property="pCode" column="p_code"/>
+		<result property="fpcExpirydate" column="fpc_expirydate"/>
+		<result property="fpcQualityCheck" column="fpc_quality_check"/>
+		<result property="fpcStatus" column="fpc_status"/>
+		<result property="fpcYield" column="fpc_yield"/>
+		<result property="planId" column="plan_id"/>
+		<result property="planQty" column="plan_qty"/>
+		<result property="fpcQuantity" column="fpc_quantity"/>
+			
+<!-- 		<collection property="authList" resultMap="authMap"/> -->
+<!-- 	</resultMap> -->
+		
+<!-- 	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap"> -->
+<!-- 		<result property="userid" column="userid"/> -->
+<!-- 		<result property="auth" column="auth"/> -->
+	</resultMap>
+	
+	
+	
+	
 
 
 
