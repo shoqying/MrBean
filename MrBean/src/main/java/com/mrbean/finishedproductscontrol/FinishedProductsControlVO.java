@@ -3,10 +3,12 @@ package com.mrbean.finishedproductscontrol;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import com.mrbean.enums.QualityControlStatus;
+
 import lombok.Data;
 
 @Data
-public class FPCVO {
+public class FinishedProductsControlVO {
 	
 	private int fpcBno; // 순번
 	private Timestamp fpcDate; // 제조일
@@ -15,10 +17,13 @@ public class FPCVO {
 	private String pCode; // product code
 	private Date fpcExpirydate; // 완재품 유통기한
 	private String fpcQualityCheck; // 품질검사(대기중, 완료)
-	private String fpcStatus; // 상태(합격, 불합격)
+	private QualityControlStatus fpcStatus; // 상태(합격, 불합격)
 	private double fpcYield; // 수율
 	private int planId; // plan_id
 	private int planQty; // 수량
 	private double fpcQuantity; // 검사량
+	
+	// join을 사용하여 생성된 정보 저장
+//	private List<AuthVO> authList;
 
 }

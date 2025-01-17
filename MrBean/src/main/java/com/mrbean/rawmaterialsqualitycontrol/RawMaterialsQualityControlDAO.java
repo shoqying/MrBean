@@ -1,5 +1,5 @@
 package com.mrbean.rawmaterialsqualitycontrol;
 
-public class RMQCController {
+public interface RawMaterialsQualityControlDAO {
 
 }
