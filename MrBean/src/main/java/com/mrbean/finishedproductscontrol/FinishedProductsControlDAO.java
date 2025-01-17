@@ -1,5 +1,5 @@
 package com.mrbean.finishedproductscontrol;
 
-public class FPCController {
+public interface FinishedProductsControlDAO {
 
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mrbean.mappers.rawMaterialsQualityControlMapper">
+
+	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RMQCVO" id="RMQCMap">
+		<id property="rqcBno" column="rqc_bno"/> <!-- PK 값 -->
+		<result property="rmlDate" column="rml_date"/>
+		<result property="rmlNo" column="rmlNo"/>
+		<result property="rmCode" column="rmCode"/>
+		<result property="WCode" column="WCode"/>
+		<result property="rqcDate" column="rqcDate"/>
+		<result property="rqcQualityCheck" column="rqcQualityCheck"/>
+		<result property="rqcStatus" column="rqcStatus"/>
+		<result property="workOrderNo" column="workOrderNo"/>
+		<result property="workQty" column="workQty"/>
+			
+		<collection property="authList" resultMap="authMap"/>
+	</resultMap>
+		
+	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
+		<result property="userid" column="userid"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+
+
+
+
+
+
+
+    <select id="testQuery" resultType="String">
+        SELECT 'Test' AS result
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</mapper>
