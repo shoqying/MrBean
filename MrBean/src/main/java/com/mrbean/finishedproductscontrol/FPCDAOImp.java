@@ -1,5 +1,5 @@
 package com.mrbean.finishedproductscontrol;
 
-public class FPCDAOImp implements FPCDAO {
+public class FPCDAOImp implements FinishedProductsControlDAO {
 
 }

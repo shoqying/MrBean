@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.TestMapper">
 	<!-- ResultMap 정의 -->
-	<resultMap id="warehouseResultMap" type="com.stockm8.domain.vo.WarehouseVO">
+	<resultMap id="warehouseResultMap" type="com.mrbean.warehouse.WarehouseVO">
 	    <id property="wCode" column="w_code"/>
 	    <result property="wName" column="w_name"/>
 	    <result property="wAddress" column="w_address"/>
@@ -10,7 +10,7 @@
 	</resultMap>
 	
     <!-- 창고 등록 -->
-    <insert id="insertWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
+    <insert id="insertWarehouse" parameterType="com.mrbean.warehouse.WarehouseVO">
 		INSERT INTO warehouses (
 		    w_code, 
 		    w_name, 
