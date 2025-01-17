@@ -1,4 +1,4 @@
-package com.mrbean.rawMaterials;
+package com.mrbean.rawmaterials;
 
 public interface RawMaterialsDAO {
 
