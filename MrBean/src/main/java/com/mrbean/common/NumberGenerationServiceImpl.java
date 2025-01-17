@@ -11,8 +11,8 @@ import com.mrbean.productionplan.ProductionplanDAO;
 
 public class NumberGenerationServiceImpl implements NumberGenerationService {
 
-	@Inject
-	private ProductionplanDAO pdao;
+	//@Inject
+	//private ProductionplanDAO pdao;
 	
 	/**
 	 * 번호 생성 
