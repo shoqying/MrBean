@@ -44,12 +44,10 @@
 		                 ref="sqlSessionFactory"/>
 	</bean>	
 	<!-- SqlSession : 디비연결정보(자동연결), Mybatis정보, Mapper정보, 자원해제(자동) -->
-	
-	
-<!-- 	<context:component-scan base-package="com.mrbean.service"></context:component-scan> -->
-<!-- 	<context:component-scan base-package="com.mrbean.persistence"></context:component-scan> -->
-	
-	
-	
+
+<!-- 	<context:component-scan base-package="com.mrbean">-->
+<!--		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
+<!--		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>-->
+<!--	</context:component-scan>-->
 		
 </beans>

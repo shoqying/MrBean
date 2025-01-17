@@ -10,6 +10,5 @@ public class WarehouseVO {
     private String wCode; // 창고 코드
     private String wName; // 창고 이름
     private String wAddress; // 창고 주소
-    private Optional<String> wDescription; // 창고 설명     
-   
+    private String wDescription; // 창고 설명
 }
