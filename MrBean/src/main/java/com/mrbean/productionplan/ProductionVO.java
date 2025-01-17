@@ -8,24 +8,24 @@ import lombok.Data;
 
 @Data
 public class ProductionVO {
-	private int planId; // »ý»ê°èÈ¹ ID
-	private String planNumber; // »ý»ê¿À´õ ¹øÈ£
-	private String planType; // »ý»ê°èÈ¹ À¯Çü(ÀÏ,¿ù,¹Ý³âµî)\
-	private LocalDate planStartDate; // °èÈ¹ ½ÃÀÛÀÏÀÚ
-	private LocalDate planEndDate; // °èÈ¹ ½ÃÀÛÀÏÀÚ
-	private String productCode; // Á¦Ç°ÄÚµå
-	private String bomCode; // bomÄÚµå
-	private int planQuantity; //»ý»ê°èÈ¹¼ö·®
-	private int priority; //¿ì¼±¼øÀ§
+	private int planId; // ìƒì‚°ê³„íš ID
+	private String planNumber; // ìƒì‚°ì˜¤ë” ë²ˆí˜¸
+	private String planType; // ìƒì‚°ê³„íš ìœ í˜•(ì¼,ì›”,ë°˜ë…„ë“±)\
+	private LocalDate planStartDate; // ê³„íš ì‹œìž‘ì¼ìž
+	private LocalDate planEndDate; // ê³„íš ì‹œìž‘ì¼ìž
+	private String productCode; // ì œí’ˆì½”ë“œ
+	private String bomCode; // bomì½”ë“œ
+	private int planQuantity; //ìƒì‚°ê³„íšìˆ˜ëŸ‰
+	private int priority; //ìš°ì„ ìˆœìœ„
 	
 	
-	private String remark; // ºñ°í
-	private String createdBy;//µî·ÏÀÚ 
+	private String remark; // ë¹„ê³ 
+	private String createdBy;//ë“±ë¡ìž 
 	
-	private ProductionplanStatus status; //°èÈ¹»óÅÂ ÇÊ¿äÇÑ°¡? => ÀÛ¾÷Áö½Ã¿¡¼­ ÇÊ¿äÇÒµíÇÔ
+	private ProductionplanStatus status; //ê³„íšìƒíƒœ í•„ìš”í•œê°€? => ìž‘ì—…ì§€ì‹œì—ì„œ í•„ìš”í• ë“¯í•¨
 	
 
-	
+
 	
 	
 	
