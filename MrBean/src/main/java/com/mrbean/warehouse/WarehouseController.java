@@ -1,6 +1,6 @@
 package com.mrbean.warehouse;
 
-import com.mrbean.rawMaterials.RawMaterialsController;
+import com.mrbean.rawmaterials.RawMaterialsController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
