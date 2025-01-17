@@ -3,24 +3,6 @@
 
 <mapper namespace="com.mrbean.mappers.finishedProductsControlMapper">
 
-<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RMQCVO" id="RMQCMap">
-	<id property="userid" column="userid"/> <!-- PK 값 -->
-	<result property="userpw" column="userpw"/>
-	<result property="username" column="username"/>
-	<result property="useremail" column="useremail"/>
-	<result property="regdate" column="regdate"/>
-	<result property="updateDate" column="updateDate"/>
-	<result property="enabled" column="enabled"/>
-		
-	<collection property="authList" resultMap="authMap"/>
-</resultMap>
-	
-<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
-	<result property="userid" column="userid"/>
-	<result property="auth" column="auth"/>
-</resultMap>
-
-
 
 
 
