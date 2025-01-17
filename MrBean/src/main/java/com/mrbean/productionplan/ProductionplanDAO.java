@@ -2,4 +2,7 @@ package com.mrbean.productionplan;
 
 public interface ProductionplanDAO {
 
+	//public String createProductionPlanNumber();
+	
+	
 }//ProductionplanDAO
