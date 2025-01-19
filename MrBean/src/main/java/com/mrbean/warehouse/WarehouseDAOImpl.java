@@ -12,6 +12,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 
     private static final String NAMESPACE = "com.mrbean.mapper.WarehouseMapper.";
 
+    // 창고 등록
     @Override
     public void insertWarehouse(WarehouseVO warehouse) throws Exception {
         sqlSession.insert(NAMESPACE + "insertWarehouse", warehouse);
