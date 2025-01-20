@@ -35,7 +35,7 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 
 
    @Override
-   public List<ProductionVO> createPlanList() {
+   public List<ProductionPlanVO> createPlanList() {
       
       return null;
    }

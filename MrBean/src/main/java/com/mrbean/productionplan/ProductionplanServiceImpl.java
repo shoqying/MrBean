@@ -18,7 +18,7 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 	
 	
 	@Override
-	public List<ProductionVO> getPlanList() {
+	public List<ProductionPlanVO> getPlanList() {
 		logger.info("getPlanList() 호출");
 		
 		return pdao.createPlanList();

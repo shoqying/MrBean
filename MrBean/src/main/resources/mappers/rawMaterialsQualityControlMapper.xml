@@ -16,7 +16,7 @@
 		<result property="workQty" column="work_qty"/>
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
-		<collection property="productionList" resultMap="productionMap"/>
+		<collection property="productionPlanList" resultMap="productionMap"/>
 	</resultMap>
 		
 	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
@@ -27,7 +27,7 @@
 		<result property="rmlBatch" column="rml_batch"/>
 	</resultMap>
 	
-	<resultMap type="com.mrbean.productionplan.ProductionVO" id="productionMap">
+	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionMap">
 		<result property="planId" column="plan_id"/>
 		<result property="planNumber" column="plan_number"/>
 		<result property="planType" column="plan_type"/>

@@ -17,10 +17,10 @@
 		<result property="planQty" column="plan_qty"/>
 		<result property="fpcQuantity" column="fpc_quantity"/>
 		
-		<collection property="productionList" resultMap="productionMap"/>	
+		<collection property="productionPlanList" resultMap="productionMap"/>	
 	</resultMap>
 		
-	<resultMap type="com.mrbean.productionplan.ProductionVO" id="productionMap">
+	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionMap">
 		<result property="planId" column="plan_id"/>
 		<result property="planNumber" column="plan_number"/>
 		<result property="planType" column="plan_type"/>

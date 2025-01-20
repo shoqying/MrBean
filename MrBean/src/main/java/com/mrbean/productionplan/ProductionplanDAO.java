@@ -6,7 +6,7 @@ public interface ProductionplanDAO {
 
 	public String createProductionPlanNumber(String date);
 	
-	public List<ProductionVO> createPlanList();
+	public List<ProductionPlanVO> createPlanList();
 	
 	
 }//ProductionplanDAO

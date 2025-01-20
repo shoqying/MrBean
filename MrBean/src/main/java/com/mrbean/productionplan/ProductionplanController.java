@@ -33,7 +33,7 @@ public class ProductionplanController {
 			logger.info("planRegisterGET 호출()");
 
 			// 생산계획 목록을 조회해서 모델이 추가
-			List<ProductionVO>planList = pps.getPlanList();
+			List<ProductionPlanVO>planList = pps.getPlanList();
 			model.addAttribute("planList", planList);
 			
 			return "productionplan/plan";

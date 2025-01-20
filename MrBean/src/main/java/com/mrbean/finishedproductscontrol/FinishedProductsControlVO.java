@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.mrbean.enums.QualityControlStatus;
-import com.mrbean.productionplan.ProductionVO;
+import com.mrbean.productionplan.ProductionPlanVO;
 
 import lombok.Data;
 
@@ -26,7 +26,7 @@ public class FinishedProductsControlVO {
 	private double fpcQuantity; // 검사량
 	
 	// join을 사용하여 생성된 정보 저장
-	private List<ProductionVO> productionList;
+	private List<ProductionPlanVO> productionPlanList;
 //	private List<AuthVO> authList;
 
 }

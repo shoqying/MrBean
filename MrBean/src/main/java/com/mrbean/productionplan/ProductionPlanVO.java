@@ -8,7 +8,7 @@ import com.mrbean.enums.ProductionplanStatus;
 import lombok.Data;
 
 @Data
-public class ProductionVO {
+public class ProductionPlanVO {
 	private int planId; // 생산계획 ID
 	private String planNumber; // 생산오더 번호
 	private String planType; // 생산계획 유형(일,월,반년등)\
