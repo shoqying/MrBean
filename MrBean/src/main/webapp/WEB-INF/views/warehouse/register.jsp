@@ -1,106 +1,126 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>창고 등록</title>
     <!-- Bootstrap CSS CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0r9+ttL6Ex1v8YcDggp61Gb7mXr8gf6aT3b2n0Gz57ydwK4h" crossorigin="anonymous">
-</head>
-<script language="javascript" >
-// opener관련 오류가 발생하는 경우 아래 주석을 해지하고, 사용자의 도메인정보를 입력합니다.
-// (＂팝업 API 호출 소스"도 동일하게 적용시켜야 합니다.)
-//document.domain = "abc.go.kr";
-function goPopup(){
-//경로는 시스템에 맞게 수정하여 사용
-//호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를
-//호출하게 됩니다.
-var pop = window.open("http://localhost:8080/popup/jusoPopup", "pop","width=570,height=420, scrollbars=yes, resizable=yes");
-//** 2017년 5월 모바일용 팝업 API 기능 추가제공 **/
-// 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서
-// 실제 주소검색 URL(https://business.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
-// var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
-}
-function jusoCallBack(roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd,
-    rnMgtSn, bdMgtSn, detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm,
-    buldSlno, mtYn, lnbrMnnm, lnbrSlno, emdNo){
-
-    // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
-    document.form.roadFullAddr.value = roadFullAddr;
-    document.form.roadAddrPart1.value = roadAddrPart1;
-    document.form.roadAddrPart2.value = roadAddrPart2;
-    document.form.addrDetail.value = addrDetail;
-    document.form.zipNo.value = zipNo;
-
-    // 팝업을 닫기 위한 코드 추가
-    if (window.opener) {
-        window.opener.document.form.roadFullAddr.value = roadFullAddr;
-        window.opener.document.form.roadAddrPart1.value = roadAddrPart1;
-        window.opener.document.form.roadAddrPart2.value = roadAddrPart2;
-        window.opener.document.form.addrDetail.value = addrDetail;
-        window.opener.document.form.zipNo.value = zipNo;
-        window.close(); // 팝업을 닫는다
-    } else {
-        console.error("opener가 존재하지 않습니다. 팝업을 닫을 수 없습니다.");
-    }
-}
-</script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"></head>
+    <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
+    <script src="<c:url value='/resources/scripts/toast.js'/>"></script>
 <body>
 <div class="container mt-5">
     <button class="btn btn-primary" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
     <h1 class="my-4">창고 등록</h1>
-<!-- 두 번째 form 태그를 제거하고 첫 번째 form 안에 추가 필드를 넣습니다. -->
-<form action="registerWarehouse" method="post" name="form" id="form">
-    <!-- 창고 코드, 이름 등 다른 필드들은 이 곳에 포함 -->
-    <div class="form-group">
-        <label for="warehouseCode">창고 코드</label>
-        <input type="text" id="warehouseCode" name="warehouseCode" class="form-control" required autofocus>
-    </div>
 
-    <div class="form-group">
-        <label for="warehouseName">창고 이름</label>
-        <input type="text" id="warehouseName" name="warehouseName" class="form-control" required autofocus>
-    </div>
+    <!-- 창고 등록 폼 -->
+    <form id="warehouseForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+            <label for="wCode">창고 코드</label>
+            <input type="text" id="wCode" name="wCode" class="form-control" required autofocus autocomplete="off">
+        </div>
 
-    <!-- 주소 관련 필드들 -->
-    <input type="button" onClick="goPopup();" value="주소 검색 팝업" />
-    <div class="form-group">
-        <label for="roadFullAddr">도로명주소 전체</label>
-        <input type="text" id="roadFullAddr" name="roadFullAddr" class="form-control" /><br>
-    </div>
-    <div class="form-group">
-        <label for="roadAddrPart1">도로명주소</label>
-        <input type="text" id="roadAddrPart1" name="roadAddrPart1" class="form-control" /><br>
-    </div>
-    <div class="form-group">
-        <label for="addrDetail">상세주소</label>
-        <input type="text" id="addrDetail" name="addrDetail" class="form-control" /><br>
-    </div>
-    <div class="form-group">
-        <label for="roadAddrPart2">참고주소</label>
-        <input type="text" id="roadAddrPart2" name="roadAddrPart2" class="form-control" /><br>
-    </div>
-    <div class="form-group">
-        <label for="zipNo">우편번호</label>
-        <input type="text" id="zipNo" name="zipNo" class="form-control" /><br>
-    </div>
+        <div class="form-group">
+            <label for="wName">창고 이름</label>
+            <input type="text" id="wName" name="wName" class="form-control" required autofocus autocomplete="off">
+        </div>
 
-    <!-- 창고 설명 필드 -->
-    <div class="form-group">
-        <label for="warehouseDescription">창고 설명</label>
-        <input type="text" id="warehouseDescription" name="warehouseDescription" class="form-control" required>
-    </div>
+        <!-- 주소 관련 필드들 -->
+        <input type="button" onClick="openAddressPopup();" value="주소 검색 팝업" class="btn btn-secondary mb-3" />
 
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-success">등록</button>
-</form>
+        <div class="form-group">
+            <label for="wRoadFullAddr">전체 도로명주소</label>
+            <input type="text" id="wRoadFullAddr" name="wRoadFullAddr" class="form-control" required readonly autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+            <label for="wAddrDetail">상세주소</label>
+            <input type="text" id="wAddrDetail" name="wAddrDetail" class="form-control" required autocomplete="off"/>
+        </div>
+
+        <div class="form-group">
+            <label for="wZipNo">우편번호</label>
+            <input type="text" id="wZipNo" name="wZipNo" class="form-control" required readonly autocomplete="off"/>
+        </div>
+
+        <!-- 창고 설명 필드 -->
+        <div class="form-group">
+            <label for="wDescription">창고 설명</label>
+            <input type="text" id="wDescription" name="wDescription" class="form-control" autocomplete="off">
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit" class="btn btn-success">등록</button>
+    </form>
 </div>
 
-<!-- Bootstrap JS and dependencies (Optional, if you want Bootstrap JavaScript features) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zyQ5Fy6Y30t4xPFlpX2fYw2P6ybEckK+HVW7X1Pt" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-B4gt1jrGC7Jh4Ag4h5T2lXduZ/xPqZjxdUoFVWrhWfakHhWVf1jr5ldD2MrjAsLx" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0r9+ttL6Ex1v8YcDggp61Gb7mXr8gf6aT3b2n0Gz57ydwK4h" crossorigin="anonymous"></script>
+<!-- Bootstrap JS 및 의존성 (선택사항) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- JavaScript -->
+<script type="text/javascript">
+// 팝업을 열기 위한 함수
+function openAddressPopup() {
+    window.open("/popup/jusoPopup", "pop", "width=570,height=420, scrollbars=yes, resizable=yes");
+}
+
+// 주소 콜백 함수
+function jusoCallBack(roadFullAddr, addrDetail, zipNo) {
+    // 주소 값들을 해당 폼 필드에 입력
+    document.getElementById('wRoadFullAddr').value = roadFullAddr;
+    document.getElementById('wAddrDetail').value = addrDetail;
+    document.getElementById('wZipNo').value = zipNo;
+}
+
+// 폼 제출을 처리하는 함수
+function submitForm(event) {
+    event.preventDefault();  // 폼의 기본 제출 동작을 막음
+    const form = document.getElementById('warehouseForm');
+    const formData = new FormData(form);
+    const warehouseData = {};
+
+    // 폼 데이터를 JSON으로 변환
+    formData.forEach((value, key) => {
+        warehouseData[key] = value;
+    });
+
+    // 전송되는 JSON 데이터 확인을 위한 로그
+    console.log("Sending data:", JSON.stringify(warehouseData)); // 데이터가 잘 생성되었는지 확인
+
+    // Fetch API를 이용하여 서버에 데이터 전송
+    fetch('/api/warehouses', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(warehouseData)
+    })
+    .then((response) => {
+        // 서버 응답 상태 확인 (HTTP 200 이상)
+        if (!response.ok) {
+            // 서버가 2xx 상태 코드가 아닌 응답을 반환하면 오류 메시지 출력
+            throw new Error(`서버 오류: ${response.status} ${response.statusText || 'Unknown error'}`);
+        }
+        return response.json(); // 정상적인 응답이면 JSON 파싱
+    })
+    .then((data) => {
+        if (data.success) {
+            showToast(data.message, "success");
+            form.reset(); // 폼 초기화
+        } else {
+            showToast(data.message, "error");
+        }
+    })
+    .catch((error) => {
+        // Fetch 오류 또는 JSON 파싱 오류 처리
+        showToast(error.message || "서버 요청 중 오류가 발생했습니다.", "error");
+        console.error("Error:", error);
+    });
+}
+</script>
+
 </body>
 </html>

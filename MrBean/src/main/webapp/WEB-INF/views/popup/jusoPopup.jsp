@@ -17,16 +17,14 @@
 	//request.setCharacterEncoding("EUC-KR");  //해당시스템의 인코딩타입이 EUC-KR일경우에
 	String inputYn = request.getParameter("inputYn");
 	String roadFullAddr = request.getParameter("roadFullAddr");
-	String roadAddrPart1 = request.getParameter("roadAddrPart1");
-	String roadAddrPart2 = request.getParameter("roadAddrPart2");
-	String engAddr = request.getParameter("engAddr");
-	String jibunAddr = request.getParameter("jibunAddr");
-	String zipNo = request.getParameter("zipNo");
 	String addrDetail = request.getParameter("addrDetail");
-	String admCd    = request.getParameter("admCd");
-	String rnMgtSn = request.getParameter("rnMgtSn");
-	String bdMgtSn  = request.getParameter("bdMgtSn");
-	/** API 서비스 제공항목 확대 (2017.02) **/
+	String zipNo = request.getParameter("zipNo");
+	//String engAddr = request.getParameter("engAddr");
+	//String jibunAddr = request.getParameter("jibunAddr");
+	//String admCd    = request.getParameter("admCd");
+	//String rnMgtSn = request.getParameter("rnMgtSn");
+	//String bdMgtSn  = request.getParameter("bdMgtSn");
+	/** API 서비스 제공항목 확대 (2017.02)
 	String detBdNmList  = request.getParameter("detBdNmList");
 	String bdNm  = request.getParameter("bdNm");
 	String bdKdcd  = request.getParameter("bdKdcd");
@@ -42,6 +40,7 @@
 	String lnbrMnnm  = request.getParameter("lnbrMnnm");
 	String lnbrSlno  = request.getParameter("lnbrSlno");
 	String emdNo  = request.getParameter("emdNo");
+	**/
 %>
 </head>
 <script language="javascript">
@@ -52,7 +51,7 @@ function init(){
 	var url = location.href;
 	var confmKey = "TESTJUSOGOKR";//승인키
 	// resultType항목 추가(2016.10.06)
-	var resultType = "4"; // 도로명주소 검색결과 화면 출력유형, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
+	var resultType = "3"; // 도로명주소 검색결과 화면 출력유형, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
 	var inputYn= "<%=inputYn%>";
 	if(inputYn != "Y"){
 		document.form.confmKey.value = confmKey;
@@ -62,13 +61,12 @@ function init(){
 		//document.form.action="https://business.juso.go.kr/addrlink/addrMobileLinkUrl.do"; //모바일 웹인 경우, 인터넷망
 		document.form.submit();
 	}else{
-		/** API 서비스 제공항목 확대 (2017.02) **/
-		opener.jusoCallBack("<%=roadFullAddr%>","<%=roadAddrPart1%>","<%=addrDetail%>", "<%=roadAddrPart2%>","<%=engAddr%>"
-			, "<%=jibunAddr%>","<%=zipNo%>", "<%=admCd%>", "<%=rnMgtSn%>", "<%=bdMgtSn%>", "<%=detBdNmList%>"
-			, "<%=bdNm%>", "<%=bdKdcd%>", "<%=siNm%>", "<%=sggNm%>", "<%=emdNm%>", "<%=liNm%>", "<%=rn%>", "<%=udrtYn%>"
-			, "<%=buldMnnm%>", "<%=buldSlno%>", "<%=mtYn%>", "<%=lnbrMnnm%>", "<%=lnbrSlno%>", "<%=emdNo%>");
-		window.close();
-	}
+        // 주소값을 부모 창으로 전달하고 팝업 닫기
+        opener.jusoCallBack(
+            "<%= roadFullAddr %>", "<%= addrDetail %>", "<%= zipNo %>"
+        );
+        window.close();
+    }
 }
 </script>
 <body onload="init();">
