@@ -68,7 +68,7 @@ public class userController {
 	 * // 특정 회원 조회 (ADMIN, MANAGER)
 	 * 
 	 * @GetMapping("/{userId}")
-	 * 
+	 * dd
 	 * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')") public userVO
 	 * getUserById(@PathVariable String userId) { return
 	 * userService.getUserById(userId); }
