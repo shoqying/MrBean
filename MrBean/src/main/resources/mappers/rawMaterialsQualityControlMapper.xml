@@ -24,7 +24,7 @@
 		<result property="rmlBatch" column="rml_batch"/>
 	</resultMap>
 	
-	<resultMap type="com.mrbean.workorders.WorkOdersVO" id="workOdersMap">
+	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOdersMap">
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>
 	</resultMap>
