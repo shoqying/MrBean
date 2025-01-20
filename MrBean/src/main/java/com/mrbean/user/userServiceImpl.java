@@ -11,6 +11,11 @@ public class userServiceImpl implements userService {
     private userDAO userDAO;
 
     @Override
+    public void createUser(userVO user) {
+        userDAO.createUser(user); // DAO 호출
+    }
+
+    @Override
     public userVO getUserById(String userId) {
         return userDAO.getUserById(userId);
     }
@@ -18,11 +23,6 @@ public class userServiceImpl implements userService {
     @Override
     public List<userVO> getAllUsers() {
         return userDAO.getAllUsers();
-    }
-
-    @Override
-    public void createUser(userVO user) {
-        userDAO.createUser(user);
     }
 
     @Override
