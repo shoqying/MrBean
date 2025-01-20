@@ -1,73 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>원자재 품질 검사 관리</title>
+<title>완재품 품질 검사 관리</title>
 </head>
 <body>
 
-    <h1>원자재 품질 검사 관리 목록</h1>
+    <h1>완재품 품질 검사 관리 목록</h1>
     <table>
         <tr>
             <th>순번</th>
-            <th>입고일</th>
+            <th>제조일</th>
             <th>LOT 번호</th>
-            <th>원자재명</th>
+            <th>완제품명</th>
+            <th>유통기한</th>
             <th>검사일자</th>
             <th>품질 검사</th>
             <th>상태</th>
-            <th>작업지시번호</th>
+            <th>수율</th>
+            <th>수량</th>
             <th>검사량 (g)</th>
             <th>삭제</th>
         </tr>
+        <c:forEach var="vo" items="${finishProductsControlControlList}">
         <tr>
-            <td>1</td>
-            <td>2025-01-10</td>
-            <td>LOT12345</td>
-            <td>원자재 A</td>
-            <td>2025-01-12</td>
+     		<td>vo.fpcBno</td>
+            <td>vo.fpcDate</td>
+            <td>vo.fpcLotbno</td>
+            <td>vo.pName</td>
+            <td>vo.fpcExpirydate</td>
+            <td>vo.fpcCheckdate</td>
             <td>
                 <select>
-                    <option value="대기중">대기중</option>
-                    <option value="완료">완료</option>
+                    <option value="대기중">vo.fpcQualityCheck</option>
+                    <option value="완료">vo.fpcQualityCheck</option>
                 </select>
             </td>
             <td>
                 <select>
-                	<option value="대기중">대기중</option>
-                    <option value="합격">합격</option>
-                    <option value="불합격">불합격</option>
+                    <option value="대기중">vo.fpcStatus</option>
+                    <option value="합격">vo.fpcStatus</option>
+                    <option value="불합격">vo.fpcStatus</option>
                 </select>
             </td>
-            <td>WO56789</td>
-            <td>500</td>
+            <td>vo.fpcYield</td>
+            <td>vo.planQty</td>
+            <td>vo.fpcQuantity</td>
             <td><button onclick="confirmDelete(this)">삭제</button></td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>2025-01-11</td>
-            <td>LOT67890</td>
-            <td>원자재 B</td>
-            <td>2025-01-13</td>
-            <td>
-                <select>
-                    <option value="대기중">대기중</option>
-                    <option value="완료">완료</option>
-                </select>
-            </td>
-            <td>
-                <select>
-                	<option value="대기중">대기중</option>
-                    <option value="합격">합격</option>
-                    <option value="불합격">불합격</option>
-                </select>
-            </td>
-            <td>WO12345</td>
-            <td>300</td>
-            <td><button onclick="confirmDelete(this)">삭제</button></td>
-        </tr>
+    </c:forEach>
     </table>
     
 	<script>

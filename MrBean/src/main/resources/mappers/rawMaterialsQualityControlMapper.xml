@@ -5,18 +5,15 @@
 
 	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO" id="RMQCMap">
 		<id property="rqcBno" column="rqc_bno"/> <!-- PK 값 -->
-		<result property="rmlDate" column="rml_date"/>
 		<result property="rmlNo" column="rml_no"/>
-		<result property="rmCode" column="rm_code"/>
-		<result property="WCode" column="W_code"/>
 		<result property="rqcDate" column="rqc_date"/>
 		<result property="rqcQualityCheck" column="rqc_quality_check"/>
 		<result property="rqcStatus" column="rqc_status"/>
-		<result property="workOrderNo" column="work_orderNo"/>
-		<result property="workQty" column="work_qty"/>
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="workQuantity" column="work_quantity"/>
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
-		<collection property="productionPlanList" resultMap="productionPlanMap"/>
+		<collection property="workOdersList" resultMap="workOdersMap"/>
 	</resultMap>
 		
 	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
@@ -27,28 +24,29 @@
 		<result property="rmlBatch" column="rml_batch"/>
 	</resultMap>
 	
-	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionPlanMap">
-		<result property="planId" column="plan_id"/>
-		<result property="planNumber" column="plan_number"/>
-		<result property="planType" column="plan_type"/>
-		<result property="planStartDate" column="plan_start_date"/>
-		<result property="planEndDate" column="plan_end_date"/>
-		<result property="productCode" column="product_code"/>
-		<result property="bomCode" column="bom_code"/>
-		<result property="planQuantity" column="plan_quantity"/>
-		<result property="priority" column="priority"/>
-		<result property="remark" column="remark"/>
-		<result property="createdBy" column="created_by"/>
-		<result property="status" column="status"/>
+	<resultMap type="com.mrbean.workorders.WorkOdersVO" id="workOdersMap">
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="workQuantity" column="work_quantity"/>
 	</resultMap>
 
 
 
 
 
-
-    <select id="testQuery" resultType="String">
-        SELECT 'Test' AS result
+	<!-- 원자재 검사 관리 목록 -->
+    <select id="getRawMaterialsQualityControlList" resultMap="RMQCMap">
+        SELECT rqc.rqc_bno, 
+        	   rml.rml_date,
+        	   rml.rml_no,
+        	   rml.rm_code,
+        	   rqc.rqc_date,
+        	   rqc.rqc_quality_check,
+        	   rqc.rqc_status,
+        	   work.work_order_no,
+        	   work.work_quantity
+        	   FROM rawmaterials_quality_control rqc
+        	   JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
+        	   JOIN work_orders work on rqc.work_order_no = work.work_order_no
     </select>
     
     
