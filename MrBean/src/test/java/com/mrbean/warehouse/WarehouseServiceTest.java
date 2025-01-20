@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,12 +15,12 @@ public class WarehouseServiceTest {
     private WarehouseService warehouseService;
 
     @Autowired
-    private WarehouseDAO warehouseDAO;
+    private WarehouseRepository warehouseRepository;
 
     @Test
     public void testRegisterWarehouse() throws Exception {
         // 테스트할 창고 데이터 준비
-        WarehouseVO warehouse = new WarehouseVO();
+        WarehouseDTO warehouse = new WarehouseDTO();
         warehouse.setWCode("W-001");
         warehouse.setWName("Warehouse 1");
         warehouse.setWRoadFullAddr("General");
@@ -34,7 +32,7 @@ public class WarehouseServiceTest {
         warehouseService.registerWarehouse(warehouse);
 
         // 등록된 창고 데이터 확인
-        WarehouseVO insertedWarehouse = warehouseDAO.selectWarehouseByCode("W-001");
+        WarehouseVO insertedWarehouse = warehouseRepository.selectWarehouseByCode("W-001");
 
         // 값이 제대로 등록되었는지 검증
         Assert.assertNotNull("등록된 창고가 null입니다.", insertedWarehouse);
