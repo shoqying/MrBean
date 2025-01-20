@@ -25,7 +25,7 @@ public class ProductionplanController {
 	
 		/**
 		 * 생산계획등록 페이지(GET) - 등록 form 과 List 함께출력
-		 * http://localhost:8088/mrbean/productionplan/plan
+		 * http://localhost:8088/productionplan/plan
 		 * 
 		 */
 		@RequestMapping(value = "/plan", method = RequestMethod.GET)
@@ -41,7 +41,7 @@ public class ProductionplanController {
 		
 		/**
 		 * 생산계획등록 페이지(POST)
-		 * http://localhost:8088/mrbean/productionplan/plan
+		 * http://localhost:8088/productionplan/plan
 		 * 
 		 */
 		@RequestMapping(value = "/plan", method = RequestMethod.POST)
@@ -54,7 +54,7 @@ public class ProductionplanController {
 
 		/**
 		 * 번호생성 API(GET)
-		 * http://localhost:8088/mrbean/productionplan/generatePlanNumber
+		 * http://localhost:8088/productionplan/generatePlanNumber
 		 * 
 		 */
 		@RequestMapping(value = "/generatePlanNumber", method = RequestMethod.GET)

@@ -5,8 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jQuery를 먼저 로드 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
+<!-- JavaScript 파일 로드 -->
+<script type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/1.js"></script>
    <section class="section">
       <div class="row">
         <div class="col-lg-12">
