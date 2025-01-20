@@ -1,6 +1,8 @@
 package com.mrbean.productionplan;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,8 +38,6 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		return pdao.createPlanList();
 	}
 
-
-	
 
 	
 	
