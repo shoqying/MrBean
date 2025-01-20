@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Repository;
 
 public class ProductionplanImpl implements ProductionplanDAO {
 
