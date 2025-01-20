@@ -33,6 +33,20 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 
    }
 
+   /**
+    * 생산계획 등록
+    *  
+    */
+   @Override
+	public void insertProductionPlan(ProductionPlanVO planVO) {
+	   sqs.insert(NAMESPACE+"insertPP",planVO);
+	}
+
+   /**
+    * 생산목록 조회
+    * 
+    * 
+    */
 
    @Override
    public List<ProductionPlanVO> createPlanList() {

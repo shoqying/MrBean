@@ -15,14 +15,28 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 	@Inject
 	private ProductionplanDAO pdao;
 	
+	/**
+	 * 생산계획 등록
+	 * 
+	 */
 	
+	@Override
+	public void insertProductionPlan(ProductionPlanVO planVO) {
+		pdao.insertProductionPlan(planVO);
+		
+	}
 	
+	/**
+	 * 생산계획목록 호출
+	 */
 	@Override
 	public List<ProductionPlanVO> getPlanList() {
 		logger.info("getPlanList() 호출");
 		
 		return pdao.createPlanList();
 	}
+
+
 	
 
 	
