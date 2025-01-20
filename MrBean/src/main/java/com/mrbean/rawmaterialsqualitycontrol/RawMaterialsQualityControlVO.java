@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.mrbean.enums.QualityControlStatus;
-import com.mrbean.lowmaterialslot.LowMaterialsLotVO;
 import com.mrbean.productionplan.ProductionVO;
+import com.mrbean.rawmaterialslot.RawMaterialsLotVO;
 
 import lombok.Data;
 
@@ -25,7 +25,7 @@ public class RawMaterialsQualityControlVO {
 	private int workQty; // 검사량
 	
 	// join을 사용하여 생성된 정보 저장
-	private List<LowMaterialsLotVO> LowMaterialsLotList;
+	private List<RawMaterialsLotVO> rawMaterialsLotList;
 	private List<ProductionVO> productionList;
 	
 
