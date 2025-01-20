@@ -21,6 +21,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
-
-	<context:component-scan base-package="com.mrbean, com.mrbean.productionplan, com.mrbean.warehouse" />
+	<context:component-scan base-package="com.mrbean.*" />
+	<context:component-scan base-package="com.mrbean.productionplan" />
 	</beans:beans>
