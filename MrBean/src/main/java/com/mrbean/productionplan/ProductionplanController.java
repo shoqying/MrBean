@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrbean.common.NumberGenerationService;
 
@@ -45,10 +46,12 @@ public class ProductionplanController {
 		 * 
 		 */
 		@RequestMapping(value = "/plan", method = RequestMethod.POST)
-		public String planRegisterPOST() {
+		public void planRegisterPOST(ProductionPlanVO planVO ) {
 			logger.info("planRegisterPOST 호출()");
 			
-			return "";
+			pps.insertProductionPlan(planVO);
+			logger.info("plan VO : "+ planVO);
+			
 		}
 
 
@@ -58,6 +61,7 @@ public class ProductionplanController {
 		 * 
 		 */
 		@RequestMapping(value = "/generatePlanNumber", method = RequestMethod.GET)
+		@ResponseBody
 		public String generatePlanNumberGET() {
 			logger.info("generatePlanNumberGET()");
 			
