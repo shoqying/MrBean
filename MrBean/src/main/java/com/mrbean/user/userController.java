@@ -21,24 +21,45 @@ public class userController {
     private userService userService;
 
     
-    // 사용자 회원가입 화면
+    // 회원가입 페이지
     @GetMapping("/register")
-    public String userSignUpGET() {
-        return "user/register"; // "/WEB-INF/views/user/signup.jsp"
+    public String registerPage() {
+        return "user/register"; // 회원가입 JSP 경로
     }
 
-    // 사용자 회원가입 처리
-    @PostMapping("/register")
-    public String userSignUpPOST(userVO user) {
-        userService.createUser(user);
-        return "redirect:/user/success";
+    // 회원가입 처리
+//    @PostMapping("/register")
+//    public String registerUser(userVO user) {
+//        // 추가적인 데이터 설정 (생성/수정 날짜 등)
+//        user.setUCreatedat(new java.sql.Timestamp(System.currentTimeMillis()));
+//        user.setUUpdatedat(new java.sql.Timestamp(System.currentTimeMillis()));
+//
+//        userService.createUser(user); // 회원가입 처리
+//        return "redirect:/user/login"; // 회원가입 완료 후 로그인 페이지로 리다이렉트
+//    }
+
+    // 로그인 페이지
+    @GetMapping("/login")
+    public String loginPage() {
+        return "user/login"; // 로그인 JSP 경로
     }
 
-    // 사용자 조회 화면
-    @GetMapping("/{userId}")
-    public String getUser(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.getUserById(userId));
-        return "user/detail"; // "/WEB-INF/views/user/detail.jsp"
+    // 로그인 처리
+    @PostMapping("/login")
+    public String loginUser(@RequestParam("userId") String userId,
+                            @RequestParam("password") String password,
+                            Model model) {
+        userVO user = userService.getUserById(userId);
+
+        if (user != null && user.getUPasswordhash().equals(password)) {
+            // 로그인 성공 처리
+            model.addAttribute("user", user);
+            return "user/dashboard"; // 로그인 성공 후 대시보드 페이지로 이동
+        } else {
+            // 로그인 실패 처리
+            model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            return "user/login"; // 다시 로그인 페이지로 이동
+        }
     }
  
     
