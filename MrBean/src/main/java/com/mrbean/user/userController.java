@@ -10,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-// http://localhost:8088/user/NewFile
-// http://localhost:8088/user/main
+// http://localhost:8088/user/example
+// http://localhost:8088/user/sample
 
 @Controller
 @RequestMapping(value = "/user/*")
