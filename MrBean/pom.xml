@@ -219,6 +219,19 @@
 		    <artifactId>thumbnailator</artifactId>
 		    <version>0.4.20</version>
 		</dependency>
+		
+		 <dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.12.3</version>
+		</dependency>
+
+		
+		
+		
+		
+		<!-- 시큐리티 -->
+
 
 		<!-- 시큐리티 -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
@@ -248,6 +261,14 @@
 		    <artifactId>spring-security-taglibs</artifactId>
 		    <version>5.0.6.RELEASE</version>
 		</dependency>
+
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.18.2</version>
+		</dependency>
+
 		<!-- 시큐리티 -->
 
 		<!-- Spring Web for RESTful web services -->

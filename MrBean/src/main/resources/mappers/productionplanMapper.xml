@@ -5,16 +5,15 @@
 
 	<select id="getLastNumberForDate" resultType = "String">
         SELECT plan_no
-        FROM production_plans 
+        FROM production_plan
         WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
         ORDER BY plan_no DESC 
         LIMIT 1	
-	
-	
 	</select>
 	
+	
 	<insert id="insertPP" parameterType="com.mrbean.productionplan.ProductionPlanVO">
-	    INSERT INTO production_plans(
+	    INSERT INTO production_plan(
 	        plan_no,
 	        plan_type,
 	        plan_start_date,

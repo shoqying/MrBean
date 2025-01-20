@@ -1,13 +1,15 @@
 package com.mrbean.productionplan;
 
 import java.util.List;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,12 +47,17 @@ public class ProductionplanController {
 		 * http://localhost:8088/productionplan/plan
 		 * 
 		 */
-		@RequestMapping(value = "/plan", method = RequestMethod.POST)
-		public void planRegisterPOST(ProductionPlanVO planVO ) {
+		@RequestMapping(value = "/plan", 
+						method = RequestMethod.POST,
+						produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public ResponseEntity<String> planRegisterPOST(@RequestBody ProductionPlanVO planVO ) {
 			logger.info("planRegisterPOST 호출()");
 			
 			pps.insertProductionPlan(planVO);
 			logger.info("plan VO : "+ planVO);
+			
+			return ResponseEntity.ok("{\"status\": \"success\", \"message\": \"계획 등록 완료\"}");
 			
 		}
 
