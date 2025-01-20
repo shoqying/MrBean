@@ -11,10 +11,40 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+	<logger name="com.mrbean.controller">
+		<level value="info" />
+	</logger>
 	<logger name="com.mrbean.productionplan">
 		<level value="info" />
 	</logger>
-	<logger name="com.mrbean.controller">
+	<logger name="com.mrbean.billofmaterials">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.enums">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.finishedproductscontrol">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.productionplan">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.products">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.rawmaterials">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.rawmaterialslot">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.rawmaterialsqualitycontrol">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.stock">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.warehouse">
 		<level value="info" />
 	</logger>
 	
