@@ -1,11 +1,11 @@
-package com.mrbean.lowmaterialslot;
+package com.mrbean.rawmaterialslot;
 
 import java.sql.Timestamp;
 
 import lombok.Data;
 
 @Data
-public class LowMaterialsLotVO {
+public class RawMaterialsLotVO {
 	
 	private String rmlNo; // 원자재 로트 번호
 	private String rmCode; // 원자제 제품번호
