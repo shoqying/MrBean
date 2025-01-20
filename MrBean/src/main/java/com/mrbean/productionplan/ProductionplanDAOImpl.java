@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProductionplanDAOImpl implements ProductionplanDAO {
 
+
    @Inject
    private SqlSession sqs;
    private static final String NAMESPACE = "com.mrbean.mappers.productionplanMapper.";

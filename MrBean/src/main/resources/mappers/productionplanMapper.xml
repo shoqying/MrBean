@@ -3,7 +3,15 @@
 
 <mapper namespace="com.mrbean.mappers.productionplanMapper">
 
-
+	<select id="getLastNumberForDate" resultType = "String">
+        SELECT plan_no
+        FROM production_plans 
+        WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
+        ORDER BY plan_no DESC 
+        LIMIT 1	
+	
+	
+	</select>
 
 
 
