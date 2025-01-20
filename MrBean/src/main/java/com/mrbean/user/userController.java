@@ -20,6 +20,28 @@ public class userController {
     @Autowired
     private userService userService;
 
+    
+    // 사용자 회원가입 화면
+    @GetMapping("/register")
+    public String userSignUpGET() {
+        return "user/register"; // "/WEB-INF/views/user/signup.jsp"
+    }
+
+    // 사용자 회원가입 처리
+    @PostMapping("/register")
+    public String userSignUpPOST(userVO user) {
+        userService.createUser(user);
+        return "redirect:/user/success";
+    }
+
+    // 사용자 조회 화면
+    @GetMapping("/{userId}")
+    public String getUser(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.getUserById(userId));
+        return "user/detail"; // "/WEB-INF/views/user/detail.jsp"
+    }
+
+    
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 

@@ -36,8 +36,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
       <a href="${pageContext.request.contextPath}/index.html" class="logo d-flex align-items-center">
-        <img src="${pageContext.request.contextPath}/resources/assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">Nasdasdsadasdmin</span>
+     <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
+
+        <span class="d-none d-lg-block">Mr.BEAN</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -106,7 +107,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide"></i><span>기준정보관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -184,7 +185,7 @@
 
       <li class="nav-item">
         <a class="nav-link " data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-journal-text"></i><span>생산관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li>
@@ -212,7 +213,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-layout-text-window-reverse"></i><span>품질관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -230,7 +231,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-bar-chart"></i><span>재고관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -253,7 +254,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-gem"></i><span>창고관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -279,35 +280,28 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="users-profile.html">
           <i class="bi bi-person"></i>
-          <span>Profile</span>
+          <span>내정보보기</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-faq.html">
           <i class="bi bi-question-circle"></i>
-          <span>생산관리</span>
+          <span>내정보변경</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" href="pages-register.html">
           <i class="bi bi-card-list"></i>
-          <span>Register</span>
+          <span>회원가입</span>
         </a>
       </li><!-- End Register Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-login.html">
           <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
+          <span>로그인</span>
         </a>
       </li><!-- End Login Page Nav -->
 
