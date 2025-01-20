@@ -40,7 +40,7 @@ public class userController {
         model.addAttribute("user", userService.getUserById(userId));
         return "user/detail"; // "/WEB-INF/views/user/detail.jsp"
     }
-
+ 
     
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
