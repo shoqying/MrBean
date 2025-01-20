@@ -21,7 +21,7 @@
 		<collection property="productsList" resultMap="productsMap"/>
 	</resultMap>
 		
-	<resultMap type="com.mrbean.workorders.ProductionPlanVO" id="productionPlanMap">
+	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionPlanMap">
 		<result property="planId" column="plan_id"/>
 		<result property="planQty" column="plan_qty"/>
 	</resultMap>
