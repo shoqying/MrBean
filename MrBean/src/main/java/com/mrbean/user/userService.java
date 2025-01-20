@@ -1,0 +1,10 @@
+package com.mrbean.user;
+
+import java.util.List;
+
+public interface userService {
+    userVO getUserById(String userId); // 사용자 단일 조회
+    List<userVO> getAllUsers();       // 모든 사용자 조회
+    void createUser(userVO user);     // 사용자 추가
+    void updateUser(userVO user);     // 사용자 업데이트
+}
