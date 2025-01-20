@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+// http://localhost:8088/user/NewFile
 // http://localhost:8088/user/main
+
 @Controller
 @RequestMapping(value = "/user/*")
 public class userController {
@@ -82,24 +84,26 @@ public class userController {
 	 * userService.updateUser(user); }
 	 */
 
-    @RequestMapping(value = "/NewFile",method = RequestMethod.GET )
-    public String NewFilePage() {
+    @RequestMapping(value = "/sample",method = RequestMethod.GET )
+    public String samplePage() {
         
-        System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+        System.out.println("출력");
 
-        return "user/NewFile";
+        return "user/sample";
 }
     
     
     // 메인 페이지 연결
-    //@GetMapping(value = "/main")
-    @RequestMapping(value = "/main",method = RequestMethod.GET )
+    //@GetMapping(value = "/example")
+    @RequestMapping(value = "/example",method = RequestMethod.GET )
     public String mainPage() {
         
-        System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+        System.out.println("출력");
 
-        return "user/main";
+        return "user/example";
 }
+    
+    
     
 }
 
