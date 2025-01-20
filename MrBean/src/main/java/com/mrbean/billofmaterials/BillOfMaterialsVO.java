@@ -3,7 +3,7 @@ package com.mrbean.billofmaterials;
 import lombok.Data;
 
 @Data
-public class BillOfMaterialVO {
+public class BillOfMaterialsVO {
 	
 	private int bomId; // BOM_ID
 	private String rmCode; // 원자재코드

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.mrbean.billofmaterials.BillOfMaterialsVO;
 import com.mrbean.enums.QualityControlStatus;
 import com.mrbean.productionplan.ProductionPlanVO;
 
@@ -27,6 +28,7 @@ public class FinishedProductsControlVO {
 	
 	// join을 사용하여 생성된 정보 저장
 	private List<ProductionPlanVO> productionPlanList;
-//	private List<AuthVO> authList;
+	private List<BillOfMaterialsVO> billOfMaterialsList;
+
 
 }

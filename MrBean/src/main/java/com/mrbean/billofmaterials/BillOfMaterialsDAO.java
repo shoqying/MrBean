@@ -1,5 +1,5 @@
 package com.mrbean.billofmaterials;
 
-public interface BillOfMaterialDAO {
+public interface BillOfMaterialsDAO {
 
 }
