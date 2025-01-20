@@ -82,6 +82,15 @@ public class userController {
 	 * userService.updateUser(user); }
 	 */
 
+    @RequestMapping(value = "/NewFile",method = RequestMethod.GET )
+    public String NewFilePage() {
+        
+        System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+
+        return "user/NewFile";
+}
+    
+    
     // 메인 페이지 연결
     //@GetMapping(value = "/main")
     @RequestMapping(value = "/main",method = RequestMethod.GET )

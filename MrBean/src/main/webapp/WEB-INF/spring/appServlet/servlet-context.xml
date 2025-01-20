@@ -24,4 +24,5 @@
 
 	<context:component-scan base-package="com.mrbean.*" />
 	<context:component-scan base-package="com.mrbean.productionplan" />
+	
 	</beans:beans>
