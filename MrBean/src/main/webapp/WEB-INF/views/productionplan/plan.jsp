@@ -16,7 +16,7 @@
             <div class="card-body">
               <h5 class="card-title">생산계획 등록</h5>
               <!-- Floating Labels Form -->
-              <form class="row g-3" id="productPlanForm" action="/productionplan/plan" method="post">
+              <form class="row g-3">
                 <div class="col-md-6">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="planNumber" placeholder="생산계획 번호">
@@ -83,7 +83,7 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary" id="submitBtn">계획등록</button>
+                  <button type="button" class="btn btn-primary" id="intsertBtn">계획등록</button>
                   <button type="reset" class="btn btn-secondary" id="resetBtn">초기화</button>
                 </div>
               </form><!-- End floating Labels Form -->

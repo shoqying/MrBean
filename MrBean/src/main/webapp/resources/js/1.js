@@ -10,7 +10,7 @@ const SELECTORS = {
         PRODUCT_CODE: '#productCode',   // 제품구분 선택
         QUANTITY: '#planQuantity',      // 계획수량 입력
         REMARK: '#remark',             // 비고 입력
-        SUBMIT_BTN: '#submitBtn',       // 계획등록 버튼
+        INSERT_BTN: '#intsertBtn',       // 계획등록 버튼
         RESET_BTN: '#resetBtn'          // 초기화 버튼
     }
 };
@@ -76,7 +76,7 @@ function submitPP(){
  * 이벤트 리스너 설정
  */
 function setupEventListeners(){
-    $(SELECTORS.FORM.SUBMIT_BTN).on('submit', function(e){
+    $(SELECTORS.FORM.INSERT_BTN).on('click', function(e){
         e.preventDefault();
         console.log("제출 클릭")
 //        if(validateForm()){
@@ -84,12 +84,5 @@ function setupEventListeners(){
 //        }
         submitPP();
     });
-    // 폼 자체의 submit 이벤트를 막아 새로고침 방지
-    $(SELECTORS.FORM.CONTAINER).on('submit', function (e) {
-        e.preventDefault(); // 폼의 기본 submit 동작 막기
-        console.log("폼 제출 이벤트 발생");
 
-        // validateForm() 함수 추가 가능
-        submitPP(); // 데이터 전송 함수 호출
-    });
 }
