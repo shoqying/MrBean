@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class ProductsVO {
 	
-	private String pCode; // ¿ÏÁ¦Ç°ÄÚµå
-	private String p_name; // ¿ÏÁ¦Ç°¸í
-	private String p_description; // ¼³¸í
-	private int bom_id; // BOM_ID
+	private String pCode; // ì™„ì œí’ˆì½”ë“œ
+	private String pName; // ì™„ì œí’ˆëª…
+	private String pDescription; // ì„¤ëª…
+	private int bomId; // BOM_ID
 
 }
