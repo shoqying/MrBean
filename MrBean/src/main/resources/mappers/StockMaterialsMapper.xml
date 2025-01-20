@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.mrbean.mappers.StockMaterialsMapper">
+
+    <!-- resultMap 정의 -->
+  <resultMap id="StockMaterialsResultMap" type="com.mrbean.stockmaterials.StockMaterialsVO">
+    <id property="smBno" column="sm_bno" /> <!-- 순번 -->
+    <result property="rrQuantity" column="rr_quantity" /> <!-- 수량 -->
+    <result property="rrUnit" column="rr_unit" /> <!-- 단위 -->
+    <result property="rmlDate" column="rml_date" /> <!-- 입고일 -->
+    <result property="wCode" column="w_code" /> <!-- 창고 코드 -->
+    <result property="rmlNo" column="rml_no" /> <!-- LOT번호(원자재 입고) -->
+    <result property="rmCode" column="rm_code" /> <!-- 원자재 코드 -->
+    <result property="rrExpirydate" column="rr_expirydate" /> <!-- 유통기한 -->
+   
+</resultMap>
+
+	<!-- 원자재 조회 -->
+     <select id="getStockMaterials" resultMap="StockMaterialsResultMap">
+        SELECT * 
+        FROM stock_materials
+        ORDER BY #{sortColumn} #{sortDirection}
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+	<!-- 전체 목록 조회 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM stock_materials
+    </select>
+    
+     <!-- 원자재 등록 쿼리 -->
+    <insert id="insertStockMaterials">
+        INSERT INTO stock_materials (rr_quantity, rr_unit, rml_date, w_code, rml_no, rm_code, rr_expirydate)
+        VALUES (#{rrQuantity}, #{rrUnit}, #{rmlDate}, #{wCode}, #{rmlNo}, #{rmCode}, #{rrExpirydate})
+    </insert>
+
+</mapper>
+  
+  
+  
+  
+  
+ 
