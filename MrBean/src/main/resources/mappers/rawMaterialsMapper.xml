@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.mappers.RawMaterialsMapper">
+
+    <!-- ResultMap: DB 컬럼과 VO 객체의 속성을 매핑 -->
+    <resultMap id="RawMaterialsResultMap" type="com.mrbean.rawmaterials.RawMaterialsVO">
+        <result property="rmCode" column="rm_code"/>
+        <result property="rmName" column="rm_name"/>
+        <result property="rmOrigin" column="rm_origin"/>
+        <result property="rmStorageMethod" column="rm_storage_method"/>
+    </resultMap>
+
+    <!-- 원자재 등록 -->
+    <insert id="insertRawMaterials" parameterType="com.mrbean.rawmaterials.RawMaterialsVO">
+        INSERT INTO raw_materials (rm_code, rm_name, rm_origin, rm_storage_method)
+        VALUES (#{rmCode}, #{rmName}, #{rmOrigin}, #{rmStorageMethod})
+    </insert>
+    
+    <!-- 원자재 목록 조회 -->
+    <select id="selectRawMaterialsList" resultMap="RawMaterialsResultMap">
+        SELECT rm_code, rm_name, rm_origin, rm_storage_method
+        FROM raw_materials
+        ORDER BY rm_name ASC
+    </select>
+    
+    <!-- 원자재 코드로 원자재 정보 조회 -->
+    <select id="selectRawMaterialByCode" parameterType="string" resultType="com.mrbean.rawmaterials.RawMaterialsVO">
+        SELECT * FROM raw_materials
+        WHERE rm_code = #{rmCode}
+    </select>
+
+    <!-- 원자재 정보 수정 -->
+    <update id="updateRawMaterial" parameterType="com.mrbean.rawmaterials.RawMaterialsVO">
+        UPDATE raw_materials
+        SET
+            rm_name = #{rmName},
+            rm_origin = #{rmOrigin},
+            rm_storage_method = #{rmStorageMethod}
+        WHERE rm_code = #{rmCode}
+    </update>
+    
+</mapper>
