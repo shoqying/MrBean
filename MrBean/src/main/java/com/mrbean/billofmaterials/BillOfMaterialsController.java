@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Controller
-@RequestMapping(value = "/billofmaterials/*")
+@RequestMapping(value = "/billofmaterials")
 public class BillOfMaterialsController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BillOfMaterialsController.class);

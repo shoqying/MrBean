@@ -4,8 +4,6 @@ import java.util.List;
 
 public interface ProductionplanDAO {
 	
-	
-	
 	//생산계획번호 생성
 	public String createProductionPlanNumber(String date);
 	

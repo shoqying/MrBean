@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@Validated
 public class WarehouseController {
 
     private static final Logger logger = LoggerFactory.getLogger(WarehouseController.class);
@@ -32,15 +32,13 @@ public class WarehouseController {
      */
     @PostMapping("/warehouses")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> registerWarehouse(@RequestBody WarehouseVO warehouse, BindingResult result) throws Exception {
-        logger.info("Received request to register warehouse: {}", warehouse);
-
+    public ResponseEntity<Map<String, String>> registerWarehouse(@Valid @RequestBody WarehouseDTO warehouse, BindingResult result) throws Exception {
         // 유효성 검사
         if (result.hasErrors()) {
             logger.error("유효성 검사 실패: {}", result.getAllErrors());
             Map<String, String> errorResponse = new HashMap<>();
-            StringBuilder errorMessages = new StringBuilder("유효성 검사 실패: ");
-            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()).append(" "));
+            StringBuilder errorMessages = new StringBuilder("유효성 검사 실패:\n");
+            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()).append(""));
             errorResponse.put("message", errorMessages.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -52,7 +50,7 @@ public class WarehouseController {
         if (warehouseService.isWarehouseCodeExist(warehouse.getWCode())) {
             logger.error("이미 등록된 창고 코드: {}", warehouse.getWCode());
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "이미 등록된 창고 코드입니다.");
+            errorResponse.put("message", "이미 등록된 창고 입니다.");
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +59,6 @@ public class WarehouseController {
 
         try {
             warehouseService.registerWarehouse(warehouse);
-            logger.info("창고 등록 성공.");
             Map<String, String> successResponse = new HashMap<>();
             successResponse.put("message", "창고 등록 성공");
             return ResponseEntity

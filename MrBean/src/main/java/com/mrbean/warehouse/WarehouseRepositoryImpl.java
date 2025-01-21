@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class WarehouseDAOImpl implements WarehouseDAO {
+public class WarehouseRepositoryImpl implements WarehouseRepository {
 
     @Autowired
     private SqlSession sqlSession;
