@@ -9,7 +9,7 @@ public interface ProductionplanService {
 	public void insertProductionPlan(ProductionPlanVO planVO);
 	
 	// 생산 목록
-	public List<ProductionPlanVO> getPlanList();
+	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO);
 	
 	
 }//ProductionplanService

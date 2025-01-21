@@ -3,6 +3,23 @@
 
 <mapper namespace="com.mrbean.mappers.productionplanMapper">
 
+	<resultMap id="ProductionPlanVOResultMap" type="com.mrbean.productionplan.ProductionPlanVO">
+	    <result property="planId" column="plan_id"/>
+	    <result property="planNumber" column="plan_no"/>
+	    <result property="planType" column="plan_type"/>
+	    <result property="planStartDate" column="plan_start_date"/>
+	    <result property="planEndDate" column="plan_end_date"/>
+	    <result property="productCode" column="product_code"/>
+	    <result property="bomCode" column="bom_code"/>
+	    <result property="planQuantity" column="plan_quantity"/>
+	    <result property="priority" column="plan_priority"/>
+	    <result property="status" column="plan_status"/>
+	    <result property="remark" column="plan_remark"/>
+	    <result property="createdBy" column="plan_created_by"/>
+	</resultMap>
+
+
+
 	<select id="getLastNumberForDate" resultType = "String">
         SELECT plan_no
         FROM production_plan
@@ -40,7 +57,11 @@
 	    )
 	</insert>
 
-
+	<select id="selectPP" resultMap="ProductionPlanVOResultMap">
+		SELECT *
+		FROM production_plan
+		
+	</select>
 
  
     

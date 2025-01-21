@@ -32,13 +32,13 @@ public class ProductionplanController {
 		 * 
 		 */
 		@RequestMapping(value = "/plan", method = RequestMethod.GET)
-		public String planRegisterGET(Model model) {
+		public String planRegisterGET(Model model, ProductionPlanVO planVO) {
 			logger.info("planRegisterGET 호출()");
 
 			// 생산계획 목록을 조회해서 모델이 추가
-			List<ProductionPlanVO>planList = pps.getPlanList();
+			List<ProductionPlanVO>planList = pps.getPlanList(planVO);
 			model.addAttribute("planList", planList);
-			
+			logger.info("planList : "+ planList);
 			return "productionplan/plan";
 		}
 		
@@ -51,14 +51,21 @@ public class ProductionplanController {
 						method = RequestMethod.POST,
 						produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody
-		public ResponseEntity<String> planRegisterPOST(@RequestBody ProductionPlanVO planVO ) {
+		public ResponseEntity<?> planRegisterPOST(@RequestBody ProductionPlanVO planVO ) {
 			logger.info("planRegisterPOST 호출()");
-			
-			pps.insertProductionPlan(planVO);
-			logger.info("plan VO : "+ planVO);
-			
-			return ResponseEntity.ok("{\"status\": \"success\", \"message\": \"계획 등록 완료\"}");
-			
+			try {
+				// 생산계획 등록
+				pps.insertProductionPlan(planVO);
+				
+				// 최신 목록 반환
+				List<ProductionPlanVO> planList = pps.getPlanList(planVO);
+				
+				return ResponseEntity.ok(planList);  // 성공적으로 목록을 반환
+				
+			} catch (Exception e) {
+		        logger.error("생산계획 등록 실패", e);
+		        return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
+			}
 		}
 
 

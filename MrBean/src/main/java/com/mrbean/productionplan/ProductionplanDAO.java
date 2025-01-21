@@ -13,7 +13,7 @@ public interface ProductionplanDAO {
 	public void insertProductionPlan(ProductionPlanVO planVO);
 	
 	//생산목록 조회
-	public List<ProductionPlanVO> createPlanList();
+	public List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO);
 	
 	
 }//ProductionplanDAO
