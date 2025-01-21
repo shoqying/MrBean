@@ -12,6 +12,7 @@ const SELECTORS = {
         REMARK: '#remark',             // 비고 입력
         INSERT_BTN: '#intsertBtn',       // 계획등록 버튼
         RESET_BTN: '#resetBtn',          // 초기화 버튼
+        PLSTATUS: '.plStatus'          // 상태
     },
     TABLE:{
     	BODY: '.datatable tbody'
@@ -90,16 +91,23 @@ function updatePlanList(planList) {
     
     const tbody = $(SELECTORS.TABLE.BODY);
     tbody.empty(); // 기존 테이블 내용을 비움
+
+    // planNumber를 기준으로 내림차순 정렬
+    const sortedPlanList = planList.sort((a, b) => {
+        // planNumber가 문자열일 수 있으므로 명시적으로 비교
+        return b.planNumber.localeCompare(a.planNumber);
+    });    
     
 
     // 새로운 데이터로 테이블 rows 생성
-    planList.forEach(plan => {   
+    sortedPlanList.forEach(plan => {   
         const row = $('<tr>').append(
             $('<td>').text(plan.planNumber || '값이 없습니다'),
             $('<td>').text(plan.priority || '값이 없습니다'),
             $('<td>').text(plan.planType || '값이 없습니다'),
             $('<td>').text(formatDate(plan.planStartDate) || '값이 없습니다'),
             $('<td>').text(formatDate(plan.planEndDate) || '값이 없습니다'),
+            $('<td>').text(plan.plStatus || '값이 없습니다'),
             $('<td>').text(plan.productCode || '값이 없습니다'),
             $('<td>').text(plan.planQuantity || '값이 없습니다'),
             $('<td>').text(plan.remark || '값이 없습니다'),
@@ -163,7 +171,8 @@ function submitPP(){
         productCode: $(SELECTORS.FORM.PRODUCT_CODE).val(),
         planQuantity: $(SELECTORS.FORM.QUANTITY).val(),
         remark: $(SELECTORS.FORM.REMARK).val(),
-        priority: $(SELECTORS.FORM.PRIORITY).val()
+        priority: $(SELECTORS.FORM.PRIORITY).val(),
+        plStatus: $(SELECTORS.FORM.PLSTATUS).val()
     };
     console.log('FormData:', JSON.stringify(formData));
     
@@ -199,6 +208,7 @@ function resetForm(){
     $(SELECTORS.FORM.PRODUCT_CODE).val('케냐');
     $(SELECTORS.FORM.QUANTITY).val('');
     $(SELECTORS.FORM.REMARK).val('');
+    $(SELECTORS.FORM.PLSTATUS).val('PLANNED');
 	
     // 주문번호 생성 요청
 	generateNumber();

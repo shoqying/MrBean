@@ -57,9 +57,6 @@
                     <input type="date" class="form-control" id="planEndDate">
                   </div>
                 </div>
-                
-                
-                
                 <div class="col-md-6">
                   <div class="form-floating mb-3">
                     <select class="form-select" id="productCode" aria-label="State">
@@ -91,6 +88,7 @@
           </div>
         </div>
       </div>
+      <input type="hidden" class= "plStatus" value="PLANNED">
     </section>
     
     
@@ -111,6 +109,7 @@
                     <th>계획종류</th>
                     <th>시작일자</th>
                     <th>종료일자</th>
+                    <th>계획상태</th>
                     <th>제품구분</th>
                     <th>계획수량(g)</th>
                     <th>비고</th>
@@ -148,6 +147,12 @@
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty plan.planEndDate}">${plan.planEndDate}</c:when>
+                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    	</c:choose>
+                    </td>
+                  	<td>
+                    	<c:choose>
+                    		<c:when test="${not empty plan.plStatus}">${plan.plStatus}</c:when>
                     		<c:otherwise>값이 없습니다</c:otherwise>
                     	</c:choose>
                     </td>
