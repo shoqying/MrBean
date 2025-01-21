@@ -194,13 +194,8 @@
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="/workorders/work"">
               <i class="bi bi-circle"></i><span>작업지시 관리</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-validation.html">
-              <i class="bi bi-circle"></i><span>Form Validation</span>
             </a>
           </li>
         </ul>

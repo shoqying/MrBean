@@ -48,9 +48,9 @@ public class NumberGenerationServiceImpl implements NumberGenerationService {
 		// controller별 번호 format 해서 반환
 			switch(controllerName){
 				case "productionplan":
+					return String.format("PO-%s-%03d", date,sequence);
+				case "workorders":
 					return String.format("WO-%s-%03d", date,sequence);
-				case "":
-					return"";
 				default :
 					return "";
 			} //switch case
