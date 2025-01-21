@@ -84,8 +84,23 @@ public class ProductionplanController {
 			
 			return planNumber;
 		}
-	
-	
+		/**
+		 * 생산계획 목록 삭제
+		 */
+		@RequestMapping(value = "/delete", method = RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity<?> deletePlan(@RequestBody int planId){
+			try {
+				pps.deletePlan(planId);
+		        List<ProductionPlanVO> planList = pps.getPlanList(new ProductionPlanVO());
+		        logger.info("deletePlan 호출");
+		        return ResponseEntity.ok(planList);				
+			} catch (Exception e) {
+		        logger.error("생산계획 삭제 실패", e);
+		        return ResponseEntity.status(500).body("삭제에 실패했습니다.");				
+			}
+			
+		}
 		
 	
 	

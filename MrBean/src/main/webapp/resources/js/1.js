@@ -53,29 +53,73 @@ function generateNumber(){
         }
     });
 }
+
+// 삭제 함수
+function deletePlan(planId) {
+    $.ajax({
+        url: '/productionplan/delete',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(planId),
+        success: function(response) {
+            updatePlanList(response);
+            alert('생산계획이 삭제되었습니다.');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('삭제에 실패했습니다.');
+        }
+    });
+}
+
+//날짜 포맷 함수
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1
+    const day = ('0' + date.getDate()).slice(-2); // 날짜는 두 자리로 맞추기
+    return `${year}-${month}-${day}`;
+}
+
+
+
+
 // 생산계획 목록 비동기 업데이트
 function updatePlanList(planList) {
     console.log('Updating plan list:', planList);
     
     const tbody = $(SELECTORS.TABLE.BODY);
     tbody.empty(); // 기존 테이블 내용을 비움
+    
 
     // 새로운 데이터로 테이블 rows 생성
-    planList.forEach(plan => {
+    planList.forEach(plan => {   
         const row = $('<tr>').append(
             $('<td>').text(plan.planNumber || '값이 없습니다'),
             $('<td>').text(plan.priority || '값이 없습니다'),
             $('<td>').text(plan.planType || '값이 없습니다'),
-            $('<td>').text(plan.planStartDate || '값이 없습니다'),
-            $('<td>').text(plan.planEndDate || '값이 없습니다'),
+            $('<td>').text(formatDate(plan.planStartDate) || '값이 없습니다'),
+            $('<td>').text(formatDate(plan.planEndDate) || '값이 없습니다'),
             $('<td>').text(plan.productCode || '값이 없습니다'),
             $('<td>').text(plan.planQuantity || '값이 없습니다'),
             $('<td>').text(plan.remark || '값이 없습니다'),
-            $('<td>').text(plan.createdBy || '값이 없습니다')
+            $('<td>').text(plan.createdBy || '값이 없습니다'),
+            $('<td>').append(
+                $('<button>')
+                    .addClass('btn btn-danger btn-sm')
+                    .text('삭제')
+                    .on('click', function() {
+                        if (confirm('이 생산계획을 삭제하시겠습니까?')) {
+                            deletePlan(plan.planId);  // 삭제 실행
+                        }
+                    })
+            )            
         );
         tbody.append(row);
     });
 }
+    
+   
 // 폼 유효성 체크
 function validateForm(){
 	let isValid = true;

@@ -64,6 +64,10 @@
 	</select>
 
  
+ 	<delete id="deletePP">
+ 		DELETE FROM production_plan WHERE plan_id = #{planId}
+ 		
+ 	</delete>
     
     
     

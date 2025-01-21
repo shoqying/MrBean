@@ -11,5 +11,8 @@ public interface ProductionplanService {
 	// 생산 목록
 	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO);
 	
+	// 생산 목록 삭제
+	
+	public void deletePlan(int planId);
 	
 }//ProductionplanService
