@@ -22,7 +22,7 @@ public class ProductionPlanVO {
 	private String remark; // 비고
 	private String createdBy;//등록자 
 	
-	private ProductionplanStatus status; //계획상태 필요한가? => 작업지시에서 필요할듯함
+	private ProductionplanStatus plStatus; //계획상태
 	private ProductionplanPriority priority; //우선순위
 
 

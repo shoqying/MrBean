@@ -13,11 +13,10 @@
 	    <result property="bomCode" column="bom_code"/>
 	    <result property="planQuantity" column="plan_quantity"/>
 	    <result property="priority" column="plan_priority"/>
-	    <result property="status" column="plan_status"/>
+	    <result property="plStatus" column="plan_status"/>
 	    <result property="remark" column="plan_remark"/>
 	    <result property="createdBy" column="plan_created_by"/>
 	</resultMap>
-
 
 
 	<select id="getLastNumberForDate" resultType = "String">
@@ -52,7 +51,7 @@
 	        #{planQuantity},   <!-- planQuantity -> plan_quantity로 매핑 -->
 	        #{remark},         <!-- remark -> plan_remark로 매핑 -->
 	        #{createdBy},      <!-- createdBy -> plan_created_by로 매핑 -->
-	        #{status},         <!-- status -> plan_status로 매핑 -->
+	        #{plStatus},         <!-- status -> plan_status로 매핑 -->
 	        #{priority}        <!-- priority -> plan_priority로 매핑 -->
 	    )
 	</insert>
@@ -60,7 +59,7 @@
 	<select id="selectPP" resultMap="ProductionPlanVOResultMap">
 		SELECT *
 		FROM production_plan
-		
+		ORDER BY plan_no DESC;
 	</select>
 
  
