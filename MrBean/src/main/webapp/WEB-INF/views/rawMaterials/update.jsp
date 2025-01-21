@@ -1,31 +1,40 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="c" %>
+
+<!DOCTYPE html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>원자재 수정</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h2>원자재 수정</h2>
-    
-    <!-- 수정 폼 -->
-    <form action="${pageContext.request.contextPath}/rawMaterials/update" method="POST">
-        <!-- 원자재 코드 (수정 불가, readonly로 표시) -->
-        <label for="rmCode">원자재 코드:</label>
-        <input type="text" id="rmCode" name="rmCode" value="${rawMaterial.rmCode}" readonly /><br>
-        
-        <label for="rmName">원자재명:</label>
-        <input type="text" id="rmName" name="rmName" value="${rawMaterial.rmName}" required maxlength="50" /><br>
-        
-        <label for="rmOrigin">원산지:</label>
-        <input type="text" id="rmOrigin" name="rmOrigin" value="${rawMaterial.rmOrigin}" required maxlength="50" /><br>
-        
-        <label for="rmStorageMethod">보관 방법:</label>
-        <textarea id="rmStorageMethod" name="rmStorageMethod" required maxlength="200">${rawMaterial.rmStorageMethod}</textarea><br>
-        
-        <input type="submit" value="수정 완료" />
-    </form>
-    
-    <br>
-    <a href="${pageContext.request.contextPath}/rawMaterials/list">목록으로 돌아가기</a>
+
+    <div class="container">
+        <h1 class="mt-5">원자재 수정</h1>
+
+        <form action="${pageContext.request.contextPath}/rawMaterials/update" method="post">
+            <input type="hidden" name="rmCode" value="${rawMaterial.rmCode}">
+            <div class="form-group">
+                <label for="rmName">원자재 이름:</label>
+                <input type="text" id="rmName" name="rmName" class="form-control" value="${rawMaterial.rmName}" required>
+            </div>
+            <div class="form-group">
+                <label for="rmOrigin">원산지:</label>
+                <input type="text" id="rmOrigin" name="rmOrigin" class="form-control" value="${rawMaterial.rmOrigin}" required>
+            </div>
+            <div class="form-group">
+                <label for="rmStorageMethod">보관 방법:</label>
+                <input type="text" id="rmStorageMethod" name="rmStorageMethod" class="form-control" value="${rawMaterial.rmStorageMethod}" required>
+            </div>
+            <button type="submit" class="btn btn-success">수정</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
