@@ -189,18 +189,13 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Form Elements</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-layouts.html" class="active">
-              <i class="bi bi-circle"></i><span>Form Layouts</span>
+            <a href="/productionplan/plan" class="active">
+              <i class="bi bi-circle"></i><span>생산계획 관리</span>
             </a>
           </li>
           <li>
             <a href="forms-editors.html">
-              <i class="bi bi-circle"></i><span>Form Editors</span>
+              <i class="bi bi-circle"></i><span>작업지시 관리</span>
             </a>
           </li>
           <li>
@@ -326,7 +321,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Form Layouts</h1>
+      <h1>생산계획 관리</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>

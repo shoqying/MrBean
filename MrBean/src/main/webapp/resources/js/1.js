@@ -10,20 +10,31 @@ const SELECTORS = {
         PRODUCT_CODE: '#productCode',   // 제품구분 선택
         QUANTITY: '#planQuantity',      // 계획수량 입력
         REMARK: '#remark',             // 비고 입력
-        SUBMIT_BTN: '#submitBtn',       // 계획등록 버튼
-        RESET_BTN: '#resetBtn'          // 초기화 버튼
+        INSERT_BTN: '#intsertBtn',       // 계획등록 버튼
+        RESET_BTN: '#resetBtn',          // 초기화 버튼
+        a: '#a'
     }
 };
 
+/**
+ * 페이지 시작시 실행
+ * 
+ */
+
+
 $(document).ready(function(){
 	console.log('jQuery loaded:', typeof $ !== 'undefined')
-    generateNumber();
+    // 주문번호 생성 요청
+	generateNumber();
+	// 이벤트 리스너 설정
     setupEventListeners();
 });
 
 /**
  * 함수 정의
  */
+
+//주문 번호 생성
 function generateNumber(){
     console.log("generateNumber 호출");
     $.ajax({
@@ -40,7 +51,7 @@ function generateNumber(){
         }
     });
 }
-
+// 폼제출
 function submitPP(){
     const formData = {
         planNumber: $(SELECTORS.FORM.PLAN_NUMBER).val(),
@@ -64,7 +75,8 @@ function submitPP(){
         	console.log('FormData:', formData);
             if (response.status === 'success'){
                 alert("계획 등록 완료");
-                //resetForm(); 추후 추가
+                resetForm(); // 폼 초기화
+                //updatePlanList(response); // 서버에서 반환된 최신 목록으로 갱신 추가로 만들어야함
             } else {
                 alert(response.message || '계획 등록에 실패');
             }
@@ -72,11 +84,31 @@ function submitPP(){
     });
 }
 
+
+// 폼 초기화 입력필드 초기 복원
+function resetForm(){
+	// 폼 입력 필드들을 초기화
+    $(SELECTORS.FORM.PLAN_NUMBER).val('');
+    $(SELECTORS.FORM.PRIORITY).val('MEDIUM');
+    $(SELECTORS.FORM.PLAN_TYPE).val('일일');
+    $(SELECTORS.FORM.START_DATE).val('');
+    $(SELECTORS.FORM.END_DATE).val('');
+    $(SELECTORS.FORM.PRODUCT_CODE).val('케냐');
+    $(SELECTORS.FORM.QUANTITY).val('');
+    $(SELECTORS.FORM.REMARK).val('');
+	
+    // 주문번호 생성 요청
+	generateNumber();
+	
+}
+
 /**
  * 이벤트 리스너 설정
  */
 function setupEventListeners(){
-    $(SELECTORS.FORM.SUBMIT_BTN).on('submit', function(e){
+	
+	// 폼 제출
+    $(SELECTORS.FORM.INSERT_BTN).on('click', function(e){
         e.preventDefault();
         console.log("제출 클릭")
 //        if(validateForm()){
@@ -84,12 +116,12 @@ function setupEventListeners(){
 //        }
         submitPP();
     });
-    // 폼 자체의 submit 이벤트를 막아 새로고침 방지
-    $(SELECTORS.FORM.CONTAINER).on('submit', function (e) {
-        e.preventDefault(); // 폼의 기본 submit 동작 막기
-        console.log("폼 제출 이벤트 발생");
-
-        // validateForm() 함수 추가 가능
-        submitPP(); // 데이터 전송 함수 호출
+    
+    // 초기화
+    $('#resetBtn').on('click', function() {
+        if (confirm('모든 입력을 초기화하시겠습니까?')) {
+            resetForm();
+        }
     });
+
 }

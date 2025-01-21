@@ -5,10 +5,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductionplanDAOImpl implements ProductionplanDAO {
+	
+
+	private static final Logger logger = LoggerFactory.getLogger(ProductionplanDAOImpl.class);
 
 
    @Inject
@@ -47,13 +52,13 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
     * 
     * 
     */
-
    @Override
-   public List<ProductionPlanVO> createPlanList() {
-      
-      return null;
+   public List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO) {
+       List<ProductionPlanVO> result = sqs.selectList(NAMESPACE + "selectPP", planVO);
+
+       return result;
    }
-   
+
    
 
 }//ProductionplanImpl
