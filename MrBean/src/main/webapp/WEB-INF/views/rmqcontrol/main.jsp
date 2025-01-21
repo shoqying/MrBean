@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>원자재 품질 검사 관리</title>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -26,41 +27,71 @@
         </tr>
         <c:forEach var="vo" items="${rawMaterialsQualityControlList}">
         <tr>
-            <td>vo.rqcBno</td>
-            <td>vo.rmlDate</td>
-            <td>vo.rmlNo</td>
-            <td>vo.rmCode</td>
-            <td>vo.rqcDate</td>
-            <td>
-                <select>
-                    <option value="대기중">vo.rqcQualityCheck</option>
-                    <option value="완료">vo.rqcQualityCheck</option>
+            <td>${vo.rqcBno}</td>
+			<td>${vo.rmlDate}</td>
+			<td>${vo.rmlNo}</td>
+			<td>${vo.rmCode}</td>
+			<td>${vo.rqcDate}</td>
+			<td>
+			    <select id="rqcQualityCheck_${vo.rqcBno}" onchange="updateQualityCheck(${vo.rqcBno}, this)">
+                    <option value="PENDING" ${vo.rqcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
+                    <option value="COMPLETED" ${vo.rqcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
                 </select>
             </td>
             <td>
-                <select>
-                	<option value="대기중">vo.rqcStatus</option>
-                    <option value="합격">vo.rqcStatus</option>
-                    <option value="불합격">vo.rqcStatus</option>
+                <select id="rqcStatus_${vo.rqcBno}" onchange="updateStatus(${vo.rqcBno}, this)">
+                    <option value="PENDING" ${vo.rqcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
+                    <option value="PASS" ${vo.rqcStatus == 'PASS' ? 'selected' : ''}>합격</option>
+                    <option value="FAIL" ${vo.rqcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
                 </select>
-            </td>
-            <td>vo.workOrderNo</td>
-            <td>vo.workQuantity</td>
-            <td><button onclick="confirmDelete(this)">삭제</button></td>
+			</td>
+			<td>${vo.workOrderNo}</td>
+			<td>${vo.workQuantity}</td>
+			<td><button onclick="confirmDelete(this)">삭제</button></td>
         </tr>
         </c:forEach>
     </table>
     
 	<script>
-	// 삭제 확인 및 행 삭제 함수
-        function confirmDelete(button) {
-            if (confirm("삭제하시겠습니까?")) {
-                alert("삭제되었습니다.");
-            } else {
-                alert("삭제가 취소되었습니다.");
+    function updateQualityCheck(rqcBno, rqcQualityCheck) {
+        var qualityCheckValue = rqcQualityCheck.value;
+        $.ajax({
+            url: '/rmqcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
+            type: 'POST',
+            data: { rqcBno: rqcBno, rqcQualityCheck: qualityCheckValue },
+            success: function(response) {
+                alert("품질 검사 상태가 업데이트되었습니다.");
+            },
+            error: function() {
+                alert("업데이트 실패");
             }
+        });
+    }
+
+    function updateStatus(rqcBno, rqcStatus) {
+        var statusValue = rqcStatus.value;
+        $.ajax({
+            url: '/rmqcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
+            type: 'POST',
+            data: { rqcBno: rqcBno, rqcStatus: statusValue },
+            success: function(response) {
+                alert("상태가 업데이트되었습니다.");
+            },
+            error: function() {
+                alert("업데이트 실패");
+            }
+        });
+    }
+
+    function confirmDelete(button) {
+        if (confirm("삭제하시겠습니까?")) {
+            alert("삭제되었습니다.");
+        } else {
+            alert("삭제가 취소되었습니다.");
         }
-	</script>
+    }
+    </script>
+
 
 </body>
 </html>
