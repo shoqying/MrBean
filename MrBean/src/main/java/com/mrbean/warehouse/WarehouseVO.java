@@ -1,9 +1,13 @@
 package com.mrbean.warehouse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class WarehouseVO {
 
     @JsonProperty("wCode")
@@ -24,14 +28,4 @@ public class WarehouseVO {
     @JsonProperty("wDescription")
     private final String wDescription;
 
-    // 생성자
-    public WarehouseVO(String wCode, String wName, String wRoadFullAddr,
-                       String wAddrDetail, String wZipNo, String wDescription) {
-        this.wCode = wCode;
-        this.wName = wName;
-        this.wRoadFullAddr = wRoadFullAddr;
-        this.wAddrDetail = wAddrDetail;
-        this.wZipNo = wZipNo;
-        this.wDescription = (wDescription != null) ? wDescription : ""; // null 체크
-    }
 }

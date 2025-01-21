@@ -18,14 +18,15 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public WarehouseVO registerWarehouse(WarehouseDTO warehouseDTO) throws Exception {
         // DTO를 VO로 변환 (불변 객체로 생성)
-        WarehouseVO warehouseVO = new WarehouseVO(
-                warehouseDTO.getWCode(),
-                warehouseDTO.getWName(),
-                warehouseDTO.getWRoadFullAddr(),
-                warehouseDTO.getWAddrDetail(),
-                warehouseDTO.getWZipNo(),
-                Optional.ofNullable(warehouseDTO.getWDescription()).orElse("") // Null 처리
-        );
+        // Builder 패턴을 사용하여 WarehouseVO 생성
+        WarehouseVO warehouseVO = WarehouseVO.builder()
+                .wCode(warehouseDTO.getWCode())
+                .wName(warehouseDTO.getWName())
+                .wRoadFullAddr(warehouseDTO.getWRoadFullAddr())
+                .wAddrDetail(warehouseDTO.getWAddrDetail())
+                .wZipNo(warehouseDTO.getWZipNo())
+                .wDescription(Optional.ofNullable(warehouseDTO.getWDescription()).orElse("")) // Null 처리
+                .build();
 
         // WarehouseVO를 DB에 저장
         warehouseRepository.insertWarehouse(warehouseVO);

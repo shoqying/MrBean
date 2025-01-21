@@ -1,13 +1,17 @@
 package com.mrbean.billofmaterials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class BillOfMaterialsVO {
 
 	@JsonProperty("bomId")
-	private int bomId; // BOM_ID
+	private String bomId; // BOM_ID
 
 	@JsonProperty("rmCode")
 	private String rmCode; // 원자재코드

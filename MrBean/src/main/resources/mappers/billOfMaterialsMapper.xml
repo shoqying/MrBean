@@ -2,5 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mrbean.Mapper.BillOfMaterialMapper">
+    <!-- BOM 정보와 원자재 정보를 조회하는 SQL -->
+    <resultMap id="billOfMaterialsResultMap" type="com.mrbean.billofmaterials.BillOfMaterialsVO">
+        <id property="bomId" column="bom_id" />
+        <result property="bomName" column="bom_name" />
+        <result property="bomRatio" column="bom_ratio" />
+        <result property="bomDescription" column="bom_description" />
 
+        <!-- 외래키로 원자재 정보를 가져옴 -->
+        <association property="rawMaterials" javaType="com.mrbean.rawmaterials.RawMaterialsVO">
+            <result property="rmCode" column="rm_code" />
+            <result property="rmName" column="rm_name" />
+            <result property="rmOrigin" column="rm_origin" /> <!-- 원자재 원산지 추가 -->
+            <result property="rmStorageMethod" column="rm_storage_method" /> <!-- 원자재 저장 방법 추가 -->
+        </association>
+    </resultMap>
+
+    <!-- BOM 입력 SQL -->
+    <insert id="insertBillOfMaterials" parameterType="com.mrbean.vo.BillOfMaterialsVO">
+        INSERT INTO bill_of_materials (
+            bom_name,
+            bom_ratio,
+            bom_description,
+            rm_code
+        )
+        VALUES (
+            #{bomName},
+            #{bomRatio},
+            #{bomDescription},
+            #{rmCode}
+        )
+    </insert>
 </mapper>

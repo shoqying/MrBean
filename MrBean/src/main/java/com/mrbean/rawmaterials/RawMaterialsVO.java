@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class RawMaterialsVO {
 	
-	private String rmCode; // ¿øÀÚÀçÄÚµå
-	private String rmName; // ¿øÀÚÀç¸í
-	private String rmOrigin; // ¿ø»êÁö
-	private String rmStorageMethod; // º¸°ü¹æ¹ý
+	private String rmCode; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
+	private String rmName; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private String rmOrigin; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private String rmStorageMethod; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 }
