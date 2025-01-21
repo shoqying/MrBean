@@ -6,11 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>완재품 품질 검사 관리</title>
+<title>완제품 품질 검사 관리</title>
 </head>
 <body>
 
-    <h1>완재품 품질 검사 관리 목록</h1>
+    <h1>완제품 품질 검사 관리 목록</h1>
     <table>
         <tr>
             <th>순번</th>
@@ -28,30 +28,30 @@
         </tr>
         <c:forEach var="vo" items="${finishProductsControlControlList}">
         <tr>
-     		<td>vo.fpcBno</td>
-            <td>vo.fpcDate</td>
-            <td>vo.fpcLotbno</td>
-            <td>vo.pName</td>
-            <td>vo.fpcExpirydate</td>
-            <td>vo.fpcCheckdate</td>
-            <td>
-                <select>
-                    <option value="대기중">vo.fpcQualityCheck</option>
-                    <option value="완료">vo.fpcQualityCheck</option>
-                </select>
-            </td>
-            <td>
-                <select>
-                    <option value="대기중">vo.fpcStatus</option>
-                    <option value="합격">vo.fpcStatus</option>
-                    <option value="불합격">vo.fpcStatus</option>
-                </select>
-            </td>
-            <td>vo.fpcYield</td>
-            <td>vo.planQty</td>
-            <td>vo.fpcQuantity</td>
-            <td><button onclick="confirmDelete(this)">삭제</button></td>
-        </tr>
+		    <td>${vo.fpcBno}</td>
+		    <td>${vo.fpcDate}</td>
+		    <td>${vo.fpcLotbno}</td>
+		    <td>${vo.pName}</td>
+		    <td>${vo.fpcExpirydate}</td>
+		    <td>${vo.fpcCheckdate}</td>
+		    <td>
+		        <select>
+		            <option value="대기중" ${vo.fpcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
+		            <option value="완료" ${vo.fpcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
+		        </select>
+		    </td>
+		    <td>
+		        <select>
+		            <option value="대기중" ${vo.fpcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
+		            <option value="합격" ${vo.fpcStatus == 'PASS' ? 'selected' : ''}>합격</option>
+		            <option value="불합격" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
+		        </select>
+		    </td>
+		    <td>${vo.fpcYield}</td>
+		    <td>${vo.planQty}</td>
+		    <td>${vo.fpcQuantity}</td>
+		    <td><button onclick="confirmDelete(this)">삭제</button></td>
+		</tr>
     </c:forEach>
     </table>
     

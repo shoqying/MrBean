@@ -15,13 +15,27 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	private static final Logger logger = LoggerFactory.getLogger(FinishedProductsControlServiceImp.class);
 
 	@Inject
-	FinishedProductsControlDAO FinishedProductsControlDAO;
+	FinishedProductsControlDAO finishedProductsControlDAO;
 	
 	@Override
 	public List<FinishedProductsControlVO> getFinishedProductsControlList() throws Exception {
 		logger.info("getFinishedProductsControlList() 호출");
 		
-		return FinishedProductsControlDAO.selectFinishedProductsControl();
+		return finishedProductsControlDAO.selectFinishedProductsControl();
+	}
+
+	@Override
+	public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception {
+		logger.info("updateQualityCheck() 호출");
+		finishedProductsControlDAO.updateQualityCheck(fpcBno, fpcQualityCheck);
+		
+	}
+
+	@Override
+	public void updateStatus(int fpcBno, String fpcStatus) throws Exception {
+		logger.info("updateStatus() 호출");
+		finishedProductsControlDAO.updateStatus(fpcBno, fpcStatus);
+		
 	}
 	
 	

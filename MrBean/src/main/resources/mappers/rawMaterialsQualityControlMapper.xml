@@ -10,21 +10,19 @@
 		<result property="rqcQualityCheck" column="rqc_quality_check"/>
 		<result property="rqcStatus" column="rqc_status"/>
 		<result property="workOrderNo" column="work_order_no"/>
-		<result property="workQuantity" column="work_quantity"/>
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
-		<collection property="workOdersList" resultMap="workOdersMap"/>
+		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 	</resultMap>
 		
 	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
 		<result property="rmlNo" column="rml_no"/>
 		<result property="rmCode" column="rm_code"/>
-		<result property="wCode" column="w_code"/>
 		<result property="rmlDate" column="rml_date"/>
-		<result property="rmlBatch" column="rml_batch"/>
 	</resultMap>
 	
-	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOdersMap">
+
+	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>
 	</resultMap>
@@ -48,6 +46,21 @@
         	   JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
         	   JOIN work_orders work on rqc.work_order_no = work.work_order_no
     </select>
+    
+    
+    <!-- 품질 검사 상태 업데이트 -->
+    <update id="updateQualityCheck" parameterType="map">
+        UPDATE rawmaterials_quality_control
+        SET rqc_quality_check = #{rqcQualityCheck}
+        WHERE rqc_bno = #{rqcBno}
+    </update>
+
+    <!-- 상태 업데이트 -->
+    <update id="updateStatus" parameterType="map">
+        UPDATE rawmaterials_quality_control
+        SET rqc_status = #{rqcStatus}
+        WHERE rqc_bno = #{rqcBno}
+    </update>
     
     
     

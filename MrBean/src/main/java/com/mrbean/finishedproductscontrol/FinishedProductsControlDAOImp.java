@@ -16,7 +16,7 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	
 	private static final Logger logger = LoggerFactory.getLogger(FinishedProductsControlDAOImp.class);
 	
-	private static final String NAMESPACE = "com.mrbean.finishedproductscontrol.FinishedProductsControlVO.";
+	private static final String NAMESPACE = "com.mrbean.mappers.finishedProductsControlMapper.";
 	
 	@Inject
 	private SqlSession sqlSession;
@@ -27,6 +27,20 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		logger.info("selectFinishedProductsControl() 호출");
 		
 		return sqlSession.selectList(NAMESPACE + "getFinishedProductsControlList");
+	}
+
+	@Override
+	public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception {
+		logger.info("updateQualityCheck() 호출");
+		sqlSession.update(NAMESPACE + "updateQualityCheck");
+		
+	}
+
+	@Override
+	public void updateStatus(int fpcBno, String fpcStatus) throws Exception {
+		logger.info("updateStatus() 호출");
+		sqlSession.update(NAMESPACE + "updateStatus");
+		
 	}
 	
 	

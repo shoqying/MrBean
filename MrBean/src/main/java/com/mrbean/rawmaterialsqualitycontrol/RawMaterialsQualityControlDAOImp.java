@@ -1,6 +1,8 @@
 package com.mrbean.rawmaterialsqualitycontrol;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -14,7 +16,7 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 
 	private static final Logger logger = LoggerFactory.getLogger(RawMaterialsQualityControlDAOImp.class);
 	
-	private static final String NAMESPACE = "com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO.";
+	private static final String NAMESPACE = "com.mrbean.mappers.rawMaterialsQualityControlMapper.";
 	
 	@Inject
 	private SqlSession sqlSession;
@@ -25,6 +27,31 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 		
 		return sqlSession.selectList(NAMESPACE + "getRawMaterialsQualityControlList");
 	}
+
+	@Override
+	public void updateQualityCheck(int rqcBno, String rqcQualityCheck) throws Exception {
+		logger.info("updateQualityCheck() 호출");
+		
+		Map<String, Object> params = new HashMap<>();
+	    params.put("rqcBno", rqcBno);
+	    params.put("rqcQualityCheck", rqcQualityCheck);
+	    
+	    sqlSession.update(NAMESPACE + "updateQualityCheck", params);
+
+	}
+
+	@Override
+	public void updateStatus(int rqcBno, String rqcStatus) throws Exception {
+		logger.info("updateStatus() 호출");
+		
+		Map<String, Object> params = new HashMap<>();
+	    params.put("rqcBno", rqcBno);
+	    params.put("rqcStatus", rqcStatus);
+
+	    sqlSession.update(NAMESPACE + "updateStatus", params);
+	}
+	
+	
 	
 	
 }

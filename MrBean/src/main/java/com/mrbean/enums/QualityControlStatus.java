@@ -4,5 +4,5 @@ public enum QualityControlStatus {
 	PENDING,
 	COMPLETED,
 	PASS,
-	FIAL
+	FAIL
 }

@@ -14,15 +14,31 @@ public class RawMaterialsQualityControlServiceImp implements RawMaterialsQuality
 	private static final Logger logger = LoggerFactory.getLogger(RawMaterialsQualityControlServiceImp.class);
 	
 	@Inject
-	RawMaterialsQualityControlDAO RawMaterialsQualityControlDAO;
+	RawMaterialsQualityControlDAO rawMaterialsQualityControlDAO;
 
 	@Override
 	public List<RawMaterialsQualityControlVO> getRawMaterialsQualityControlList() throws Exception {
 		logger.info("getRawMaterialsQualityControlList() 호출");
 		
-		return RawMaterialsQualityControlDAO.selectRawMaterialsQualityControl();
+		return rawMaterialsQualityControlDAO.selectRawMaterialsQualityControl();
 	}
 	
-	
+    public void updateQualityCheck(int rqcBno, String rqcQualityCheck) throws Exception {
+    	logger.info("updateQualityCheck() 호출");
+    	rawMaterialsQualityControlDAO.updateQualityCheck(rqcBno, rqcQualityCheck);
+    }
 
+    public void updateStatus(int rqcBno, String rqcStatus) throws Exception {
+    	logger.info("updateStatus() 호출");
+    	rawMaterialsQualityControlDAO.updateStatus(rqcBno, rqcStatus);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
