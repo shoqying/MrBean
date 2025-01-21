@@ -24,7 +24,7 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
    /**
     * WO 생성 
     * 동시성 제어를 위해 synchronized 키워드 사용 
-    * 형식: WO-YYYYMMDD-###
+    * 형식: PO-YYYYMMDD-###
     * 
     */
    
@@ -68,7 +68,6 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
    
 	@Override
 	public void deleteProductionPlan(int planId) {
-		logger.info("deleteProductionPlan 호출");
 		sqs.delete(NAMESPACE + "deletePP",planId);
 	}
 

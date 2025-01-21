@@ -19,8 +19,8 @@
               <form class="row g-3" id = "a">
                 <div class="col-md-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="planNumber" placeholder="생산계획 번호" readonly="readonly">
-                    <label for="planNumber">생산계획 번호(PO + YYYYMMDD + 일련번호3자리 자동생성)</label>
+                    <input type="text" class="form-control" id="workNumber" placeholder="작업지시 번호" readonly="readonly">
+                    <label for="planNumber">작업지시 번호(WO + YYYYMMDD + 일련번호3자리 자동생성)</label>
                   </div>
                 </div>
                 <div class="col-md-6">
