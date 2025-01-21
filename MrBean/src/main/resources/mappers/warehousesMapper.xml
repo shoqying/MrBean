@@ -1,28 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.mapper.TestMapper">
-	<!-- ResultMap 정의 -->
-	<resultMap id="warehouseResultMap" type="com.mrbean.warehouse.WarehouseVO">
-	    <id property="wCode" column="w_code"/>
-	    <result property="wName" column="w_name"/>
-	    <result property="wAddress" column="w_address"/>
-	    <result property="wDescription" column="w_description"/>
-	</resultMap>
-	
+<mapper namespace="com.mrbean.Mapper.WarehouseMapper">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="warehouseResultMap" type="com.mrbean.warehouse.WarehouseVO">
+        <id property="wCode" column="w_code"/>
+        <result property="wName" column="w_name"/>
+        <result property="wRoadFullAddr" column="w_road_full_addr"/>
+        <result property="wAddrDetail" column="w_addr_detail"/>
+        <result property="wZipNo" column="w_zip_no"/>
+        <result property="wDescription" column="w_description"/>
+    </resultMap>
+
     <!-- 창고 등록 -->
     <insert id="insertWarehouse" parameterType="com.mrbean.warehouse.WarehouseVO">
-		INSERT INTO warehouses (
-		    w_code, 
-		    w_name, 
-		    w_address, 
-		    w_description
-		)
-		VALUES (
-		    #{wCode}, 
-		    #{wName}, 
-		    #{wAddress}, 
-		    #{wDescription}
-		);
+        INSERT INTO warehouses (
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        )
+        VALUES (
+            #{wCode},
+            #{wName},
+            #{wRoadFullAddr},
+            #{wAddrDetail},
+            #{wZipNo},
+            #{wDescription}
+        )
     </insert>
-    
+
+    <!-- 창고 코드 중복 체크 -->
+    <select id="checkWarehouseCodeExists" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM warehouses
+        WHERE w_code = #{warehouseCode}
+    </select>
+
+    <select id="selectWarehouseByCode" parameterType="String" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+        WHERE w_code = #{wCode}
+    </select>
+
 </mapper>

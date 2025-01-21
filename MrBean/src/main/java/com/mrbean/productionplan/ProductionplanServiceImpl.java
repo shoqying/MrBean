@@ -1,6 +1,8 @@
 package com.mrbean.productionplan;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,14 +32,26 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 	 * 생산계획목록 호출
 	 */
 	@Override
-	public List<ProductionPlanVO> getPlanList() {
+	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO) {
 		logger.info("getPlanList() 호출");
 		
-		return pdao.createPlanList();
+		List<ProductionPlanVO> result = pdao.createPlanList(planVO);
+		return result;
+		
+	}
+	
+	/**
+	 * 생산계획 목록 삭제
+	 * 
+	 */
+	@Override
+	public void deletePlan(int planId) {
+		logger.info("deletePlan 호출");
+		
+		pdao.deleteProductionPlan(planId);
+		
 	}
 
-
-	
 
 	
 	

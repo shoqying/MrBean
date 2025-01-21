@@ -1,6 +1,7 @@
 package com.mrbean.productionplan;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductionplanService {
 	
@@ -8,7 +9,10 @@ public interface ProductionplanService {
 	public void insertProductionPlan(ProductionPlanVO planVO);
 	
 	// 생산 목록
-	public List<ProductionPlanVO> getPlanList();
+	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO);
 	
+	// 생산 목록 삭제
+	
+	public void deletePlan(int planId);
 	
 }//ProductionplanService

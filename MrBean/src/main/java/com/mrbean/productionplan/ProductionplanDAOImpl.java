@@ -5,10 +5,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductionplanDAOImpl implements ProductionplanDAO {
+	
+
+	private static final Logger logger = LoggerFactory.getLogger(ProductionplanDAOImpl.class);
 
 
    @Inject
@@ -43,17 +48,30 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 	}
 
    /**
-    * 생산목록 조회
+    * 생산계획목록 조회
     * 
     * 
     */
-
    @Override
-   public List<ProductionPlanVO> createPlanList() {
-      
-      return null;
+   public List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO) {
+       List<ProductionPlanVO> result = sqs.selectList(NAMESPACE + "selectPP", planVO);
+
+       return result;
    }
+
+   /**
+    * 
+    * 생산계획목록 삭제
+    * 
+    */
    
+   
+	@Override
+	public void deleteProductionPlan(int planId) {
+		logger.info("deleteProductionPlan 호출");
+		sqs.delete(NAMESPACE + "deletePP",planId);
+	}
+
    
 
 }//ProductionplanImpl

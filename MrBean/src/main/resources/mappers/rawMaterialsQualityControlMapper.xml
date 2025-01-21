@@ -21,6 +21,7 @@
 		<result property="rmlDate" column="rml_date"/>
 	</resultMap>
 	
+
 	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>

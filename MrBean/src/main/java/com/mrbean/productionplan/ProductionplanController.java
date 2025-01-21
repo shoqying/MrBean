@@ -1,13 +1,15 @@
 package com.mrbean.productionplan;
 
 import java.util.List;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,13 +32,13 @@ public class ProductionplanController {
 		 * 
 		 */
 		@RequestMapping(value = "/plan", method = RequestMethod.GET)
-		public String planRegisterGET(Model model) {
+		public String planRegisterGET(Model model, ProductionPlanVO planVO) {
 			logger.info("planRegisterGET 호출()");
 
 			// 생산계획 목록을 조회해서 모델이 추가
-			List<ProductionPlanVO>planList = pps.getPlanList();
+			List<ProductionPlanVO>planList = pps.getPlanList(planVO);
 			model.addAttribute("planList", planList);
-			
+			logger.info("planList : "+ planList);
 			return "productionplan/plan";
 		}
 		
@@ -45,13 +47,25 @@ public class ProductionplanController {
 		 * http://localhost:8088/productionplan/plan
 		 * 
 		 */
-		@RequestMapping(value = "/plan", method = RequestMethod.POST)
-		public void planRegisterPOST(ProductionPlanVO planVO ) {
+		@RequestMapping(value = "/plan", 
+						method = RequestMethod.POST,
+						produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public ResponseEntity<?> planRegisterPOST(@RequestBody ProductionPlanVO planVO ) {
 			logger.info("planRegisterPOST 호출()");
-			
-			pps.insertProductionPlan(planVO);
-			logger.info("plan VO : "+ planVO);
-			
+			try {
+				// 생산계획 등록
+				pps.insertProductionPlan(planVO);
+				
+				// 최신 목록 반환
+				List<ProductionPlanVO> planList = pps.getPlanList(planVO);
+				
+				return ResponseEntity.ok(planList);  // 성공적으로 목록을 반환
+				
+			} catch (Exception e) {
+		        logger.error("생산계획 등록 실패", e);
+		        return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
+			}
 		}
 
 
@@ -70,8 +84,23 @@ public class ProductionplanController {
 			
 			return planNumber;
 		}
-	
-	
+		/**
+		 * 생산계획 목록 삭제
+		 */
+		@RequestMapping(value = "/delete", method = RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity<?> deletePlan(@RequestBody int planId){
+			try {
+				pps.deletePlan(planId);
+		        List<ProductionPlanVO> planList = pps.getPlanList(new ProductionPlanVO());
+		        logger.info("deletePlan 호출");
+		        return ResponseEntity.ok(planList);				
+			} catch (Exception e) {
+		        logger.error("생산계획 삭제 실패", e);
+		        return ResponseEntity.status(500).body("삭제에 실패했습니다.");				
+			}
+			
+		}
 		
 	
 	
