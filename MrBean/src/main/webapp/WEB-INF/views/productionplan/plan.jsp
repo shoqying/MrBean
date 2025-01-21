@@ -115,6 +115,7 @@
                     <th>계획수량(g)</th>
                     <th>비고</th>
                     <th>등록자</th>
+                    <th>삭제</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -174,6 +175,12 @@
                     		<c:otherwise>값이 없습니다</c:otherwise>
                     	</c:choose>
                     </td>
+                    <td>
+                       <button class="btn btn-danger btn-sm" 
+                               onclick="deletePlan('${plan.planId}')">
+                           삭제
+                       </button>
+                   </td>                   
                   </tr>
 					</c:forEach>
                 </tbody>

@@ -48,7 +48,7 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 	}
 
    /**
-    * 생산목록 조회
+    * 생산계획목록 조회
     * 
     * 
     */
@@ -58,6 +58,19 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 
        return result;
    }
+
+   /**
+    * 
+    * 생산계획목록 삭제
+    * 
+    */
+   
+   
+	@Override
+	public void deleteProductionPlan(int planId) {
+		logger.info("deleteProductionPlan 호출");
+		sqs.delete(NAMESPACE + "deletePP",planId);
+	}
 
    
 

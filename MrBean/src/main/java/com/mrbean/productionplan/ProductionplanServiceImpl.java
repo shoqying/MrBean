@@ -39,6 +39,18 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		return result;
 		
 	}
+	
+	/**
+	 * 생산계획 목록 삭제
+	 * 
+	 */
+	@Override
+	public void deletePlan(int planId) {
+		logger.info("deletePlan 호출");
+		
+		pdao.deleteProductionPlan(planId);
+		
+	}
 
 
 	

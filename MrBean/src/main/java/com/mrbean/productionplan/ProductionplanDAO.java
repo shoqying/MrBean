@@ -12,8 +12,10 @@ public interface ProductionplanDAO {
 	//생산계획 등록
 	public void insertProductionPlan(ProductionPlanVO planVO);
 	
-	//생산목록 조회
+	//생산계획목록 조회
 	public List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO);
 	
+	//생산계획목록 삭제
+	public void deleteProductionPlan(int planId);
 	
 }//ProductionplanDAO
