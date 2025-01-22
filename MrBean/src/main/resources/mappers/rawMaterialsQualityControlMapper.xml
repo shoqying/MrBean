@@ -62,7 +62,11 @@
         WHERE rqc_bno = #{rqcBno}
     </update>
     
-    
+    <!-- 원자재 검사 목록 삭제 -->
+    <delete id="deleteRawMaterial">
+    	DELETE FROM rawmaterials_quality_control
+    	WHERE rqc_bno = #{rqcBno}
+    </delete>
     
     
     

@@ -33,7 +33,7 @@ public class FinishedProductsControlController {
 	
 	
 	@RequestMapping(value = "/main")
-	public void fpControlGET(/*@SessionAttribute("uUserid")*/ String uUserid, Model model) throws Exception {
+	public void fpControlGET(/*@SessionAttribute("uUserid")*/ String userId, Model model) throws Exception {
 		logger.info("fpControlGET() 호출");
 		
 		List<FinishedProductsControlVO> finishedProductsControlList 
@@ -60,6 +60,18 @@ public class FinishedProductsControlController {
     public ResponseEntity<String> updateStatus(@RequestParam int fpcBno, @RequestParam String fpcStatus) {
         try {
         	finishedProductsControlService.updateStatus(fpcBno, fpcStatus);
+            return ResponseEntity.ok("상태가 업데이트되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+        }
+    }
+    
+    // 완재품 검사 목록 삭제
+    @PostMapping("/deleteFinishedProduct")
+    @ResponseBody
+    public ResponseEntity<String> deleteFinishedProduct(/*@SessionAttribute("userId")*/ @RequestParam int rqcBno) {
+        try {
+        	finishedProductsControlService.deleteFinishedProduct(rqcBno);
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
