@@ -12,7 +12,7 @@
     </resultMap>
 
     <!-- BOM 목록을 가져오는 쿼리 (bom_id와 bom_name을 반환) -->
-    <select id="getBomListForDropdown" resultType="com.mrbean.billofmaterials.BillOfMaterialsVO">
+    <select id="getBomListForDropdown" resultType="com.mrbean.billofmaterials.BomDropdownDTO">
         SELECT bom_id, bom_name
         FROM bill_of_materials
     </select>
