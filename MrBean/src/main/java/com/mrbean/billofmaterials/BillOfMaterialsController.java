@@ -24,6 +24,6 @@ public class BillOfMaterialsController {
 	@GetMapping("")
 	public String create(BillOfMaterialsDTO billOfMaterialsDTO) {
 
-		return null;
+		return "null";
 	}
 }
