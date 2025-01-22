@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class WarehouseRepositoryImpl implements WarehouseRepository {
 
-    @Autowired
-    private SqlSession sqlSession;
+    private static final String NAMESPACE = "com.mrbean.Mapper.WarehousesMapper.";
+    private final SqlSession sqlSession;
 
-    private static final String NAMESPACE = "com.mrbean.Mapper.WarehouseMapper.";
+    @Autowired
+    public WarehouseRepositoryImpl(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+    }
 
     // 창고 등록
     @Override

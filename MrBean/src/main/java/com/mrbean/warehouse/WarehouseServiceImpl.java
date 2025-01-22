@@ -12,8 +12,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private static final Logger logger = LoggerFactory.getLogger(WarehouseServiceImpl.class);
 
+    private final WarehouseRepository warehouseRepository;
+
     @Autowired
-    private WarehouseRepository warehouseRepository;
+    public WarehouseServiceImpl(WarehouseRepository warehouseRepository) {
+        this.warehouseRepository = warehouseRepository;
+    }
 
     @Override
     public WarehouseVO registerWarehouse(WarehouseDTO warehouseDTO) throws Exception {
