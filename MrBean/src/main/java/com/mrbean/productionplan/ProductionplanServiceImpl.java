@@ -29,7 +29,7 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 	}
 	
 	/**
-	 * 생산계획목록 호출
+	 * 생산계획목록 조회
 	 */
 	@Override
 	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO) {

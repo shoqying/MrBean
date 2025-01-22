@@ -21,10 +21,11 @@ public class StockMaterialsSeriveceImpl implements StockMaterialsService {
         return stockMaterialsDAO.getTotalCount();
     }
     
-    @Override
-    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
-        // 원자재 등록 서비스 로직
-        stockMaterialsDAO.insertStockMaterials(stockMaterialsVO);
-    }
+    
+//    @Override
+//    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
+//        // 원자재 등록 처리
+//        stockMaterialsDAO.insertStockMaterials(stockMaterialsVO);
+//    }
 
 }

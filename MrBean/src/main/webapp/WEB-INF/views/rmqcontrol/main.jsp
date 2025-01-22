@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>원자재 품질 검사 관리</title>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -26,11 +26,11 @@
             <th>삭제</th>
         </tr>
         <c:forEach var="vo" items="${rawMaterialsQualityControlList}">
-        <tr>
+        <tr id="row_${vo.rqcBno}">
             <td>${vo.rqcBno}</td>
-			<td>${vo.rmlDate}</td>
-			<td>${vo.rmlNo}</td>
-			<td>${vo.rmCode}</td>
+			<td>${vo.rawMaterialsLotList[0].rmlDate}</td>
+			<td>${vo.rawMaterialsLotList[0].rmlNo}</td>
+			<td>${vo.rawMaterialsLotList[0].rmCode}</td>
 			<td>${vo.rqcDate}</td>
 			<td>
 			    <select id="rqcQualityCheck_${vo.rqcBno}" onchange="updateQualityCheck(${vo.rqcBno}, this)">
@@ -45,9 +45,9 @@
                     <option value="FAIL" ${vo.rqcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
                 </select>
 			</td>
-			<td>${vo.workOrderNo}</td>
-			<td>${vo.workQuantity}</td>
-			<td><button onclick="confirmDelete(this)">삭제</button></td>
+			<td>${vo.workOrdersList[0].workOrderNo}</td>
+			<td>${vo.workOrdersList[0].workQuantity}</td>
+			<td><button onclick="confirmDelete(${vo.rqcBno})">삭제</button></td>
         </tr>
         </c:forEach>
     </table>
@@ -83,13 +83,28 @@
         });
     }
 
-    function confirmDelete(button) {
-        if (confirm("삭제하시겠습니까?")) {
-            alert("삭제되었습니다.");
-        } else {
-            alert("삭제가 취소되었습니다.");
-        }
-    }
+ 	// 삭제 처리
+    function confirmDelete(rqcBno) {
+	    if (confirm("삭제하시겠습니까?")) {
+	        $.ajax({
+	            url: '/rmqcontrol/deleteRawMaterial',  // 삭제 서버 URL
+	            type: 'POST',
+	            data: { rqcBno: rqcBno },
+	            success: function(response) {
+	                alert("삭제되었습니다.");
+	                
+	                // 삭제된 항목을 DOM에서 제거
+	                $("#row_" + rqcBno).remove(); 
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error:", error);
+	                alert("삭제 실패");
+	            }
+	        });
+	    } else {
+	        alert("삭제가 취소되었습니다.");
+	    }
+	}
     </script>
 
 

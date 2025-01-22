@@ -50,6 +50,13 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 
 	    sqlSession.update(NAMESPACE + "updateStatus", params);
 	}
+
+	@Override
+	public int deleteRawMaterial(int rqcBno) throws Exception {
+		logger.info("deleteRawMaterial() 호출");
+		
+		return sqlSession.delete(NAMESPACE + "deleteRawMaterial", rqcBno);
+	}
 	
 	
 	
