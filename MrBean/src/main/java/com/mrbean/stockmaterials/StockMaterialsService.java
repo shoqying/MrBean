@@ -23,6 +23,6 @@ public interface StockMaterialsService {
     int getTotalCount();
     
     // 원자재 등록
-    void insertStockMaterials(StockMaterialsVO stockMaterialsVO);
+    // void insertStockMaterials(StockMaterialsVO stockMaterialsVO);
 
 }
