@@ -80,6 +80,7 @@ public class StockMaterialsController {
         // list.jsp로 이동
         return "stock/list";
     }
+//    
     
     
     
