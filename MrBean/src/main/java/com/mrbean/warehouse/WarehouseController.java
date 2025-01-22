@@ -17,13 +17,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
 public class WarehouseController {
 
     private static final Logger logger = LoggerFactory.getLogger(WarehouseController.class);
 
+    private final WarehouseService warehouseService;
+
     @Autowired
-    private WarehouseService warehouseService;
+    public WarehouseController(WarehouseService warehouseService) {
+        this.warehouseService = warehouseService;
+    }
 
     /**
      * 창고 등록 (POST)
