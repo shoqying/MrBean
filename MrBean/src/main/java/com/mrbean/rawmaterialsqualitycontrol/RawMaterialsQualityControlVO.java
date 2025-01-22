@@ -20,10 +20,10 @@ public class RawMaterialsQualityControlVO {
 	private String workOrderNo; // 작업지시번호
 
 
-	// join 매핑
-	private Timestamp rmlDate; // 입고 날짜
-	private String rmCode; // 원자제 제품번호
-	private int workQuantity; // 검사량
+//	// join 매핑
+//	private Timestamp rmlDate; // 입고 날짜
+//	private String rmCode; // 원자제 제품번호
+//	private int workQuantity; // 검사량
 	
 	
 	// join을 사용하여 생성된 정보 저장

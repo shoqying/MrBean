@@ -37,6 +37,14 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		finishedProductsControlDAO.updateStatus(fpcBno, fpcStatus);
 		
 	}
+
+	@Override
+	public int deleteFinishedProduct(int rqcBno) throws Exception {
+		logger.info("deleteFinishedProduct() 호출");
+		return finishedProductsControlDAO.deleteFinishedProduct(rqcBno);
+	}
+	
+	
 	
 	
 

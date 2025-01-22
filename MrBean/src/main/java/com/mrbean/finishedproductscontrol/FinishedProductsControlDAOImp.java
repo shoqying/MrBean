@@ -42,6 +42,14 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		sqlSession.update(NAMESPACE + "updateStatus");
 		
 	}
+
+	@Override
+	public int deleteFinishedProduct(int rqcBno) throws Exception {
+		logger.info("deleteFinishedProduct() 호출");
+		
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", rqcBno);
+	}
+	
 	
 	
 
