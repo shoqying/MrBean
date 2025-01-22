@@ -22,7 +22,7 @@ public class RawMaterialsController {
 
     // 원자재 등록 페이지로 이동
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String showRegisterPage(Model model) {
+    public String showRegisterPage(Model model) throws Exception {
         logger.info("원자재 등록 페이지로 이동");
 
         // 빈 원자재 객체를 모델에 추가하여 등록 폼에서 바인딩할 수 있도록 함

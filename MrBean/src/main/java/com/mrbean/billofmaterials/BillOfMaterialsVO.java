@@ -7,7 +7,7 @@ import lombok.Getter;
 public class BillOfMaterialsVO {
 
 	@JsonProperty("bomId")
-	private int bomId; // BOM_ID
+	private String bomId; // BOM_ID
 
 	@JsonProperty("rmCode")
 	private String rmCode; // 원자재코드
