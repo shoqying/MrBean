@@ -32,13 +32,7 @@
         FROM stock_materials
     </select>
     
-     <!-- 원자재 등록 쿼리 -->
-   <!--  <insert id="insertStockMaterials">
-    INSERT INTO stock_materials 
-    (rr_quantity, rr_unit, rml_date, w_code, rml_no, rm_code, rr_expirydate)
-    VALUES 
-    (#{rrQuantity}, #{rrUnit}, #{rmlDate}, #{wCode}, #{rmlNo}, #{rmCode}, #{rrExpirydate})
-	</insert> -->
+ 
 
 </mapper>
   

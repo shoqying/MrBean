@@ -127,6 +127,7 @@ button.btn-primary:hover {
     position: absolute;
     bottom: 15px;
 }
+
 </style>
 </head>
 <body>
@@ -134,7 +135,7 @@ button.btn-primary:hover {
 <h1>완제품 재고 목록</h1>
 
 <!-- 정렬 옵션 -->
-<form action="/stockP/splist" method="get">
+<form action="/stockproduct/list" method="get">
     <label for="sortColumn">정렬 기준:</label>
     <select name="sortColumn" id="sortColumn">
         <option value="sp_date" ${sortColumn == 'sp_date' ? 'selected="selected"' : ''}>입고일</option>
@@ -146,46 +147,46 @@ button.btn-primary:hover {
         <option value="ASC" ${sortDirection == 'ASC' ? 'selected="selected"' : ''}>오름차순</option>
         <option value="DESC" ${sortDirection == 'DESC' ? 'selected="selected"' : ''}>내림차순</option>
     </select>
-    
-    
 
     <button type="submit">정렬</button>
 </form>
 
-<button class="btn btn-primary" onclick="location.href='/stock/list'">원자재 목록 페이지</button>
-
-<!-- 완제품 목록 테이블 -->
-<table border="1">
+<table id="stockProductTable">
     <thead>
         <tr>
             <th>순번</th>
-            <th>입고일</th>
             <th>수량</th>
             <th>단위</th>
+            <th>입고일</th>
             <th>창고 코드</th>
             <th>LOT번호</th>
             <th>제품 코드</th>
             <th>유통기한</th>
-         
+          
+        
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="stockProduct" items="${stockProducts}">
+        <c:forEach var="stockProducts" items="${stockProducts}">
             <tr>
-                <td>${stockProduct.spBno}</td>
-                <td>${stockProduct.spDate}</td>
-                <td>${stockProduct.spQuantity}</td>
-                <td>${stockProduct.spUnit}</td>
-                <td>${stockProduct.wCode}</td>
-                <td>${stockProduct.fpcLotbno}</td>
-                <td>${stockProduct.pCode}</td>
-                <td>${stockProduct.fpcExpirydate}</td>
-           
+                <td>${stockProducts.spBno}</td>
+                <td>${stockProducts.spQuantity}</td>
+                <td>${stockProducts.spUnit}</td>
+                <td>${stockProducts.spDate}</td>           
+                <td>${stockProducts.WCode}</td>
+                <td>${stockProducts.fpcLotbno}</td>
+                <td>${stockProducts.PCode}</td>
+                <td>${stockProducts.fpcExpirydate}</td>
+               
             </tr>
         </c:forEach>
+       <c:if test="${empty stockProducts}">
+		    <tr>
+		        <td colspan="8">데이터가 없습니다.</td>
+		    </tr>
+		</c:if>
     </tbody>
 </table>
-
 
 
 
@@ -203,6 +204,26 @@ button.btn-primary:hover {
     </c:if>
 </div>
 
+<!-- JavaScript 코드 -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    // 테이블을 5초마다 갱신하는 함수
+    function fetchUpdatedList() {
+        $.ajax({
+            url: '/stockP/splist',
+            method: 'GET',
+            success: function(data) {
+                $('#stockProductTable').html(data); // 테이블 내용 업데이트
+            }
+        });
+    }
+
+    // 일정 시간마다 새로고침
+    setInterval(fetchUpdatedList, 100000); // 1분마다 호출
+</script>
+
+
 
 </body>
 </html>
+
