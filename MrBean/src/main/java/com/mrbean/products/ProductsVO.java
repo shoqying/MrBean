@@ -9,5 +9,4 @@ public class ProductsVO {
 	private String pName; // 완제품명
 	private String pDescription; // 설명
 	private String bomId; // BOM_ID
-
 }

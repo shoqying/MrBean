@@ -64,7 +64,7 @@
     </form>
 </div>
 
-<script src="<c:url value='/resources/scripts/toast.js'/>"></script>
-<script src="<c:url value='/resources/scripts/warehouseFormValidation.js'/>"></script>
+<script src="<c:url value='/resources/js/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouseFormValidation.js'/>"></script>
 </body>
 </html>

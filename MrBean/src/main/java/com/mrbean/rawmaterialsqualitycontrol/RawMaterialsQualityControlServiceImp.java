@@ -23,15 +23,23 @@ public class RawMaterialsQualityControlServiceImp implements RawMaterialsQuality
 		return rawMaterialsQualityControlDAO.selectRawMaterialsQualityControl();
 	}
 	
+	@Override
     public void updateQualityCheck(int rqcBno, String rqcQualityCheck) throws Exception {
     	logger.info("updateQualityCheck() 호출");
     	rawMaterialsQualityControlDAO.updateQualityCheck(rqcBno, rqcQualityCheck);
     }
 
+	@Override
     public void updateStatus(int rqcBno, String rqcStatus) throws Exception {
     	logger.info("updateStatus() 호출");
     	rawMaterialsQualityControlDAO.updateStatus(rqcBno, rqcStatus);
     }
+
+	@Override
+	public int deleteRawMaterial(int rqcBno) throws Exception {
+		logger.info("deleteRawMaterial() 호출");
+		return rawMaterialsQualityControlDAO.deleteRawMaterial(rqcBno);
+	}
     
     
     

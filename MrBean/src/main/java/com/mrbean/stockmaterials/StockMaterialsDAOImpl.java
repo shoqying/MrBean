@@ -30,8 +30,8 @@ public class StockMaterialsDAOImpl implements StockMaterialsDAO {
         return sqlSession.selectOne("com.mrbean.mappers.StockMaterialsMapper.getTotalCount");
     }
     
-    @Override
-    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
-        sqlSession.insert("com.mrbean.mappers.StockMaterialsMapper.insertStockMaterials", stockMaterialsVO);
-    }
+//    @Override
+//    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
+//        sqlSession.insert("com.mrbean.mappers.StockMaterialsMapper.insertStockMaterials", stockMaterialsVO);
+//    }
 }

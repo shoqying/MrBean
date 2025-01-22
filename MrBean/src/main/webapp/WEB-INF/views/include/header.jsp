@@ -29,6 +29,21 @@
 
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/resources/assets/css/style.css" rel="stylesheet">
+
+  <!-- Vendor JS Files -->
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/quill/quill.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+  <!-- Navigation JS File -->
+  <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
 
 <body>
@@ -184,23 +199,18 @@
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link " data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>생산관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/productionplan/plan" class="active">
+            <a href="/productionplan/plan">
               <i class="bi bi-circle"></i><span>생산계획 관리</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="/workorders/work">
               <i class="bi bi-circle"></i><span>작업지시 관리</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-validation.html">
-              <i class="bi bi-circle"></i><span>Form Validation</span>
             </a>
           </li>
         </ul>
@@ -319,17 +329,13 @@
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-
     <div class="pagetitle">
-      <h1>생산계획 관리</h1>
+      <h1></h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Layouts</li>
+          <li class="breadcrumb-item"></li>
+          <li class="breadcrumb-item active"></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    
-
-

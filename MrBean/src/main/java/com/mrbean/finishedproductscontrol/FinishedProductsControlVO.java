@@ -16,19 +16,22 @@ public class FinishedProductsControlVO {
 	private int fpcBno; // 순번
 	private Timestamp fpcDate; // 제조일
 	private String fpcLotbno; // LOT번호(완제품)
-	private String pCode; // product code
+	private String pCode; // 제품 code
 	private Date fpcExpirydate; // 완재품 유통기한
 	private Timestamp fpcCheckdate; // 검사 일자
 	private QualityControlStatus fpcQualityCheck; // 품질검사(대기중, 완료)
 	private QualityControlStatus fpcStatus; // 상태(합격, 불합격)
 	private double fpcYield; // 수율
 	private int planId; // plan_id
-	private int planQty; // 수량
 	private double fpcQuantity; // 검사량
+	
+	// join 매핑
+//	private String pName; // 제품 명
+//	private int planQuantity; // 생산 수량
 	
 	// join을 사용하여 생성된 정보 저장
 	private List<ProductionPlanVO> productionPlanList;
-	private List<ProductsVO> ProductsList;
+	private List<ProductsVO> productsList;
 
 
 }

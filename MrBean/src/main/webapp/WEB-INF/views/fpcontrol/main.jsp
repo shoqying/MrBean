@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>완제품 품질 검사 관리</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -21,34 +22,34 @@
             <th>검사일자</th>
             <th>품질 검사</th>
             <th>상태</th>
-            <th>수율</th>
             <th>수량</th>
+            <th>수율</th>
             <th>검사량 (g)</th>
             <th>삭제</th>
         </tr>
-        <c:forEach var="vo" items="${finishProductsControlControlList}">
-        <tr>
+        <c:forEach var="vo" items="${finishedProductsControlList}">
+        <tr id="row_${vo.fpcBno}">
 		    <td>${vo.fpcBno}</td>
 		    <td>${vo.fpcDate}</td>
 		    <td>${vo.fpcLotbno}</td>
-		    <td>${vo.pName}</td>
+		    <td>${vo.productsList[0].PName}</td>
 		    <td>${vo.fpcExpirydate}</td>
 		    <td>${vo.fpcCheckdate}</td>
 		    <td>
-		        <select>
-		            <option value="대기중" ${vo.fpcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
-		            <option value="완료" ${vo.fpcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
-		        </select>
+		        <select id="fpcQualityCheck_${vo.fpcBno}" onchange="updateQualityCheck(${vo.fpcBno}, this)">
+                    <option value="PENDING" ${vo.fpcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
+                    <option value="COMPLETED" ${vo.fpcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
+                </select>
+            </td>
+            <td>
+                <select id="fpcStatus_${vo.fpcBno}" onchange="updateStatus(${vo.fpcBno}, this)">
+                    <option value="PENDING" ${vo.fpcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
+                    <option value="PASS" ${vo.fpcStatus == 'PASS' ? 'selected' : ''}>합격</option>
+                    <option value="FAIL" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
+                </select>
 		    </td>
-		    <td>
-		        <select>
-		            <option value="대기중" ${vo.fpcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
-		            <option value="합격" ${vo.fpcStatus == 'PASS' ? 'selected' : ''}>합격</option>
-		            <option value="불합격" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
-		        </select>
-		    </td>
+		    <td>${vo.productionPlanList[0].planQuantity}</td>
 		    <td>${vo.fpcYield}</td>
-		    <td>${vo.planQty}</td>
 		    <td>${vo.fpcQuantity}</td>
 		    <td><button onclick="confirmDelete(this)">삭제</button></td>
 		</tr>
@@ -56,15 +57,59 @@
     </table>
     
 	<script>
-	// 삭제 확인 및 행 삭제 함수
-        function confirmDelete(button) {
-            if (confirm("삭제하시겠습니까?")) {
-                alert("삭제되었습니다.");
-            } else {
-                alert("삭제가 취소되었습니다.");
+    function updateQualityCheck(fpcBno, fpcQualityCheck) {
+        var qualityCheckValue = fpcQualityCheck.value;
+        $.ajax({
+            url: '/rmqcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
+            type: 'POST',
+            data: { fpcBno: fpcBno, fpcQualityCheck: qualityCheckValue },
+            success: function(response) {
+                alert("품질 검사 상태가 업데이트되었습니다.");
+            },
+            error: function() {
+                alert("업데이트 실패");
             }
-        }
-	</script>
+        });
+    }
+
+    function updateStatus(fpcBno, fpcStatus) {
+        var statusValue = fpcStatus.value;
+        $.ajax({
+            url: '/rmqcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
+            type: 'POST',
+            data: { fpcBno: fpcBno, fpcStatus: statusValue },
+            success: function(response) {
+                alert("상태가 업데이트되었습니다.");
+            },
+            error: function() {
+                alert("업데이트 실패");
+            }
+        });
+    }
+
+ 	// 삭제 처리
+    function confirmDelete(fpcBno) {
+	    if (confirm("삭제하시겠습니까?")) {
+	        $.ajax({
+	            url: '/rmqcontrol/deleteRawMaterial',  // 삭제 서버 URL
+	            type: 'POST',
+	            data: { fpcBno: fpcBno },
+	            success: function(response) {
+	                alert("삭제되었습니다.");
+	                
+	                // 삭제된 항목을 DOM에서 제거
+	                $("#row_" + fpcBno).remove(); 
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error:", error);
+	                alert("삭제 실패");
+	            }
+	        });
+	    } else {
+	        alert("삭제가 취소되었습니다.");
+	    }
+	}
+    </script>
 
 </body>
 </html>

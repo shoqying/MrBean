@@ -14,7 +14,6 @@
 		<result property="fpcStatus" column="fpc_status"/>
 		<result property="fpcYield" column="fpc_yield"/>
 		<result property="planId" column="plan_id"/>
-		<result property="planQuantity" column="plan_quantity"/>
 		<result property="fpcQuantity" column="fpc_quantity"/>
 		
 		<collection property="productionPlanList" resultMap="productionPlanMap"/>
@@ -23,11 +22,12 @@
 		
 	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionPlanMap">
 		<result property="planId" column="plan_id"/>
-		<result property="planQty" column="plan_qty"/>
+		<result property="planQuantity" column="plan_quantity"/>
 	</resultMap>
 	
 	<resultMap type="com.mrbean.products.ProductsVO" id="productsMap">
 		<result property="pCode" column="p_code"/>
+		<result property="pName" column="p_name"/>
 		<result property="bomId" column="bom_id"/>
 	</resultMap>
 	
@@ -48,12 +48,11 @@
         	   fpc.fpc_quality_check,
         	   fpc.fpc_status,
         	   fpc.fpc_yield,
-        	   plan.plan_id,
         	   plan.plan_quantity,
-        	   fpc.fpc_yield
-        	   FROM finished_products_control fpc
-        	   JOIN products p on p.p_code = fpc.p_code
-        	   JOIN production_plan plan on plan.plan_id = fpc.plan_id
+        	   fpc.fpc_quantity
+		FROM finished_products_control fpc
+   	    JOIN products p on p.p_code = fpc.p_code
+   	    JOIN production_plan plan on plan.plan_id = fpc.plan_id
     </select>
     
     
@@ -70,6 +69,12 @@
         SET fpc_status = #{fpcStatus}
         WHERE fpc_bno = #{fpcBno}
     </update>
+    
+    <!-- 원자재 검사 목록 삭제 -->
+    <delete id="deleteRawMaterial">
+    	DELETE FROM finished_products_control
+    	WHERE fpc_bno = #{fpcBno}
+    </delete>
     
     
     
