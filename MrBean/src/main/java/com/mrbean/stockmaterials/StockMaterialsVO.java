@@ -1,8 +1,10 @@
 package com.mrbean.stockmaterials;
 
 
-import java.sql.Date;
+
 import java.sql.Timestamp;
+import java.util.Date;
+
 
 import lombok.Data;
 
@@ -18,7 +20,6 @@ public class StockMaterialsVO {
 	private String rmlNo; // LOT번호(원자재 입고)
 	private String rmCode; // 원자재 코드
 	private Date rrExpirydate; // 원자재 유통기한
-
 
 
 }

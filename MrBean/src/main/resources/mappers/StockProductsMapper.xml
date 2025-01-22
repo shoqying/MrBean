@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mrbean.mappers.StockProductsMapper">
+
+    <!-- resultMap 정의 -->
+    <resultMap id="StockProductsResultMap" type="com.mrbean.stockproducts.StockProductsVO">
+        <id property="spBno" column="sp_bno" />
+        <result property="spQuantity" column="sp_quantity" />
+        <result property="spUnit" column="sp_unit" />
+        <result property="spDate" column="sp_date" />
+        <result property="wCode" column="w_code" />
+        <result property="fpcLotbno" column="fpc_lotbno" />
+        <result property="pCode" column="p_code" />
+        <result property="fpcExpirydate" column="fpc_expirydate" />
+    </resultMap>
+
+    <!-- 완제품 목록 조회 쿼리 -->
+    <select id="getStockProducts" resultMap="StockProductsResultMap">
+        SELECT * 
+        FROM stock_products
+        <where>
+            <!-- 추가 필터 조건 필요시 여기에 추가 -->
+        </where>
+        <choose>
+            <when test="sortColumn == 'sp_date'">
+                ORDER BY sp_date ${sortDirection}
+            </when>
+            <when test="sortColumn == 'sp_quantity'">
+                ORDER BY sp_quantity ${sortDirection}
+            </when>
+            <otherwise>
+                ORDER BY sp_date DESC <!-- 기본 정렬 -->
+            </otherwise>
+        </choose>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 목록 개수 조회 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM stock_products
+    </select>
+
+</mapper>
