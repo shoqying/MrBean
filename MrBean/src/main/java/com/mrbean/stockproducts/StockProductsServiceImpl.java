@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 	@Service
 	public class StockProductsServiceImpl implements StockProductsService {
 
-	    @Autowired
-	    private StockProductsDAO stockProductsDAO;
+		 @Autowired
+		    private StockProductsDAO stockProductsDAO;
 
-	    @Override
-	    public List<StockProductsVO> getStockProducts(String sortColumn, String sortDirection, int pageNum, int offset) {
-	        return stockProductsDAO.getStockProducts(sortColumn, sortDirection, pageNum, offset);
-	    }
+		    @Override
+		    public List<StockProductsVO> getStockProducts(String sortColumn, String sortDirection, int limit, int offset) {
+		        return stockProductsDAO.selectStockProducts(sortColumn, sortDirection, limit, offset);
+		    }
 
-	    @Override
-	    public int getTotalCount() {
-	        return stockProductsDAO.getTotalCount();
-	    }
+		    @Override
+		    public int getTotalCount() {
+		        return stockProductsDAO.getTotalCount();
+		    }
 
 }

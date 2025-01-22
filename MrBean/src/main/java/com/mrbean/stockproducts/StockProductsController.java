@@ -24,37 +24,35 @@ public class StockProductsController {
 	 @Autowired
 	    private StockProductsService stockProductsService;
 	 
-	 @RequestMapping("/splist")
-	    public String getStockMaterials(
-	            @RequestParam(defaultValue = "rml_date") String sortColumn,
-	            @RequestParam(defaultValue = "DESC") String sortDirection,
-	            @RequestParam(defaultValue = "1") int page,
-	            Model model) {
+	 @RequestMapping(value = "/splist", method = RequestMethod.GET)
+	 public String getStockMaterials(
+	     @RequestParam(defaultValue = "1") int page,
+	     @RequestParam(defaultValue = "sp_date") String sortColumn,
+	     @RequestParam(defaultValue = "DESC") String sortDirection,
+	     Model model) {
 
-	      
+	     // System.out.printf("Request received for /splist with page: {}, sortColumn: {}, sortDirection: {}", page, sortColumn, sortDirection);
 
-	        int pageSize = 20; // 한 페이지에 20개씩 출력
-	        int offset = (page - 1) * pageSize;
+	     int limit = 20; // 한 페이지당 항목 수
+	     int offset = (page - 1) * limit;
 
-	        // 원자재 목록 조회
-	        List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, pageSize, offset);
+	     // 데이터 조회
+	     List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, limit, offset);
+	     int totalCount = stockProductsService.getTotalCount();
+	     int totalPages = (int) Math.ceil((double) totalCount / limit);
 
-	        // 전체 데이터 개수 조회
-	        int totalItems = stockProductsService.getTotalCount();
+	     // Model에 데이터 추가
+	     model.addAttribute("stockProducts", stockProducts);
+	     model.addAttribute("page", page);
+	     model.addAttribute("totalPages", totalPages);
+	     model.addAttribute("sortColumn", sortColumn);
+	     model.addAttribute("sortDirection", sortDirection);
 
-	        // 전체 페이지 수 계산
-	        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-
-	        // 모델에 데이터 추가
-	        model.addAttribute("stockProducts", stockProducts);
-	        model.addAttribute("sortColumn", sortColumn);
-	        model.addAttribute("sortDirection", sortDirection);
-	        model.addAttribute("page", page);
-	        model.addAttribute("totalPages", totalPages);
-	        model.addAttribute("totalItems", totalItems);  // 전체 데이터 개수 추가
-
-	        // list.jsp로 이동
-	        return "stockP/splist";
+	     logger.info("stockProducts: " + stockProducts);
+	     
+	     // list.jsp로 이동
+	     return "stockP/splist";
+	 
 	 }
 
 	 

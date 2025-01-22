@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.mrbean.mappers.StockProductsMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.mapper.StockProductsMapper">
 
     <!-- resultMap 정의 -->
     <resultMap id="StockProductsResultMap" type="com.mrbean.stockproducts.StockProductsVO">
@@ -11,37 +8,49 @@
         <result property="spQuantity" column="sp_quantity" />
         <result property="spUnit" column="sp_unit" />
         <result property="spDate" column="sp_date" />
+        
+        <!-- wCode만 매핑 -->
         <result property="wCode" column="w_code" />
+        
         <result property="fpcLotbno" column="fpc_lotbno" />
         <result property="pCode" column="p_code" />
         <result property="fpcExpirydate" column="fpc_expirydate" />
+        <result property="fpcBno" column="fpc_bno" />
     </resultMap>
 
-    <!-- 완제품 목록 조회 쿼리 -->
-    <select id="getStockProducts" resultMap="StockProductsResultMap">
-        SELECT * 
-        FROM stock_products
-        <where>
-            <!-- 추가 필터 조건 필요시 여기에 추가 -->
-        </where>
-        <choose>
-            <when test="sortColumn == 'sp_date'">
-                ORDER BY sp_date ${sortDirection}
-            </when>
-            <when test="sortColumn == 'sp_quantity'">
-                ORDER BY sp_quantity ${sortDirection}
-            </when>
-            <otherwise>
-                ORDER BY sp_date DESC <!-- 기본 정렬 -->
-            </otherwise>
-        </choose>
-        LIMIT #{limit} OFFSET #{offset}
+    <!-- 재고 목록 조회 -->
+    <select id="selectStockProducts" resultMap="StockProductsResultMap">
+    SELECT 
+        sp.sp_bno,
+        sp.sp_quantity,
+        sp.sp_unit,
+        sp.sp_date,
+        w.w_code, 
+        fpc.fpc_lotbno,
+        p.p_code,
+        fpc.fpc_expirydate,
+        fpc.fpc_bno
+    FROM 
+        stock_products sp
+    JOIN warehouses w ON sp.w_code = w.w_code
+    JOIN products p ON sp.p_code = p.p_code
+    JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+    WHERE 
+        sp.sp_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
+    ORDER BY 
+        sp.sp_date DESC 
+    LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 전체 목록 개수 조회 -->
+    <!-- 총 항목 수 -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
-        FROM stock_products
+        FROM stock_products sp
+        JOIN warehouses w ON sp.w_code = w.w_code
+        JOIN products p ON sp.p_code = p.p_code
+        JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+        WHERE 
+            sp.sp_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
     </select>
 
 </mapper>
