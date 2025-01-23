@@ -29,16 +29,7 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
         // 2. 필요에 따라 비즈니스 로직 처리 (예: 비율 체크)
         validateBomRatio(billOfMaterialsVO.getBomRatio());
 
-        // 3. VO → DTO 변환 후 Mapper 호출로 DB 저장
-        BillOfMaterialsDTO updatedDto = BillOfMaterialsDTO.builder()
-                .bomId(billOfMaterialsVO.getBomId())
-                .rmCode(billOfMaterialsVO.getRmCode())
-                .bomName(billOfMaterialsVO.getBomName())
-                .bomRatio(billOfMaterialsVO.getBomRatio())
-                .bomDescription(billOfMaterialsVO.getBomDescription())
-                .build();
-
-        billOfMaterialsRepository.insertBillOfMaterials(updatedDto);
+        billOfMaterialsRepository.insertBillOfMaterials(billOfMaterialsVO);
     }
 
     /**

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-//@AllArgsConstructor
 public class BillOfMaterialsVO {
 
 	private final String bomId;         // BOM ID

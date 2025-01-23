@@ -8,7 +8,6 @@
     <!-- Bootstrap CSS CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
 </head>
 <body>
@@ -58,9 +57,35 @@
             </small>
         </div>
 
-        <!-- BOM 비율 -->
+        <!-- 원자재 코드 -->
         <div class="form-group">
-            <label for="bomRatio">BOM 비율</label>
+            <label for="rmCode">원자재 코드</label>
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="rmCode"
+                    name="rmCode"
+                    class="form-control"
+                    required
+                    autocomplete="off"
+                    readonly
+                    oninput="validateInput('rmCode')"
+                >
+                <div class="input-group-append">
+                    <!-- '원자재 선택' 버튼 클릭 시 모달 오픈 -->
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#rawMaterialModal">
+                        원자재 선택
+                    </button>
+                </div>
+            </div>
+            <small id="rmCodeError" class="form-text text-danger" style="display: none;">
+                원자재 코드는 대문자 3글자로 입력해주세요. (예: ABC)
+            </small>
+        </div>
+
+        <!-- 원자재 비율 -->
+        <div class="form-group">
+            <label for="bomRatio">원자재 비율</label>
             <input
                 type="number"
                 id="bomRatio"
@@ -76,32 +101,6 @@
             </small>
         </div>
 
-        <!-- 원자재 코드 -->
-        <div class="form-group">
-            <label for="rmCode">원자재 코드</label>
-            <div class="input-group">
-                <input
-                    type="text"
-                    id="rmCode"
-                    name="rmCode"
-                    class="form-control"
-                    required
-                    autocomplete="off"
-                    oninput="validateInput('rmCode')"
-                >
-                <div class="input-group-append">
-                    <!-- '원자재 선택' 버튼 클릭 시 모달 오픈 -->
-                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#rawMaterialModal">
-                        원자재 선택
-                    </button>
-                </div>
-            </div>
-            <small id="rmCodeError" class="form-text text-danger" style="display: none;">
-                원자재 코드는 대문자 3글자로 입력해주세요. (예: ABC)
-            </small>
-        </div>
-
-
         <!-- BOM 설명 -->
         <div class="form-group">
             <label for="bomDescription">BOM 설명</label>
@@ -112,7 +111,7 @@
                 rows="4"
                 autocomplete="off"
                 style="resize: none; overflow-y: auto;"
-                oninput="validateCharCount('bomDescription', 500)"
+                oninput="updateCharacterCount()"
             ></textarea>
             <small id="charCount" class="form-text text-muted text-right">0/500</small>
         </div>
@@ -156,8 +155,14 @@
   </div>
 </div>
 
-
-<!-- 유효성 검사 스크립트 (예시) -->
+<!-- JQuery, Bootstrap JS (Modal에 필요) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<c:url value='/resources/js/toast.js'/>"></script>
+<!-- 모달 창 스크립트 -->
+<script src="<c:url value='/resources/js/billOfMaterialsModal.js'/>"></script>
+<!-- 유효성 검사 스크립트 -->
 <script src="<c:url value='/resources/js/billOfMaterialsValidation.js'/>"></script>
+
 </body>
 </html>

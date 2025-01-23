@@ -74,8 +74,8 @@ public class HomeController {
 		model.addAttribute("nextBOMId", nextBOMId);
 
 		// 원자재 목록도 함께 가져와 모델에 담는다
-		List<RawMaterialsVO> rawMaterialsList = rawMaterialService.getRawMaterialsList();
-		model.addAttribute("rawMaterialsList", rawMaterialsList);
+//		List<RawMaterialsVO> rawMaterialsList = rawMaterialService.getRawMaterialsList();
+//		model.addAttribute("rawMaterialsList", rawMaterialsList);
 
 		// BOM 등록 페이지로 이동
 		return "billofmaterials/create";

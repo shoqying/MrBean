@@ -92,6 +92,7 @@ function updateCharacterCount() {
     } else {
         charCountDisplay.style.removeProperty('color');
     }
+    checkFormValidity();
 }
 
 // 전체 폼 유효성 검사
@@ -167,17 +168,19 @@ function submitForm(event) {
         },
         body: JSON.stringify(bomData)
     })
-    .then(async response => {
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || "서버 요청에 실패하였습니다.");
+    .then(response => response.json()) // 응답을 JSON으로 처리
+    .then(data => {
+        // 성공 시 처리
+        if (data.success) {
+            showToast('BOM 등록 성공', 'success');
+            document.getElementById("bomForm").reset(); // 폼 초기화
+            checkFormValidity(); // 버튼 비활성화 갱신
+        } else {
+            showToast('BOM 등록 실패', 'error');
         }
-        // 성공 처리
-        showToast(data.message, "success");
-        form.reset();
-        checkFormValidity(); // 폼 초기화 후 버튼 비활성화 갱신
     })
     .catch(error => {
-        showToast(error.message || "이미 등록된 BOM ID입니다.", "error");
+        // 에러 발생 시 처리
+        showToast(error.message || '서버에 문제가 발생했습니다.', 'error');
     });
 }
