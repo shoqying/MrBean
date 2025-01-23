@@ -10,9 +10,14 @@
         <result property="rmCode" column="rm_code"/>
         <result property="bomId" column="bom_id"/>
     </resultMap>
+    
+    <resultMap id="BomDropdownResultMap" type="com.mrbean.billofmaterials.BomDropdownDTO">
+	    <result property="bomId" column="bom_id" />
+	    <result property="bomName" column="bom_name" />
+	</resultMap>
 
     <!-- BOM 목록을 가져오는 쿼리 (bom_id와 bom_name을 반환) -->
-    <select id="getBomListForDropdown" resultType="com.mrbean.billofmaterials.BillOfMaterialsVO">
+    <select id="getBomListForDropdown" resultMap="BomDropdownResultMap">
         SELECT bom_id, bom_name
         FROM bill_of_materials
     </select>
