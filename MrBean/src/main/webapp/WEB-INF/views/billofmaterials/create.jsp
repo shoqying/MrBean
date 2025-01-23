@@ -79,19 +79,28 @@
         <!-- 원자재 코드 -->
         <div class="form-group">
             <label for="rmCode">원자재 코드</label>
-            <input
-                type="text"
-                id="rmCode"
-                name="rmCode"
-                class="form-control"
-                required
-                autocomplete="off"
-                oninput="validateInput('rmCode')"
-            >
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="rmCode"
+                    name="rmCode"
+                    class="form-control"
+                    required
+                    autocomplete="off"
+                    oninput="validateInput('rmCode')"
+                >
+                <div class="input-group-append">
+                    <!-- '원자재 선택' 버튼 클릭 시 모달 오픈 -->
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#rawMaterialModal">
+                        원자재 선택
+                    </button>
+                </div>
+            </div>
             <small id="rmCodeError" class="form-text text-danger" style="display: none;">
                 원자재 코드는 대문자 3글자로 입력해주세요. (예: ABC)
             </small>
         </div>
+
 
         <!-- BOM 설명 -->
         <div class="form-group">
@@ -112,6 +121,41 @@
         <button id="submitBtn" type="submit" class="btn btn-success" disabled>등록</button>
     </form>
 </div>
+
+<!-- 원자재 선택 모달 -->
+<div class="modal fade" id="rawMaterialModal" tabindex="-1" role="dialog" aria-labelledby="rawMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rawMaterialModalLabel">원자재 선택</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- 원자재 목록 테이블 -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>원자재 코드</th>
+                    <th>원자재 이름</th>
+                    <th>설명</th>
+                    <th>선택</th>
+                </tr>
+            </thead>
+            <tbody id="rawMaterialTableBody">
+                <!-- Ajax 결과로 동적 생성 -->
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- 모달 창 닫기 버튼 -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- 유효성 검사 스크립트 (예시) -->
 <script src="<c:url value='/resources/js/billOfMaterialsValidation.js'/>"></script>

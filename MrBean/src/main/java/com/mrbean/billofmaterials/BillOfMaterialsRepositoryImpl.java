@@ -16,8 +16,8 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
     }
 
     @Override
-    public void insertBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO) {
-        sqlSession.insert(NAMESPACE + "insertWarehouse", billOfMaterialsVO);
+    public void insertBillOfMaterials(BillOfMaterialsDTO billOfMaterialsDTO) {
+        sqlSession.insert(NAMESPACE + "insertWarehouse", billOfMaterialsDTO);
     }
 
     @Override

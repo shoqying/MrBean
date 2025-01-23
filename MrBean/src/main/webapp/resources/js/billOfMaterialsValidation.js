@@ -160,7 +160,7 @@ function submitForm(event) {
     });
 
     // 서버에 데이터 전송
-    fetch('/api/billofmaterials', {
+    fetch('/billofmaterials', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

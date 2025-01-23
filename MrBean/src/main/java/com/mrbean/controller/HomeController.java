@@ -2,10 +2,13 @@ package com.mrbean.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.mrbean.billofmaterials.BillOfMaterialsService;
+import com.mrbean.rawmaterials.RawMaterialsDTO;
 import com.mrbean.rawmaterials.RawMaterialsService;
+import com.mrbean.rawmaterials.RawMaterialsVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +74,8 @@ public class HomeController {
 		model.addAttribute("nextBOMId", nextBOMId);
 
 		// 원자재 목록도 함께 가져와 모델에 담는다
-//		List<RawMaterialDTO> rawMaterialList = rawMaterialService.getAllRawMaterials();
-//		model.addAttribute("rawMaterialList", rawMaterialList);
+		List<RawMaterialsVO> rawMaterialsList = rawMaterialService.getRawMaterialsList();
+		model.addAttribute("rawMaterialsList", rawMaterialsList);
 
 		// BOM 등록 페이지로 이동
 		return "billofmaterials/create";
