@@ -42,6 +42,8 @@
                 <div class="form-group">
                     <label for="bomId">BOM 선택:</label>
                     <form:select path="bomId" id="bomId" class="form-control">
+                    <!-- 빈 옵션 추가 -->
+                    <option value ="" selected disabled>-- 선택하세요 --</option>>
                         <c:forEach var="bom" items="${bomList}">
                             <option value="${bom.bomId}">${bom.bomName}</option>
                         </c:forEach>

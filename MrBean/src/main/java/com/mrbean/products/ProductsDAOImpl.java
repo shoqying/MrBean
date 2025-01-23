@@ -4,8 +4,6 @@ import com.mrbean.billofmaterials.BomDropdownDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.mrbean.billofmaterials.BillOfMaterialsVO;
-
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

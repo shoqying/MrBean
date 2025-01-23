@@ -32,6 +32,7 @@ public class ProductsController {
 
         // BOM 목록을 드롭다운에 표시할 데이터 가져오기
         model.addAttribute("bomList", productsService.getBomListForDropdown());
+        logger.info("bomList = "+ productsService.getBomListForDropdown());
         
         return "products/register"; // JSP로 전달
     }
