@@ -11,7 +11,7 @@ import com.mrbean.billofmaterials.BillOfMaterialsVO;
 @Service
 public class ProductsServiceImpl implements ProductsService {
 
-    @Autowired
+    @Inject
     private ProductsDAO productsDAO;
 
     // BOM 목록을 드롭다운에 표시하기 위해 가져오는 메서드
