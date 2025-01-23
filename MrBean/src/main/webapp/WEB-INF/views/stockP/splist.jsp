@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@ include file="/WEB-INF/views/include/header.jsp" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -149,7 +150,7 @@ button.btn-primary:hover {
     <button type="submit">정렬</button>
     
 </form>
-
+<button class="btn btn-primary" onclick="location.href='/user/example'">대시보드 페이지</button>
 <button class="btn btn-primary" onclick="location.href='/stock/list'">원자재 목록 페이지</button>
 
 <table id="stockProductTable">
@@ -220,8 +221,10 @@ button.btn-primary:hover {
     }
 
     // 일정 시간마다 새로고침
-    setInterval(fetchUpdatedList, 100000); // 1분마다 호출
+    setInterval(fetchUpdatedList, 1000000); // 10분마다 호출
 </script>
+
+<%-- <%@ include file="/WEB-INF/views/include/footer.jsp" %> --%>
 
 
 
