@@ -148,7 +148,7 @@ button.btn-primary:hover {
 
     <button type="submit">정렬</button>
 </form>
-<button class="btn btn-primary" onclick="location.href='/'">대시보드 페이지</button>
+<button class="btn btn-primary" onclick="location.href='/user/example'">대시보드 페이지</button>
 <button class="btn btn-primary" onclick="location.href='/stockP/splist'">완제품 목록 페이지</button>
 
 <!-- 원자재 목록 테이블 -->
