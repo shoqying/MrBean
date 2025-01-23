@@ -12,4 +12,7 @@ public interface ProductsService {
 
     // 완제품 등록 처리
     public void registerProduct(ProductsVO product) throws Exception;
+    
+    // 완제품 목록을 가져오는 메서드
+    public List<ProductsVO> getProductList() throws Exception;
 }
