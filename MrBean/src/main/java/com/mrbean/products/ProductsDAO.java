@@ -11,5 +11,8 @@ public interface ProductsDAO {
 
     // 완제품을 등록하는 메서드
     public void insertProduct(ProductsVO product) throws Exception;
+    
+    // 완제품 목록을 DB에서 가져오는 메서드
+    public List<ProductsVO> getProductList() throws Exception;
 }
 
