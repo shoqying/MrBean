@@ -168,19 +168,24 @@ function submitForm(event) {
         },
         body: JSON.stringify(bomData)
     })
-    .then(response => response.json()) // 응답을 JSON으로 처리
-    .then(data => {
-        // 성공 시 처리
-        if (data.success) {
-            showToast('BOM 등록 성공', 'success');
-            document.getElementById("bomForm").reset(); // 폼 초기화
-            checkFormValidity(); // 버튼 비활성화 갱신
-        } else {
-            showToast('BOM 등록 실패', 'error');
+    .then(response => {
+        if (!response.ok) {
+            // 오류 응답이 온 경우, 에러 메시지를 꺼내서 예외로 던집니다.
+            return response.json().then(data => {
+                throw new Error(data.message || '서버 응답이 정상적이지 않습니다.');
+            });
         }
+        // 정상 응답(2xx)이면 JSON 반환
+        return response.json();
+    })
+    .then(data => {
+        // 2xx 상태이므로 BOM 등록 성공
+        showToast('BOM 등록 성공', 'success');
+        document.getElementById("bomForm").reset(); // 폼 초기화
+        checkFormValidity(); // 버튼 비활성화 갱신
     })
     .catch(error => {
-        // 에러 발생 시 처리
+        // 에러 응답이거나 통신 자체 문제 발생 시 처리
         showToast(error.message || '서버에 문제가 발생했습니다.', 'error');
     });
 }
