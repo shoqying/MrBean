@@ -1,6 +1,8 @@
 package com.mrbean.finishedproductscontrol;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -32,14 +34,24 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	@Override
 	public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception {
 		logger.info("updateQualityCheck() 호출");
-		sqlSession.update(NAMESPACE + "updateQualityCheck");
+		
+		Map<String, Object> params = new HashMap<>();
+	    params.put("fpcBno", fpcBno);
+	    params.put("fpcQualityCheck", fpcQualityCheck);
+		
+		sqlSession.update(NAMESPACE + "updateQualityCheck", params);
 		
 	}
 
 	@Override
 	public void updateStatus(int fpcBno, String fpcStatus) throws Exception {
 		logger.info("updateStatus() 호출");
-		sqlSession.update(NAMESPACE + "updateStatus");
+		
+		Map<String, Object> params = new HashMap<>();
+	    params.put("fpcBno", fpcBno);
+	    params.put("fpcStatus", fpcStatus);
+		
+		sqlSession.update(NAMESPACE + "updateStatus", params);
 		
 	}
 

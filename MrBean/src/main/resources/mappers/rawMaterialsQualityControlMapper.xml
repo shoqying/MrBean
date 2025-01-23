@@ -5,7 +5,7 @@
 
 	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO" id="RMQCMap">
 		<id property="rqcBno" column="rqc_bno"/> <!-- PK 값 -->
-		<result property="rmlNo" column="rml_no"/>
+		<result property="rmlCode" column="rml_code"/>
 		<result property="rqcDate" column="rqc_date"/>
 		<result property="rqcQualityCheck" column="rqc_quality_check"/>
 		<result property="rqcStatus" column="rqc_status"/>
@@ -13,6 +13,7 @@
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
+		<collection property="rawMaterialsList" resultMap="rawMaterialsMap"/>
 	</resultMap>
 		
 	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
@@ -26,6 +27,10 @@
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>
 	</resultMap>
+	
+	<resultMap type="com.mrbean.rawmaterials.RawMaterialsVO" id="rawMaterialsMap">
+		<result property="rmName" column="rm_name"/>
+	</resultMap>
 
 
 
@@ -33,10 +38,11 @@
 
 	<!-- 원자재 검사 관리 목록 -->
     <select id="getRawMaterialsQualityControlList" resultMap="RMQCMap">
-        SELECT rqc.rqc_bno, 
+ 		SELECT rqc.rqc_bno, 
         	   rml.rml_date,
         	   rml.rml_no,
         	   rml.rm_code,
+        	   rm.rm_name,
         	   rqc.rqc_date,
         	   rqc.rqc_quality_check,
         	   rqc.rqc_status,
@@ -44,6 +50,7 @@
         	   work.work_quantity
         	   FROM rawmaterials_quality_control rqc
         	   JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
+        	   JOIN raw_materials rm on rm.rm_code = rml.rm_code
         	   JOIN work_orders work on rqc.work_order_no = work.work_order_no
     </select>
     

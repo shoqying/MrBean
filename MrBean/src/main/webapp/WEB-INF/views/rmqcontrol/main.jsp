@@ -9,9 +9,10 @@
 <title>원자재 품질 검사 관리</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
 
-    <h1>원자재 품질 검사 관리 목록</h1>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
+<h1>원자재 품질 검사 관리 목록</h1>
     <table>
         <tr>
             <th>순번</th>
@@ -25,13 +26,18 @@
             <th>검사량 (g)</th>
             <th>삭제</th>
         </tr>
+        <c:if test="${empty rawMaterialsQualityControlList}">
+	        <tr>
+	            <td colspan="12" style="text-align: center;">데이터가 없습니다</td>
+	        </tr>
+    	</c:if>
         <c:forEach var="vo" items="${rawMaterialsQualityControlList}">
         <tr id="row_${vo.rqcBno}">
             <td>${vo.rqcBno}</td>
-			<td>${vo.rawMaterialsLotList[0].rmlDate}</td>
+			<td><fmt:formatDate value="${vo.rawMaterialsLotList[0].rmlDate}" pattern="yyyy-MM-dd" /></td>
 			<td>${vo.rawMaterialsLotList[0].rmlNo}</td>
-			<td>${vo.rawMaterialsLotList[0].rmCode}</td>
-			<td>${vo.rqcDate}</td>
+			<td>${vo.rawMaterialsList[0].rmName}</td>
+			<td><fmt:formatDate value="${vo.rqcDate}" pattern="yyyy-MM-dd" /></td>
 			<td>
 			    <select id="rqcQualityCheck_${vo.rqcBno}" onchange="updateQualityCheck(${vo.rqcBno}, this)">
                     <option value="PENDING" ${vo.rqcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
@@ -106,7 +112,7 @@
 	    }
 	}
     </script>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 
-</body>
 </html>
