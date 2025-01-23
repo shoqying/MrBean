@@ -1,0 +1,11 @@
+package com.mrbean.rawmaterials;
+
+import lombok.Data;
+
+@Data
+public class RawMaterialsDTO {
+    private String rmCode; // 원자재코드
+    private String rmName; // 원자재명
+    private String rmOrigin; // 원산지
+    private String rmStorageMethod; // 보관방법
+}

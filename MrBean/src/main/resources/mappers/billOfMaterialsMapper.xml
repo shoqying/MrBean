@@ -12,14 +12,16 @@
     </resultMap>
 
     <!-- BOM 입력 SQL -->
-    <insert id="insertBillOfMaterials" parameterType="com.mrbean.billofmaterials.BillOfMaterialsVO">
+    <insert id="insertBillOfMaterials" parameterType="com.mrbean.billofmaterials.BillOfMaterialsDTO">
         INSERT INTO bill_of_materials (
+            bom_id,
             bom_name,
             bom_ratio,
             bom_description,
             rm_code
         )
         VALUES (
+            #{bomId},
             #{bomName},
             #{bomRatio},
             #{bomDescription},
