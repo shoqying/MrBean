@@ -96,6 +96,7 @@ button.btn-primary:hover {
 }
 
 /* 페이지네이션 스타일 */
+/*  */
 .pagination {
     display: flex;
     justify-content: center;

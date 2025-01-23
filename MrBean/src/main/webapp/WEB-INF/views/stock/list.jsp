@@ -54,8 +54,8 @@ form button {
 form button:hover {
     background-color: #0056b3;
 }
-
-/* 테이블 스타일 */
+/*  */
+/* 테이블 스타일 */ 
 table {
     width: 100%;
     border-collapse: collapse;
