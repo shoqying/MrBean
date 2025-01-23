@@ -58,7 +58,6 @@ form button:hover {
 /* 테이블 스타일 */
 table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
     background-color: white;
 }
@@ -97,11 +96,12 @@ button.btn-primary:hover {
 }
 
 /* 페이지네이션 스타일 */
+/*  */
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .pagination a {
@@ -123,9 +123,7 @@ button.btn-primary:hover {
     padding: 8px 15px;
     margin: 0 5px;
     border-radius: 4px;
-    background-color: #f1f1f1;
-    position: absolute;
-    bottom: 15px;
+    background-color: #f1f1f1;;
 }
 
 </style>
@@ -135,11 +133,11 @@ button.btn-primary:hover {
 <h1>완제품 재고 목록</h1>
 
 <!-- 정렬 옵션 -->
-<form action="/stockproduct/list" method="get">
+<form action="/stockP/splist" method="get">
     <label for="sortColumn">정렬 기준:</label>
     <select name="sortColumn" id="sortColumn">
         <option value="sp_date" ${sortColumn == 'sp_date' ? 'selected="selected"' : ''}>입고일</option>
-        <option value="sp_quantity" ${sortColumn == 'sp_quantity' ? 'selected="selected"' : ''}>수량</option>
+        <option value="plan_quantity" ${sortColumn == 'plan_quantity' ? 'selected="selected"' : ''}>수량</option>
     </select>
 
     <label for="sortDirection">정렬 방향:</label>
@@ -149,7 +147,10 @@ button.btn-primary:hover {
     </select>
 
     <button type="submit">정렬</button>
+    
 </form>
+
+<button class="btn btn-primary" onclick="location.href='/stock/list'">원자재 목록 페이지</button>
 
 <table id="stockProductTable">
     <thead>
@@ -170,7 +171,7 @@ button.btn-primary:hover {
         <c:forEach var="stockProducts" items="${stockProducts}">
             <tr>
                 <td>${stockProducts.spBno}</td>
-                <td>${stockProducts.spQuantity}</td>
+                <td>${stockProducts.planQuantity}</td>
                 <td>${stockProducts.spUnit}</td>
                 <td>${stockProducts.spDate}</td>           
                 <td>${stockProducts.WCode}</td>
@@ -194,13 +195,13 @@ button.btn-primary:hover {
 <!-- 페이지네이션 -->
 <div class="pagination">
     <c:if test="${page > 1}">
-        <a href="/stockproduct/list?page=${page - 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">◁ 이전</a>
+        <a href="/stockP/splist?page=${page - 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">◁ 이전</a>
     </c:if>
 
     <span>페이지 ${page} / ${totalPages}</span>
 
     <c:if test="${page < totalPages}">
-        <a href="/stockproduct/list?page=${page + 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">다음 ▷</a>
+        <a href="/stockP/splist?page=${page + 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">다음 ▷</a>
     </c:if>
 </div>
 

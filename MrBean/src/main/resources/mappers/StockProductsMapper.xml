@@ -5,7 +5,7 @@
     <!-- resultMap 정의 -->
     <resultMap id="StockProductsResultMap" type="com.mrbean.stockproducts.StockProductsVO">
         <id property="spBno" column="sp_bno" />
-        <result property="spQuantity" column="sp_quantity" />
+        <result property="planQuantity" column="plan_quantity" />
         <result property="spUnit" column="sp_unit" />
         <result property="spDate" column="sp_date" />
         
@@ -16,29 +16,32 @@
         <result property="pCode" column="p_code" />
         <result property="fpcExpirydate" column="fpc_expirydate" />
         <result property="fpcBno" column="fpc_bno" />
+        <result property="planId" column="plan_id" />
     </resultMap>
 
     <!-- 재고 목록 조회 -->
     <select id="selectStockProducts" resultMap="StockProductsResultMap">
     SELECT 
         sp.sp_bno,
-        sp.sp_quantity,
+        plan.plan_quantity,
         sp.sp_unit,
         sp.sp_date,
         w.w_code, 
         fpc.fpc_lotbno,
         p.p_code,
         fpc.fpc_expirydate,
-        fpc.fpc_bno
+        fpc.fpc_bno,
+        plan.plan_id
     FROM 
         stock_products sp
     JOIN warehouses w ON sp.w_code = w.w_code
     JOIN products p ON sp.p_code = p.p_code
     JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+    JOIN production_plan plan ON sp.plan_id = plan.plan_id
     WHERE 
-        sp.sp_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
+        plan.plan_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
     ORDER BY 
-        sp.sp_date DESC 
+        sp.sp_date ASC 
     LIMIT #{limit} OFFSET #{offset}
     </select>
 
@@ -49,8 +52,9 @@
         JOIN warehouses w ON sp.w_code = w.w_code
         JOIN products p ON sp.p_code = p.p_code
         JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+        JOIN production_plan plan ON sp.plan_id = plan.plan_id
         WHERE 
-            sp.sp_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
+            plan.plan_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
     </select>
 
 </mapper>
