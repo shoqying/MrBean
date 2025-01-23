@@ -33,7 +33,7 @@ public class StockProductsController {
 
 	     // System.out.printf("Request received for /splist with page: {}, sortColumn: {}, sortDirection: {}", page, sortColumn, sortDirection);
 
-	     int limit = 20; // 한 페이지당 항목 수
+	     int limit = 10; // 한 페이지당 항목 수
 	     int offset = (page - 1) * limit;
 
 	     // 데이터 조회
