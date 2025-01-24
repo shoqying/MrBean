@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>MrBean</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -42,7 +42,7 @@
 
   <!-- Template Main JS File -->
   <script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
-  <!-- Navigation JS File -->
+  <!--  JS File -->
   <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
 
@@ -222,13 +222,13 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>General Tables</span>
+            <a href="/rmqcontrol/main">
+              <i class="bi bi-circle"></i><span>원자재 검사 관리</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
+            <a href="/fpcontrol/main">
+              <i class="bi bi-circle"></i><span>완제품 검사 관리</span>
             </a>
           </li>
         </ul>
