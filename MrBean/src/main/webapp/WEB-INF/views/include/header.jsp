@@ -136,7 +136,7 @@
             </a>
           </li>
           <li>
-            <a href="/billofmaterials/create/">
+            <a href="/billofmaterials">
               <i class="bi bi-circle"></i><span>BOM</span>
             </a>
           </li>

@@ -14,8 +14,6 @@
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <div class="container mt-5">
-    <!-- 대시보드 돌아가기 버튼 -->
-    <button class="btn btn-primary" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
 
     <h1 class="my-4">BOM 등록</h1>
 
@@ -139,7 +137,8 @@
                 <tr>
                     <th>원자재 코드</th>
                     <th>원자재 이름</th>
-                    <th>설명</th>
+                    <th>원산지</th>
+                    <th>보관방법</th>
                     <th>선택</th>
                 </tr>
             </thead>

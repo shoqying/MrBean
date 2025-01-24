@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.mrbean.billofmaterials.BillOfMaterialsDTO;
 import com.mrbean.billofmaterials.BillOfMaterialsService;
 import com.mrbean.domain.BreadcrumbItem;
 import com.mrbean.rawmaterials.RawMaterialsDTO;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Handles requests for the application home page.
@@ -75,6 +77,31 @@ public class HomeController {
 		return "warehouse/create"; // JSP 파일 반환
 	}
 
+	/**
+	 * BOM 전체 리스트 조회 메인 페이지
+	 *
+	 * @param sortKey   정렬할 컬럼 (예: rm_code, bom_id, bom_name)
+	 * @param sortOrder 정렬 방식 (ASC / DESC)
+	 * @param model     View에 데이터를 전달하기 위한 Model 객체
+	 * @return 뷰 페이지 이름
+	 */
+	@GetMapping("/billofmaterials")
+	public String getAllBillOfMaterials(
+			@RequestParam(required = false) String sortKey,
+			@RequestParam(required = false) String sortOrder,
+			Model model) throws Exception {
+
+		// BOM 리스트 가져오기
+		List<BillOfMaterialsDTO> bomList = billOfMaterialsService.getAllBoms(sortKey, sortOrder);
+
+		// 뷰로 데이터 전달
+		model.addAttribute("bomList", bomList);
+		model.addAttribute("sortKey", sortKey);
+		model.addAttribute("sortOrder", sortOrder);
+
+		// 뷰 페이지 이름 반환
+		return "billofmaterials/main"; // JSP 파일 이름
+	}
 	/**
 	 * BOM 등록 페이지 이동 (GET)
 	 * Example: GET http://localhost:8080/billofmaterials/create
