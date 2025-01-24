@@ -10,7 +10,7 @@
     <title>완제품 등록</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">완제품 등록</h2>
@@ -75,5 +75,5 @@
         </div>
     </div>
 
-</body>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>

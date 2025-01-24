@@ -1,5 +1,6 @@
 package com.mrbean.billofmaterials;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +34,6 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
     }
 
     /**
-     * BOM 비율 검증
-     */
-    private void validateBomRatio(int ratio) throws IllegalArgumentException {
-        if (ratio < 0 || ratio > 100) {
-            throw new IllegalArgumentException("BOM 비율은 0에서 100 사이여야 합니다.");
-        }
-    }
-
-    /**
      * 마지막 BOM ID를 조회한 뒤 숫자 부분을 추출해 +1
      */
     @Override
@@ -63,4 +55,48 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
         return "BOM" + nextId;
     }
 
+    public BillOfMaterialsDTO getBomDetails(String bomId) throws Exception {
+        // Repository에서 VO 가져오기
+        BillOfMaterialsVO billOfMaterialsVO = billOfMaterialsRepository.selectBomDetails(bomId);
+        if (billOfMaterialsVO == null) {
+            throw new NotFoundException("해당 BOM 정보를 찾을 수 없습니다.");
+        }
+
+        // VO를 DTO로 변환
+        return new BillOfMaterialsDTO(
+                billOfMaterialsVO.getBomId(),
+                billOfMaterialsVO.getBomName(),
+                billOfMaterialsVO.getRmCode(),
+                billOfMaterialsVO.getBomRatio(),
+                billOfMaterialsVO.getBomDescription()
+        );
+    }
+
+    /**
+     * BOM 정보 업데이트 로직
+     */
+    @Override
+    @Transactional
+    public void updateBillOfMaterials(BillOfMaterialsDTO billOfMaterialsDTO) throws Exception {
+        BillOfMaterialsVO billOfMaterialsVO = BillOfMaterialsVO.builder()
+                .bomId(billOfMaterialsDTO.getBomId())
+                .rmCode(billOfMaterialsDTO.getRmCode())
+                .bomName(billOfMaterialsDTO.getBomName())
+                .bomRatio(billOfMaterialsDTO.getBomRatio())
+                .bomDescription(billOfMaterialsDTO.getBomDescription())
+                .build();
+
+        validateBomRatio(billOfMaterialsVO.getBomRatio());
+
+        billOfMaterialsRepository.updateBillOfMaterials(billOfMaterialsVO);
+    }
+
+    /**
+     * BOM 비율 검증
+     */
+    private void validateBomRatio(int ratio) throws IllegalArgumentException {
+        if (ratio < 0 || ratio > 100) {
+            throw new IllegalArgumentException("BOM 비율은 0에서 100 사이여야 합니다.");
+        }
+    }
 }

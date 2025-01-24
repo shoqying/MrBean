@@ -9,7 +9,7 @@
     <title>완제품 리스트</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container">
         <h1 class="mt-5">완제품 목록</h1>
@@ -111,5 +111,5 @@
         }
     </script>
 
-</body>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>
