@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class BillOfMaterialsVO {
 
 	private final String bomId;         // BOM ID
@@ -17,7 +18,7 @@ public class BillOfMaterialsVO {
 	private final String bomDescription; // BOM 설명
 
 	// VO 생성 시 유효성 검증 수행
-	public BillOfMaterialsVO(String bomId, String rmCode, String bomName, int bomRatio, String bomDescription) {
+	public BillOfMaterialsVO(String bomId, String rmCode, String bomName, Integer bomRatio, String bomDescription) {
 		if (bomId == null || bomId.isEmpty()) {
 			throw new IllegalArgumentException("BOM ID는 필수입니다.");
 		}

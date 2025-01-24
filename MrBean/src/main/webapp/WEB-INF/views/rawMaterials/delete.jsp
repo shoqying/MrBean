@@ -4,7 +4,9 @@
 <head>
     <title>원자재 삭제</title>
 </head>
-<body>
+
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
     <h2>원자재 삭제 확인</h2>
 
     <!-- 알림 메시지 -->
@@ -37,5 +39,7 @@
     <!-- 목록으로 돌아가기 링크 -->
     <br>
     <a href="${pageContext.request.contextPath}/rawMaterials/list">목록으로 돌아가기</a>
-</body>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </html>

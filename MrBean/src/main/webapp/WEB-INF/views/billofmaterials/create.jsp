@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
     <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
 </head>
-<body>
+
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 <div class="container mt-5">
     <!-- 대시보드 돌아가기 버튼 -->
     <button class="btn btn-primary" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
@@ -31,7 +33,6 @@
                 value="${nextBOMId}"
                 readonly
                 required
-                autofocus
                 autocomplete="off"
                 oninput="validateInput('bomId')"
             >
@@ -164,5 +165,6 @@
 <!-- 유효성 검사 스크립트 -->
 <script src="<c:url value='/resources/js/billOfMaterialsValidation.js'/>"></script>
 
-</body>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </html>

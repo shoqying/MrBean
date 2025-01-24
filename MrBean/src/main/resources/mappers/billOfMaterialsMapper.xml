@@ -12,7 +12,7 @@
     </resultMap>
 
     <!-- BOM 입력 SQL -->
-    <insert id="insertBillOfMaterials" parameterType="com.mrbean.billofmaterials.BillOfMaterialsDTO">
+    <insert id="insertBillOfMaterials" parameterType="com.mrbean.billofmaterials.BillOfMaterialsVO">
         INSERT INTO bill_of_materials (
             bom_id,
             bom_name,
@@ -36,5 +36,31 @@
         ORDER BY CAST(REPLACE(bom_id, 'BOM', '') AS SIGNED) DESC
         LIMIT 1
     </select>
+
+    <!-- 특정 BOM 정보를 조회 -->
+    <select id="selectBomDetails" parameterType="String" resultMap="billOfMaterialsResultMap">
+        SELECT
+            bom_id,
+            rm_code,
+            bom_name,
+            bom_ratio,
+            bom_description
+        FROM
+            bill_of_materials
+        WHERE
+            bom_id = #{bomId}
+    </select>
+
+    <update id="updateBillOfMaterials" parameterType="com.mrbean.billofmaterials.BillOfMaterialsVO">
+        UPDATE bill_of_materials
+        SET
+        bom_name = #{bomName},
+        bom_ratio = #{bomRatio},
+        bom_description = #{bomDescription},
+        rm_code = #{rmCode}
+        WHERE
+        bom_id = #{bomId}
+    </update>
+
 
 </mapper>
