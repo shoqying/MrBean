@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body p-5">
                     <!-- 폼 시작 -->
-                    <form action="${pageContext.request.contextPath}/user/signup" method="post" onsubmit="return validatePasswords()">
+                    <form action="/user/register" method="post" onsubmit="return validatePasswords()">
                         <!-- 아이디 -->
                         <div class="form-floating mb-4">
                             <input type="text" id="uUserid" name="uUserid" class="form-control rounded-4" placeholder="아이디" required>
@@ -43,11 +43,11 @@
                             <label for="uPasswordhash">비밀번호</label>
                         </div>
 
-                        <!-- 비밀번호 확인 -->
-                        <div class="form-floating mb-4">
-                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control rounded-4" placeholder="비밀번호 확인" required>
-                            <label for="confirmPassword">비밀번호 확인</label>
-                        </div>
+<!--                         비밀번호 확인 -->
+<!--                         <div class="form-floating mb-4"> -->
+<!--                             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control rounded-4" placeholder="비밀번호 확인" required> -->
+<!--                             <label for="confirmPassword">비밀번호 확인</label> -->
+<!--                         </div> -->
 
                         <!-- 역할 -->
                         <div class="form-group mb-4">
