@@ -34,7 +34,10 @@ export const SELECTORS = {
         WORK_STATUS: '.workStatus',
         WORK_QUANTITY: '#workQuantity',
         WORK_PLAN_DATE: '#workPlanDate',
-        WORK_REMARK: '#workRemark'
+        WORK_REMARK: '#workRemark',
+        WORK_SBTN: 'workStartBtn',
+        WORK_CBTN: 'workCompletedBtn',
+        WORK_SBTN: 'workStoppedBtn'
     },
     TABLE: {
         BODY: '.datatable tbody'
