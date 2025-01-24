@@ -6,12 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.mrbean.billofmaterials.BillOfMaterialsDTO;
-import com.mrbean.billofmaterials.BillOfMaterialsService;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.service.BillOfMaterialsService;
 import com.mrbean.domain.BreadcrumbItem;
-import com.mrbean.rawmaterials.RawMaterialsDTO;
 import com.mrbean.rawmaterials.RawMaterialsService;
-import com.mrbean.rawmaterials.RawMaterialsVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Handles requests for the application home page.
@@ -64,6 +61,7 @@ public class HomeController {
 	public String CreateWarehouse(Model model) {
 		// breadcrumbList 작성 예시
 		List<BreadcrumbItem> breadcrumbList = new ArrayList<>();
+
 		// Home (비활성 링크, 첫 번째 메뉴)
 //		breadcrumbList.add(new BreadcrumbItem("Home", "/", false));
 		// 상위 메뉴 (비활성 링크)
@@ -80,24 +78,23 @@ public class HomeController {
 	/**
 	 * BOM 전체 리스트 조회 메인 페이지
 	 *
-	 * @param sortKey   정렬할 컬럼 (예: rm_code, bom_id, bom_name)
-	 * @param sortOrder 정렬 방식 (ASC / DESC)
 	 * @param model     View에 데이터를 전달하기 위한 Model 객체
 	 * @return 뷰 페이지 이름
 	 */
 	@GetMapping("/billofmaterials")
-	public String getAllBillOfMaterials(
-			@RequestParam(required = false) String sortKey,
-			@RequestParam(required = false) String sortOrder,
-			Model model) throws Exception {
+	public String getAllBillOfMaterials(Model model) throws Exception {
+		// breadcrumbList
+		List<BreadcrumbItem> breadcrumbList = new ArrayList<>();
 
 		// BOM 리스트 가져오기
-		List<BillOfMaterialsDTO> bomList = billOfMaterialsService.getAllBoms(sortKey, sortOrder);
+		List<BillOfMaterialsDTO> bomList = billOfMaterialsService.getAllBoms();
+
+		// 현재 페이지 (활성 표시)
+		breadcrumbList.add(new BreadcrumbItem("BOM 관리", "#", true));
 
 		// 뷰로 데이터 전달
 		model.addAttribute("bomList", bomList);
-		model.addAttribute("sortKey", sortKey);
-		model.addAttribute("sortOrder", sortOrder);
+		model.addAttribute("breadcrumbList", breadcrumbList);
 
 		// 뷰 페이지 이름 반환
 		return "billofmaterials/main"; // JSP 파일 이름
@@ -108,11 +105,22 @@ public class HomeController {
 	 */
 	@GetMapping("/billofmaterials/create")
 	public String createBOM(Model model) throws Exception {
+
+		// breadcrumbList
+		List<BreadcrumbItem> breadcrumbList = new ArrayList<>();
+
 		// Service 계층에서 다음 BOM ID를 생성하는 메서드 호출
 		String nextBOMId = billOfMaterialsService.generateBomId();
 
+		// 상위 메뉴 (비활성 링크)
+		breadcrumbList.add(new BreadcrumbItem("BOM 관리", "/billofmaterials", false));
+
+		// 현재 페이지 (활성 표시)
+		breadcrumbList.add(new BreadcrumbItem("BOM 등록", "#", true));
+
 		// 뷰에서 표시할 수 있도록 모델에 저장
 		model.addAttribute("nextBOMId", nextBOMId);
+		model.addAttribute("breadcrumbList", breadcrumbList);
 
 		// 원자재 목록도 함께 가져와 모델에 담는다
 //		List<RawMaterialsVO> rawMaterialsList = rawMaterialService.getRawMaterialsList();

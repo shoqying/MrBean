@@ -1,6 +1,7 @@
+const BASE_URL = '/billofmaterials';
+
 // 모달 열기
 function openEditModal(bom) {
-    // 모달 안에 수정할 데이터를 세팅
     $('#editBomId').val(bom.bomId);
     $('#editBomName').val(bom.bomName);
     $('#editRmCode').val(bom.rmCode);
@@ -20,16 +21,16 @@ function submitEditForm() {
     };
 
     $.ajax({
-        url: '<c:url value="/billofmaterials"/>' + '/' + bomData.bomId,
+        url: `${BASE_URL}/${bomData.bomId}`,
         method: 'PUT',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(bomData),
-        success: function(response) {
-            showToast('수정이 성공적으로 완료되었습니다.'); // 토스트 메세지
+        success: function (response) {
+            showToast('수정이 성공적으로 완료되었습니다.');
             $('#editModal').modal('hide');
-            location.reload(); // 수정 후 페이지 새로고침
+            location.reload();
         },
-        error: function(error) {
+        error: function (error) {
             showToast('수정 중 오류가 발생했습니다.');
         }
     });
@@ -41,7 +42,7 @@ function deleteBom(bomId) {
         return;
     }
     $.ajax({
-        url: '<c:url value="/billofmaterials"/>' + '/' + bomId,
+        url: `${BASE_URL}/${bomId}`,
         method: 'DELETE',
         success: function(response) {
             showToast('삭제가 성공적으로 완료되었습니다.');
@@ -49,6 +50,21 @@ function deleteBom(bomId) {
         },
         error: function(error) {
             showToast('삭제 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+function editBOM(bomId) {
+    const numericId = bomId.replace('BOM', '');
+
+    $.ajax({
+        url: `${BASE_URL}/${numericId}`,
+        type: 'GET',
+        success: function(response) {
+            openEditModal(response);
+        },
+        error: function() {
+            showToast('BOM 정보를 불러오는 중 오류가 발생했습니다.', 'error');
         }
     });
 }

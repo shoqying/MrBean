@@ -1,4 +1,4 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

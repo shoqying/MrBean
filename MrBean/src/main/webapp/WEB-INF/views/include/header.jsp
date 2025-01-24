@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<htmllang="ko">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title><c:out value="${pageTitle} - MrBean" default="MrBean"/></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+
+  <!-- Toast CSS -->
+  <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
 
   <!-- Favicons -->
   <link href="${pageContext.request.contextPath}/resources/assets/img/favicon.png" rel="icon">
@@ -30,12 +33,14 @@
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/resources/assets/css/style.css" rel="stylesheet">
 
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
   <!-- Vendor JS Files -->
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/chart.js/chart.umd.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/echarts/echarts.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/assets/vendor/quill/quill.min.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="${pageContext.request.contextPath}/resources/assets/vendor/php-email-form/validate.js"></script>
@@ -76,7 +81,7 @@
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="${pageContext.request.contextPath}/resources/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">Mr Bean</span>
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -137,7 +142,7 @@
           </li>
           <li>
             <a href="/billofmaterials">
-              <i class="bi bi-circle"></i><span>BOM</span>
+              <i class="bi bi-circle"></i><span>자재 명세서</span>
             </a>
           </li>
           <li>
@@ -148,23 +153,23 @@
         </ul>
       </li><!-- End Components Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>생산관리</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-journal-text"></i><span>생산관리</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
             <a href="/productionplan/plan">
-              <i class="bi bi-circle"></i><span>생산계획 관리</span>
+                <i class="bi bi-circle"></i><span>생산계획 관리</span>
             </a>
-          </li>
-          <li>
+        </li>
+        <li>
             <a href="/workorders/work">
-              <i class="bi bi-circle"></i><span>작업지시 관리</span>
+                <i class="bi bi-circle"></i><span>작업지시 관리</span>
             </a>
-          </li>
-        </ul>
-      </li><!-- End Forms Nav -->
+        </li>
+    </ul>
+</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -172,13 +177,13 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>General Tables</span>
+            <a href="/rmqcontrol/main">
+              <i class="bi bi-circle"></i><span>원자재 검사 관리</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
+            <a href="/fpcontrol/main">
+              <i class="bi bi-circle"></i><span>완제품 검사 관리</span>
             </a>
           </li>
         </ul>
@@ -190,18 +195,13 @@
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
+            <a href="/stock/list">
+              <i class="bi bi-circle"></i><span>원자재 재고 목록</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
+            <a href="/stockP/splist">
+              <i class="bi bi-circle"></i><span>완제품 재고 목록</span>
             </a>
           </li>
         </ul>
@@ -230,60 +230,77 @@
         </ul>
       </li><!-- End Icons Nav -->
 
-      <li class="nav-heading">Pages</li>
+<!-- "PAGES" 스타일 섹션 -->
+<li class="nav-heading">PAGES</li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>내정보보기</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>내정보변경</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
+  <!-- 로그인 상태에 따라 표시되는 메뉴 -->
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/info">
+            <i class="bi bi-person"></i>
+            <span>내정보보기</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>회원가입</span>
-        </a>
-      </li><!-- End Register Page Nav -->
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/passwordcheck">
+            <i class="bi bi-question-circle"></i>
+            <span>내정보변경</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>로그인</span>
-        </a>
-      </li><!-- End Login Page Nav -->
+    <!-- 회원가입 메뉴: 로그인 전 상태에서만 표시 -->
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/register">
+            <i class="bi bi-card-list"></i>
+            <span>회원가입</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
+    <!-- 로그인 버튼: 로그인 상태가 아닐 때만 표시 -->
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>로그인</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
-
+    <!-- 로그아웃 버튼: 로그인 상태일 때만 표시 -->
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>로그아웃</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
+  </ul>
+</aside>
   <main id="main" class="main">
+
     <div class="pagetitle">
-      <h1></h1>
+      <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">Home</a></li>
+          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/"><i class="bi bi-house-door"></i>Home</a></li>
           <c:forEach var="crumb" items="${breadcrumbList}">
             <c:choose>
               <c:when test="${crumb.active}">
@@ -297,3 +314,7 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
+
+
+
+
