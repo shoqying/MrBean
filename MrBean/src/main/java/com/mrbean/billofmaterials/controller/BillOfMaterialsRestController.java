@@ -1,13 +1,14 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.controller;
 
-import com.mrbean.rawmaterials.RawMaterialsDTO;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.service.BillOfMaterialsService;
+import com.mrbean.billofmaterials.domain.MessageResponse;
 import com.mrbean.rawmaterials.RawMaterialsService;
 import com.mrbean.rawmaterials.RawMaterialsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class BillOfMaterialsController {
+public class BillOfMaterialsRestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(BillOfMaterialsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BillOfMaterialsRestController.class);
 
 	private final BillOfMaterialsService billOfMaterialsService;
 	private final RawMaterialsService rawMaterialsService;
 
 	@Autowired
-	public BillOfMaterialsController(BillOfMaterialsService billOfMaterialsService, RawMaterialsService rawMaterialsService) {
+	public BillOfMaterialsRestController(BillOfMaterialsService billOfMaterialsService, RawMaterialsService rawMaterialsService) {
 		this.billOfMaterialsService = billOfMaterialsService;
 		this.rawMaterialsService = rawMaterialsService;
 	}
@@ -97,5 +98,4 @@ public class BillOfMaterialsController {
 		BillOfMaterialsDTO billOfMaterialsDTO = billOfMaterialsService.getBomDetails(bomId);
 		return ResponseEntity.ok(billOfMaterialsDTO);
 	}
-
 }

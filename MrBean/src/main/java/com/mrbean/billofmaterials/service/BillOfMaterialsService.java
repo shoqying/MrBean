@@ -1,4 +1,6 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.service;
+
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ public interface BillOfMaterialsService {
 
     public String generateBomId() throws Exception;
 
-    public List<BillOfMaterialsDTO> getAllBoms(String sortKey, String sortOrder) throws Exception;
+    public List<BillOfMaterialsDTO> getAllBoms() throws Exception;
 
     public BillOfMaterialsDTO getBomDetails(String bomId) throws Exception;
 

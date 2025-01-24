@@ -2,9 +2,7 @@ package com.mrbean.products;
 
 import java.util.List;
 
-import com.mrbean.billofmaterials.BillOfMaterialsVO;
-import com.mrbean.billofmaterials.BomDropdownDTO;
-import com.mrbean.rawmaterials.RawMaterialsVO;
+import com.mrbean.billofmaterials.domain.BomDropdownDTO;
 
 public interface ProductsService {
 	

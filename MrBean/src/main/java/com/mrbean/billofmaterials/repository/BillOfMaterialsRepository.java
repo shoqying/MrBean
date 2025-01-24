@@ -1,7 +1,8 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.repository;
 
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsVO;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ public interface BillOfMaterialsRepository {
      * @param bomId 조회할 BOM의 ID
      * @return BOM 상세 정보
      */
-    BillOfMaterialsVO selectBomDetails(@Param("bomId") String bomId) throws Exception;
+    BillOfMaterialsDTO selectBomDetails(@Param("bomId") String bomId) throws Exception;
 
-    public List<BillOfMaterialsDTO> findAll(String sortKey, String sortOrder);
+    public List<BillOfMaterialsDTO> findAll();
 
     public void updateBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO);
 }
