@@ -64,7 +64,8 @@
         }
     </style>
 </head>
-<body>
+
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">원자재 등록</h2>
@@ -106,7 +107,6 @@
 
         <!-- 대시보드 및 리스트 페이지로 돌아가는 버튼 -->
         <div class="navigate-buttons">
-            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-info">대시보드</a>
             <a href="${pageContext.request.contextPath}/rawMaterials/list" class="btn btn-primary">리스트 페이지로 돌아가기</a>
         </div>
     </div>
@@ -115,5 +115,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-</body>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </html>

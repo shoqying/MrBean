@@ -12,9 +12,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
 </head>
-<body>
+
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 <div class="container mt-5">
-    <button class="btn btn-primary" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
     <h1 class="my-4">창고 등록</h1>
 
     <!-- 창고 등록 폼 -->
@@ -66,5 +67,6 @@
 
 <script src="<c:url value='/resources/js/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/warehouseFormValidation.js'/>"></script>
-</body>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </html>

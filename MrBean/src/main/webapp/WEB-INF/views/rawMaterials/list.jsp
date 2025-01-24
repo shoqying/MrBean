@@ -9,7 +9,7 @@
     <title>원자재 리스트</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container">
         <h1 class="mt-5">원자재 목록</h1>
@@ -51,8 +51,6 @@
 
         <!-- 대시보드 버튼과 등록 페이지로 돌아가는 버튼을 폼 바로 밑에 배치 -->
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <!-- 대시보드 버튼 -->
-            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-info">대시보드</a>
             
             <!-- 등록 페이지로 돌아가는 버튼 -->
             <a href="${pageContext.request.contextPath}/rawMaterials/register" class="btn btn-primary">등록 페이지</a>
@@ -110,6 +108,6 @@
             document.getElementById("rmStorageMethod").value = rmStorageMethod;
         }
     </script>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
-</body>
 </html>
