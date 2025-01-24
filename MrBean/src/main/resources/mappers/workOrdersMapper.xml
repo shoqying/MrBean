@@ -34,7 +34,36 @@
 	</select>
     
     
-    
+     
+ 	<delete id="deleteWO">
+ 		DELETE FROM work_orders WHERE work_id = #{workId}
+ 		
+ 	</delete>
+ 	
+ 	    <!-- 작업지시 등록 -->
+    <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
+        INSERT INTO work_orders (
+            work_order_no,
+           <!--  plan_id, -->
+            work_plan_no,
+            work_plan_date,
+            work_quantity,
+            <!-- completed_quantity, -->
+            work_status,
+            work_remark,
+            work_created_by
+        ) VALUES (
+            #{workOrderNo},
+         <!--    #{planId}, -->
+            #{workPlanNo},
+            #{workPlanDate},
+            #{workQuantity},
+            <!-- 0, -->
+            #{workStatus},
+            #{workRemark},
+            #{workCreatedBy}
+        )
+    </insert>
     
     
 </mapper>

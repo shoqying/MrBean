@@ -14,7 +14,7 @@ public interface WorkOrdersService {
 	
 	// 생산 목록 삭제
 	
-	public void deleteWork(int wordId);
+	public void deleteWork(int workId);
 	
 } //WorkOrdersService
 
