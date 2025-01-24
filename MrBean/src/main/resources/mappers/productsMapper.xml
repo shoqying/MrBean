@@ -33,4 +33,20 @@
         SELECT p_code, p_name, p_description, bom_id
         FROM products
     </select>
+    
+    <!-- 완제품 수정 쿼리 -->
+    <update id="updateProduct" parameterType="com.mrbean.products.ProductsVO">
+        UPDATE products
+        SET p_name = #{pName},
+            p_description = #{pDescription},
+            bom_id = #{bomId}
+        WHERE p_code = #{pCode}
+    </update>
+
+    <!-- 완제품 삭제 쿼리 -->
+    <delete id="deleteProduct" parameterType="String">
+        DELETE FROM products
+        WHERE p_code = #{pCode}
+    </delete>
+    
 </mapper>

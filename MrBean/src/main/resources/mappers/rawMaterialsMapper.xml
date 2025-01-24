@@ -36,7 +36,7 @@
     
     <!-- 원자재 삭제 -->
     <delete id="deleteRawMaterial">
-    DELETE FROM raw_materials WHERE rm_code = #{rmCode}
+    	DELETE FROM raw_materials WHERE rm_code = #{rmCode}
 	</delete>
 
 </mapper>

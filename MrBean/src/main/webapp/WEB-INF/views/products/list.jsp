@@ -21,7 +21,7 @@
                     <th>완제품 이름</th>
                     <th>상세 설명</th>
                     <th>BOM ID</th>
-                    <th>수정</th>
+                    <th>처리</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,42 +60,46 @@
     </div>
 
     <!-- 수정 모달 -->
-    <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">완제품 수정</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- 수정 폼 -->
-                    <form id="updateForm" action="${pageContext.request.contextPath}/products/update" method="post">
-                        <!-- 완제품 코드 -->
-                        <input type="hidden" id="pCode" name="pCode" value="${product.pCode}">
-                        
-                        <div class="form-group">
-                            <label for="pName">완제품 이름:</label>
-                            <input type="text" id="pName" name="pName" class="form-control" value="${product.pName}" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="pDescription">상세 설명:</label>
-                            <input type="text" id="pDescription" name="pDescription" class="form-control" value="${product.pDescription}" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="bomId">BOM ID:</label>
-                            <input type="text" id="bomId" name="bomId" class="form-control" value="${product.bomId}" required>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-success">수정</button>
-                    </form>
-                </div>
+<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">완제품 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 수정 폼 -->
+                <form id="updateForm" action="${pageContext.request.contextPath}/products/update" method="post">
+                    <!-- 완제품 코드 -->
+                    <input type="hidden" id="pCode" name="pCode" value="">
+
+                    <div class="form-group">
+                        <label for="pName">완제품 이름:</label>
+                        <input type="text" id="pName" name="pName" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pDescription">상세 설명:</label>
+                        <input type="text" id="pDescription" name="pDescription" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bomId">BOM ID:</label>
+                        <select id="bomId" name="bomId" class="form-control" required>
+                            <c:forEach var="bom" items="${bomList}">
+                                <option value="${bom.bomId}" ${bom.bomId == product.bomId ? 'selected' : ''}>${bom.bomId}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">수정</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -104,9 +108,9 @@
     <script>
         function openEditModal(pCode, pName, pDescription, bomId) {
             // 모달에 완제품 정보를 채운다
-            document.getElementById("pCode").value = PCode;
-            document.getElementById("pName").value = PName;
-            document.getElementById("pDescription").value = PDescription;
+            document.getElementById("pCode").value = pCode;
+            document.getElementById("pName").value = pName;
+            document.getElementById("pDescription").value = pDescription;
             document.getElementById("bomId").value = bomId;
         }
     </script>
