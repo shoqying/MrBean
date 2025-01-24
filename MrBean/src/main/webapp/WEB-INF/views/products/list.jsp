@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="mt-5 text-center">완제품 목록</h1>
 
-        <table class="table table-bordered mt-3">
+        <table class="table datatable">
         <thead class="text-center">
                 <tr>
                     <th>완제품 코드</th>
