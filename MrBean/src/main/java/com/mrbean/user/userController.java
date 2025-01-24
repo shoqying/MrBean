@@ -167,6 +167,43 @@ public class userController {
             return "redirect:/user/main"; // main.jsp로 리다이렉트
         }
 
+        
+     // 비밀번호 변경 컨트롤러 추가
+        @GetMapping("/changePassword")
+        public String changePasswordPage(HttpSession session, Model model) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login"; // 로그인하지 않은 상태에서는 로그인 페이지로 리다이렉트
+            }
+            return "user/changePassword"; // 비밀번호 변경 JSP 페이지
+        }
+
+        @PostMapping("/changePassword")
+        public String changePassword(@RequestParam("currentPassword") String currentPassword,
+                                     @RequestParam("newPassword") String newPassword,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+
+            // 현재 비밀번호 확인
+            if (!passwordEncoder.matches(currentPassword, loggedInUser.getUPasswordhash())) {
+                redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+                return "redirect:/user/changePassword";
+            }
+
+            // 비밀번호 업데이트
+            loggedInUser.setUPasswordhash(passwordEncoder.encode(newPassword));
+            userService.updateUser(loggedInUser);
+
+            redirectAttributes.addFlashAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
+            return "redirect:/user/main"; // 변경 후 메인 페이지로 리다이렉트
+        }
+
+        
+        
     
  
 

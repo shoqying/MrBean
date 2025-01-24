@@ -32,7 +32,7 @@
 </head>
 
 <body>
-  <!-- ======= Header ======= -->
+  
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
@@ -68,10 +68,24 @@
                             <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
                                  class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
                         </c:when>
-                        <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/resources/assets/img/default-profile.png" alt="Default"
-                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
-                        </c:otherwise>
+<c:otherwise>
+    <c:choose>
+   
+        <c:when test="${pageContext.request.servletPath != '/young.jsp'}">
+            <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+                     class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
+            </a>
+        </c:when>
+   
+        <c:otherwise>
+            <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+                 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px; cursor: not-allowed;">
+        </c:otherwise>
+    </c:choose>
+</c:otherwise>
+
+
                     </c:choose>
 
                     <!-- 사용자 이름 -->
@@ -94,15 +108,7 @@
                             <span>내 정보</span>
                         </a>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
+                
                 </ul>
             </li>
         </ul>
@@ -349,6 +355,18 @@
         </c:when>
       </c:choose>
     </li>
+
+<!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
+<c:if test="${not empty sessionScope.loggedInUser}">
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
+            <i class="bi bi-key"></i>
+            <span>비밀번호 변경</span>
+        </a>
+    </li>
+</c:if>
+    
+    
   </ul>
 </aside>
   <main id="main" class="main">
