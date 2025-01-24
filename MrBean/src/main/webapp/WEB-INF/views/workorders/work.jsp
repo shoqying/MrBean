@@ -86,6 +86,12 @@
                    <i class="bi bi-arrow-counterclockwise me-1"></i>초기화
                  </button>
                </div>
+               <!-- 작업 버튼 그룹 -->
+               <div class ="text-end">
+               		<button type="button" class="btn btn-primary" id="workStartBtn">작업시작</button>
+               		<button type="button" class="btn btn-secondary" id="workCompletedBtn">작업완료</button>
+               		<button type="button" class="btn btn-danger" id="workStoppedBtn">작업중지</button>
+               </div>
              </form>
            </div>
          </div>

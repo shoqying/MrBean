@@ -67,5 +67,16 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO{
 	public void deleteWorkOrders(int workId) {
 		sqs.delete(NAMESPACE + "deleteWO",workId);		
 	}
+	
+	/**
+	 * 
+	 * 작업 상태변경
+	 */
+
+	@Override
+	public void updateWorkStatus(WorkOrdersVO workVO) {
+		sqs.update(NAMESPACE + "updateWorkStatus", workVO);
+		
+	}
 
 } //WorkOrdersDAOImpl

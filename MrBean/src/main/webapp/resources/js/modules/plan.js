@@ -5,6 +5,7 @@ import { utils } from '../common/utils.js';
 export const planModule = {
    isSubmitting: false,
 
+   // 생산계획 번호 자동생성
    generateNumber: function() {
        $.ajax({
            url: API.PLAN.NUMBER,
@@ -19,7 +20,8 @@ export const planModule = {
            }
        });
    },
-
+   
+   // 폼검증
    validateForm: function() {
        var startDate = $(SELECTORS.FORM.START_DATE).val();
        var endDate = $(SELECTORS.FORM.END_DATE).val();
@@ -31,6 +33,7 @@ export const planModule = {
        return true;
    },
 
+   // 폼제출(계획등록)
    submit: function() {
        if(this.isSubmitting || !this.validateForm()) return;
 
@@ -70,7 +73,8 @@ export const planModule = {
            }
        });
    },
-
+   
+   // 생산계획 삭제
    delete: function(planId) {
        if(!confirm('이 생산계획을 삭제하시겠습니까?')) return;
        
@@ -87,7 +91,7 @@ export const planModule = {
            }
        });
    },
-
+   // 생산계획 목록 업데이트
    updateList: function(planList) {
        var tbody = $(SELECTORS.TABLE.BODY);
        tbody.empty();
@@ -119,7 +123,8 @@ export const planModule = {
            tbody.append(row);
        });
    },
-
+   
+   // 폼 초기화
    resetForm: function() {
        $(SELECTORS.FORM.PLAN_NUMBER).val('');
        $(SELECTORS.FORM.PRIORITY).val('MEDIUM');
@@ -133,7 +138,8 @@ export const planModule = {
        
        this.generateNumber();
    },
-
+   
+   // 상태별 css 클래스 매핑
    getStatusBadgeClass: function(status) {
        var statusClasses = {
            'PLANNED': 'bg-primary',
@@ -143,7 +149,8 @@ export const planModule = {
        };
        return statusClasses[status] || 'bg-light';
    },
-
+   
+   // 이벤트 리스너 설정
    setupEventListeners: function() {
        var self = this;
        
@@ -169,7 +176,8 @@ export const planModule = {
 
        this.setupFormValidation();
    },
-
+   
+   // 양식 검증
    setupFormValidation: function() {
        $(SELECTORS.FORM.START_DATE).on('change', function() {
            var endDate = $(SELECTORS.FORM.END_DATE).val();
@@ -195,6 +203,7 @@ export const planModule = {
        });
    },
 
+   
    init: function() {
        this.generateNumber();
        this.setupEventListeners();

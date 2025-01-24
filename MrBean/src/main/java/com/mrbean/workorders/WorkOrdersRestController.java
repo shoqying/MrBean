@@ -88,10 +88,31 @@ public class WorkOrdersRestController {
             List<WorkOrdersVO> workList = wos.getWorkList(new WorkOrdersVO());
             return ResponseEntity.ok(workList);
         } catch (Exception e) {
-            logger.error("생산계획 삭제 실패", e);
+            logger.error("작업지시계획 삭제 실패", e);
             return ResponseEntity.status(500).body("삭제에 실패했습니다.");
         }
     }
+    
+    /**
+     * 상태값 변경 api
+     * 
+     * 
+     */
+    @RequestMapping(value = "/work/{workId}/status",method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateWorkStatus(@PathVariable int workId, @RequestBody WorkOrdersVO workVO){
+    	try {
+    		workVO.setWorkId(workId);
+    		wos.updateWorkStatus(workVO);
+    		List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+    		return ResponseEntity.ok(workList);
+    		
+    	} catch(Exception e) {
+    		logger.error("작업상태변경 실패", e);
+    		return ResponseEntity.status(500).body("작업상태변경 실패");	
+    	}
+    	
+    }
+    
     
 	
 }//WorkOrdersRestController
