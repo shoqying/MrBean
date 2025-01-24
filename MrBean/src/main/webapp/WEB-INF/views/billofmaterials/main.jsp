@@ -13,13 +13,8 @@
 
 
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-    <!-- 헤더와 검색창을 옆으로 배치 -->
     <div class="d-flex justify-content-between align-items-center">
         <h1>BOM</h1>
-        <!-- 검색 입력 필드 -->
-        <div class="form-inline">
-            <input type="text" class="form-control" id="searchInput" placeholder="검색어 입력...">
-        </div>
     </div>
 
 <table class="table datatable table-hover">
