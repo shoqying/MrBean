@@ -273,11 +273,6 @@
               <i class="bi bi-circle"></i><span>완제품 재고 목록</span>
             </a>
           </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>LOT번호 조회</span>
-            </a>
-          </li>
         </ul>
       </li><!-- End Charts Nav -->
 
