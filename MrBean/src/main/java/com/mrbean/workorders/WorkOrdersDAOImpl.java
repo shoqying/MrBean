@@ -64,8 +64,8 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO{
     */
 
 	@Override
-	public void deleteWorkOrders(int wordId) {
-		sqs.delete(NAMESPACE + "deleteWO",wordId);		
+	public void deleteWorkOrders(int workId) {
+		sqs.delete(NAMESPACE + "deleteWO",workId);		
 	}
 
 } //WorkOrdersDAOImpl

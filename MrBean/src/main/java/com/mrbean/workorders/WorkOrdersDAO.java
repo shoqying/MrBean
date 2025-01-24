@@ -15,6 +15,6 @@ public interface WorkOrdersDAO {
 	public List<WorkOrdersVO> createOrderList(WorkOrdersVO workVO);
 	
 	//생산계획목록 삭제
-	public void deleteWorkOrders(int wordId);
+	public void deleteWorkOrders(int workId);
 
 } //WorkOrdersDAO

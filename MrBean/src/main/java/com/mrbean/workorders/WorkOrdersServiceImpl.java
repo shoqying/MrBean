@@ -23,6 +23,7 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
 
 	@Override
 	public void insertWorkOrders(WorkOrdersVO workVO) {
+		wdao.insertWorkOrders(workVO);
 		
 	}
 	
@@ -44,9 +45,9 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
 	 */
 	
 	@Override
-	public void deleteWork(int wordId) {
+	public void deleteWork(int workId) {
 		
-		wdao.deleteWorkOrders(wordId);
+		wdao.deleteWorkOrders(workId);
 		
 	}
 
