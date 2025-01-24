@@ -36,6 +36,18 @@
 
 
 
+	<!-- 원자재 검사 관리 목록 저장 -->
+	<insert id="insertRawMaterialsQualityControl">
+		INSERT INTO rawmaterials_quality_control (rml_no, work_order_no)
+	        SELECT 
+	            rml.rml_no,
+	            work.work_order_no
+	        FROM 
+	            rawmaterials_lot rml
+	        JOIN 
+	            work_orders work
+	</insert>
+
 	<!-- 원자재 검사 관리 목록 -->
     <select id="getRawMaterialsQualityControlList" resultMap="RMQCMap">
  		SELECT rqc.rqc_bno, 

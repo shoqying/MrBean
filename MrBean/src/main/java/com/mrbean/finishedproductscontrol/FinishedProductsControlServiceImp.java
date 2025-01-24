@@ -1,12 +1,18 @@
 package com.mrbean.finishedproductscontrol;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import com.mrbean.products.ProductsVO;
 
 
 @Service
@@ -44,8 +50,12 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		return finishedProductsControlDAO.deleteFinishedProduct(rqcBno);
 	}
 	
+	@Override
+	public void insertFinishedProductLot() throws Exception {
+		logger.info("insertFinishedProductLot() 호출");
+        finishedProductsControlDAO.insertFinishedProductLot();
+	
+	}
 	
 	
-	
-
 }
