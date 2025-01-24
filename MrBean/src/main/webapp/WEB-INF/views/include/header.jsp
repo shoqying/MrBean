@@ -190,18 +190,18 @@
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
+            <a href="/stock/list">
+              <i class="bi bi-circle"></i><span>원자재 재고 목록</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
+            <a href="/stockP/splist">
+              <i class="bi bi-circle"></i><span>완제품 재고 목록</span>
             </a>
           </li>
           <li>
             <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
+              <i class="bi bi-circle"></i><span>LOT번호 조회</span>
             </a>
           </li>
         </ul>

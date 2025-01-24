@@ -29,9 +29,17 @@ public class StockMaterialsController {
             @RequestParam(defaultValue = "1") int page,
             Model model) {
 
-      
+        // sortColumn 검증
+        if (!"rml_date".equals(sortColumn) && !"rr_quantity".equals(sortColumn)) {
+            sortColumn = "rml_date"; // 기본값 설정
+        }
 
-        int pageSize = 10; // 한 페이지에 20개씩 출력
+        // sortDirection 검증
+        if (!"ASC".equals(sortDirection) && !"DESC".equals(sortDirection)) {
+            sortDirection = "DESC"; // 기본값 설정
+        }
+
+        int pageSize = 10;
         int offset = (page - 1) * pageSize;
 
         // 원자재 목록 조회
@@ -49,13 +57,11 @@ public class StockMaterialsController {
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("page", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);  // 전체 데이터 개수 추가
 
-        // list.jsp로 이동
         return "stock/list";
     }
-//    
+
+    }
     
     
     
-}
