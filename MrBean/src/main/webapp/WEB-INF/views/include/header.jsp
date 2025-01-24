@@ -155,8 +155,8 @@
             </a>
           </li>
           <li>
-            <a href="components-badges.html">
-              <i class="bi bi-circle"></i><span>Badges</span>
+            <a href="/billofmaterials">
+              <i class="bi bi-circle"></i><span>BOM</span>
             </a>
           </li>
           <li>

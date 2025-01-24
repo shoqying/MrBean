@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
 
@@ -54,6 +56,13 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
 
         return "BOM" + nextId;
     }
+
+    @Override
+    public List<BillOfMaterialsDTO> getAllBoms(String sortKey, String sortOrder) {
+        // 상황에 따라 sortKey, sortOrder 등에 대한 검증/변환 로직을 추가
+        return billOfMaterialsRepository.findAll(sortKey, sortOrder);
+    }
+
 
     public BillOfMaterialsDTO getBomDetails(String bomId) throws Exception {
         // Repository에서 VO 가져오기

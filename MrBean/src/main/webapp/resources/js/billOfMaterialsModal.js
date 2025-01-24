@@ -20,7 +20,8 @@ function loadRawMaterialList() {
                     <tr>
                         <td>${item.rmCode}</td>
                         <td>${item.rmName}</td>
-                        <td>${item.rmDescription}</td>
+                        <td>${item.rmOrigin}</td>
+                        <td>${item.rmStorageMethod}</td>
                         <td>
                             <button type="button" class="btn btn-primary"
                                 onclick="selectRawMaterial('${item.rmCode}')">

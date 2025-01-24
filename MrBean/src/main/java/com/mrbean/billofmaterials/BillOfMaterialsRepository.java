@@ -3,6 +3,8 @@ package com.mrbean.billofmaterials;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public interface BillOfMaterialsRepository {
 
     public void insertBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO);
@@ -17,6 +19,8 @@ public interface BillOfMaterialsRepository {
      * @return BOM 상세 정보
      */
     BillOfMaterialsVO selectBomDetails(@Param("bomId") String bomId) throws Exception;
+
+    public List<BillOfMaterialsDTO> findAll(String sortKey, String sortOrder);
 
     public void updateBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO);
 }

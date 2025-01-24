@@ -4,6 +4,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository {
 
@@ -37,6 +41,16 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
     public BillOfMaterialsVO selectBomDetails(String bomId) throws Exception{
 
         return sqlSession.selectOne(NAMESPACE + "selectBomDetails", bomId);
+    }
+
+    @Override
+    public List<BillOfMaterialsDTO> findAll(String sortKey, String sortOrder) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("sortKey", sortKey);
+        params.put("sortOrder", sortOrder);
+
+        // (쿼리ID, 파라미터Obj) 형태로 호출
+        return sqlSession.selectList(NAMESPACE + "selectAllBillOfMaterials", params);
     }
 
     /**

@@ -39,4 +39,9 @@ public class BillOfMaterialsDTO {
     @Size(max = 500, message = "BOM 설명은 500자 이하로 입력해야 합니다.")
     private String bomDescription;
 
+    @JsonProperty("rmName")
+    private String rmName; // raw_materials 테이블
+
+    public BillOfMaterialsDTO(String bomId, String bomName, String rmCode, int bomRatio, String bomDescription) {
+    }
 }
