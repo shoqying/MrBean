@@ -18,12 +18,12 @@
     </resultMap>    
     
     
-	<select id="getLastNumberForDate" resultType = "String">
-        SELECT work_order_no
-        FROM work_orders
-        WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
-        ORDER BY work_order_no DESC 
-        LIMIT 1	
+	<select id="getLastNumberForDate" resultType="String">
+	    SELECT work_order_no
+	    FROM work_orders
+	    WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
+	    ORDER BY work_order_no DESC 
+	    LIMIT 1	
 	</select>
 	
 	
