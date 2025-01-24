@@ -8,6 +8,7 @@
 <title>완제품 재고 목록</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 body {
     background-color: #f8f9fa;
@@ -24,12 +25,7 @@ h1 {
 
 /* 폼 레이아웃 */
 form {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 600px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+  float:right;
 }
 
 /* 폼 요소 스타일 */
@@ -135,23 +131,15 @@ button.btn-primary:hover {
 
 <!-- 정렬 옵션 -->
 <form action="/stockP/splist" method="get">
-    <label for="sortColumn">정렬 기준:</label>
-    <select name="sortColumn" id="sortColumn">
-        <option value="sp_date" ${sortColumn == 'sp_date' ? 'selected="selected"' : ''}>입고일</option>
-        <option value="plan_quantity" ${sortColumn == 'plan_quantity' ? 'selected="selected"' : ''}>수량</option>
+    <label for="sortOption">정렬 기준:</label>
+    <select name="sortOption" id="sortOption">
+        <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
+        <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
     </select>
-
-    <label for="sortDirection">정렬 방향:</label>
-    <select name="sortDirection" id="sortDirection">
-        <option value="ASC" ${sortDirection == 'ASC' ? 'selected="selected"' : ''}>오름차순</option>
-        <option value="DESC" ${sortDirection == 'DESC' ? 'selected="selected"' : ''}>내림차순</option>
-    </select>
-
     <button type="submit">정렬</button>
-    
 </form>
-<button class="btn btn-primary" onclick="location.href='/user/example'">대시보드 페이지</button>
-<button class="btn btn-primary" onclick="location.href='/stock/list'">원자재 목록 페이지</button>
+
+<button class="btn btn-primary" onclick="location.href='/user/sample'">대시보드 페이지</button>
 
 <table id="stockProductTable">
     <thead>
@@ -176,7 +164,7 @@ button.btn-primary:hover {
                 <td>${stockProducts.spUnit}</td>
                 <td>${stockProducts.spDate}</td>           
                 <td>${stockProducts.WCode}</td>
-                <td>${stockProducts.fpcLotbno}</td>
+                <td>${stockProducts.fplNo}</td>
                 <td>${stockProducts.PCode}</td>
                 <td>${stockProducts.fpcExpirydate}</td>
                
@@ -224,7 +212,7 @@ button.btn-primary:hover {
     setInterval(fetchUpdatedList, 1000000); // 10분마다 호출
 </script>
 
-<%-- <%@ include file="/WEB-INF/views/include/footer.jsp" %> --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 
 
