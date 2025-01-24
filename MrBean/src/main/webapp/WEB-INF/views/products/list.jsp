@@ -12,10 +12,10 @@
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container">
-        <h1 class="mt-5">완제품 목록</h1>
+        <h1 class="mt-5 text-center">완제품 목록</h1>
 
-        <table class="table table-bordered mt-3">
-            <thead>
+        <table class="table datatable">
+        <thead class="text-center">
                 <tr>
                     <th>완제품 코드</th>
                     <th>완제품 이름</th>
@@ -27,11 +27,16 @@
             <tbody>
                 <!-- 완제품 목록을 반복하여 출력 -->
                 <c:forEach var="product" items="${productList}">
-                    <tr>
+                    <tr class="text-center">
                         <td>${product.PCode}</td>
                         <td>${product.PName}</td>
-                        <td>${product.PDescription}</td>
-                        <td>${product.bomId}</td>
+                        <td>${product.PDescription}</td>  
+                        <td>
+                            <!-- BOM ID 텍스트 클릭 시 모달 띄우기 -->
+                            <button type="button" class="btn btn-link" onclick="openBomInfoModal('${product.bomId}')">
+    							${product.bomId}
+							</button>
+                        </td>
                         <td>
                             <!-- 수정 버튼 -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"
@@ -51,8 +56,8 @@
 
         <!-- 대시보드 버튼과 등록 페이지로 돌아가는 버튼을 폼 바로 밑에 배치 -->
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <!-- 대시보드 버튼 -->
-            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-info">대시보드</a>
+<!--             대시보드 버튼 -->
+<%--             <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-info">대시보드</a> --%>
             
             <!-- 등록 페이지로 돌아가는 버튼 -->
             <a href="${pageContext.request.contextPath}/products/register" class="btn btn-primary">등록 페이지</a>
@@ -60,52 +65,110 @@
     </div>
 
     <!-- 수정 모달 -->
-<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">완제품 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 수정 폼 -->
-                <form id="updateForm" action="${pageContext.request.contextPath}/products/update" method="post">
-                    <!-- 완제품 코드 -->
-                    <input type="hidden" id="pCode" name="pCode" value="">
+    <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">완제품 수정</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 수정 폼 -->
+                    <form id="updateForm" action="${pageContext.request.contextPath}/products/update" method="post">
+                        <div class="form-group">
+                            <label for="pCode">완제품 코드:</label>
+                            <input type="text" id="pCode" name="pCode" value="" readonly class="form-control">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="pName">완제품 이름:</label>
-                        <input type="text" id="pName" name="pName" class="form-control" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="pName">완제품 이름:</label>
+                            <input type="text" id="pName" name="pName" class="form-control" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="pDescription">상세 설명:</label>
-                        <input type="text" id="pDescription" name="pDescription" class="form-control" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="pDescription">상세 설명:</label>
+                            <input type="text" id="pDescription" name="pDescription" class="form-control" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="bomId">BOM ID:</label>
-                        <select id="bomId" name="bomId" class="form-control" required>
-                            <c:forEach var="bom" items="${bomList}">
-                                <option value="${bom.bomId}" ${bom.bomId == product.bomId ? 'selected' : ''}>${bom.bomId}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label for="bomId">BOM ID:</label>
+                            <select id="bomId" name="bomId" class="form-control" required>
+                                <c:forEach var="bom" items="${bomList}">
+                                    <option value="${bom.bomId}" ${bom.bomId == product.bomId ? 'selected' : ''}>${bom.bomId}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
 
-                    <button type="submit" class="btn btn-success">수정</button>
-                </form>
+                        <button type="submit" class="btn btn-success">수정</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- BOM 정보 모달 -->
+    <div class="modal" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- BOM 정보 폼 -->
+                    <form id="bomInfoForm">
+                        <div class="form-group">
+                            <label for="bomName">BOM 이름:</label>
+                            <input type="text" id="bomName" class="form-control" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rmCode">원자재 코드:</label>
+                            <input type="text" id="rmCode" class="form-control" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bomRatio">비율:</label>
+                            <input type="text" id="bomRatio" class="form-control" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bomDescription">설명:</label>
+                            <input type="text" id="bomDescription" class="form-control" readonly>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        function openBomInfoModal(bomId) {
+            // BOM 정보를 AJAX로 가져오기
+            $.ajax({
+                url: '/billofmaterials',  // 서버의 URL (이 부분은 실제 서버 경로에 맞게 수정)
+                method: 'GET',
+                data: { bomId: bomId }, // BOM ID를 서버에 전달
+                success: function(response) {
+                    if (response) {
+                        document.getElementById("bomName").value = response.bomName || '';
+                        document.getElementById("rmCode").value = response.rmCode || '';
+                        document.getElementById("bomRatio").value = response.bomRatio || '';
+                        document.getElementById("bomDescription").value = response.bomDescription || '';
+                        $('#editBomModal').modal('show'); // 모달을 표시
+                    } else {
+                        alert("BOM 정보를 가져오는 데 실패했습니다.");
+                    }
+                },
+
         function openEditModal(pCode, pName, pDescription, bomId) {
             // 모달에 완제품 정보를 채운다
             document.getElementById("pCode").value = pCode;

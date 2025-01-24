@@ -2,24 +2,35 @@ package com.mrbean.user;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.mrbean.productionplan.ProductionplanController;
 
 
-// http://localhost:8088/user/NewFile
-// http://localhost:8088/user/main
+// http://localhost:8088/user/example
+// http://localhost:8088/user/login
+// http://localhost:8088/user/register
+// http://localhost:8088/user/sample
 
 @Controller
 @RequestMapping(value = "/user/*")
 public class userController {
-
+   private static final Logger logger = LoggerFactory.getLogger(userController.class);
     @Autowired
     private userService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     // 회원가입 페이지
     @GetMapping("/register")
@@ -27,106 +38,139 @@ public class userController {
         return "user/register"; // 회원가입 JSP 경로
     }
 
-    // 회원가입 처리
-//    @PostMapping("/register")
-//    public String registerUser(userVO user) {
-//        // 추가적인 데이터 설정 (생성/수정 날짜 등)
-//        user.setUCreatedat(new java.sql.Timestamp(System.currentTimeMillis()));
-//        user.setUUpdatedat(new java.sql.Timestamp(System.currentTimeMillis()));
-//
-//        userService.createUser(user); // 회원가입 처리
-//        return "redirect:/user/login"; // 회원가입 완료 후 로그인 페이지로 리다이렉트
-//    }
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute userVO userVO, RedirectAttributes redirectAttributes) {
+        logger.info("회원가입 호출");
 
-    // 로그인 페이지
-    @GetMapping("/login")
-    public String loginPage() {
-        return "user/login"; // 로그인 JSP 경로
+        if (userVO.getUPasswordhash() != null) {
+            userVO.setUPasswordhash(passwordEncoder.encode(userVO.getUPasswordhash()));
+        }
+
+        userService.createUser(userVO);
+        logger.info("회원가입 완료");
+
+        // 회원가입 성공 메시지 전달
+        redirectAttributes.addFlashAttribute("success", "register");
+
+        return "redirect:/user/main"; // 회원가입 후 메인 페이지로 리다이렉트
     }
+    @RestController
+    @RequestMapping("/admin")
+    public class AdminController {
 
-    // 로그인 처리
-    @PostMapping("/login")
-    public String loginUser(@RequestParam("userId") String userId,
-                            @RequestParam("password") String password,
-                            Model model) {
-        userVO user = userService.getUserById(userId);
+        @Autowired
+        private passwordEncryptor passwordEncryptor;
 
-        if (user != null && user.getUPasswordhash().equals(password)) {
-            // 로그인 성공 처리
-            model.addAttribute("user", user);
-            return "user/dashboard"; // 로그인 성공 후 대시보드 페이지로 이동
-        } else {
-            // 로그인 실패 처리
-            model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
-            return "user/login"; // 다시 로그인 페이지로 이동
+        @GetMapping("/encryptPasswords")
+        public String encryptPasswords() {
+            passwordEncryptor.encryptExistingPasswords();
+            return "기존 비밀번호 암호화가 완료되었습니다.";
         }
     }
- 
     
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @GetMapping("/login")
+    public String loginPage() {
+        return "user/login"; // 로그인 JSP 경로 반환
+    }
+    
+   
 
-    // 회원가입 (ADMIN, MANAGER, MEMBER)
-	/*
-	 * @PostMapping("/signup") public void signUp(@RequestBody userVO user) { //
-	 * 비밀번호 암호화 // user.setPassword(passwordEncoder.encode(user.getPassword())); //
-	 * userService.createUser(user); }
-	 * 
-	 * // 로그인 (별도의 Security 설정에서 인증/인가 처리)
-	 * 
-	 * @PostMapping("/login") public String login() { return "Login successful!"; }
-	 * 
-	 * // 회원정보 조회 (본인만)
-	 * 
-	 * @GetMapping("/me")
-	 * 
-	 * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'MEMBER')") public userVO
-	 * getMyInfo(@RequestParam String userId) { return
-	 * userService.getUserById(userId); }
-	 * 
-	 * // 회원정보 수정 (본인만)
-	 * 
-	 * @PutMapping("/me")
-	 * 
-	 * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'MEMBER')") public void
-	 * updateMyInfo(@RequestBody userVO user) { userService.updateUser(user); }
-	 * 
-	 * // 비밀번호 변경
-	 * 
-	 * @PutMapping("/me/password")
-	 * 
-	 * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'MEMBER')") public void
-	 * changePassword(@RequestParam String userId, @RequestParam String newPassword)
-	 * { userVO user = userService.getUserById(userId); //
-	 * user.setPassword(passwordEncoder.encode(newPassword));
-	 * userService.updateUser(user); }
-	 * 
-	 * // 전체 회원 조회 (ADMIN만)
-	 * 
-	 * @GetMapping
-	 * 
-	 * @PreAuthorize("hasRole('ADMIN')") public List<userVO> getAllUsers() { return
-	 * userService.getAllUsers(); }
-	 * 
-	 * // 특정 회원 조회 (ADMIN, MANAGER)
-	 * 
-	 * @GetMapping("/{userId}")
-	 * dd
-	 * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')") public userVO
-	 * getUserById(@PathVariable String userId) { return
-	 * userService.getUserById(userId); }
-	 * 
-	 * // 권한 부여 (ADMIN만)
-	 * 
-	 * @PutMapping("/{userId}/role")
-	 * 
-	 * @PreAuthorize("hasRole('ADMIN')") public void assignRole(@PathVariable String
-	 * userId, @RequestParam String role) { userVO user =
-	 * userService.getUserById(userId);
-	 * user.setRole(userVO.Role.valueOf(role.toUpperCase()));
-	 * userService.updateUser(user); }
-	 */
+    @PostMapping("/login")
+    public String loginUser(@ModelAttribute userDTO loginDTO, RedirectAttributes redirectAttributes, HttpSession session) {
+        userVO user = userService.getUserById(loginDTO.getUUserid());
 
+        if (user == null || user.getUPasswordhash() == null || 
+            !passwordEncoder.matches(loginDTO.getUPasswordhash(), user.getUPasswordhash())) {
+            redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            return "redirect:/user/login"; // 로그인 실패 시 리다이렉트
+        }
+
+        // 로그인 성공
+        session.setAttribute("loggedInUser", user);
+        redirectAttributes.addFlashAttribute("success", "login"); // 성공 메시지로 "login" 전달
+        return "redirect:/user/main"; // 메인 페이지로 리다이렉트
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.invalidate(); // 세션 무효화
+        redirectAttributes.addFlashAttribute("success", "logout"); // 로그아웃 메시지 전달
+        return "redirect:/user/main"; // 메인 페이지로 리다이렉트
+    }
+
+        @GetMapping("/user/info")
+        public String getUserInfo(HttpSession session, Model model) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                logger.info("세션에 로그인된 사용자가 없습니다.");
+                return "redirect:/user/login";
+            }
+            logger.info("세션에서 가져온 사용자 데이터: {}", loggedInUser);
+            model.addAttribute("user", loggedInUser);
+            return "user/info";
+        }
+
+
+     // 비밀번호 확인 페이지
+        @GetMapping("/passwordcheck")
+        public String passwordCheckPage() {
+            return "user/passwordcheck"; // 비밀번호 확인 JSP 경로
+        }
+
+        @PostMapping("/passwordcheck")
+        public String verifyPassword(@RequestParam("password") String password, HttpSession session, Model model) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+
+            // 비밀번호 검증
+            if (!passwordEncoder.matches(password, loggedInUser.getUPasswordhash())) {
+                return "redirect:/user/passwordcheck?error=true";
+            }
+
+            // 비밀번호가 맞다면 수정 페이지로 이동
+            return "redirect:/user/update";
+        }
+
+
+        // 내정보 수정 페이지
+        @GetMapping("/update")
+        public String updateInfoPage(HttpSession session, Model model) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+            model.addAttribute("user", loggedInUser);
+            return "user/update";
+        }
+
+        @PostMapping("/update")
+        public String updateUserInfo(@ModelAttribute userVO updatedUser, HttpSession session, RedirectAttributes redirectAttributes) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+
+            // 업데이트된 정보 적용
+            loggedInUser.setUUsername(updatedUser.getUUsername());
+            loggedInUser.setUEmail(updatedUser.getUEmail());
+            loggedInUser.setUPhonenumber(updatedUser.getUPhonenumber());
+            loggedInUser.setURoleenum(updatedUser.getURoleenum());
+
+            // DB에 저장
+            userService.updateUser(loggedInUser);
+
+            // 수정 완료 메시지 전달
+            redirectAttributes.addFlashAttribute("success", "update");
+
+            return "redirect:/user/main"; // main.jsp로 리다이렉트
+        }
+
+    
+ 
+
+    // 샘플페이지 연결
     @RequestMapping(value = "/sample",method = RequestMethod.GET )
     public String samplePage() {
         
@@ -136,16 +180,25 @@ public class userController {
 }
     
     
-    // 메인 페이지 연결
+    // 예시페이지 연결
     //@GetMapping(value = "/example")
     @RequestMapping(value = "/example",method = RequestMethod.GET )
-    public String mainPage() {
+    public String examplePage() {
         
         System.out.println("출력");
 
         return "user/example";
 }
     
+    // 메인페이지 연결
+    //@GetMapping(value = "/main")
+    @RequestMapping(value = "/main",method = RequestMethod.GET )
+    public String mainPage() {
+        
+        System.out.println("출력");
+
+        return "user/main";
+}
     
     
 }

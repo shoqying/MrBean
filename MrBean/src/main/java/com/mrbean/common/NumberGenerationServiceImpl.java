@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.mrbean.productionplan.ProductionplanDAO;
@@ -13,6 +15,9 @@ import com.mrbean.productionplan.ProductionplanDAO;
 @Repository
 public class NumberGenerationServiceImpl implements NumberGenerationService {
 
+
+private static final Logger logger = LoggerFactory.getLogger(NumberGenerationServiceImpl.class);
+	
 	@Inject
 	private ProductionplanDAO pdao;
 	
@@ -22,9 +27,10 @@ public class NumberGenerationServiceImpl implements NumberGenerationService {
 	 * 형식: WO-YYYYMMDD-### or .....
 	 * 
 	 */
-	
 	@Override
 	public synchronized String generateNumber(String controllerName) {
+		
+			logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		
 		// "yyyyMMdd" 형식으로 날짜를 포맷하는 SimpleDateFormat 객체 생성
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

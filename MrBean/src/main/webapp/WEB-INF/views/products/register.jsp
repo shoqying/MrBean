@@ -63,15 +63,9 @@
                 <!-- 제출 버튼 -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">등록</button>
+            		<a href="/products/list" class="btn btn-primary">목록</a>
                 </div>
             </form:form>
-        </div>
-
-        <!-- 대시보드 및 리스트 페이지로 돌아가는 버튼 -->
-        <div class="navigate-buttons mt-3">
-            <a href="/dashboard" class="btn btn-info">대시보드</a>
-            <a href="/products/list" class="btn btn-primary">제품 목록</a>
-            <a href="/rawMaterials/list" class="btn btn-secondary">원자재 목록</a>
         </div>
     </div>
 

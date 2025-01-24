@@ -8,15 +8,15 @@
 </head>
 <body>
 <!-- JavaScript 파일 로드 -->
-<script src="${pageContext.request.contextPath}/resources/js/1.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/main.js"></script>
    <section class="section">
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title"><b>생산계획 등록</b></h5>
+              <h5 class="card-title"><i class="bi bi-pencil-square me-1"></i><b>생산계획 등록</b></h5>
               <!-- Floating Labels Form -->
-              <form class="row g-3" id = "a">
+              <form class="row g-3" id = "a"> <!-- 아이디 확인  -->
                 <div class="col-md-6">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="planNumber" placeholder="생산계획 번호" readonly="readonly">
@@ -80,7 +80,8 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="button" class="btn btn-primary" id="intsertBtn">계획등록</button>
+                  <button type="button" class="btn btn-primary" id="insertBtn">계획등록</button>
+
                   <button type="button" class="btn btn-secondary" id="resetBtn">초기화</button>
                 </div>
               </form><!-- End floating Labels Form -->
@@ -98,7 +99,9 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title"><b>생산계획 목록</b></h5>
+              <h5 class="card-title">
+	            <i class="bi bi-list-check me-1"></i><b>생산계획 목록</b>
+	          </h5>
 
               <!-- Table with stripped rows -->
               <table class="table datatable">
@@ -152,7 +155,14 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty plan.plStatus}">${plan.plStatus}</c:when>
+                    		<c:when test="${not empty plan.plStatus}">
+                			    <span class="badge ${plan.plStatus == 'PLANNED' ? 'bg-primary' : 
+						                           plan.plStatus == 'IN_PROGRESS' ? 'bg-warning' : 
+						                           plan.plStatus == 'COMPLETED' ? 'bg-success' : 
+						                           plan.plStatus == 'CANCELLED' ? 'bg-secondary' : 'bg-light'}">
+						          				  ${plan.plStatus}
+        				       </span>
+                    		</c:when>
                     		<c:otherwise>값이 없습니다</c:otherwise>
                     	</c:choose>
                     </td>
@@ -182,8 +192,8 @@
                     </td>
                     <td>
                        <button class="btn btn-danger btn-sm" 
-                               onclick="deletePlan('${plan.planId}')">
-                           삭제
+                               onclick="planModule.delete('${plan.planId}')">
+                           <i class="bi bi-trash"></i>
                        </button>
                    </td>                   
                   </tr>
