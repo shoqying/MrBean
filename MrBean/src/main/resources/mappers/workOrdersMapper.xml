@@ -22,7 +22,7 @@
         SELECT work_order_no
         FROM work_orders
         WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
-        ORDER BY plan_no DESC 
+        ORDER BY work_order_no DESC 
         LIMIT 1	
 	</select>
 	
