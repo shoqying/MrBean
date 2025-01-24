@@ -11,51 +11,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 @RequestMapping("/stockP")
 public class StockProductsController {
-	
-	 private static final Logger logger = LoggerFactory.getLogger(StockProductsController.class);
-	 
-	 @Autowired
-	    private StockProductsService stockProductsService;
-	 
-	 @RequestMapping(value = "/splist", method = RequestMethod.GET)
-	 public String getStockMaterials(
-	     @RequestParam(defaultValue = "1") int page,
-	     @RequestParam(defaultValue = "latest") String sortOption, // 최신순 기본값
-	     Model model) {
+    
+    private static final Logger logger = LoggerFactory.getLogger(StockProductsController.class);
 
-	     int limit = 10; // 한 페이지당 항목 수
-	     int offset = (page - 1) * limit;
+    @Autowired
+    private StockProductsService stockProductsService;
 
-	     // 정렬 옵션 처리
-	     String sortColumn = "sp_date"; // 정렬 컬럼은 항상 입고일(sp_date)
-	     String sortDirection = "DESC"; // 기본값은 최신순
+    @RequestMapping(value = "/splist", method = RequestMethod.GET)
+    public String getStockMaterials(
+        @RequestParam(defaultValue = "1") int page,
+        Model model) {
 
-	     if ("oldest".equals(sortOption)) {
-	         sortDirection = "ASC"; // 오래된순일 경우 방향만 ASC로 변경
-	     }
+        int limit = 10; // 한 페이지당 항목 수
+        int offset = (page - 1) * limit;
 
-	     // 데이터 조회
-	     List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, limit, offset);
-	     int totalCount = stockProductsService.getTotalCount();
-	     int totalPages = (int) Math.ceil((double) totalCount / limit);
+        // 정렬 옵션 고정: 최신순으로 설정
+        String sortColumn = "sp_date"; // 정렬 컬럼은 항상 입고일(sp_date)
+        String sortDirection = "DESC"; // 최신순 기본값 (DESC)
 
-	     // Model에 데이터 추가
-	     model.addAttribute("stockProducts", stockProducts);
-	     model.addAttribute("page", page);
-	     model.addAttribute("totalPages", totalPages);
-	     model.addAttribute("sortOption", sortOption); // 선택된 정렬 옵션
+        // 데이터 조회
+        List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, limit, offset);
+        int totalCount = stockProductsService.getTotalCount();
+        int totalPages = (int) Math.ceil((double) totalCount / limit);
 
-	     // list.jsp로 이동
-	     return "stockP/splist";
-	 }
+        // Model에 데이터 추가
+        model.addAttribute("stockProducts", stockProducts);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortOption", "latest"); // 최신순 고정
 
-
-	 
-	 }
-
-	 
-
+        // list.jsp로 이동
+        return "stockP/splist";
+    }
+}
