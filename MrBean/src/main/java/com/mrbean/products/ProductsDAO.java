@@ -3,6 +3,7 @@ package com.mrbean.products;
 import java.util.List;
 
 import com.mrbean.billofmaterials.BomDropdownDTO;
+import com.mrbean.rawmaterials.RawMaterialsVO;
 
 public interface ProductsDAO {
 	
@@ -14,5 +15,11 @@ public interface ProductsDAO {
     
     // 완제품 목록을 DB에서 가져오는 메서드
     public List<ProductsVO> getProductList() throws Exception;
+    
+    // 완제품 수정
+    public void updateProduct(ProductsVO product) throws Exception;
+    
+    // 완제품 삭제
+    public void deleteProduct(String pCode) throws Exception;
 }
 

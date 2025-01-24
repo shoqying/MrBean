@@ -3,7 +3,6 @@ package com.mrbean.products;
 import com.mrbean.billofmaterials.BomDropdownDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,6 @@ public class ProductsDAOImpl implements ProductsDAO {
 
         try {
             List<BomDropdownDTO> bomList = sqlSession.selectList(NAMESPACE + ".getBomListForDropdown");
-
             logger.info("BOM 목록 조회 완료, 개수: {}", bomList.size());
             return bomList;
         } catch (Exception e) {
@@ -57,13 +55,41 @@ public class ProductsDAOImpl implements ProductsDAO {
         try {
             List<ProductsVO> productList = sqlSession.selectList(NAMESPACE + ".getProductList");
             logger.info("완제품 목록 조회 완료, 개수: {}", productList.size());
-            if (productList.size() > 0) {
+            if (!productList.isEmpty()) {
                 logger.debug("완제품 목록: {}", productList);  // 상세 리스트 확인을 위한 디버깅 로그
             }
             return productList;
         } catch (Exception e) {
             logger.error("완제품 목록 조회 중 오류 발생", e);
             throw new Exception("완제품 목록 조회 중 오류가 발생했습니다.", e);
+        }
+    }
+    
+    // 완제품 수정
+    @Override
+    public void updateProduct(ProductsVO product) throws Exception {
+        logger.info("완제품 수정 요청: {}", product);
+
+        try {
+            sqlSession.update(NAMESPACE + ".updateProduct", product);
+            logger.info("완제품 수정 완료, 제품 코드: {}", product.getPCode());
+        } catch (Exception e) {
+            logger.error("완제품 수정 중 오류 발생, 제품 코드: {}", product.getPCode(), e);
+            throw new Exception("완제품 수정 중 오류가 발생했습니다.", e);
+        }
+    }
+    
+    // 완제품 삭제
+    @Override
+    public void deleteProduct(String pCode) throws Exception {
+        logger.info("완제품 삭제 요청, 제품 코드: {}", pCode);
+
+        try {
+            sqlSession.delete(NAMESPACE + ".deleteProduct", pCode);
+            logger.info("완제품 삭제 완료, 제품 코드: {}", pCode);
+        } catch (Exception e) {
+            logger.error("완제품 삭제 중 오류 발생, 제품 코드: {}", pCode, e);
+            throw new Exception("완제품 삭제 중 오류가 발생했습니다.", e);
         }
     }
 }

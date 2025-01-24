@@ -3,6 +3,10 @@ package com.mrbean.products;
 import javax.inject.Inject;
 
 import com.mrbean.billofmaterials.BomDropdownDTO;
+import com.mrbean.rawmaterials.RawMaterialsVO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,6 +15,8 @@ import com.mrbean.billofmaterials.BillOfMaterialsVO;
 @Service
 public class ProductsServiceImpl implements ProductsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(ProductsServiceImpl.class);
+	
     @Inject
     private ProductsDAO productsDAO;
 
@@ -61,6 +67,27 @@ public class ProductsServiceImpl implements ProductsService {
             return productsDAO.getProductList();
         } catch (Exception e) {
             throw new Exception("완제품 목록을 가져오는 중 오류가 발생했습니다.", e);
+        }
+    }
+    
+    // 완제품 수정
+    @Override
+    public void updateProduct(ProductsVO product) throws Exception {
+        try {
+            productsDAO.updateProduct(product);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    // 완제품 삭제
+    @Override
+    public void deleteProduct(String pCode) throws Exception {
+        try {
+            // 삭제 처리
+            productsDAO.deleteProduct(pCode);
+        } catch (Exception e) {
+            throw e;
         }
     }
 }
