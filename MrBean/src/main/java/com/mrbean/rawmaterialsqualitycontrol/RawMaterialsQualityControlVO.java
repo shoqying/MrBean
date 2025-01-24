@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.products.ProductsVO;
+import com.mrbean.rawmaterials.RawMaterialsVO;
 import com.mrbean.rawmaterialslot.RawMaterialsLotVO;
 import com.mrbean.workorders.WorkOrdersVO;
 
@@ -13,7 +15,7 @@ import lombok.Data;
 public class RawMaterialsQualityControlVO {
 	
 	private int rqcBno; // 순번
-	private String rmlNo; // LOT번호(원자재 입고)
+	private String rmlCode; // LOT번호(원자재 입고)
 	private Timestamp rqcDate; // 검사일자(품질검사 완료시)
 	private QualityControlStatus rqcQualityCheck; // 품질검사(대기중, 완료)
 	private QualityControlStatus rqcStatus; // 상태(합격, 불합격)
@@ -29,6 +31,7 @@ public class RawMaterialsQualityControlVO {
 	// join을 사용하여 생성된 정보 저장
 	private List<RawMaterialsLotVO> rawMaterialsLotList;
 	private List<WorkOrdersVO> workOrdersList;
+	private List<RawMaterialsVO> rawMaterialsList;
 	
 
 }

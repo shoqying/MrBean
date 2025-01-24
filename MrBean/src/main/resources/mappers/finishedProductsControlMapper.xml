@@ -77,7 +77,16 @@
     </delete>
     
     
-    
+    <insert id="insertFinishedProduct" parameterType="map">
+    INSERT INTO finished_product_control (fpcLotbno, fpcDate, fpcExpirydate, plan_id, plan_quantity)
+	VALUES (
+	    CONCAT(#{pCode}, '-', #{wCode}, '-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(#{fplBatch}, 3, '0')),
+	    NOW(),
+	    DATE_ADD(NOW(), INTERVAL 1 YEAR),
+	    (SELECT plan_id FROM production_plan WHERE plan_id = #{planId}),
+	    (SELECT plan_quantity FROM production_plan WHERE plan_id = #{planId})
+	);
+    </insert>
     
     
     

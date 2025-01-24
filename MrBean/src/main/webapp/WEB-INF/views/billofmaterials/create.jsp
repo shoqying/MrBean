@@ -8,10 +8,11 @@
     <!-- Bootstrap CSS CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
 </head>
-<body>
+
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 <div class="container mt-5">
     <!-- 대시보드 돌아가기 버튼 -->
     <button class="btn btn-primary" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
@@ -32,7 +33,6 @@
                 value="${nextBOMId}"
                 readonly
                 required
-                autofocus
                 autocomplete="off"
                 oninput="validateInput('bomId')"
             >
@@ -58,9 +58,35 @@
             </small>
         </div>
 
-        <!-- BOM 비율 -->
+        <!-- 원자재 코드 -->
         <div class="form-group">
-            <label for="bomRatio">BOM 비율</label>
+            <label for="rmCode">원자재 코드</label>
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="rmCode"
+                    name="rmCode"
+                    class="form-control"
+                    required
+                    autocomplete="off"
+                    readonly
+                    oninput="validateInput('rmCode')"
+                >
+                <div class="input-group-append">
+                    <!-- '원자재 선택' 버튼 클릭 시 모달 오픈 -->
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#rawMaterialModal">
+                        원자재 선택
+                    </button>
+                </div>
+            </div>
+            <small id="rmCodeError" class="form-text text-danger" style="display: none;">
+                원자재 코드는 대문자 3글자로 입력해주세요. (예: ABC)
+            </small>
+        </div>
+
+        <!-- 원자재 비율 -->
+        <div class="form-group">
+            <label for="bomRatio">원자재 비율</label>
             <input
                 type="number"
                 id="bomRatio"
@@ -76,23 +102,6 @@
             </small>
         </div>
 
-        <!-- 원자재 코드 -->
-        <div class="form-group">
-            <label for="rmCode">원자재 코드</label>
-            <input
-                type="text"
-                id="rmCode"
-                name="rmCode"
-                class="form-control"
-                required
-                autocomplete="off"
-                oninput="validateInput('rmCode')"
-            >
-            <small id="rmCodeError" class="form-text text-danger" style="display: none;">
-                원자재 코드는 대문자 3글자로 입력해주세요. (예: ABC)
-            </small>
-        </div>
-
         <!-- BOM 설명 -->
         <div class="form-group">
             <label for="bomDescription">BOM 설명</label>
@@ -103,7 +112,7 @@
                 rows="4"
                 autocomplete="off"
                 style="resize: none; overflow-y: auto;"
-                oninput="validateCharCount('bomDescription', 500)"
+                oninput="updateCharacterCount()"
             ></textarea>
             <small id="charCount" class="form-text text-muted text-right">0/500</small>
         </div>
@@ -113,7 +122,49 @@
     </form>
 </div>
 
-<!-- 유효성 검사 스크립트 (예시) -->
+<!-- 원자재 선택 모달 -->
+<div class="modal fade" id="rawMaterialModal" tabindex="-1" role="dialog" aria-labelledby="rawMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rawMaterialModalLabel">원자재 선택</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- 원자재 목록 테이블 -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>원자재 코드</th>
+                    <th>원자재 이름</th>
+                    <th>설명</th>
+                    <th>선택</th>
+                </tr>
+            </thead>
+            <tbody id="rawMaterialTableBody">
+                <!-- Ajax 결과로 동적 생성 -->
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- 모달 창 닫기 버튼 -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JQuery, Bootstrap JS (Modal에 필요) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<c:url value='/resources/js/toast.js'/>"></script>
+<!-- 모달 창 스크립트 -->
+<script src="<c:url value='/resources/js/billOfMaterialsModal.js'/>"></script>
+<!-- 유효성 검사 스크립트 -->
 <script src="<c:url value='/resources/js/billOfMaterialsValidation.js'/>"></script>
-</body>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </html>

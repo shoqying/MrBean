@@ -17,7 +17,7 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
 
     @Override
     public void insertBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO) {
-        sqlSession.insert(NAMESPACE + "insertWarehouse", billOfMaterialsVO);
+        sqlSession.insert(NAMESPACE + "insertBillOfMaterials", billOfMaterialsVO);
     }
 
     @Override
@@ -32,5 +32,20 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
         }
         return lastBomId;
     }
+
+    @Override
+    public BillOfMaterialsVO selectBomDetails(String bomId) throws Exception{
+
+        return sqlSession.selectOne(NAMESPACE + "selectBomDetails", bomId);
+    }
+
+    /**
+     * 매퍼와 연결된 업데이트 메서드
+     */
+    @Override
+    public void updateBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO) {
+        sqlSession.update(NAMESPACE + "updateBillOfMaterials", billOfMaterialsVO);
+    }
+
 
 }

@@ -7,6 +7,7 @@
 <title>원자재 재고 목록</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 body {
     background-color: #f8f9fa;
@@ -23,12 +24,7 @@ h1 {
 
 /* 폼 레이아웃 */
 form {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 600px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+   float:right;
 }
 
 /* 폼 요소 스타일 */
@@ -54,11 +50,10 @@ form button {
 form button:hover {
     background-color: #0056b3;
 }
-
-/* 테이블 스타일 */
+/*  */
+/* 테이블 스타일 */ 
 table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
     background-color: white;
 }
@@ -100,8 +95,8 @@ button.btn-primary:hover {
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .pagination a {
@@ -124,8 +119,6 @@ button.btn-primary:hover {
     margin: 0 5px;
     border-radius: 4px;
     background-color: #f1f1f1;
-    position: absolute;
-    bottom:15px;
 }
 </style>
 </head>
@@ -133,29 +126,21 @@ button.btn-primary:hover {
 
 <h1>원자재 재고 목록</h1>
 
-<button class="btn btn-primary" onclick="location.href='/'">대시보드 페이지</button>
+
 
 <!-- 정렬 옵션 -->
 <form action="/stock/list" method="get">
-    <label for="sortColumn">정렬 기준:</label>
-    <select name="sortColumn" id="sortColumn">
-        <option value="rml_date" ${sortColumn == 'rml_date' ? 'selected="selected"' : ''}>입고일</option>
-        <option value="rr_quantity" ${sortColumn == 'rr_quantity' ? 'selected="selected"' : ''}>수량</option>
+    <label for="sortOption">정렬 기준:</label>
+    <select name="sortOption" id="sortOption">
+        <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
+        <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
     </select>
-
-    <label for="sortDirection">정렬 방향:</label>
-    <select name="sortDirection" id="sortDirection">
-        <option value="ASC" ${sortDirection == 'ASC' ? 'selected="selected"' : ''}>오름차순</option>
-        <option value="DESC" ${sortDirection == 'DESC' ? 'selected="selected"' : ''}>내림차순</option>
-    </select>
-
     <button type="submit">정렬</button>
 </form>
-
-<button class="btn btn-primary" onclick="location.href='/stockP/splist'">완제품 목록 페이지</button>
+<button class="btn btn-primary" onclick="location.href='/user/sample'">대시보드 페이지</button>
 
 <!-- 원자재 목록 테이블 -->
-<table border="1">
+<table id="smTable" border="1">
     <thead>
         <tr>
             <th>순번</th>
@@ -176,7 +161,7 @@ button.btn-primary:hover {
                 <td>${stockMaterial.rmlDate}</td>
                 <td>${stockMaterial.rrQuantity}</td>
                 <td>${stockMaterial.rrUnit}</td>
-                <td>${stockMaterial.wCode}</td>
+                <td>${stockMaterial.WCode}</td>
                 <td>${stockMaterial.rmlNo}</td>
                 <td>${stockMaterial.rmCode}</td>
                 <td>${stockMaterial.rrExpirydate}</td>
@@ -198,6 +183,26 @@ button.btn-primary:hover {
         <a href="/stock/list?page=${page + 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">다음 ▷</a>
     </c:if>
 </div>
+
+<!-- JavaScript 코드 -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    // 테이블을 5초마다 갱신하는 함수
+    function fetchUpdatedList() {
+        $.ajax({
+            url: '/stock/list',
+            method: 'GET',
+            success: function(data) {
+                $('#smTable').html(data); // 테이블 내용 업데이트
+            }
+        });
+    }
+
+    // 일정 시간마다 새로고침
+    setInterval(fetchUpdatedList, 100000); // 1분마다 호출
+</script>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>
 </html>

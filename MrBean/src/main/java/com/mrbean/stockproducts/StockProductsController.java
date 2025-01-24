@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mrbean.stockmaterials.StockMaterialsController;
-import com.mrbean.stockmaterials.StockMaterialsService;
-import com.mrbean.stockmaterials.StockMaterialsVO;
 
 @Controller
 @RequestMapping("/stockP")
@@ -27,14 +24,19 @@ public class StockProductsController {
 	 @RequestMapping(value = "/splist", method = RequestMethod.GET)
 	 public String getStockMaterials(
 	     @RequestParam(defaultValue = "1") int page,
-	     @RequestParam(defaultValue = "sp_date") String sortColumn,
-	     @RequestParam(defaultValue = "DESC") String sortDirection,
+	     @RequestParam(defaultValue = "latest") String sortOption, // 최신순 기본값
 	     Model model) {
 
-	     // System.out.printf("Request received for /splist with page: {}, sortColumn: {}, sortDirection: {}", page, sortColumn, sortDirection);
-
-	     int limit = 20; // 한 페이지당 항목 수
+	     int limit = 10; // 한 페이지당 항목 수
 	     int offset = (page - 1) * limit;
+
+	     // 정렬 옵션 처리
+	     String sortColumn = "sp_date"; // 정렬 컬럼은 항상 입고일(sp_date)
+	     String sortDirection = "DESC"; // 기본값은 최신순
+
+	     if ("oldest".equals(sortOption)) {
+	         sortDirection = "ASC"; // 오래된순일 경우 방향만 ASC로 변경
+	     }
 
 	     // 데이터 조회
 	     List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, limit, offset);
@@ -45,15 +47,15 @@ public class StockProductsController {
 	     model.addAttribute("stockProducts", stockProducts);
 	     model.addAttribute("page", page);
 	     model.addAttribute("totalPages", totalPages);
-	     model.addAttribute("sortColumn", sortColumn);
-	     model.addAttribute("sortDirection", sortDirection);
+	     model.addAttribute("sortOption", sortOption); // 선택된 정렬 옵션
 
-	     logger.info("stockProducts: " + stockProducts);
-	     
 	     // list.jsp로 이동
 	     return "stockP/splist";
+	 }
+
+
 	 
 	 }
 
 	 
-}
+

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@ include file="/WEB-INF/views/include/header.jsp" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,7 @@
 <title>완제품 재고 목록</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 body {
     background-color: #f8f9fa;
@@ -23,12 +25,7 @@ h1 {
 
 /* 폼 레이아웃 */
 form {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 600px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+  float:right;
 }
 
 /* 폼 요소 스타일 */
@@ -58,7 +55,6 @@ form button:hover {
 /* 테이블 스타일 */
 table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
     background-color: white;
 }
@@ -97,11 +93,12 @@ button.btn-primary:hover {
 }
 
 /* 페이지네이션 스타일 */
+/*  */
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .pagination a {
@@ -123,9 +120,7 @@ button.btn-primary:hover {
     padding: 8px 15px;
     margin: 0 5px;
     border-radius: 4px;
-    background-color: #f1f1f1;
-    position: absolute;
-    bottom: 15px;
+    background-color: #f1f1f1;;
 }
 
 </style>
@@ -135,21 +130,16 @@ button.btn-primary:hover {
 <h1>완제품 재고 목록</h1>
 
 <!-- 정렬 옵션 -->
-<form action="/stockproduct/list" method="get">
-    <label for="sortColumn">정렬 기준:</label>
-    <select name="sortColumn" id="sortColumn">
-        <option value="sp_date" ${sortColumn == 'sp_date' ? 'selected="selected"' : ''}>입고일</option>
-        <option value="sp_quantity" ${sortColumn == 'sp_quantity' ? 'selected="selected"' : ''}>수량</option>
+<form action="/stockP/splist" method="get">
+    <label for="sortOption">정렬 기준:</label>
+    <select name="sortOption" id="sortOption">
+        <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
+        <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
     </select>
-
-    <label for="sortDirection">정렬 방향:</label>
-    <select name="sortDirection" id="sortDirection">
-        <option value="ASC" ${sortDirection == 'ASC' ? 'selected="selected"' : ''}>오름차순</option>
-        <option value="DESC" ${sortDirection == 'DESC' ? 'selected="selected"' : ''}>내림차순</option>
-    </select>
-
     <button type="submit">정렬</button>
 </form>
+
+<button class="btn btn-primary" onclick="location.href='/user/sample'">대시보드 페이지</button>
 
 <table id="stockProductTable">
     <thead>
@@ -170,11 +160,11 @@ button.btn-primary:hover {
         <c:forEach var="stockProducts" items="${stockProducts}">
             <tr>
                 <td>${stockProducts.spBno}</td>
-                <td>${stockProducts.spQuantity}</td>
+                <td>${stockProducts.planQuantity}</td>
                 <td>${stockProducts.spUnit}</td>
                 <td>${stockProducts.spDate}</td>           
                 <td>${stockProducts.WCode}</td>
-                <td>${stockProducts.fpcLotbno}</td>
+                <td>${stockProducts.fplNo}</td>
                 <td>${stockProducts.PCode}</td>
                 <td>${stockProducts.fpcExpirydate}</td>
                
@@ -194,13 +184,13 @@ button.btn-primary:hover {
 <!-- 페이지네이션 -->
 <div class="pagination">
     <c:if test="${page > 1}">
-        <a href="/stockproduct/list?page=${page - 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">◁ 이전</a>
+        <a href="/stockP/splist?page=${page - 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">◁ 이전</a>
     </c:if>
 
     <span>페이지 ${page} / ${totalPages}</span>
 
     <c:if test="${page < totalPages}">
-        <a href="/stockproduct/list?page=${page + 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">다음 ▷</a>
+        <a href="/stockP/splist?page=${page + 1}&sortColumn=${sortColumn}&sortDirection=${sortDirection}">다음 ▷</a>
     </c:if>
 </div>
 
@@ -219,8 +209,10 @@ button.btn-primary:hover {
     }
 
     // 일정 시간마다 새로고침
-    setInterval(fetchUpdatedList, 100000); // 1분마다 호출
+    setInterval(fetchUpdatedList, 1000000); // 10분마다 호출
 </script>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 
 

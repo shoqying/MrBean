@@ -20,6 +20,7 @@ public class StockMaterialsVO {
 	private String rmlNo; // LOT번호(원자재 입고)
 	private String rmCode; // 원자재 코드
 	private Date rrExpirydate; // 원자재 유통기한
+	private String rrNo; // 원자재 입고 번호
 
 
 }

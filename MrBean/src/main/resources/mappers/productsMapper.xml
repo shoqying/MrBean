@@ -3,7 +3,7 @@
 <mapper namespace="com.mrbean.products.productsMapper">
 
     <!-- 완제품 정보를 조회할 때 사용할 resultMap (선택 사항) -->
-    <resultMap id="productResultMap" type="com.mrbean.products.ProductsVO">
+    <resultMap id="productsResultMap" type="com.mrbean.products.ProductsVO">
         <result property="pCode" column="p_code"/>
         <result property="pName" column="p_name"/>
         <result property="pDescription" column="p_description"/>
@@ -28,4 +28,25 @@
         VALUES (#{pCode}, #{pName}, #{pDescription}, #{bomId})
     </insert>
 
+	<!-- 완제품 목록을 가져오는 쿼리 -->
+    <select id="getProductList" resultMap="productsResultMap">
+        SELECT p_code, p_name, p_description, bom_id
+        FROM products
+    </select>
+    
+    <!-- 완제품 수정 쿼리 -->
+    <update id="updateProduct" parameterType="com.mrbean.products.ProductsVO">
+        UPDATE products
+        SET p_name = #{pName},
+            p_description = #{pDescription},
+            bom_id = #{bomId}
+        WHERE p_code = #{pCode}
+    </update>
+
+    <!-- 완제품 삭제 쿼리 -->
+    <delete id="deleteProduct" parameterType="String">
+        DELETE FROM products
+        WHERE p_code = #{pCode}
+    </delete>
+    
 </mapper>

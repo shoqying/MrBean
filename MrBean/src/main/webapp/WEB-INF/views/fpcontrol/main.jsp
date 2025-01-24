@@ -9,14 +9,15 @@
 <title>완제품 품질 검사 관리</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
 
-    <h1>완제품 품질 검사 관리 목록</h1>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<h1>완제품 품질 검사 관리 목록</h1>
     <table>
         <tr>
             <th>순번</th>
             <th>제조일</th>
             <th>LOT 번호</th>
+            <th>BOM</th>
             <th>완제품명</th>
             <th>유통기한</th>
             <th>검사일자</th>
@@ -27,14 +28,21 @@
             <th>검사량 (g)</th>
             <th>삭제</th>
         </tr>
+        
+        <c:if test="${empty finishedProductsControlList}">
+	        <tr>
+	            <td colspan="12" style="text-align: center;">데이터가 없습니다</td>
+	        </tr>
+    	</c:if>
         <c:forEach var="vo" items="${finishedProductsControlList}">
         <tr id="row_${vo.fpcBno}">
 		    <td>${vo.fpcBno}</td>
-		    <td>${vo.fpcDate}</td>
+		    <td><fmt:formatDate value="${vo.fpcDate}" pattern="yyyy-MM-dd" /></td>
 		    <td>${vo.fpcLotbno}</td>
+		    <td>${vo.productsList[0].bomId}</td>
 		    <td>${vo.productsList[0].PName}</td>
-		    <td>${vo.fpcExpirydate}</td>
-		    <td>${vo.fpcCheckdate}</td>
+		    <td><fmt:formatDate value="${vo.fpcExpirydate}" pattern="yyyy-MM-dd" /></td>
+		    <td><fmt:formatDate value="${vo.fpcCheckdate}" pattern="yyyy-MM-dd" /></td>
 		    <td>
 		        <select id="fpcQualityCheck_${vo.fpcBno}" onchange="updateQualityCheck(${vo.fpcBno}, this)">
                     <option value="PENDING" ${vo.fpcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
@@ -60,7 +68,7 @@
     function updateQualityCheck(fpcBno, fpcQualityCheck) {
         var qualityCheckValue = fpcQualityCheck.value;
         $.ajax({
-            url: '/rmqcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
+            url: '/fpcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             data: { fpcBno: fpcBno, fpcQualityCheck: qualityCheckValue },
             success: function(response) {
@@ -75,7 +83,7 @@
     function updateStatus(fpcBno, fpcStatus) {
         var statusValue = fpcStatus.value;
         $.ajax({
-            url: '/rmqcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
+            url: '/fpcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             data: { fpcBno: fpcBno, fpcStatus: statusValue },
             success: function(response) {
@@ -91,7 +99,7 @@
     function confirmDelete(fpcBno) {
 	    if (confirm("삭제하시겠습니까?")) {
 	        $.ajax({
-	            url: '/rmqcontrol/deleteRawMaterial',  // 삭제 서버 URL
+	            url: '/fpcontrol/deleteFinishedProduct',  // 삭제 서버 URL
 	            type: 'POST',
 	            data: { fpcBno: fpcBno },
 	            success: function(response) {
@@ -111,5 +119,8 @@
 	}
     </script>
 
-</body>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+    
+
 </html>
