@@ -1,6 +1,7 @@
 package com.mrbean.user;
 
 import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,16 +12,16 @@ public class userDAOImpl implements userDAO {
     @Autowired
     private SqlSession sqlSession;
 
-    private static final String NAMESPACE = "com.mrbean.mappers.userMapper";
+    private static final String NAMESPACE = "com.mrbean.user.userMapper";
 
     @Override
     public userVO getUserById(String userId) {
-        return sqlSession.selectOne(NAMESPACE + ".readUser", userId);
+        return sqlSession.selectOne(NAMESPACE + ".getUserById", userId);
     }
 
     @Override
     public List<userVO> getAllUsers() {
-        return sqlSession.selectList(NAMESPACE + ".readAllUsers");
+        return sqlSession.selectList(NAMESPACE + ".getAllUsers");
     }
 
     @Override
@@ -32,4 +33,12 @@ public class userDAOImpl implements userDAO {
     public void updateUser(userVO user) {
         sqlSession.update(NAMESPACE + ".updateUser", user);
     }
+    
+    @Override
+    public void updatePassword(userVO user) {
+        System.out.println("DAO - 암호화된 비밀번호 업데이트: " + user.getUUserid());
+        sqlSession.update(NAMESPACE + ".updateUserPassword", user);
+    }
+    
 }
+
