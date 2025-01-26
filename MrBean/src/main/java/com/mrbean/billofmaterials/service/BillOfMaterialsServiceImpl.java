@@ -98,7 +98,11 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
         billOfMaterialsRepository.updateBillOfMaterials(billOfMaterialsVO);
     }
 
+    /**
+     * BOM 정보 삭제 로직
+     */
     @Override
+    @Transactional
     public void deleteBillOfMaterials(String bomId) throws Exception {
         billOfMaterialsRepository.deleteBillOfMaterials(bomId);
     }
