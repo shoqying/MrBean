@@ -62,5 +62,4 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
         sqlSession.delete(NAMESPACE + "deleteBillOfMaterials", bomId);
     }
 
-
 }
