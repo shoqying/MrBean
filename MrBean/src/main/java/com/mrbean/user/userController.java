@@ -198,8 +198,11 @@ public class userController {
             loggedInUser.setUPasswordhash(passwordEncoder.encode(newPassword));
             userService.updateUser(loggedInUser);
 
-            redirectAttributes.addFlashAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
-            return "redirect:/user/main"; // 변경 후 메인 페이지로 리다이렉트
+            // 로그로 확인
+            System.out.println("비밀번호 변경 성공 메시지 전달");
+            redirectAttributes.addFlashAttribute("success", "passwordChange");
+
+            return "redirect:/user/main";
         }
 
         
