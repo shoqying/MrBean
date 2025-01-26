@@ -38,6 +38,7 @@
                     >
                         BOM ID는 'BOM1' 형식처럼 입력해주세요. (예: BOM1 ~ BOM999)
                     </small>
+                    <small id="bomIdWarning" class="text-danger" style="display:none;">BOM ID는 변경할 수 없습니다.</small>
                 </div>
 
                 <!-- BOM 이름 -->
@@ -56,6 +57,7 @@
                         />
                         <label for="bomName">BOM 이름</label>
                     </div>
+                    <small id="bomIdWarning" class="text-danger" style="display:none;">BOM ID는 변경할 수 없습니다.</small>
                     <small
                         id="bomNameError"
                         class="form-text text-danger"

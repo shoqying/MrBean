@@ -8,6 +8,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -98,4 +99,12 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
         billOfMaterialsRepository.updateBillOfMaterials(billOfMaterialsVO);
     }
 
+    /**
+     * BOM 정보 삭제 로직
+     */
+    @Override
+    @Transactional
+    public void deleteBillOfMaterials(String bomId) throws Exception {
+        billOfMaterialsRepository.deleteBillOfMaterials(bomId);
+    }
 }

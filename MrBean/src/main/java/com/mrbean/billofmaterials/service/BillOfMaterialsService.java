@@ -17,4 +17,6 @@ public interface BillOfMaterialsService {
     // BOM 정보 업데이트
     void updateBillOfMaterials(BillOfMaterialsDTO billOfMaterialsDTO) throws Exception;
 
+    // BOM 정보 삭제
+    void deleteBillOfMaterials(String bomId) throws Exception;
 }

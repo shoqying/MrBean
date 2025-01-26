@@ -24,4 +24,6 @@ public interface BillOfMaterialsRepository {
     public List<BillOfMaterialsDTO> findAll();
 
     public void updateBillOfMaterials(BillOfMaterialsVO billOfMaterialsVO);
+
+    void deleteBillOfMaterials(String bomId);
 }

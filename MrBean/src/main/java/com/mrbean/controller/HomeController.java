@@ -99,6 +99,7 @@ public class HomeController {
 		// 뷰 페이지 이름 반환
 		return "billofmaterials/main"; // JSP 파일 이름
 	}
+
 	/**
 	 * BOM 등록 페이지 이동 (GET)
 	 * Example: GET http://localhost:8080/billofmaterials/create

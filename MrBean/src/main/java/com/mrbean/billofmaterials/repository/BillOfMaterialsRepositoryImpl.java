@@ -57,5 +57,10 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
         sqlSession.update(NAMESPACE + "updateBillOfMaterials", billOfMaterialsVO);
     }
 
+    @Override
+    public void deleteBillOfMaterials(String bomId) {
+        sqlSession.delete(NAMESPACE + "deleteBillOfMaterials", bomId);
+    }
+
 
 }
