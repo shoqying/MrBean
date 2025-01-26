@@ -37,6 +37,11 @@
                             <p>사용자 정보가 없습니다. 로그인이 필요합니다.</p>
                         </c:otherwise>
                     </c:choose>
+                    <!-- 뒤로가기 버튼 추가 -->
+				<div class="text-center mt-4">
+    				<a href="${pageContext.request.contextPath}/user/main" class="btn btn-primary w-100 rounded-4">뒤로가기</a>
+				</div>
+
                 </div>
             </div>
         </div>
