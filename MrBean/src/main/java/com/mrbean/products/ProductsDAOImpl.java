@@ -1,6 +1,6 @@
 package com.mrbean.products;
 
-import com.mrbean.billofmaterials.BomDropdownDTO;
+import com.mrbean.billofmaterials.domain.BomDropdownDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import javax.inject.Inject;

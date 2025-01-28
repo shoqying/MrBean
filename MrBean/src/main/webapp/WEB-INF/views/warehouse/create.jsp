@@ -12,7 +12,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
 </head>
-
+<style>
+.datatable-top > nav:first-child, .datatable-top > div:first-child, .datatable-bottom > nav:first-child, .datatable-bottom > div:first-child {
+    float: right;
+}
+</style>
+<!-- 원하는 제목을 설정 -->
+<c:set var="pageTitle" value="창고"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <div class="container mt-5">

@@ -1,5 +1,9 @@
 package com.mrbean.domain;
 
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+@Data
 public class BreadcrumbItem {
     private String label;
     private String link;
@@ -9,15 +13,5 @@ public class BreadcrumbItem {
         this.label = label;
         this.link = link;
         this.active = active;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-    public String getLink() {
-        return link;
-    }
-    public boolean isActive() {
-        return active;
     }
 }

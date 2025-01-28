@@ -1,4 +1,4 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.domain;
 
 public class MessageResponse {
     private String message;

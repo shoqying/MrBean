@@ -1,9 +1,11 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -42,6 +44,10 @@ public class BillOfMaterialsDTO {
     @JsonProperty("rmName")
     private String rmName; // raw_materials 테이블
 
-    public BillOfMaterialsDTO(String bomId, String bomName, String rmCode, int bomRatio, String bomDescription) {
-    }
+    @JsonProperty("bomCreatedAt")
+    private Timestamp bomCreatedAt;
+
+    @JsonProperty("bomUpdatedAt")
+    private Timestamp bomUpdatedAt;
+
 }

@@ -1,10 +1,10 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
 
 @Getter
 @Builder
@@ -16,9 +16,11 @@ public class BillOfMaterialsVO {
 	private final String bomName;       // BOM 이름
 	private final int bomRatio;         // BOM 비율
 	private final String bomDescription; // BOM 설명
+	private final Timestamp bomCreatedAt; // BOM 생성 시간
+	private final Timestamp bomUpdatedAt; // BOM 수정 시간
 
 	// VO 생성 시 유효성 검증 수행
-	public BillOfMaterialsVO(String bomId, String rmCode, String bomName, Integer bomRatio, String bomDescription) {
+	public BillOfMaterialsVO(String bomId, String rmCode, String bomName, Integer bomRatio, String bomDescription, Timestamp bomCreatedAt, Timestamp bomUpdatedAt) {
 		if (bomId == null || bomId.isEmpty()) {
 			throw new IllegalArgumentException("BOM ID는 필수입니다.");
 		}
@@ -30,6 +32,7 @@ public class BillOfMaterialsVO {
 		this.bomName = bomName;
 		this.bomRatio = bomRatio;
 		this.bomDescription = bomDescription != null ? bomDescription : "No Description";
+		this.bomCreatedAt = bomCreatedAt;
+		this.bomUpdatedAt = bomUpdatedAt;
 	}
-
 }
