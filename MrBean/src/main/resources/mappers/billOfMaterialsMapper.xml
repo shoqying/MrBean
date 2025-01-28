@@ -3,13 +3,15 @@
 
 <mapper namespace="com.mrbean.Mapper.BillOfMaterialsMapper">
     <!-- BOM 정보와 원자재 정보를 조회하는 SQL -->
-    <resultMap id="billOfMaterialsResultMap" type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO">
+    <resultMap id="BillOfMaterialsResultMap" type="com.mrbean.billofmaterials.domain.BillOfMaterialsVO">
         <id property="bomId" column="bom_id"/>
-        <result property="rmCode" column="rm_code"/>
         <result property="bomName" column="bom_name"/>
+        <result property="rmCode" column="rm_code"/>
         <result property="bomRatio" column="bom_ratio"/>
         <result property="bomDescription" column="bom_description"/>
         <result property="rmName" column="rm_name"/>
+        <result property="bomCreatedAt" column="bom_created_at"/>
+        <result property="bomUpdatedAt" column="bom_updated_at"/>
     </resultMap>
 
     <!-- BOM 입력 SQL -->
@@ -19,30 +21,36 @@
             bom_name,
             bom_ratio,
             bom_description,
-            rm_code
+            rm_code,
+            bom_created_at,
+            bom_updated_at
         )
         VALUES (
             #{bomId},
             #{bomName},
             #{bomRatio},
             #{bomDescription},
-            #{rmCode}
+            #{rmCode},
+            NOW(),
+            NOW()
         )
     </insert>
 
     <!-- BOM 전체 리스트 조회 -->
     <select id="selectAllBillOfMaterials" resultMap="billOfMaterialsResultMap">
         SELECT
-        bom.bom_id,
-        bom.rm_code,
-        bom.bom_name,
-        bom.bom_ratio,
-        bom.bom_description,
-        rm.rm_name AS rm_name
+            bom.bom_id,
+            bom.rm_code,
+            bom.bom_name,
+            bom.bom_ratio,
+            bom.bom_description,
+            bom.bom_created_at,
+            bom.bom_updated_at,
+            rm.rm_name AS rm_name
         FROM bill_of_materials bom
         JOIN raw_materials rm ON bom.rm_code = rm.rm_code
+        ORDER BY bom.bom_updated_at DESC
     </select>
-
 
     <!-- 마지막 BOM ID 조회 -->
     <select id="getLastBomId" resultType="String">
@@ -59,7 +67,9 @@
             rm_code,
             bom_name,
             bom_ratio,
-            bom_description
+            bom_description,
+            bom_created_at,
+            bom_updated_at
         FROM
             bill_of_materials
         WHERE
@@ -69,12 +79,13 @@
     <update id="updateBillOfMaterials" parameterType="com.mrbean.billofmaterials.domain.BillOfMaterialsVO">
         UPDATE bill_of_materials
         SET
-        bom_name = #{bomName},
-        bom_ratio = #{bomRatio},
-        bom_description = #{bomDescription},
-        rm_code = #{rmCode}
+            bom_name = #{bomName},
+            bom_ratio = #{bomRatio},
+            bom_description = #{bomDescription},
+            rm_code = #{rmCode},
+            bom_updated_at = NOW()
         WHERE
-        bom_id = #{bomId}
+            bom_id = #{bomId}
     </update>
 
     <delete id="deleteBillOfMaterials" parameterType="String">

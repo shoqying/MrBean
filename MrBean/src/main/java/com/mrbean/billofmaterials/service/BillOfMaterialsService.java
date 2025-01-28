@@ -1,7 +1,6 @@
 package com.mrbean.billofmaterials.service;
 
 import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
-
 import java.util.List;
 
 public interface BillOfMaterialsService {

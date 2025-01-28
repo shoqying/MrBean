@@ -144,6 +144,10 @@ function deleteBom(bomId) {
     if (!confirm('정말 삭제하시겠습니까?')) {
         return;
     }
+
+    // Extract numeric ID from BOM ID
+    const numericId = bomId.replace('BOM', '');
+
     $.ajax({
         url: `${BASE_URL}/${numericId}`,
         method: 'DELETE',
