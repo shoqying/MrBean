@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mrbean.Mapper.BillOfMaterialsMapper">
+
     <!-- BOM 정보와 원자재 정보를 조회하는 SQL -->
-    <resultMap id="BillOfMaterialsResultMap" type="com.mrbean.billofmaterials.domain.BillOfMaterialsVO">
+    <resultMap id="BillOfMaterialsResultMap" type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO">
         <id property="bomId" column="bom_id"/>
         <result property="bomName" column="bom_name"/>
         <result property="rmCode" column="rm_code"/>
@@ -37,7 +38,7 @@
     </insert>
 
     <!-- BOM 전체 리스트 조회 -->
-    <select id="selectAllBillOfMaterials" resultMap="billOfMaterialsResultMap">
+    <select id="selectAllBillOfMaterials" resultMap="BillOfMaterialsResultMap">
         SELECT
             bom.bom_id,
             bom.rm_code,
@@ -61,31 +62,31 @@
     </select>
 
     <!-- 특정 BOM 정보를 조회 -->
-    <select id="selectBomDetails" parameterType="String" resultMap="billOfMaterialsResultMap">
+    <select id="selectBomDetails" parameterType="String" resultMap="BillOfMaterialsResultMap">
         SELECT
-            bom_id,
-            rm_code,
-            bom_name,
-            bom_ratio,
-            bom_description,
-            bom_created_at,
-            bom_updated_at
+        bom_id,
+        rm_code,
+        bom_name,
+        bom_ratio,
+        bom_description,
+        bom_created_at,
+        bom_updated_at
         FROM
-            bill_of_materials
+        bill_of_materials
         WHERE
-            bom_id = #{bomId}
+        bom_id = #{bomId}
     </select>
 
     <update id="updateBillOfMaterials" parameterType="com.mrbean.billofmaterials.domain.BillOfMaterialsVO">
         UPDATE bill_of_materials
         SET
-            bom_name = #{bomName},
-            bom_ratio = #{bomRatio},
-            bom_description = #{bomDescription},
-            rm_code = #{rmCode},
-            bom_updated_at = NOW()
+        bom_name = #{bomName},
+        bom_ratio = #{bomRatio},
+        bom_description = #{bomDescription},
+        rm_code = #{rmCode},
+        bom_updated_at = NOW()
         WHERE
-            bom_id = #{bomId}
+        bom_id = #{bomId}
     </update>
 
     <delete id="deleteBillOfMaterials" parameterType="String">

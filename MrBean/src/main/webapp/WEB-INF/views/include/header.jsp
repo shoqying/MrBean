@@ -55,7 +55,7 @@
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="${pageContext.request.contextPath}/" class="logo d-flex align-items-center">
+      <a href="${pageContext.request.contextPath}/user/main" class="logo d-flex align-items-center">
      <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
 
         <span class="d-none d-lg-block">Mr.BEAN</span>
@@ -134,16 +134,7 @@
 </header>
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
-
     <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>기준정보관리</span><i class="bi bi-chevron-down ms-auto"></i>
