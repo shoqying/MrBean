@@ -206,9 +206,32 @@ public class userController {
         }
 
         
-        
-    
- 
+        @GetMapping("/list")
+        public String userList(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+            // 로그인된 사용자 정보 가져오기
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+
+            if (loggedInUser == null) {
+                // 로그인하지 않은 사용자는 접근 불가
+                return "redirect:/user/login";
+            }
+
+            // 권한에 따라 사용자 목록 조회
+            List<userVO> userList;
+            if ("ADMIN".equals(loggedInUser.getURoleenum().name())) {
+                userList = userService.getAllUsers(); // 전체 사용자 조회
+            } else if ("MANAGER".equals(loggedInUser.getURoleenum().name())) {
+                userList = userService.getUsersByRole("MEMBER"); // MEMBER만 조회
+            } else {
+                // MEMBER는 접근 불가, 경고 메시지 설정
+                redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
+                return "redirect:/user/main"; // 메인 페이지로 리다이렉트
+            }
+
+            model.addAttribute("userList", userList);
+            return "user/list"; // user/list.jsp 경로
+        }
+
 
     // 샘플페이지 연결
     @RequestMapping(value = "/sample",method = RequestMethod.GET )

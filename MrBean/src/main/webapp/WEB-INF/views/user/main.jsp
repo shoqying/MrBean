@@ -26,8 +26,7 @@
     <%-- 헤더 영역 include --%>
     <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-
-    <!-- SweetAlert2를 이용한 성공 메시지 처리 -->
+    <!-- SweetAlert2를 이용한 성공 및 에러 메시지 처리 -->
     <script>
         <c:if test="${not empty success}">
             const successMessage = '${success}'; 
@@ -56,6 +55,16 @@
                 title: messageTitle,
                 text: messageText,
                 confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인'
+            });
+        </c:if>
+
+        <c:if test="${not empty error}">
+            Swal.fire({
+                icon: 'error',
+                title: '접근 제한',
+                text: '${error}', // Controller에서 전달된 에러 메시지
+                confirmButtonColor: '#d33',
                 confirmButtonText: '확인'
             });
         </c:if>

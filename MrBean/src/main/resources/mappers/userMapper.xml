@@ -37,6 +37,18 @@
             users
     </select>
 
+<select id="getUsersByRole" parameterType="string" resultType="com.mrbean.user.userVO">
+    SELECT u_userid AS uUserid,
+           u_username AS uUsername,
+           u_phonenumber AS uPhonenumber,
+           u_email AS uEmail,
+           u_roleenum AS uRoleenum
+    FROM users
+    WHERE u_roleenum = #{role}
+</select>
+
+
+
 <select id="getUserById" parameterType="java.lang.String" resultMap="memberMap">
     SELECT 
         u_userid, u_username, u_email, u_phonenumber, 
@@ -46,6 +58,16 @@
     WHERE 
         u_userid = #{uUserid}
 </select>
+<select id="getAllUsers" resultType="com.mrbean.user.userVO">
+    SELECT u_userid AS uUserid,
+           u_username AS uUsername,
+           u_phonenumber AS uPhonenumber,
+           u_email AS uEmail,
+           u_roleenum AS uRoleenum
+    FROM users
+</select>
+
+
 
 
     <!-- 사용자 추가 -->
