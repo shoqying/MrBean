@@ -69,6 +69,63 @@
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div>
+  <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3" style="margin-right: 50px;"> <!-- 추가 여백 -->
+                <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                    <!-- 사용자 프로필 이미지 -->
+                    <c:choose>
+                        <c:when test="${sessionScope.loggedInUser.URoleenum == 'ADMIN'}">
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/admin.png" alt="Admin"
+                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                        </c:when>
+                        <c:when test="${sessionScope.loggedInUser.URoleenum == 'MANAGER'}">
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/manager.png" alt="Manager"
+                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                        </c:when>
+                        <c:when test="${sessionScope.loggedInUser.URoleenum == 'MEMBER'}">
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
+                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/default-profile.png" alt="Default"
+                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                        </c:otherwise>
+                    </c:choose>
+
+                    <!-- 사용자 이름 -->
+                    <span class="d-none d-md-block" style="font-size: 20px; font-weight: bold;">
+                        ${sessionScope.loggedInUser.UUsername}
+                    </span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header text-center">
+                        <h6>${sessionScope.loggedInUser.UUsername}</h6>
+                        <span>${sessionScope.loggedInUser.URoleenum}</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/info">
+                            <i class="bi bi-person"></i>
+                            <span>내 정보</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>로그아웃</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
