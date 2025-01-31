@@ -51,9 +51,9 @@
   <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
 
-<body>
+<body>  
   <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+<header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
       <a href="${pageContext.request.contextPath}/" class="logo d-flex align-items-center">
      <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
@@ -86,10 +86,24 @@
                             <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
                                  class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
                         </c:when>
-                        <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/resources/assets/img/default-profile.png" alt="Default"
-                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
-                        </c:otherwise>
+<c:otherwise>
+    <c:choose>
+   
+        <c:when test="${pageContext.request.servletPath != '/young.jsp'}">
+            <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+                     class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
+            </a>
+        </c:when>
+   
+        <c:otherwise>
+            <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+                 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px; cursor: not-allowed;">
+        </c:otherwise>
+    </c:choose>
+</c:otherwise>
+
+
                     </c:choose>
 
                     <!-- 사용자 이름 -->
@@ -112,64 +126,12 @@
                             <span>내 정보</span>
                         </a>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
+                
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle" href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li>
-
-        <li class="nav-item dropdown pe-3">
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="${pageContext.request.contextPath}/resources/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Mr Bean</span>
-          </a>
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
-
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
@@ -349,6 +311,18 @@
         </c:when>
       </c:choose>
     </li>
+
+<!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
+<c:if test="${not empty sessionScope.loggedInUser}">
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
+            <i class="bi bi-key"></i>
+            <span>비밀번호 변경</span>
+        </a>
+    </li>
+</c:if>
+    
+    
   </ul>
 </aside>
   <main id="main" class="main">
