@@ -20,7 +20,7 @@
                   <tr>
 					<th>순번</th>
 		            <th>제조일</th>
-		            <th>LOT 번호</th>
+		            <th>완제품 LOT 번호</th>
 		            <th>BOM</th>
 		            <th>완제품명</th>
 		            <th>유통기한</th>
