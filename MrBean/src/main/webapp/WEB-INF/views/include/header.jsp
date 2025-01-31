@@ -12,6 +12,9 @@
   <!-- Toast CSS -->
   <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
 
+  <!-- Costom CSS -->
+  <link rel="stylesheet" href="<c:url value='/resources/css/bomStyle.css'/>">
+
   <!-- Favicons -->
   <link href="${pageContext.request.contextPath}/resources/assets/img/favicon.png" rel="icon">
   <link href="${pageContext.request.contextPath}/resources/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
