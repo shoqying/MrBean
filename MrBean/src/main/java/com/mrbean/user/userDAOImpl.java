@@ -25,6 +25,11 @@ public class userDAOImpl implements userDAO {
     }
 
     @Override
+    public List<userVO> getUsersByRole(String role) {
+        return sqlSession.selectList(NAMESPACE + ".getUsersByRole", role);
+    }
+    
+    @Override
     public void createUser(userVO user) {
         sqlSession.insert(NAMESPACE + ".createUser", user);
     }

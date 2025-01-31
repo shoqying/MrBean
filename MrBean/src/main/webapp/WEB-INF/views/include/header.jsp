@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<htmllang="ko">
+<html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
   <title><c:out value="${pageTitle} - MrBean" default="MrBean"/></title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+  <meta content="MrBean Web Application" name="description">
+<meta content="MrBean, Web, Management" name="keywords">
 
   <!-- Toast CSS -->
   <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
@@ -55,21 +54,22 @@
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="${pageContext.request.contextPath}/user/main" class="logo d-flex align-items-center">
-     <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
-
-        <span class="d-none d-lg-block">Mr.BEAN</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+        <a href="${pageContext.request.contextPath}/user/main" class="logo d-flex align-items-center">
+            <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
+            <span class="d-none d-lg-block">Mr.BEAN</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
     </div>
-  <ul class="d-flex align-items-center">
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
             <li class="nav-item dropdown pe-3" style="margin-right: 50px;"> <!-- 추가 여백 -->
                 <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
                     <!-- 사용자 프로필 이미지 -->
@@ -86,55 +86,78 @@
                             <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
                                  class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
                         </c:when>
-<c:otherwise>
-    <c:choose>
-   
-        <c:when test="${pageContext.request.servletPath != '/young.jsp'}">
-            <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
-                     class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
-            </a>
-        </c:when>
-   
-        <c:otherwise>
-            <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
-                 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px; cursor: not-allowed;">
-        </c:otherwise>
-    </c:choose>
-</c:otherwise>
+                        
+                        <c:otherwise>
+    						<img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+        						 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
+						</c:otherwise>
+                        
 
 
-                    </c:choose>
+                   		 </c:choose>
 
-                    <!-- 사용자 이름 -->
-                    <span class="d-none d-md-block" style="font-size: 20px; font-weight: bold;">
-                        ${sessionScope.loggedInUser.UUsername}
-                    </span>
+          <!-- 사용자 이름 -->
+    <span class="d-block" style="font-size: 20px; font-weight: bold;">
+        <c:choose>
+            <c:when test="${not empty sessionScope.loggedInUser}">
+                ${sessionScope.loggedInUser.UUsername}
+            </c:when>
+            <c:otherwise>
+                	Guest
+            </c:otherwise>
+        </c:choose>
+    </span>
+ 
+
+
                 </a>
-
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li class="dropdown-header text-center">
-                        <h6>${sessionScope.loggedInUser.UUsername}</h6>
-                        <span>${sessionScope.loggedInUser.URoleenum}</span>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/info">
-                            <i class="bi bi-person"></i>
-                            <span>내 정보</span>
-                        </a>
-                    </li>
-                
-                </ul>
-            </li>
-        </ul>
-    </nav>
+   <!-- 드롭다운 메뉴 -->
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        <li class="dropdown-header text-center">
+            <h6>${sessionScope.loggedInUser.UUsername}</h6>
+            <span>${sessionScope.loggedInUser.URoleenum}</span>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/info">
+                <i class="bi bi-person"></i>
+                <span>내 정보</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/changePassword">
+                <i class="bi bi-key"></i>
+                <span>비밀번호 변경</span>
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>로그아웃</span>
+            </a>
+       	 </li>
+   		 </ul>
+		</li>
+	 </ul>
+   </nav>
 </header>
+
+
   <!-- ======= Sidebar ======= -->
+  <!-- "PAGES" 스타일 섹션 -->
+<li class="nav-heading">PAGES</li>
+
+  
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
+      <!-- "PAGES" 스타일 섹션 -->
+<li class="nav-heading">Mr.bean Process</li>
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>기준정보관리</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -291,6 +314,28 @@
       </c:choose>
     </li>
 
+	<!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
+	<c:if test="${not empty sessionScope.loggedInUser}">
+    	<li class="nav-item">
+        	<a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
+           	 <i class="bi bi-key"></i>
+            <span>비밀번호 변경</span>
+        </a>
+    </li>
+</c:if>
+
+  <!-- 로그인 상태에서만 보이는 섹션 -->
+        <c:if test="${not empty sessionScope.loggedInUser}">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/list">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <span>회원 목록</span>
+                </a>
+            </li>
+        </c:if>
+
+
+
     <!-- 로그아웃 버튼: 로그인 상태일 때만 표시 -->
     <li class="nav-item">
       <c:choose>
@@ -303,15 +348,7 @@
       </c:choose>
     </li>
 
-<!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
-<c:if test="${not empty sessionScope.loggedInUser}">
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
-            <i class="bi bi-key"></i>
-            <span>비밀번호 변경</span>
-        </a>
-    </li>
-</c:if>
+
     
     
   </ul>
