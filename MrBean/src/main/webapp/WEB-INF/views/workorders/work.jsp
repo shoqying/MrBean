@@ -3,8 +3,7 @@
 <!-- header include -->
 <%@ include file="/WEB-INF/views/include/header.jsp" %>    
 
-<!-- jQuery를 먼저 로드 -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </head>
 <body>
 <!-- JavaScript 파일 로드 -->
@@ -16,7 +15,7 @@
            <div class="card-body">
             <h5 class="card-title"><i class="bi bi-pencil-square me-1"></i><b>작업지시 등록</b></h5>
              <!-- Floating Labels Form -->
-             <form class="row g-3" id = "workOrderForm">
+             <form class="row g-3" id="workOrderForm">
              <!-- 첫번째 라인 -->
                <div class="col-md-6">
                  <div class="form-floating">
@@ -86,12 +85,6 @@
                    <i class="bi bi-arrow-counterclockwise me-1"></i>초기화
                  </button>
                </div>
-               <!-- 작업 버튼 그룹 -->
-               <div class ="text-end">
-               		<button type="button" class="btn btn-primary" id="workStartBtn">작업시작</button>
-               		<button type="button" class="btn btn-secondary" id="workCompletedBtn">작업완료</button>
-               		<button type="button" class="btn btn-danger" id="workStoppedBtn">작업중지</button>
-               </div>
              </form>
            </div>
          </div>
@@ -119,70 +112,41 @@
                    <th>작업상태</th>
                    <th>비고</th>
                    <th>등록자</th>
+                   <th>작업관리</th>
                    <th>삭제</th>
                  </tr>
                </thead>
-               <tbody>
-               	<c:forEach var="work" items="${workList}">
-                 <tr>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workOrderNo}">${work.workOrderNo}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workPlanNo}">${work.workPlanNo}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workPlanDate}">${work.workPlanDate}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workQuantity}">${work.workQuantity}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workStatus}">
-                   			<span class="badge ${work.workStatus == 'WAITING' ? 'bg-secondary' : 
-                   							work.workStatus == 'IN_PROGRESS' ? 'bg-warning' : 
-                   							work.workStatus == 'COMPLETED' ? 'bg-success' : 
-                   							work.workStatus == 'STOPPED' ? 'bg-danger' : 'bg-light'}">${work.workStatus}</span>
-                   		</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workRemark}">${work.workRemark}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                 	<td>
-                   	<c:choose>
-                   		<c:when test="${not empty work.workCreatedBy}">${work.workCreatedBy}</c:when>
-                   		<c:otherwise>값이 없습니다</c:otherwise>
-                   	</c:choose>
-                   </td>
-                   <td>
-                     <button class="btn btn-danger btn-sm" 
-                         onclick="workModule.delete('${work.workId}')">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                  </td>                   
-                 </tr>
-   				</c:forEach>
-               </tbody>
+				<tbody>
+				    <c:forEach var="work" items="${workList}">
+				    <tr>
+				        <td>${work.workOrderNo}</td>
+				        <td>${work.workPlanNo}</td>
+				        <td>${work.workPlanDate}</td>
+				        <td>${work.workQuantity}</td>
+				        <td>
+				            <span class="badge ${work.workStatus == 'WAITING' ? 'bg-secondary' : 
+				                             work.workStatus == 'IN_PROGRESS' ? 'bg-warning' : 
+				                             work.workStatus == 'COMPLETED' ? 'bg-success' : 
+				                             work.workStatus == 'STOPPED' ? 'bg-danger' : 'bg-light'}">
+				                ${work.workStatus}
+				            </span>
+				        </td>
+				        <td>${work.workRemark}</td>
+				        <td>${work.workCreatedBy}</td>
+				        <td>
+				            <div class="btn-group" data-work-id="${work.workId}" data-work-status="${work.workStatus}">
+				                <!-- 버튼들은 JavaScript에서 동적으로 생성됩니다 -->
+				            </div>
+				        </td>
+				        <td>
+				            <button type="button" class="btn btn-danger btn-sm delete-btn" data-work-id="${work.workId}">
+				                <i class="bi bi-trash"></i>
+				            </button>
+				        </td>
+				    </tr>
+				    </c:forEach>
+				</tbody>
              </table>
-             <!-- End Table with stripped rows -->
            </div>
          </div>
        </div>
@@ -190,7 +154,9 @@
    </section>
    
 <!-- 생산계획 검색 모달 -->
-<div class="modal fade" id="planSearchModal" data-bs-backdrop="true">
+
+<!-- data-bs-backdrop="static"=> 외부클릭 닫힘 방지 기존은 true로 했었움 -->
+<div class="modal fade" id="planSearchModal" data-bs-backdrop="true"> 
  <div class="modal-dialog modal-lg">
    <div class="modal-content">
      <div class="modal-header">
@@ -239,3 +205,5 @@
    
 <!-- footer include -->
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+</body>
+</html>

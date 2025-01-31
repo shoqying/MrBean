@@ -15,6 +15,8 @@
         <result property="workCreatedBy" column="work_created_by" />
         <result property="workCreatedAt" column="work_created_at" />
         <result property="workUpdatedAt" column="work_updated_at" />
+        <result property="rmlNo" column="rml_no" />
+    	<result property="workQuantity" column="rr_quantity" />
     </resultMap>    
     
     
@@ -44,32 +46,36 @@
     <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
         INSERT INTO work_orders (
             work_order_no,
-           <!--  plan_id, -->
+            plan_id,
             work_plan_no,
             work_plan_date,
             work_quantity,
             <!-- completed_quantity, -->
             work_status,
             work_remark,
-            work_created_by
+            work_created_by,
+            rml_no
+            
+            
+            
         ) VALUES (
             #{workOrderNo},
-         <!--    #{planId}, -->
+            #{planId},
             #{workPlanNo},
             #{workPlanDate},
             #{workQuantity},
             <!-- 0, -->
             #{workStatus},
             #{workRemark},
-            #{workCreatedBy}
+            #{workCreatedBy},
+            #{rmlNo}
         )
     </insert>
     
     <!-- 작업상태 변경 -->
-    <update id="">
+    <update id="updateWorkStatus">
 	    UPDATE work_orders 
-	    SET 
-	        work_status = #{workStatus},
+	    SET work_status = #{workStatus}
 	        <!-- work_updated_at = #{workUpdatedAt}, -->
 	        <!-- work_start_time = #{workStartTime}, -->
 	        <!-- work_end_time = #{workEndTime} -->

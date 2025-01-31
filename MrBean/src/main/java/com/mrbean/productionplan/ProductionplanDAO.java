@@ -16,4 +16,7 @@ public interface ProductionplanDAO {
 	//생산계획목록 삭제
     void deleteProductionPlan(int planId);
 	
+	//생산계획목록 상태 수정
+	public void updatePlanStatus(ProductionPlanVO planVO);
+	
 }//ProductionplanDAO

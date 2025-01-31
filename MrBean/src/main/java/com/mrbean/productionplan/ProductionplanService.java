@@ -12,7 +12,10 @@ public interface ProductionplanService {
     List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO);
 	
 	// 생산 목록 삭제
-	
-	void deletePlan(int planId);
+
+	public void deletePlan(int planId);
+
+	// 생산목록 상태변경
+	public void updatePlanStatus(ProductionPlanVO planVO);
 	
 }//ProductionplanService

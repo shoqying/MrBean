@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mrbean.common.NumberGenerationService;
 
 /**
- *	REST방식으로 게시판CRUD 구현
+ *	REST방식으로 게시판CRUD 구현 설계(참조자료)
  *  
  *   Create - 생성(POST)
  *   Read - 조회(GET)
@@ -99,6 +99,24 @@ public class ProductionplanRestController {
     }
     
     
+    /**
+     * 생산계획 상태 업데이트
+     * http://localhost:8088/productionplan/api/plan/{planId}/status
+     */
+    @RequestMapping(value = "/plan/{planId}/status", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updatePlanStatus(@PathVariable int planId, @RequestBody ProductionPlanVO planVO) {
+    	logger.info("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    	
+        try {
+            planVO.setPlanId(planId);
+            pps.updatePlanStatus(planVO);
+            List<ProductionPlanVO> planList = pps.getPlanList(planVO);
+            return ResponseEntity.ok(planList);
+        } catch (Exception e) {
+            logger.error("생산계획 상태 업데이트 실패", e);
+            return ResponseEntity.status(500).body("상태 업데이트에 실패했습니다.");
+        }
+    }
     
     
     
