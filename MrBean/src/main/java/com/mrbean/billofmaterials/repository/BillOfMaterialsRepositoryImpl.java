@@ -1,8 +1,12 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.repository;
 
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository {
@@ -34,9 +38,15 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
     }
 
     @Override
-    public BillOfMaterialsVO selectBomDetails(String bomId) throws Exception{
+    public BillOfMaterialsDTO selectBomDetails(String bomId) throws Exception{
 
         return sqlSession.selectOne(NAMESPACE + "selectBomDetails", bomId);
+    }
+
+    @Override
+    public List<BillOfMaterialsDTO> findAll() {
+
+        return sqlSession.selectList(NAMESPACE + "selectAllBillOfMaterials");
     }
 
     /**
@@ -47,5 +57,9 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
         sqlSession.update(NAMESPACE + "updateBillOfMaterials", billOfMaterialsVO);
     }
 
+    @Override
+    public void deleteBillOfMaterials(String bomId) {
+        sqlSession.delete(NAMESPACE + "deleteBillOfMaterials", bomId);
+    }
 
 }

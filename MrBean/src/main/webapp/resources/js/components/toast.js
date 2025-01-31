@@ -12,14 +12,11 @@ function showToast(message, type, position = "top") {
         toast.classList.add("show");
     }, 10); // 약간의 딜레이로 애니메이션 적용
 
-    // 디버깅용 로그
-    console.log(`Toast created: message="${message}", type="${type}"`);
-
-//    // 자동 제거
-//    setTimeout(() => {
-//        toast.classList.remove("show");
-//        setTimeout(() => {
-//            document.body.removeChild(toast);
-//        }, 300); // 애니메이션 시간과 동기화
-//    }, 4000); // 4초 후 사라짐
+    // 자동 제거
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300); // 애니메이션 시간과 동기화
+    }, 4000); // 4초 후 사라짐
 }

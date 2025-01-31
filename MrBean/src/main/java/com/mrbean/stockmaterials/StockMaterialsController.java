@@ -24,14 +24,31 @@ public class StockMaterialsController {
     
     @RequestMapping("/list")
     public String getStockMaterials(
-            @RequestParam(defaultValue = "rml_date") String sortColumn,
-            @RequestParam(defaultValue = "DESC") String sortDirection,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "latest") String sortOption, // 기본값을 'latest'로 설정
+            @RequestParam(defaultValue = "DESC") String sortDirection, // 정렬 방향 (DESC로 기본값 설정)
+            @RequestParam(defaultValue = "1") int page, // 페이지 번호
             Model model) {
 
-      
+        // sortOption 검증 (기본값을 'latest'로 설정)
+        if (!"latest".equals(sortOption) && !"oldest".equals(sortOption)) {
+            sortOption = "latest"; // 기본값 설정
+        }
 
-        int pageSize = 10; // 한 페이지에 20개씩 출력
+        // sortDirection 검증
+        if (!"ASC".equals(sortDirection) && !"DESC".equals(sortDirection)) {
+            sortDirection = "DESC"; // 기본값 설정
+        }
+
+        // 정렬 기준 설정 (latest -> DESC, oldest -> ASC)
+        String sortColumn = "rml_date";  // 고정된 컬럼으로 설정
+
+        if ("latest".equals(sortOption)) {
+            sortDirection = "DESC"; // 최신순
+        } else if ("oldest".equals(sortOption)) {
+            sortDirection = "ASC"; // 오래된순
+        }
+
+        int pageSize = 10;
         int offset = (page - 1) * pageSize;
 
         // 원자재 목록 조회
@@ -45,17 +62,16 @@ public class StockMaterialsController {
 
         // 모델에 데이터 추가
         model.addAttribute("stockMaterials", stockMaterials);
-        model.addAttribute("sortColumn", sortColumn);
+        model.addAttribute("sortOption", sortOption); // 사용자가 선택한 정렬 옵션을 모델에 추가
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("page", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);  // 전체 데이터 개수 추가
 
-        // list.jsp로 이동
         return "stock/list";
     }
-//    
+
+
+    }
     
     
     
-}

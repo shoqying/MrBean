@@ -18,12 +18,12 @@
     </resultMap>    
     
     
-	<select id="getLastNumberForDate" resultType = "String">
-        SELECT work_order_no
-        FROM work_orders
-        WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
-        ORDER BY plan_no DESC 
-        LIMIT 1	
+	<select id="getLastNumberForDate" resultType="String">
+	    SELECT work_order_no
+	    FROM work_orders
+	    WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
+	    ORDER BY work_order_no DESC 
+	    LIMIT 1	
 	</select>
 	
 	
@@ -34,7 +34,47 @@
 	</select>
     
     
+     
+ 	<delete id="deleteWO">
+ 		DELETE FROM work_orders WHERE work_id = #{workId}
+ 		
+ 	</delete>
+ 	
+ 	<!-- 작업지시 등록 -->
+    <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
+        INSERT INTO work_orders (
+            work_order_no,
+           <!--  plan_id, -->
+            work_plan_no,
+            work_plan_date,
+            work_quantity,
+            <!-- completed_quantity, -->
+            work_status,
+            work_remark,
+            work_created_by
+        ) VALUES (
+            #{workOrderNo},
+         <!--    #{planId}, -->
+            #{workPlanNo},
+            #{workPlanDate},
+            #{workQuantity},
+            <!-- 0, -->
+            #{workStatus},
+            #{workRemark},
+            #{workCreatedBy}
+        )
+    </insert>
     
+    <!-- 작업상태 변경 -->
+    <update id="">
+	    UPDATE work_orders 
+	    SET 
+	        work_status = #{workStatus},
+	        <!-- work_updated_at = #{workUpdatedAt}, -->
+	        <!-- work_start_time = #{workStartTime}, -->
+	        <!-- work_end_time = #{workEndTime} -->
+	    WHERE work_id = #{workId}
+    </update>
     
     
 </mapper>

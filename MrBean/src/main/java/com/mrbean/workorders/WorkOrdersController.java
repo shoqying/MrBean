@@ -44,63 +44,6 @@ public class WorkOrdersController {
 			return "workorders/work";
 		}
 		
-		/**
-		 * 작업지시등록 페이지(POST)
-		 * http://localhost:8088/workorders/order
-		 * 
-		 */
-		@RequestMapping(value = "/work", 
-						method = RequestMethod.POST,
-						produces = MediaType.APPLICATION_JSON_VALUE)
-		@ResponseBody
-		public ResponseEntity<?> planRegisterPOST(@RequestBody WorkOrdersVO workVO ) {
-			logger.info("planRegisterPOST 호출()");
-			try {
-				// 작업지시 등록
-				wos.insertWorkOrders(workVO);
-				
-				// 최신 목록 반환
-				List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-
-				return ResponseEntity.ok(workList);  // 성공적으로 목록을 반환
-				
-			} catch (Exception e) {
-		        logger.error("작업지시 등록 실패", e);
-		        return ResponseEntity.status(500).body("작업지시 등록에 실패했습니다.");
-			}
-		}
-
-
-		/**
-		 * 번호생성 API(GET)
-		 * http://localhost:8088/workorders/generateWorkNumber
-		 * 
-		 */
-		@RequestMapping(value = "/generateWorkNumber", method = RequestMethod.GET)
-		@ResponseBody
-		public String generateWorkNumberGET() {
-			
-			String workNumber = ngs.generateNumber("workorders");
-			logger.info("작업지시넘버 생성");
-			
-			return workNumber;
-		}
-		/**
-		 * 작업지시 목록 삭제
-		 */
-		@RequestMapping(value = "/delete", method = RequestMethod.POST)
-		@ResponseBody
-		public ResponseEntity<?> deleteWork(@RequestBody int wordId){
-			try {
-				wos.deleteWork(wordId);
-		        List<WorkOrdersVO> workList = wos.getWorkList(new WorkOrdersVO());
-		        return ResponseEntity.ok(workList);				
-			} catch (Exception e) {
-		        return ResponseEntity.status(500).body("삭제에 실패했습니다.");				
-			}
-			
-		}
-		
 	
 
 } //WorkOrdersController

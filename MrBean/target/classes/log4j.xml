@@ -54,6 +54,12 @@
 	<logger name="com.mrbean.warehouse">
 		<level value="info" />
 	</logger>
+	<logger name="com.mrbean.common">
+		<level value="info" />
+	</logger>
+	<logger name="com.mrbean.workorders">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">

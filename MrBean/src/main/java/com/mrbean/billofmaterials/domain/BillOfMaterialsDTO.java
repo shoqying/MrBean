@@ -1,9 +1,11 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -38,5 +40,14 @@ public class BillOfMaterialsDTO {
     @JsonProperty("bomDescription")
     @Size(max = 500, message = "BOM 설명은 500자 이하로 입력해야 합니다.")
     private String bomDescription;
+
+    @JsonProperty("rmName")
+    private String rmName; // raw_materials 테이블
+
+    @JsonProperty("bomCreatedAt")
+    private Timestamp bomCreatedAt;
+
+    @JsonProperty("bomUpdatedAt")
+    private Timestamp bomUpdatedAt;
 
 }

@@ -61,6 +61,12 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		
 		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", rqcBno);
 	}
+
+	@Override
+	public void insertFinishedProductLot() throws Exception {
+		logger.info("insertFinishedProductLot() 호출");
+		sqlSession.insert(NAMESPACE + "insertFinishedProductLot");
+	}
 	
 	
 	

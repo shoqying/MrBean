@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<htmllang="ko">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title><c:out value="${pageTitle} - MrBean" default="MrBean"/></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+
+  <!-- Toast CSS -->
+  <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
 
   <!-- Favicons -->
   <link href="${pageContext.request.contextPath}/resources/assets/img/favicon.png" rel="icon">
@@ -29,29 +32,44 @@
 
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/resources/assets/css/style.css" rel="stylesheet">
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <!-- Vendor JS Files -->
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+  <!-- Navigation JS File -->
+  <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
 
-<body>
-  
+<body>  
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="${pageContext.request.contextPath}/user/main" class="logo d-flex align-items-center">
-            <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
-            <span class="d-none d-lg-block">Mr.BEAN</span>
-        </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
+      <a href="${pageContext.request.contextPath}/" class="logo d-flex align-items-center">
+     <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
+
+        <span class="d-none d-lg-block">Mr.BEAN</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
     </div>
-
-    <nav class="header-nav ms-auto">
-        <ul class="d-flex align-items-center">
+  <ul class="d-flex align-items-center">
             <li class="nav-item dropdown pe-3" style="margin-right: 50px;"> <!-- 추가 여백 -->
                 <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
                     <!-- 사용자 프로필 이미지 -->
@@ -114,19 +132,17 @@
         </ul>
     </nav>
 </header>
-
-      </ul>
-    </nav>
-  </header>
-
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-   <!-- "PAGES" 스타일 섹션 -->
-<li class="nav-heading">Mr.bean Process</li>
-
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -134,79 +150,29 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Alerts</span>
+            <a href="/rawMaterials/list">
+              <i class="bi bi-circle"></i><span>원자재</span>
             </a>
           </li>
           <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>Accordion</span>
+            <a href="/warehouses/create">
+              <i class="bi bi-circle"></i><span>창고</span>
             </a>
           </li>
           <li>
-            <a href="components-badges.html">
-              <i class="bi bi-circle"></i><span>Badges</span>
+            <a href="/billofmaterials">
+              <i class="bi bi-circle"></i><span>자재 명세서</span>
             </a>
           </li>
           <li>
-            <a href="components-breadcrumbs.html">
-              <i class="bi bi-circle"></i><span>Breadcrumbs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-buttons.html">
-              <i class="bi bi-circle"></i><span>Buttons</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-cards.html">
-              <i class="bi bi-circle"></i><span>Cards</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-carousel.html">
-              <i class="bi bi-circle"></i><span>Carousel</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-list-group.html">
-              <i class="bi bi-circle"></i><span>List group</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-modal.html">
-              <i class="bi bi-circle"></i><span>Modal</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tabs.html">
-              <i class="bi bi-circle"></i><span>Tabs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-pagination.html">
-              <i class="bi bi-circle"></i><span>Pagination</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-progress.html">
-              <i class="bi bi-circle"></i><span>Progress</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-spinners.html">
-              <i class="bi bi-circle"></i><span>Spinners</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tooltips.html">
-              <i class="bi bi-circle"></i><span>Tooltips</span>
+            <a href="/products/list">
+              <i class="bi bi-circle"></i><span>완제품</span>
             </a>
           </li>
         </ul>
       </li><!-- End Components Nav -->
 
- <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-journal-text"></i><span>생산관리</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
@@ -217,13 +183,8 @@
             </a>
         </li>
         <li>
-            <a href="forms-editors.html">
+            <a href="/workorders/work">
                 <i class="bi bi-circle"></i><span>작업지시 관리</span>
-            </a>
-        </li>
-        <li>
-            <a href="forms-validation.html">
-                <i class="bi bi-circle"></i><span>Form Validation</span>
             </a>
         </li>
     </ul>
@@ -235,13 +196,13 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>General Tables</span>
+            <a href="/rmqcontrol/main">
+              <i class="bi bi-circle"></i><span>원자재 검사 관리</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
+            <a href="/fpcontrol/main">
+              <i class="bi bi-circle"></i><span>완제품 검사 관리</span>
             </a>
           </li>
         </ul>
@@ -253,18 +214,13 @@
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
+            <a href="/stock/list">
+              <i class="bi bi-circle"></i><span>원자재 재고 목록</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
+            <a href="/stockP/splist">
+              <i class="bi bi-circle"></i><span>완제품 재고 목록</span>
             </a>
           </li>
         </ul>
@@ -296,7 +252,7 @@
 <!-- "PAGES" 스타일 섹션 -->
 <li class="nav-heading">PAGES</li>
 
-    
+
   <!-- 로그인 상태에 따라 표시되는 메뉴 -->
     <li class="nav-item">
       <c:choose>
@@ -372,15 +328,24 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Mr.BEAN</h1>
+      <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Layouts</li>
+          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/"><i class="bi bi-house-door"></i>Home</a></li>
+          <c:forEach var="crumb" items="${breadcrumbList}">
+            <c:choose>
+              <c:when test="${crumb.active}">
+                <li class="breadcrumb-item active">${crumb.label}</li>
+              </c:when>
+              <c:otherwise>
+                <li class="breadcrumb-item"><a href="${crumb.link}">${crumb.label}</a></li>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    
+
+
 
 
