@@ -1,0 +1,8 @@
+.new-label {
+    display: inline-flex;
+    color: red;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-right: 5px;
+}
