@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RawMaterialsReceivingServiceImpl implements RawMaterialsReceivingService {
 
-    private RawMaterialsReceivingDAO rawMaterialsReceivingDAO;
+    private final RawMaterialsReceivingDAO rawMaterialsReceivingDAO;
 
     // 생성자를 통해 DAO를 주입
     public RawMaterialsReceivingServiceImpl(RawMaterialsReceivingDAO rawMaterialsReceivingDAO) {
