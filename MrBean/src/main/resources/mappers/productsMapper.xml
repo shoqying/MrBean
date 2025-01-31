@@ -11,7 +11,7 @@
         <result property="bomId" column="bom_id"/>
     </resultMap>
     
-    <resultMap id="BomDropdownResultMap" type="com.mrbean.billofmaterials.BomDropdownDTO">
+    <resultMap id="BomDropdownResultMap" type="com.mrbean.billofmaterials.domain.BomDropdownDTO">
 	    <result property="bomId" column="bom_id" />
 	    <result property="bomName" column="bom_name" />
 	</resultMap>

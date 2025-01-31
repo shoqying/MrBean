@@ -8,12 +8,15 @@ import { workModule } from './modules/work.js';
 import { Modal } from './components/modal.js';
 import { SELECTORS } from './common/constants.js';  // SELECTORS import 추가
 
+
 // 전역 객체로 모듈 추가
 window.planModule = planModule;
 window.workModule = workModule;
 
+
 // DOM이 모두 로드된 후 초기화
 $(document).ready(function() {
+
     const currentPage = window.location.pathname;
     
     if(currentPage.includes('/productionplan/plan')) {
@@ -22,4 +25,5 @@ $(document).ready(function() {
         workModule.init();
         Modal.init();
     }
+
 });

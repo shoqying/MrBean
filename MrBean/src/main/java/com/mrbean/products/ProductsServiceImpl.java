@@ -2,15 +2,12 @@ package com.mrbean.products;
 
 import javax.inject.Inject;
 
-import com.mrbean.billofmaterials.BomDropdownDTO;
-import com.mrbean.rawmaterials.RawMaterialsVO;
+import com.mrbean.billofmaterials.domain.BomDropdownDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import com.mrbean.billofmaterials.BillOfMaterialsVO;
 
 @Service
 public class ProductsServiceImpl implements ProductsService {

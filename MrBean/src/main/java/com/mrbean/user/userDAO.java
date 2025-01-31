@@ -8,4 +8,5 @@ public interface userDAO {
     void createUser(userVO user);      // 사용자 추가
     void updateUser(userVO user);      // 사용자 업데이트
     void updatePassword(userVO user); // 사용자 비밀번호 업데이트
+    List<userVO> getUsersByRole(String role); // 특정 직급 사용자 조회
 }

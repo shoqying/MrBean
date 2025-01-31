@@ -41,7 +41,7 @@ public class WarehouseController {
             logger.error("유효성 검사 실패: {}", result.getAllErrors());
             Map<String, String> errorResponse = new HashMap<>();
             StringBuilder errorMessages = new StringBuilder("유효성 검사 실패:\n");
-            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()).append(""));
+            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()));
             errorResponse.put("message", errorMessages.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -95,8 +95,8 @@ public class WarehouseController {
 //    }
     // ApiResponse 클래스
     public static class ApiResponse {
-        private String message;
-        private List<String> errors;
+        private final String message;
+        private final List<String> errors;
 
         public ApiResponse(String message, List<String> errors) {
             this.message = message;

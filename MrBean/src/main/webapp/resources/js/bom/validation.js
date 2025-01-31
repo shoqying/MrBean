@@ -145,6 +145,22 @@ document.addEventListener("DOMContentLoaded", function() {
     bomRatioField.addEventListener('input', () => validateInput('bomRatio'));
     rmCodeField.addEventListener('input', () => validateInput('rmCode'));
     bomDescriptionField.addEventListener('input', () => updateCharacterCount());
+
+    // BOM ID 필드 클릭 시 경고 메시지 표시
+    bomIdField.addEventListener('click', function() {
+        const bomIdWarning = document.getElementById('bomIdWarning');
+        bomIdWarning.style.display = 'block';
+    });
+
+    // 다른 필드 클릭 시 경고 메시지 숨기기
+    const otherFields = ['bomName', 'rmCode', 'bomRatio', 'bomDescription'];
+    otherFields.forEach(function(fieldId) {
+        const field = document.getElementById(fieldId);
+        field.addEventListener('click', function() {
+            const bomIdWarning = document.getElementById('bomIdWarning');
+            bomIdWarning.style.display = 'none';
+        });
+    });
 });
 
 // 폼 제출 처리 함수
@@ -161,7 +177,7 @@ function submitForm(event) {
     });
 
     // 서버에 데이터 전송
-    fetch('/billofmaterials', {
+    fetch('/api/billofmaterials', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

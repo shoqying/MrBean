@@ -6,7 +6,7 @@
 </head>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <h1>
-	Hello world!  
+	Hello world!
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>

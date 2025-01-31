@@ -1,5 +1,9 @@
-package com.mrbean.billofmaterials;
+package com.mrbean.billofmaterials.service;
 
+import com.mrbean.billofmaterials.domain.BomValidator;
+import com.mrbean.billofmaterials.repository.BillOfMaterialsRepository;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsVO;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +15,12 @@ import java.util.List;
 public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
 
     private final BillOfMaterialsRepository billOfMaterialsRepository;
+    private final BomValidator bomValidator;
 
     @Autowired
-    public BillOfMaterialsServiceImpl(BillOfMaterialsRepository billOfMaterialsRepository) {
+    public BillOfMaterialsServiceImpl(BillOfMaterialsRepository billOfMaterialsRepository, BomValidator bomValidator) {
         this.billOfMaterialsRepository = billOfMaterialsRepository;
+        this.bomValidator = bomValidator;
     }
 
     @Override
@@ -30,8 +36,9 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
                 .build();
 
         // 2. 필요에 따라 비즈니스 로직 처리 (예: 비율 체크)
-        validateBomRatio(billOfMaterialsVO.getBomRatio());
+        bomValidator.validateRatio(billOfMaterialsVO.getBomRatio());
 
+        // 3. 저장
         billOfMaterialsRepository.insertBillOfMaterials(billOfMaterialsVO);
     }
 
@@ -58,27 +65,18 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
     }
 
     @Override
-    public List<BillOfMaterialsDTO> getAllBoms(String sortKey, String sortOrder) {
-        // 상황에 따라 sortKey, sortOrder 등에 대한 검증/변환 로직을 추가
-        return billOfMaterialsRepository.findAll(sortKey, sortOrder);
+    public List<BillOfMaterialsDTO> getAllBoms() {
+
+        return billOfMaterialsRepository.findAll();
     }
 
 
     public BillOfMaterialsDTO getBomDetails(String bomId) throws Exception {
-        // Repository에서 VO 가져오기
-        BillOfMaterialsVO billOfMaterialsVO = billOfMaterialsRepository.selectBomDetails(bomId);
-        if (billOfMaterialsVO == null) {
+        BillOfMaterialsDTO billOfMaterialsDTO = billOfMaterialsRepository.selectBomDetails(bomId);
+        if (billOfMaterialsDTO == null) {
             throw new NotFoundException("해당 BOM 정보를 찾을 수 없습니다.");
         }
-
-        // VO를 DTO로 변환
-        return new BillOfMaterialsDTO(
-                billOfMaterialsVO.getBomId(),
-                billOfMaterialsVO.getBomName(),
-                billOfMaterialsVO.getRmCode(),
-                billOfMaterialsVO.getBomRatio(),
-                billOfMaterialsVO.getBomDescription()
-        );
+        return billOfMaterialsDTO;
     }
 
     /**
@@ -95,17 +93,17 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
                 .bomDescription(billOfMaterialsDTO.getBomDescription())
                 .build();
 
-        validateBomRatio(billOfMaterialsVO.getBomRatio());
+        bomValidator.validateRatio(billOfMaterialsVO.getBomRatio());
 
         billOfMaterialsRepository.updateBillOfMaterials(billOfMaterialsVO);
     }
 
     /**
-     * BOM 비율 검증
+     * BOM 정보 삭제 로직
      */
-    private void validateBomRatio(int ratio) throws IllegalArgumentException {
-        if (ratio < 0 || ratio > 100) {
-            throw new IllegalArgumentException("BOM 비율은 0에서 100 사이여야 합니다.");
-        }
+    @Override
+    @Transactional
+    public void deleteBillOfMaterials(String bomId) throws Exception {
+        billOfMaterialsRepository.deleteBillOfMaterials(bomId);
     }
 }
