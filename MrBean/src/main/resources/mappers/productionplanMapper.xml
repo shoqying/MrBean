@@ -68,6 +68,16 @@
  		DELETE FROM production_plan WHERE plan_id = #{planId}
  		
  	</delete>
+ 	
+    <!-- 작업상태 변경 -->
+    <update id="updatePlanStatus">
+	    UPDATE production_plan 
+	    SET plan_status = #{plStatus}
+	        <!-- work_updated_at = #{workUpdatedAt}, -->
+	        <!-- work_start_time = #{workStartTime}, -->
+	        <!-- work_end_time = #{workEndTime} -->
+	    WHERE plan_id = #{planId}
+    </update>
     
     
     

@@ -57,16 +57,17 @@
                     <input type="date" class="form-control" id="planEndDate">
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-floating mb-3">
-                    <select class="form-select" id="productCode" aria-label="State">
-                      <option selected>케냐</option>
-                      <option>뉴욕</option>
-                      <option>아이티윌</option>
-                    </select>
-                    <label for="productCode">제품구분</label>
-                  </div>
-                </div>
+				<div class="col-md-6">
+				  <div class="form-floating mb-3">
+				    <select class="form-select" id="productCode" aria-label="State">
+				      <option value="">제품을 선택하세요</option>
+				      <c:forEach var="product" items="${productCodes}">
+				        <option value="${product.PName}">${product.PName}</option>
+				      </c:forEach>
+				    </select>
+				    <label for="productCode">제품구분</label>
+				  </div>
+				</div>
                 <div class="col-md-6">
                   <div class="form-floating">
                     <input type="number" class="form-control" id="planQuantity" placeholder="계획수량(g)">
@@ -120,85 +121,35 @@
                     <th>삭제</th>
                   </tr>
                 </thead>
-                <tbody>
-                	<c:forEach var="plan" items="${planList}">
-                  <tr>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.planNumber}">${plan.planNumber}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.priority}">${plan.priority}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.planType}">${plan.planType}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.planStartDate}">${plan.planStartDate}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.planEndDate}">${plan.planEndDate}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.plStatus}">
-                			    <span class="badge ${plan.plStatus == 'PLANNED' ? 'bg-primary' : 
-						                           plan.plStatus == 'IN_PROGRESS' ? 'bg-warning' : 
-						                           plan.plStatus == 'COMPLETED' ? 'bg-success' : 
-						                           plan.plStatus == 'CANCELLED' ? 'bg-secondary' : 'bg-light'}">
-						          				  ${plan.plStatus}
-        				       </span>
-                    		</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.productCode}">${plan.productCode}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.planQuantity}">${plan.planQuantity}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.remark}">${plan.remark}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty plan.createdBy}">${plan.createdBy}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
-                    </td>
-                    <td>
-                       <button class="btn btn-danger btn-sm" 
-                               onclick="planModule.delete('${plan.planId}')">
-                           <i class="bi bi-trash"></i>
-                       </button>
-                   </td>                   
-                  </tr>
-					</c:forEach>
-                </tbody>
+				<tbody>
+				    <c:forEach var="plan" items="${planList}">
+				    <tr>
+				        <td>${plan.planNumber}</td>
+				        <td>${plan.priority}</td>
+				        <td>${plan.planType}</td>
+				        <td>${plan.planStartDate}</td>
+				        <td>${plan.planEndDate}</td>
+				        <td>
+				            <span class="badge ${plan.plStatus == 'PLANNED' ? 'bg-primary' : 
+				                             plan.plStatus == 'IN_PROGRESS' ? 'bg-warning' : 
+				                             plan.plStatus == 'COMPLETED' ? 'bg-success' : 
+				                             plan.plStatus == 'CANCELLED' ? 'bg-secondary' : 'bg-light'}">
+				                ${plan.plStatus}
+				            </span>
+				        </td>
+				        <td>${plan.productCode}</td>
+				        <td>${plan.planQuantity}</td>
+				        <td>${plan.remark}</td>
+				        <td>${plan.createdBy}</td>
+				        <td>
+				            <button type="button" class="btn btn-danger btn-sm" 
+				                    onclick="window.planModule.delete('${plan.planId}')">
+				                <i class="bi bi-trash"></i>
+				            </button>
+				        </td>
+				    </tr>
+				    </c:forEach>
+				</tbody>
               </table>
               <!-- End Table with stripped rows -->
 

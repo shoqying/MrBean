@@ -22,6 +22,8 @@ public class WorkOrdersVO {
     private Date workUpdatedAt;      // 수정일시
     
     
+    private int planId; // 생산계획 ID
+    private String rmlNo; // 원자재 로트 번호
     
     private WorkOrdersStatus workStatus;  // 작업상태 (WAITING, IN_PROGRESS, COMPLETED, STOPPED)
     
