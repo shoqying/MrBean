@@ -1,6 +1,7 @@
 package com.mrbean.rawmaterialsqualitycontrol;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,6 +16,18 @@ public class RawMaterialsQualityControlServiceImp implements RawMaterialsQuality
 	
 	@Inject
 	RawMaterialsQualityControlDAO rawMaterialsQualityControlDAO;
+	
+	
+
+	@Override
+	public void processAndInsertRawMaterials() throws Exception {
+		logger.info("processAndInsertRawMaterials() 호출");
+		Map<String, Object> params = rawMaterialsQualityControlDAO.selectRawMaterialsData();
+		
+		rawMaterialsQualityControlDAO.insertRawMaterialsQualityControl(params);
+        
+		
+	}
 
 	@Override
 	public List<RawMaterialsQualityControlVO> getRawMaterialsQualityControlList() throws Exception {

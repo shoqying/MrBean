@@ -21,7 +21,7 @@
                   <tr>
 					<th>순번</th>
 		            <th>입고일</th>
-		            <th>LOT 번호</th>
+		            <th>원자재 LOT 번호</th>
 		            <th>원자재명</th>
 		            <th>검사일자</th>
 		            <th>품질 검사</th>

@@ -1,8 +1,16 @@
 package com.mrbean.rawmaterialsqualitycontrol;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RawMaterialsQualityControlDAO {
+	
+
+	// 원자재 검사 관리 데이터 조회
+	public Map<String, Object> selectRawMaterialsData() throws Exception;
+	
+	// 원자재 검사 관리 목록 저장
+	public void insertRawMaterialsQualityControl(Map<String, Object> params) throws Exception;
 	
 	// 원자재 검사 관리 목록
 	public List<RawMaterialsQualityControlVO> selectRawMaterialsQualityControl() throws Exception;
