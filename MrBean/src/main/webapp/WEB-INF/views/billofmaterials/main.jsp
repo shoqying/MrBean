@@ -35,7 +35,7 @@
                                     <td>${bom.bomName}</td>
                                     <td>${bom.rmCode}</td>
                                     <td>${bom.rmName}</td>
-                                    <td>${bom.bomRatio}</td>
+                                    <td>${bom.bomRatio}%</td>
                                     <td>${bom.bomDescription}</td>
                                     <td>
                                        <button class="btn btn-sm btn-primary" onclick="editBOM('${bom.bomId}')">수정</button>
@@ -85,7 +85,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-primary" onclick="submitEditForm()">수정</button>
+        <button type="button" class="btn btn-primary" id="editButton" onclick="submitEditForm()" disabled>수정</button>
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" style="display: none;" inert>
       </div>
     </div>

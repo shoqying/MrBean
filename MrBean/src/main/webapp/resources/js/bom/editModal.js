@@ -76,6 +76,23 @@ function submitEditForm() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const editButton = document.getElementById('editButton');
+    const formFields = document.querySelectorAll('#editModal input, #editModal textarea, #editModal select');
+
+    formFields.forEach(field => {
+        field.addEventListener('input', function() {
+            let isFormChanged = false;
+            formFields.forEach(field => {
+                if (field.value !== field.defaultValue) {
+                    isFormChanged = true;
+                }
+            });
+            editButton.disabled = !isFormChanged;
+        });
+    });
+});
+
 function updateBomTable() {
     $.ajax({
         url: `${BASE_URL}`,
@@ -84,10 +101,14 @@ function updateBomTable() {
             if (Array.isArray(response)) {
                 const $tbody = $('table.datatable tbody');
                 $tbody.empty();
+                const currentTime = new Date().getTime(); // Define currentTime here
                 response.forEach(function(bom) {
+                    const bomUpdatedAt = new Date(bom.bomUpdatedAt).getTime();
+                    const isNew = (currentTime - bomUpdatedAt) < (5 * 1000); // 15 seconds in milliseconds
+                    const newLabel = isNew ? '<span class="new-label">●</span>' : '';
                     const row = `
                         <tr>
-                            <td>${bom.bomId}</td>
+                            <td>${newLabel} ${bom.bomId}</td>
                             <td>${bom.bomName}</td>
                             <td>${bom.rmCode}</td>
                             <td>${bom.rmName}</td>
@@ -101,12 +122,12 @@ function updateBomTable() {
                     `;
                     $tbody.append(row);
                 });
-                sortTableByBomId();
             } else {
                 showToast('BOM 목록을 불러오는 중 오류가 발생했습니다.', 'error');
             }
         },
         error: function() {
+            console.error('AJAX request failed'); // AJAX 실패 로그
             showToast('BOM 목록을 불러오는 중 오류가 발생했습니다.', 'error');
         }
     });
@@ -120,9 +141,6 @@ $(document).ready(function() {
     $('#editBomName, #editRmName, #editBomRatio, #editBomDescription').on('click', function() {
         $('#bomIdWarning').hide();
     });
-
-    // Sort the table by bomId on initial load
-    sortTableByBomId();
 });
 
 function editBOM(bomId) {
