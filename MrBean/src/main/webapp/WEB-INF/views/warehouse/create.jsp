@@ -1,78 +1,235 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>창고 등록</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs5-toast@1.0.0"></script>
-</head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
 .datatable-top > nav:first-child, .datatable-top > div:first-child, .datatable-bottom > nav:first-child, .datatable-bottom > div:first-child {
     float: right;
 }
 </style>
-<!-- 원하는 제목을 설정 -->
-<c:set var="pageTitle" value="창고"/>
+<c:set var="pageTitle" value="창고 등록"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <div class="container mt-5">
-    <h1 class="my-4">창고 등록</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="bi bi-pencil-square me-1"></i>창고 등록
+            </h5>
 
-    <!-- 창고 등록 폼 -->
-    <form id="warehouseForm" onsubmit="submitForm(event)">
-        <div class="form-group">
-            <label for="wCode">창고 코드</label>
-            <input type="text" id="wCode" name="wCode" class="form-control" required autofocus autocomplete="off" oninput="validateInput('wCode')">
-            <small id="wCodeError" class="form-text text-danger" style="display: none;">창고 코드는 A1~Z99 형식으로 입력해주세요. (예: A1, B99)</small>
+            <!-- 창고 등록 폼 -->
+            <form id="warehouseForm" class="row g-3" onsubmit="submitForm(event)">
+                <!-- 창고 코드 -->
+                <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="wCode"
+                            name="wCode"
+                            placeholder="예: A1"
+                            required
+                            autocomplete="off"
+                            oninput="validateInput('wCode')"
+                            title="창고 코드를 입력하세요."
+                        />
+                        <label for="wCode">창고 코드</label>
+                    </div>
+                    <small id="wCodeError" class="form-text text-danger" style="display: none;">
+                        창고 코드는 A1~Z99 형식으로 입력해주세요. (예: A1, B99)
+                    </small>
+                </div>
+
+                <!-- 창고 이름 -->
+                <div class="col-md-7">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="wName"
+                            name="wName"
+                            placeholder="예: 중앙 창고"
+                            required
+                            autocomplete="off"
+                            oninput="validateInput('wName')"
+                            title="창고 이름을 입력하세요."
+                        />
+                        <label for="wName">창고 이름</label>
+                    </div>
+                    <small id="wNameError" class="form-text text-danger" style="display: none;">
+                        창고 이름을 입력해주세요.
+                    </small>
+                </div>
+
+                <!-- 전체 주소 -->
+                <div class="col-sm-7">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="wRoadFullAddr"
+                            name="wRoadFullAddr"
+                            placeholder="예: 서울특별시 강남구 테헤란로 123"
+                            required
+                            readonly
+                            autocomplete="off"
+                            oninput="validateInput('wRoadFullAddr')"
+                            title="전체 주소를 입력하세요."
+                        />
+                        <label for="wRoadFullAddr">전체 주소</label>
+                    </div>
+                    <small id="wRoadFullAddrError" class="form-text text-danger" style="display: none;">
+                        도로명 주소를 입력해주세요.
+                    </small>
+                </div>
+
+                <!-- 상세주소 -->
+                <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="wAddrDetail"
+                            name="wAddrDetail"
+                            placeholder="예: 101호"
+                            required
+                            autocomplete="off"
+                            oninput="validateInput('wAddrDetail')"
+                            title="상세 주소를 입력하세요."
+                        />
+                        <label for="wAddrDetail">상세주소</label>
+                    </div>
+                    <small id="wAddrDetailError" class="form-text text-danger" style="display: none;">
+                        상세주소를 입력해주세요.
+                    </small>
+                </div>
+
+                <!-- 우편번호 -->
+                <div class="col-sm-7">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="wZipNo"
+                            name="wZipNo"
+                            placeholder="예: 12345"
+                            required
+                            readonly
+                            autocomplete="off"
+                            oninput="validateInput('wZipNo')"
+                            title="우편번호를 입력하세요."
+                        />
+                        <label for="wZipNo">우편번호</label>
+                    </div>
+                    <small id="wZipNoError" class="form-text text-danger" style="display: none;">
+                        우편번호를 입력해주세요.
+                    </small>
+                </div>
+
+                <!-- 참고항목 -->
+                <div class="col-sm-7">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sample2_extraAddress"
+                            placeholder="참고항목"
+                            readonly
+                        />
+                        <label for="sample2_extraAddress">참고항목</label>
+                    </div>
+                </div>
+
+                <!-- 창고 설명 -->
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <textarea
+                            class="form-control"
+                            id="wDescription"
+                            name="wDescription"
+                            placeholder="창고에 대한 상세 설명(최대 500자)"
+                            rows="4"
+                            autocomplete="off"
+                            style="height: 120px; resize: none; overflow-y: auto;"
+                            oninput="updateCharacterCount()"
+                            title="창고에 대해 자세한 정보를 적어주세요."
+                        ></textarea>
+                        <label for="wDescription">창고 설명</label>
+                    </div>
+                    <small id="charCount" class="text-muted" style="float: right;">0/500</small>
+                </div>
+
+                <!-- 제출 및 초기화 버튼 -->
+                <div class="col-12 text-center">
+                    <button id="submitBtn" type="submit" class="btn btn-success me-2" disabled title="필수 입력란을 모두 채운 뒤 등록을 진행하세요.">
+                        <b><i class="bi bi-check-circle"></i> 등록</b>
+                    </button>
+                    <button type="reset" class="btn btn-secondary" title="입력란을 모두 초기화합니다.">
+                        <b><i class="bi bi-arrow-counterclockwise me-1"></i> 초기화</b>
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label for="wName">창고 이름</label>
-            <input type="text" id="wName" name="wName" class="form-control" required autofocus autocomplete="off" oninput="validateInput('wName')">
-            <small id="wNameError" class="form-text text-danger" style="display: none;">창고 이름을 입력해주세요.</small>
-        </div>
-
-        <!-- 주소 관련 필드들 -->
-        <input type="button" onClick="openAddressPopup();" value="주소 검색" class="btn btn-secondary mb-3" />
-
-        <div class="form-group">
-            <label for="wRoadFullAddr">전체 도로명주소</label>
-            <input type="text" id="wRoadFullAddr" name="wRoadFullAddr" class="form-control" required readonly autocomplete="off" oninput="validateInput('wRoadFullAddr')"/>
-            <small id="wRoadFullAddrError" class="form-text text-danger" style="display: none;">도로명 주소를 입력해주세요.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="wAddrDetail">상세주소</label>
-            <input type="text" id="wAddrDetail" name="wAddrDetail" class="form-control" required autocomplete="off" oninput="validateInput('wAddrDetail')"/>
-            <small id="wAddrDetailError" class="form-text text-danger" style="display: none;">상세주소를 입력해주세요.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="wZipNo">우편번호</label>
-            <input type="text" id="wZipNo" name="wZipNo" class="form-control" required readonly autocomplete="off" oninput="validateInput('wZipNo')"/>
-            <small id="wZipNoError" class="form-text text-danger" style="display: none;">우편번호를 입력해주세요.</small>
-        </div>
-
-        <!-- 창고 설명 입력 필드 -->
-        <div class="form-group">
-            <label for="wDescription">창고 설명</label>
-            <textarea id="wDescription" name="wDescription" class="form-control" rows="4" autocomplete="off" style="resize: none; overflow-y: auto;"></textarea>
-            <small id="charCount" class="form-text text-muted" style="float: right;">0/500</small>
-        </div>
-
-        <!-- 제출 버튼 -->
-        <button id="submitBtn" type="submit" class="btn btn-success" disabled>등록</button>
-    </form>
+    </div>
 </div>
 
-<script src="<c:url value='/resources/js/toast.js'/>"></script>
-<script src="<c:url value='/resources/js/warehouseFormValidation.js'/>"></script>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<!-- Address Search Modal -->
+<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addressSearchModalLabel">주소 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="postcodeContainer" style="width:100%; height:450px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-</html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/addressPopup.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
+<script type="text/javascript">
+function openAddressPopup() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.roadAddress; // Always use road address
+            var extraAddr = '';
+
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraAddr !== '') {
+                extraAddr = ' (' + extraAddr + ')';
+            }
+
+            document.getElementById('sample2_extraAddress').value = extraAddr;
+            document.getElementById('wZipNo').value = data.zonecode;
+            document.getElementById('wRoadFullAddr').value = addr;
+            document.getElementById('wAddrDetail').focus();
+
+            $('#addressSearchModal').modal('hide');
+        },
+        width: '100%',
+        height: '100%'
+    }).embed(document.getElementById('postcodeContainer'));
+
+    $('#addressSearchModal').modal('show');
+}
+
+document.getElementById('wRoadFullAddr').addEventListener('click', openAddressPopup);
+document.getElementById('wZipNo').addEventListener('click', openAddressPopup);
+</script>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
