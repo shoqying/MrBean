@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
@@ -28,6 +29,7 @@
                             placeholder="예: A1"
                             required
                             autocomplete="off"
+                            autofocus
                             oninput="validateInput('wCode')"
                             title="창고 코드를 입력하세요."
                         />
@@ -172,7 +174,7 @@
 </div>
 
 <!-- Address Search Modal -->
-<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" aria-hidden="true">
+<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" style="display: block;" inert>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,10 +198,11 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
-<script src="<c:url value='/resources/js/warehouse/addressPopup.js'/>"></script>
 <script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
 <script type="text/javascript">
 function openAddressPopup() {
+    var modal = document.getElementById('addressSearchModal');
+    modal.removeAttribute('inert');
     new daum.Postcode({
         oncomplete: function(data) {
             var addr = data.roadAddress; // Always use road address
@@ -221,6 +224,7 @@ function openAddressPopup() {
             document.getElementById('wAddrDetail').focus();
 
             $('#addressSearchModal').modal('hide');
+            modal.setAttribute('inert', '');
         },
         width: '100%',
         height: '100%'
