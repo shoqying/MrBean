@@ -15,31 +15,11 @@
             <h5 class="card-title mb-4">
                 <i class="bi bi-pencil-square me-1"></i>창고 등록
             </h5>
+
             <!-- 창고 등록 폼 -->
             <form id="warehouseForm" class="row g-3" onsubmit="submitForm(event)">
                 <!-- 창고 코드 -->
                 <div class="col-sm-5">
-                    <div class="form-floating mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="wCode"
-                            name="wCode"
-                            placeholder="예: A1"
-                            required
-                            autocomplete="off"
-                            oninput="validateInput('wCode')"
-                            title="창고 코드를 입력하세요."
-                        />
-                        <label for="wCode">창고 코드</label>
-                    </div>
-                    <small id="wCodeError" class="form-text text-danger" style="display: none;">
-                        창고 코드는 A1~Z99 형식으로 입력해주세요. (예: A1, B99)
-                    </small>
-                </div>
-
-                <!-- 창고 이름 -->
-                <div class="col-md-7">
                     <div class="form-floating mb-3">
                         <input
                             type="text"
@@ -145,6 +125,21 @@
                         우편번호를 입력해주세요.
                     </small>
                 </div>
+
+                <!-- 참고항목 -->
+                <div class="col-sm-7">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sample2_extraAddress"
+                            placeholder="참고항목"
+                            readonly
+                        />
+                        <label for="sample2_extraAddress">참고항목</label>
+                    </div>
+                </div>
+
                 <!-- 창고 설명 -->
                 <div class="col-12">
                     <div class="form-floating mb-3">
@@ -184,9 +179,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addressSearchModalLabel">주소 검색</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <div id="postcodeContainer" style="width:100%; height:450px;"></div>
@@ -197,6 +189,13 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
 <script type="text/javascript">
 function openAddressPopup() {
     var modal = document.getElementById('addressSearchModal');
@@ -234,44 +233,4 @@ function openAddressPopup() {
 document.getElementById('wRoadFullAddr').addEventListener('click', openAddressPopup);
 document.getElementById('wZipNo').addEventListener('click', openAddressPopup);
 </script>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
-                <!-- 제출 및 초기화 버튼 -->
-                <div class="col-12 text-center">
-                    <button id="submitBtn" type="submit" class="btn btn-success me-2" disabled title="필수 입력란을 모두 채운 뒤 등록을 진행하세요.">
-                        <b><i class="bi bi-check-circle"></i> 등록</b>
-                    </button>
-                    <button type="reset" class="btn btn-secondary" title="입력란을 모두 초기화합니다.">
-                        <b><i class="bi bi-arrow-counterclockwise me-1"></i> 초기화</b>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Address Search Modal -->
-<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addressSearchModalLabel">주소 검색</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <iframe id="addressSearchFrame" src="" width="100%" height="450px" frameborder="0"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
-<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
-<script src="<c:url value='/resources/js/warehouse/addressPopup.js'/>"></script>
-<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
