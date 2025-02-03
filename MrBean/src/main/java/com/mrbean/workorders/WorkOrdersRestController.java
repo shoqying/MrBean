@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanService;
+import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 
 
 @RestController
@@ -29,6 +30,8 @@ public class WorkOrdersRestController {
 	private WorkOrdersService wos;
 	@Inject
 	private ProductionplanService pps;
+	@Inject
+	private RawMaterialsQualityControlService rqcs;
 	
 	 
 	
@@ -42,6 +45,7 @@ public class WorkOrdersRestController {
         try {
             wos.insertWorkOrders(workVO);
             List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+            rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
             logger.info("등록완료");
             return ResponseEntity.ok(workList);
         } catch (Exception e) {

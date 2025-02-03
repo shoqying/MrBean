@@ -19,5 +19,8 @@ public interface FinishedProductsControlDAO {
 	
 	// 완제품 LOT 번호 생성
     void insertFinishedProductLot() throws Exception;
+    
+    // 완제품 목록 저장
+    public void insertFinishedProductControl() throws Exception;
 
 }

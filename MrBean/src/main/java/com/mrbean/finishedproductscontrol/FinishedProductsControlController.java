@@ -51,12 +51,17 @@ public class FinishedProductsControlController {
     												@RequestParam String fpcQualityCheck) {
         try {
         	finishedProductsControlService.updateQualityCheck(fpcBno, fpcQualityCheck);
-        	finishedProductsControlService.insertFinishedProductLot();
+        	if ("COMPLETED".equalsIgnoreCase(fpcQualityCheck)) {
+                // 예시: 관련 데이터를 다른 테이블에 저장하거나 추가 로직 실행
+        		finishedProductsControlService.insertFinishedProductLot();
+            }
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
         }
     }
+    
+    
 
     // 완제품 상태 업데이트
     @PostMapping("/updateStatus")
