@@ -68,6 +68,12 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		sqlSession.insert(NAMESPACE + "insertFinishedProductLot");
 	}
 	
+	@Override
+	public void insertFinishedProductControl() throws Exception {
+		logger.info("insertFinishedProductControl() 호출");
+		sqlSession.insert(NAMESPACE + "insertFinishedProductControl");
+	}
+	
 	
 	
 

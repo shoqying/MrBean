@@ -22,7 +22,6 @@
 		<result property="rmlDate" column="rml_date"/>
 	</resultMap>
 	
-
 	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>
@@ -35,19 +34,19 @@
 
 
 	<!-- 원자재 검사 관리 데이터 조회 -->
-    <select id="selectRawMaterialsData" resultType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
-	    SELECT rml.rml_no, work.work_order_no
-		FROM work_orders work
-		JOIN rawmaterials_lot rml
-		ON rml.rml_no = work.rml_no
-		ORDER BY work.work_order_no desc
-		LIMIT 1
-    </select>
+    <select id="selectRawMaterialsData" resultType="map">
+	    SELECT rml.rml_no AS rml_no, 
+	    	   work.work_order_no AS work_order_no
+	    FROM work_orders work
+	    JOIN rawmaterials_lot rml ON rml.rml_no = work.rml_no
+	    ORDER BY work.work_order_no DESC
+	    LIMIT 1
+	</select>
 
 	<!-- 원자재 검사 관리 목록 저장 -->
 	<insert id="insertRawMaterialsQualityControl" parameterType="map">
-    INSERT INTO rawmaterials_quality_control (rml_no, work_order_no)
-    VALUES (#{rml_no}, #{work_order_no})
+	    INSERT INTO rawmaterials_quality_control(rml_no, work_order_no)
+	    VALUES (#{rml_no}, #{work_order_no})
 	</insert>
 	
 

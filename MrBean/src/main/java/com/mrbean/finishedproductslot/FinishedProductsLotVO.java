@@ -13,5 +13,6 @@ public class FinishedProductsLotVO {
 	private Timestamp fplFinishedDate;
 	private String pCode;
 	private String wCode;
+	private int planId;
 
 }

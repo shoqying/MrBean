@@ -55,7 +55,7 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.fpcLotbno}">${vo.fpcLotbno}</c:when>
+                    		<c:when test="${not empty vo.fplNo}">${vo.fplNo}</c:when>
                     		<c:otherwise>값이 없습니다</c:otherwise>
                     	</c:choose>
                     </td>
