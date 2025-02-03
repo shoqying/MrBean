@@ -1,6 +1,9 @@
 package com.mrbean.user;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanController;
+import com.mrbean.productionplan.ProductionplanService;
 
 
 // http://localhost:8088/user/example
@@ -111,6 +116,19 @@ public class userController {
         }
 
 
+        // 메인페이지 연결
+        //@GetMapping(value = "/main")
+        @RequestMapping(value = "/main",method = RequestMethod.GET )
+        public String mainPage() {
+            
+            System.out.println("출력");
+
+            return "user/main";
+    }
+        
+        
+        
+        
      // 비밀번호 확인 페이지
         @GetMapping("/passwordcheck")
         public String passwordCheckPage() {
@@ -232,6 +250,31 @@ public class userController {
             return "user/list"; // user/list.jsp 경로
         }
 
+        
+    
+        @GetMapping("/user/graph")
+        public String showGraph(Model model, HttpSession session) {
+            // 세션에서 로그인된 사용자 정보 확인
+            Object loggedInUser = session.getAttribute("loggedInUser"); // 세션에 저장된 사용자 정보
+
+            if (loggedInUser == null) {
+                // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+                return "redirect:/user/login";
+            }
+
+            // 로그인된 경우 그래프 데이터를 추가
+            int adminCount = 10;    // Admin 수
+            int managerCount = 20;  // Manager 수
+            int memberCount = 70;   // Member 수
+
+            model.addAttribute("adminCount", adminCount);
+            model.addAttribute("managerCount", managerCount);
+            model.addAttribute("memberCount", memberCount);
+
+            return "user/graph"; // graph.jsp 페이지 반환
+        }
+    
+        
 
     // 샘플페이지 연결
     @RequestMapping(value = "/sample",method = RequestMethod.GET )
@@ -242,27 +285,16 @@ public class userController {
         return "user/sample";
 }
     
-    
-    // 예시페이지 연결
-    //@GetMapping(value = "/example")
-    @RequestMapping(value = "/example",method = RequestMethod.GET )
-    public String examplePage() {
-        
-        System.out.println("출력");
 
+    @Autowired
+    private ProductionplanService productionplanService;
+
+    @GetMapping("/example")
+    public String examplePage(Model model) {
+        List<ProductionPlanVO> planList = productionplanService.getPlanList(new ProductionPlanVO());
+        model.addAttribute("planList", planList);
         return "user/example";
-}
-    
-    // 메인페이지 연결
-    //@GetMapping(value = "/main")
-    @RequestMapping(value = "/main",method = RequestMethod.GET )
-    public String mainPage() {
-        
-        System.out.println("출력");
+    }
 
-        return "user/main";
-}
-    
-    
 }
 
