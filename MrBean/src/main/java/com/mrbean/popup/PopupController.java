@@ -1,14 +1,23 @@
 package com.mrbean.popup;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 public class PopupController {
 
-    @RequestMapping("/popup/jusoPopup")
-    public String showJusoPopup() {
-        // 여기에 추가적인 로직이 필요할 경우 처리할 수 있습니다.
-        return "popup/jusoPopup";  // JSP 파일의 경로를 리턴
+    @GetMapping("/popup/jusoPopup")
+    public ModelAndView showJusoPopup() {
+        return new ModelAndView("popup/jusoPopup");
+    }
+
+    @GetMapping("/api/jusoCallback")
+    public void jusoCallback(
+            @RequestParam("roadFullAddr") String roadFullAddr,
+            @RequestParam("addrDetail") String addrDetail,
+            @RequestParam("zipNo") String zipNo) {
+        // Handle the callback data here
     }
 }
