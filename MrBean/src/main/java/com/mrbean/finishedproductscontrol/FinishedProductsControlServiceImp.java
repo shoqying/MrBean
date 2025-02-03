@@ -56,6 +56,15 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
         finishedProductsControlDAO.insertFinishedProductLot();
 	
 	}
+
+	@Override
+	public void insertFinishedProductControl() throws Exception {
+		logger.info("insertFinishedProductControl() 호출");
+		finishedProductsControlDAO.insertFinishedProductControl();
+		
+	}
+	
+	
 	
 	
 }

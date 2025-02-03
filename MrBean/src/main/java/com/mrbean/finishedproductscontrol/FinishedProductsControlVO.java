@@ -26,6 +26,7 @@ public class FinishedProductsControlVO {
 	private double fpcYield; // 수율
 	private int planId; // plan_id
 	private double fpcQuantity; // 검사량
+	private int planQuantity; // 검사량
 	
 	// join 매핑
 //	private String pName; // 제품 명
