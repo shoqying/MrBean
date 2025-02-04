@@ -45,7 +45,7 @@ public class WorkOrdersRestController {
         try {
             wos.insertWorkOrders(workVO);
             List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-            rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+           // rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
             logger.info("등록완료");
             return ResponseEntity.ok(workList);
         } catch (Exception e) {
@@ -108,8 +108,11 @@ public class WorkOrdersRestController {
     		workVO.setWorkId(workId);
     		wos.updateWorkStatus(workVO);
     		List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-    		return ResponseEntity.ok(workList);
     		
+    		
+    		
+    		logger.info("상태변경 실행");
+    		return ResponseEntity.ok(workList);
     	} catch(Exception e) {
     		logger.error("작업상태변경 실패", e);
     		return ResponseEntity.status(500).body("작업상태변경 실패");	

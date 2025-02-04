@@ -1,49 +1,60 @@
 /**
  * modal.js
- * 생산계획 검색 모달 관련 컴포넌트
+ * 생산계획 검색 모달 컴포넌트 (ES5)
  */
 import { API, SELECTORS } from '../common/constants.js';
 import { utils } from '../common/utils.js';
 
-export const Modal = {
+var Modal = {
+    // 상태 관리
+    state: {
+        isLoading: false,
+        searchParams: null
+    },
+
     /**
      * 모달 초기화
      */
     init: function() {
-        console.log('Modal initializing...');
+        // DOM 요소 캐싱
+        this.$modal = $(SELECTORS.MODAL.CONTAINER);
+        this.$searchBtn = $(SELECTORS.MODAL.SEARCH_BTN);
+        this.$searchType = $(SELECTORS.MODAL.SEARCH_TYPE);
+        this.$searchProduct = $(SELECTORS.MODAL.SEARCH_PRODUCT);
+        this.$planList = $(SELECTORS.MODAL.PLAN_LIST);
+        
         this.setupPlanSearchModal();
+        this.setupSearchEvents();
+        this.setupKeyboardEvents();
+        
+        // Bootstrap 5 모달 설정
+        this.$modal.data('bs.modal', new bootstrap.Modal(this.$modal[0], {
+            backdrop: 'static',
+            keyboard: false
+        }));
+        
+        console.log('Modal initialized');
     },
 
     /**
      * 계획 검색 모달 설정
      */
     setupPlanSearchModal: function() {
-        const modal = $(SELECTORS.MODAL.CONTAINER);
-        const self = this;
+        var self = this;
         
-        // 모달 이벤트 리스너 초기화
-        modal.off('show.bs.modal hidden.bs.modal');
+        // 기존 모달 이벤트 제거
+        this.$modal.off('show.bs.modal hidden.bs.modal');
         
         // 모달 열릴 때 이벤트
-        modal.on('show.bs.modal', function() {
+        this.$modal.on('show.bs.modal', function() {
+            self.loadPlanList();  // 초기 목록 로드
             console.log('Modal shown');
-            self.loadPlanList();  // 모달 열릴 때 목록 로드
-            self.setupSearchEvents();  // 검색 이벤트 설정
         });
 
         // 모달 닫힐 때 이벤트
-        modal.on('hidden.bs.modal', function() {
-            // 검색 조건 초기화
-            $(SELECTORS.MODAL.SEARCH_TYPE).val('');
-            $(SELECTORS.MODAL.SEARCH_PRODUCT).val('');
-            $(SELECTORS.MODAL.PLAN_LIST).empty();
-
-            // backdrop과 관련된 클래스와 스타일 제거
-            $('.modal-backdrop').remove();
-            $('body').removeClass('modal-open').css('padding-right', '');
-            
-            // body에서 modal 관련 클래스와 스타일 제거
-            $('body').removeAttr('style');
+        this.$modal.on('hidden.bs.modal', function() {
+            self.resetModal();
+            console.log('Modal hidden');
         });
     },
 
@@ -51,126 +62,209 @@ export const Modal = {
      * 검색 이벤트 설정
      */
     setupSearchEvents: function() {
-        const self = this;
+        var self = this;
         
         // 검색 버튼 이벤트
-        $(SELECTORS.MODAL.SEARCH_BTN)
-            .off('click')
-            .on('click', function(e) {
-                e.preventDefault();
-                const searchParams = {
-                    planType: $(SELECTORS.MODAL.SEARCH_TYPE).val().trim(),
-                    productCode: $(SELECTORS.MODAL.SEARCH_PRODUCT).val().trim()
-                };
-                self.loadPlanList(searchParams);
-            });
+        this.$searchBtn.off('click').on('click', function(e) {
+            e.preventDefault();
+            if (self.state.isLoading) return;
+            self.loadPlanList();
+        });
 
-        // 엔터키 이벤트
-        $(SELECTORS.MODAL.SEARCH_TYPE + ',' + SELECTORS.MODAL.SEARCH_PRODUCT)
-            .off('keypress')
-            .on('keypress', function(e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    $(SELECTORS.MODAL.SEARCH_BTN).click();
-                }
-            });
+        // 계획종류 선택 이벤트
+        this.$searchType.off('change').on('change', function() {
+            if (!self.state.isLoading) {
+                self.loadPlanList();
+            }
+        });
+
+        // 제품코드 입력 이벤트 - 엔터키 처리
+        this.$searchProduct.off('keyup').on('keyup', function(e) {
+            if (e.keyCode === 13 && !self.state.isLoading) {
+                self.loadPlanList();
+            }
+        });
+
+        // 계획 선택 이벤트 - 이벤트 위임 사용
+        this.$planList.off('click', 'tr.cursor-pointer').on('click', 'tr.cursor-pointer', function() {
+            var planData = $(this).data('plan');
+            if (planData) {
+                self.handlePlanSelection(planData);
+            }
+        });
+    },
+
+    /**
+     * 키보드 이벤트 설정
+     */
+    setupKeyboardEvents: function() {
+        var self = this;
+        
+        // Enter 키 이벤트 처리
+        this.$searchType.add(this.$searchProduct).on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                self.$searchBtn.click();
+            }
+        });
     },
 
     /**
      * 계획 목록 로드
-     * @param {Object} params - 검색 파라미터
      */
-    loadPlanList: function(params = {}) {
-        console.log('Loading plan list with params:', params);
-        const self = this;
-        params.plStatus = 'PLANNED';
+    loadPlanList: function() {
+        var self = this;
+        if (this.state.isLoading) return;
         
-        // 로딩 중 표시
-        $(SELECTORS.MODAL.PLAN_LIST).html(
-            '<tr><td colspan="7" class="text-center">로딩 중...</td></tr>'
+        this.state.isLoading = true;
+        
+        // 검색 파라미터 구성
+        var searchParams = {};
+        var planType = this.$searchType.val() || '';
+        var productCode = this.$searchProduct.val() || '';
+        
+        // 각 검색 조건이 있을 때만 파라미터에 추가
+        if (planType.trim()) {
+            searchParams.planType = planType.trim();
+        }
+        if (productCode.trim()) {
+            searchParams.productCode = productCode.trim();
+        }
+        
+        // 기본 상태 필터 추가
+        searchParams.plStatus = 'PLANNED';
+        
+        // 로딩 표시
+        this.$planList.html(
+            '<tr><td colspan="7" class="text-center">' +
+            '<div class="spinner-border text-primary" role="status">' +
+            '<span class="visually-hidden">로딩 중...</span></div></td></tr>'
         );
         
         $.ajax({
             url: API.WORK.PLANS,
             type: 'GET',
-            data: params,
+            data: searchParams,
             success: function(response) {
-                console.log('Plan list loaded:', response);
                 self.renderPlanList(response);
+                console.log('Search parameters:', searchParams);
             },
             error: function(xhr, status, error) {
                 console.error('Failed to load plan list:', error);
-                $(SELECTORS.MODAL.PLAN_LIST).html(
-                    '<tr><td colspan="7" class="text-center">생산계획 목록 조회에 실패했습니다.</td></tr>'
-                );
+                self.handleError('생산계획 목록 조회에 실패했습니다.');
+            },
+            complete: function() {
+                self.state.isLoading = false;
             }
         });
+    },
+
+    /**
+     * 에러 처리
+     */
+    handleError: function(message) {
+        this.$planList.html(
+            '<tr><td colspan="7" class="text-center text-danger">' +
+            '<i class="bi bi-exclamation-circle"></i> ' + message +
+            '</td></tr>'
+        );
     },
 
     /**
      * 계획 목록 렌더링
-     * @param {Array} plans - 계획 목록 데이터
      */
     renderPlanList: function(plans) {
-        console.log('Rendering plan list:', plans);
-        const tbody = $(SELECTORS.MODAL.PLAN_LIST);
-        tbody.empty();
+        this.$planList.empty();
         
         if (!plans || plans.length === 0) {
-            tbody.html('<tr><td colspan="7" class="text-center">검색 결과가 없습니다.</td></tr>');
+            this.$planList.html(
+                '<tr><td colspan="7" class="text-center">검색 결과가 없습니다.</td></tr>'
+            );
             return;
         }
         
-        plans.forEach(plan => {
-            if (plan.plStatus === 'PLANNED' && plan.planId && plan.planNumber) {
-                const tr = $('<tr>')
-                    .addClass('cursor-pointer')
-                    .append(
-                        $('<td>').text(plan.planNumber || ''),
-                        $('<td>').text(plan.planType || ''),
-                        $('<td>').text(plan.productCode || ''),
-                        $('<td>').text(plan.planQuantity || '0'),
-                        $('<td>').text(utils.formatDate(plan.planStartDate) || ''),
-                        $('<td>').text(utils.formatDate(plan.planEndDate) || ''),
-                        $('<td>').append(
-                            $('<span>')
-                                .addClass('badge ' + this.getStatusBadgeClass(plan.plStatus))
-                                .text(plan.plStatus || '')
-                        )
-                    )
-                    .on('click', function() {
-                        if (window.workModule && typeof window.workModule.selectPlan === 'function') {
-                            try {
-                                window.workModule.selectPlan(plan);
-                                // modal hide 및 backdrop 제거
-                                const modal = $(SELECTORS.MODAL.CONTAINER);
-                                modal.modal('hide');
-                                $('.modal-backdrop').remove();
-                                $('body').removeClass('modal-open').css('padding-right', '');
-                                $('body').removeAttr('style');
-                            } catch (error) {
-                                console.error('Error selecting plan:', error);
-                                alert('계획 선택 중 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                tbody.append(tr);
-            }
+        var validPlans = plans.filter(function(plan) {
+            return plan.plStatus === 'PLANNED' && plan.planId && plan.planNumber;
+        });
+
+        var self = this;
+        validPlans.forEach(function(plan) {
+            var tr = self.createPlanRow(plan);
+            self.$planList.append(tr);
         });
     },
 
     /**
+     * 계획 행 생성
+     */
+    createPlanRow: function(plan) {
+        var tr = $('<tr>')
+            .addClass('cursor-pointer')
+            .data('plan', plan)
+            .append(
+                $('<td>').text(plan.planNumber || ''),
+                $('<td>').text(plan.planType || ''),
+                $('<td>').text(plan.productCode || ''),
+                $('<td>').text(plan.planQuantity || '0'),
+                $('<td>').text(utils.formatDate(plan.planStartDate) || ''),
+                $('<td>').text(utils.formatDate(plan.planEndDate) || ''),
+                $('<td>').append(
+                    $('<span>')
+                        .addClass('badge ' + this.getStatusBadgeClass(plan.plStatus))
+                        .text(plan.plStatus || '')
+                )
+            );
+
+        return tr;
+    },
+
+    /**
+     * 계획 선택 처리
+     */
+    handlePlanSelection: function(plan) {
+        if (window.workModule && typeof window.workModule.selectPlan === 'function') {
+            try {
+                window.workModule.selectPlan(plan);
+                var modalInstance = bootstrap.Modal.getInstance(this.$modal[0]);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            } catch (error) {
+                console.error('Error selecting plan:', error);
+                alert('계획 선택 중 오류가 발생했습니다.');
+            }
+        }
+    },
+
+    /**
+     * 모달 초기화
+     */
+    resetModal: function() {
+        this.$searchType.val('');
+        this.$searchProduct.val('');
+        this.$planList.empty();
+
+        this.state.searchParams = null;
+        this.state.isLoading = false;
+
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    },
+
+    /**
      * 상태별 배지 클래스 반환
-     * @param {string} status - 상태 코드
-     * @returns {string} 배지 클래스명
      */
     getStatusBadgeClass: function(status) {
-        const statusClasses = {
+        var statusClasses = {
             'PLANNED': 'bg-primary',
             'IN_PROGRESS': 'bg-warning',
             'COMPLETED': 'bg-success',
-            'CANCELLED': 'bg-secondary'
+            'CANCELLED': 'bg-secondary',
+            'STOPPED': 'bg-danger'
         };
         return statusClasses[status] || 'bg-light';
     }
 };
+
+// 모듈 내보내기
+export { Modal };

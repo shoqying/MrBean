@@ -66,3 +66,18 @@ export const SELECTORS = {
         CLOSE_BTN: '.btn-close'
     }
 };
+
+
+export const WORK_STATUS = {
+    WAITING: 'WAITING',
+    IN_PROGRESS: 'IN_PROGRESS',
+    COMPLETED: 'COMPLETED',
+    STOPPED: 'STOPPED'
+};
+
+export const PLAN_STATUS = {
+    PLANNED: 'PLANNED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    COMPLETED: 'COMPLETED',
+    STOPPED: 'STOPPED'
+};
