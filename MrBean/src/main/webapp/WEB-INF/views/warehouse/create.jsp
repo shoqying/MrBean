@@ -83,8 +83,22 @@
                     </small>
                 </div>
 
-                <!-- 상세주소 -->
+                <!-- 참고항목 -->
                 <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sample2_extraAddress"
+                            placeholder="참고항목"
+                            readonly
+                        />
+                        <label for="sample2_extraAddress">참고항목</label>
+                    </div>
+                </div>
+
+                <!-- 상세주소 -->
+                <div class="col-md-7">
                     <div class="form-floating mb-3">
                         <input
                             type="text"
@@ -105,7 +119,7 @@
                 </div>
 
                 <!-- 우편번호 -->
-                <div class="col-sm-7">
+                <div class="col-sm-5">
                     <div class="form-floating mb-3">
                         <input
                             type="text"
@@ -124,20 +138,6 @@
                     <small id="wZipNoError" class="form-text text-danger" style="display: none;">
                         우편번호를 입력해주세요.
                     </small>
-                </div>
-
-                <!-- 참고항목 -->
-                <div class="col-sm-7">
-                    <div class="form-floating mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="sample2_extraAddress"
-                            placeholder="참고항목"
-                            readonly
-                        />
-                        <label for="sample2_extraAddress">참고항목</label>
-                    </div>
                 </div>
 
                 <!-- 창고 설명 -->
@@ -174,7 +174,7 @@
 </div>
 
 <!-- Address Search Modal -->
-<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" style="display: block;" inert>
+<div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -197,6 +197,24 @@
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
 <script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#addressSearchModal').on('show.bs.modal', function (e) {
+        $('#addressSearchModal').removeAttr('inert'); // Remove inert attribute when modal is shown
+    });
+
+    $('#addressSearchModal').on('hide.bs.modal', function (e) {
+        $('#addressSearchModal').attr('inert', ''); // Add inert attribute when modal is hidden
+    });
+
+    $('#addressSearchModal').on('hidden.bs.modal', function (e) {
+    });
+
+    // Add event listener for the close button
+    $('.close, .btn-secondary').on('click', function() {
+        $('#addressSearchModal').modal('hide');
+    });
+});
+
 function openAddressPopup() {
     var modal = document.getElementById('addressSearchModal');
     modal.removeAttribute('inert');

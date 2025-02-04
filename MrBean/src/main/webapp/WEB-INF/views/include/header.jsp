@@ -365,8 +365,7 @@
       <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
       <nav>
         <ol class="breadcrumb">
-             <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/graph"><i class="bi bi-house-door"></i>graph</a>
-
+          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
           <c:forEach var="crumb" items="${breadcrumbList}">
             <c:choose>
               <c:when test="${crumb.active}">
