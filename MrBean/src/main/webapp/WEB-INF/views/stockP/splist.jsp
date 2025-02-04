@@ -8,9 +8,16 @@
 <title>완제품 재고 목록</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
+
 <style>
+/* #intsertBtn{
+	position: absolute;
+	    right: 262px;
+	    top: 270px;
+} */
+
 .form-select{
-	width:52%;
+	width:44%;
 }
 
 form {
@@ -24,8 +31,8 @@ form {
 
 #form_f{
 	position: absolute;
-    right: 14.7%;
-    top: 66.2px;
+    right: 9.7%;
+    top: 260px
 }
 
 #bbtn {
@@ -39,19 +46,17 @@ form {
 
 
 
+
 </style>
+
 </head>
 <body>
 
-<section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-        
-        <h1>완제품 재고 목록</h1>
+<h1>완제품 재고 목록</h1>
+
 
 <!-- 정렬 옵션 -->
-<form action="/stockP/splist" method="get" id="form_f" >
- 
+<form action="/stockP/splist" method="get" id="form_f">
     <select name="sortOption" id="sortOption" class="form-select">
         <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
         <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
@@ -61,8 +66,7 @@ form {
 
 
 
-
-
+<!-- 원자재 목록 테이블 -->
 <table class="table datatable">
     <thead>
         <tr>
@@ -74,7 +78,7 @@ form {
             <th>LOT번호</th>
             <th>제품 코드</th>
             <th>유통기한</th>
-         
+     
         </tr>
     </thead>
     <tbody>
@@ -91,30 +95,15 @@ form {
                
             </tr>
         </c:forEach>
-       <c:if test="${empty stockProducts}">
-		    <tr>
-		        <td colspan="8">데이터가 없습니다.</td>
-		    </tr>
-		</c:if>
+		
     </tbody>
 </table>
-
-
-            </div>
-            
-            <button type="button" class="btn btn-primary" id="bbtn" onclick="location.href='/user/sample'">완제품 Lot번호 조회</button>
-          </div>
-          
-          
-
-
-    </section>
 
 <!-- JavaScript 코드 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
     // 테이블을 5초마다 갱신하는 함수
-    function fetchUpdatedList() {
+    function fetchUpdatedList2() {
         $.ajax({
             url: '/stockP/splist',
             method: 'GET',
@@ -125,15 +114,12 @@ form {
     }
 
     // 일정 시간마다 새로고침
-    setInterval(fetchUpdatedList, 100000); // 1분마다 호출
+    setInterval(fetchUpdatedList2, 100000); // 1분마다 호출
 </script>
 
 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
-
-
 </body>
 </html>
-

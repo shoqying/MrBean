@@ -32,7 +32,7 @@ form {
 #form_f{
 	position: absolute;
     right: 9.7%;
-    top: 236px
+    top: 260px
 }
 
 #bbtn {
@@ -120,7 +120,6 @@ form {
     setInterval(fetchUpdatedList, 100000); // 1분마다 호출
 </script>
 
-<button type="button" class="btn btn-primary" id="bbtn" onclick="location.href='/user/sample'">원자재 Lot번호 조회</button>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
