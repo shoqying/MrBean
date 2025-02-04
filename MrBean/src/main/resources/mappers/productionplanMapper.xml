@@ -58,9 +58,20 @@
 	</insert>
 
 	<select id="selectPP" resultMap="ProductionPlanVOResultMap">
-		SELECT *
-		FROM production_plan
-		ORDER BY plan_no DESC;
+	    SELECT *
+	    FROM production_plan
+	    <where>
+	        <if test="plStatus != null">
+	            AND plan_status = #{plStatus, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+	        </if>
+	        <if test="planType != null and planType != ''">
+	            AND plan_type = #{planType}
+	        </if>
+	        <if test="productCode != null and productCode != ''">
+	            AND product_code = #{productCode}
+	        </if>
+	    </where>
+	    ORDER BY plan_no DESC
 	</select>
 
  
