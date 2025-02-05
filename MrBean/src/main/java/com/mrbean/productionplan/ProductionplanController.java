@@ -20,6 +20,7 @@ public class ProductionplanController {
 		
 	@Inject
 	private ProductionplanService pps;
+  
 	@Inject
 	private ProductsService ps;
 	
@@ -45,6 +46,32 @@ public class ProductionplanController {
 			return "productionplan/plan";
 		}
 		
+		/**
+		 * 생산계획등록 페이지(POST)
+		 * http://localhost:8088/productionplan/plan
+		 * 
+		 */
+		@RequestMapping(value = "/plan", 
+						method = RequestMethod.POST,
+						produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public ResponseEntity<?> planRegisterPOST(@RequestBody ProductionPlanVO planVO ) {
+			logger.info("planRegisterPOST 호출()");
+			try {
+				// 생산계획 등록
+				pps.insertProductionPlan(planVO);
+				
+				// 최신 목록 반환
+				List<ProductionPlanVO> planList = pps.getPlanList(planVO);
+				
+				return ResponseEntity.ok(planList);  // 성공적으로 목록을 반환
+				
+			} catch (Exception e) {
+		        logger.error("생산계획 등록 실패", e);
+		        return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
+			}
+		}
+
 
 		
 	

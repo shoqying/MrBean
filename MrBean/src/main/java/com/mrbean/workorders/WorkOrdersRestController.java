@@ -40,6 +40,7 @@ public class WorkOrdersRestController {
      * 작업지시 등록
      * http://localhost:8088/workorders/api/work
      */
+
 	@RequestMapping(value = "/work",method = RequestMethod.POST)
 	public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
 	    logger.info("workordersPOST");

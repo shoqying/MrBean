@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.mrbean.enums.QualityControlStatus;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
 
 @Repository
@@ -32,26 +33,18 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception {
+	public void updateQualityCheck(FinishedProductsControlVO vo) throws Exception {
 		logger.info("updateQualityCheck() 호출");
 		
-		Map<String, Object> params = new HashMap<>();
-	    params.put("fpcBno", fpcBno);
-	    params.put("fpcQualityCheck", fpcQualityCheck);
-		
-		sqlSession.update(NAMESPACE + "updateQualityCheck", params);
+		sqlSession.update(NAMESPACE + "updateQualityCheck", vo);
 		
 	}
 
 	@Override
-	public void updateStatus(int fpcBno, String fpcStatus) throws Exception {
+	public void updateStatus(FinishedProductsControlVO vo) throws Exception {
 		logger.info("updateStatus() 호출");
 		
-		Map<String, Object> params = new HashMap<>();
-	    params.put("fpcBno", fpcBno);
-	    params.put("fpcStatus", fpcStatus);
-		
-		sqlSession.update(NAMESPACE + "updateStatus", params);
+		sqlSession.update(NAMESPACE + "updateStatus", vo);
 		
 	}
 
@@ -68,6 +61,13 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		sqlSession.insert(NAMESPACE + "insertFinishedProductLot");
 	}
 	
+	@Override
+	public void deleteFinishedProductLot(int fpcBno) throws Exception {
+		logger.info("deleteFinishedProductLot() 호출");
+		sqlSession.update(NAMESPACE + "deleteFinishedProductLot", fpcBno);
+		
+	}
+
 	@Override
 	public void insertFinishedProductControl() throws Exception {
 		logger.info("insertFinishedProductControl() 호출");
