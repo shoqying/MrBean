@@ -3,7 +3,7 @@ package com.mrbean.rawmaterialsreceiving;
 import java.util.List;
 
 public interface RawMaterialsReceivingDAO {
-
+  
     // 원자재 입고 번호 생성
 	public String creatRawMaterial(RawMaterialsReceivingVO material);
 

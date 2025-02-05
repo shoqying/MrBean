@@ -6,12 +6,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageInfo = {
         '/productionplan/plan': {
             title: '생산계획 관리',
-            category: '생산관리'
+            category: '생산 관리'
         },
         '/workorders/work': {
             title: '작업지시 관리',
-            category: '생산관리'
+            category: '생산 관리'
+        },
+        '/rmqcontrol/main' : {
+        	title : '원자재 검사 관리',
+        	category : '품질 관리'
+        },
+        '/fpcontrol/main' : {
+        	title : '완제품 검사 관리',
+        	category : '품질 관리'
         }
+        
         // 다른 페이지들도 여기에 추가 하면됨 모르면 물어보셈
     };
 

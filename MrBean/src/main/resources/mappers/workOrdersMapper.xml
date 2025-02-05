@@ -4,26 +4,46 @@
 <mapper namespace="com.mrbean.mappers.workOrdersMapper">
 
     <!-- ResultMap 정의 -->
-    <resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
-        <id property="workId" column="work_id" />
-        <result property="workOrderNo" column="work_order_no" />
-        <result property="workPlanNo" column="work_plan_no" />
-        <result property="workPlanDate" column="work_plan_date" />
-        <result property="workQuantity" column="work_quantity" />
-        <result property="workStatus" column="work_status" />
-        <result property="workRemark" column="work_remark" />
-        <result property="workCreatedBy" column="work_created_by" />
-        <result property="workCreatedAt" column="work_created_at" />
-        <result property="workUpdatedAt" column="work_updated_at" />
-    </resultMap>    
+
+	<resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
+	   <!-- 기본키 -->
+	   <id property="workId" column="work_id"/>
+	   
+	   <!-- 기본 필드 -->
+	   <result property="workOrderNo" column="work_order_no"/>
+	   <result property="workPlanNo" column="work_plan_no"/>
+	   <result property="workStartDate" column="work_start_date"/>
+	   <result property="workQuantity" column="work_quantity"/>
+	   <result property="workStatus" column="work_status"/>
+	   <result property="workRemark" column="work_remark"/>
+	   <result property="workCreatedBy" column="work_created_by"/>
+	   <result property="workCreatedAt" column="work_created_at"/>
+	   <result property="workUpdatedAt" column="work_updated_at"/>
+	   
+	   <!-- 추가 필드 -->
+	   <result property="rmlNo" column="rml_no"/>
+	   <result property="planId" column="plan_id"/>
+	   <result property="workStartTime" column="workStartTime"/>
+	   <result property="workEndTime" column="workEndTime"/>
+	   <result property="completedQuantity" column="completedQuantity"/>
+	   
+	   <!-- 검색용 파라미터 (테이블에 없는 필드) -->
+	   <result property="searchStartDate" column="search_start_date"/>
+	   <result property="searchEndDate" column="search_end_date"/>
+	   <result property="searchKeyword" column="search_keyword"/>
+	   
+	   <!-- VO 전용 필드 (테이블에 없음) -->
+	   <result property="shouldUpdatePlan" column="should_update_plan"/>
+	</resultMap>    
+	    
+
     
-    
-	<select id="getLastNumberForDate" resultType = "String">
-        SELECT work_order_no
-        FROM work_orders
-        WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
-        ORDER BY plan_no DESC 
-        LIMIT 1	
+	<select id="getLastNumberForDate" resultType="String">
+	    SELECT work_order_no
+	    FROM work_orders
+	    WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
+	    ORDER BY work_order_no DESC 
+	    LIMIT 1	
 	</select>
 	
 	
@@ -34,7 +54,51 @@
 	</select>
     
     
+     
+ 	<delete id="deleteWO">
+ 		DELETE FROM work_orders WHERE work_id = #{workId}
+ 		
+ 	</delete>
+ 	
+ 	<!-- 작업지시 등록 -->
+    <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
+        INSERT INTO work_orders (
+            work_order_no,
+            plan_id,
+            work_plan_no,
+            work_plan_date,
+            work_quantity,
+            <!-- completed_quantity, -->
+            work_status,
+            work_remark,
+            work_created_by,
+            rml_no
+            
+            
+            
+        ) VALUES (
+            #{workOrderNo},
+            #{planId},
+            #{workPlanNo},
+            #{workPlanDate},
+            #{workQuantity},
+            <!-- 0, -->
+            #{workStatus},
+            #{workRemark},
+            #{workCreatedBy},
+            #{rmlNo}
+        )
+    </insert>
     
+    <!-- 작업상태 변경 -->
+    <update id="updateWorkStatus">
+	    UPDATE work_orders 
+	    SET work_status = #{workStatus}
+	        <!-- work_updated_at = #{workUpdatedAt}, -->
+	        <!-- work_start_time = #{workStartTime}, -->
+	        <!-- work_end_time = #{workEndTime} -->
+	    WHERE work_id = #{workId}
+    </update>
     
     
 </mapper>

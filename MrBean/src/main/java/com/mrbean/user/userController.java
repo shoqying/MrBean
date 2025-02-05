@@ -1,6 +1,9 @@
 package com.mrbean.user;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanController;
+import com.mrbean.productionplan.ProductionplanService;
 
 
 // http://localhost:8088/user/example
@@ -111,6 +116,19 @@ public class userController {
         }
 
 
+        // 메인페이지 연결
+        //@GetMapping(value = "/main")
+        @RequestMapping(value = "/main",method = RequestMethod.GET )
+        public String mainPage() {
+            
+            System.out.println("출력");
+
+            return "user/main";
+    }
+        
+        
+        
+        
      // 비밀번호 확인 페이지
         @GetMapping("/passwordcheck")
         public String passwordCheckPage() {
@@ -167,8 +185,96 @@ public class userController {
             return "redirect:/user/main"; // main.jsp로 리다이렉트
         }
 
+        
+     // 비밀번호 변경 컨트롤러 추가
+        @GetMapping("/changePassword")
+        public String changePasswordPage(HttpSession session, Model model) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login"; // 로그인하지 않은 상태에서는 로그인 페이지로 리다이렉트
+            }
+            return "user/changePassword"; // 비밀번호 변경 JSP 페이지
+        }
+
+        @PostMapping("/changePassword")
+        public String changePassword(@RequestParam("currentPassword") String currentPassword,
+                                     @RequestParam("newPassword") String newPassword,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+
+            // 현재 비밀번호 확인
+            if (!passwordEncoder.matches(currentPassword, loggedInUser.getUPasswordhash())) {
+                redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+                return "redirect:/user/changePassword";
+            }
+
+            // 비밀번호 업데이트
+            loggedInUser.setUPasswordhash(passwordEncoder.encode(newPassword));
+            userService.updateUser(loggedInUser);
+
+            // 로그로 확인
+            System.out.println("비밀번호 변경 성공 메시지 전달");
+            redirectAttributes.addFlashAttribute("success", "passwordChange");
+
+            return "redirect:/user/main";
+        }
+
+        
+        @GetMapping("/list")
+        public String userList(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+            // 로그인된 사용자 정보 가져오기
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+
+            if (loggedInUser == null) {
+                // 로그인하지 않은 사용자는 접근 불가
+                return "redirect:/user/login";
+            }
+
+            // 권한에 따라 사용자 목록 조회
+            List<userVO> userList;
+            if ("ADMIN".equals(loggedInUser.getURoleenum().name())) {
+                userList = userService.getAllUsers(); // 전체 사용자 조회
+            } else if ("MANAGER".equals(loggedInUser.getURoleenum().name())) {
+                userList = userService.getUsersByRole("MEMBER"); // MEMBER만 조회
+            } else {
+                // MEMBER는 접근 불가, 경고 메시지 설정
+                redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
+                return "redirect:/user/main"; // 메인 페이지로 리다이렉트
+            }
+
+            model.addAttribute("userList", userList);
+            return "user/list"; // user/list.jsp 경로
+        }
+
+        
     
- 
+        @GetMapping("/user/graph")
+        public String showGraph(Model model, HttpSession session) {
+            // 세션에서 로그인된 사용자 정보 확인
+            Object loggedInUser = session.getAttribute("loggedInUser"); // 세션에 저장된 사용자 정보
+
+            if (loggedInUser == null) {
+                // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+                return "redirect:/user/login";
+            }
+
+            // 로그인된 경우 그래프 데이터를 추가
+            int adminCount = 10;    // Admin 수
+            int managerCount = 20;  // Manager 수
+            int memberCount = 70;   // Member 수
+
+            model.addAttribute("adminCount", adminCount);
+            model.addAttribute("managerCount", managerCount);
+            model.addAttribute("memberCount", memberCount);
+
+            return "user/graph"; // graph.jsp 페이지 반환
+        }
+    
+        
 
     // 샘플페이지 연결
     @RequestMapping(value = "/sample",method = RequestMethod.GET )
@@ -179,27 +285,16 @@ public class userController {
         return "user/sample";
 }
     
-    
-    // 예시페이지 연결
-    //@GetMapping(value = "/example")
-    @RequestMapping(value = "/example",method = RequestMethod.GET )
-    public String examplePage() {
-        
-        System.out.println("출력");
 
+    @Autowired
+    private ProductionplanService productionplanService;
+
+    @GetMapping("/example")
+    public String examplePage(Model model) {
+        List<ProductionPlanVO> planList = productionplanService.getPlanList(new ProductionPlanVO());
+        model.addAttribute("planList", planList);
         return "user/example";
-}
-    
-    // 메인페이지 연결
-    //@GetMapping(value = "/main")
-    @RequestMapping(value = "/main",method = RequestMethod.GET )
-    public String mainPage() {
-        
-        System.out.println("출력");
+    }
 
-        return "user/main";
-}
-    
-    
 }
 

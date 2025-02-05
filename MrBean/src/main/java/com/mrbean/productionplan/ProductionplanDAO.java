@@ -5,15 +5,18 @@ import java.util.List;
 public interface ProductionplanDAO {
 	
 	//생산계획번호 생성
-	public String createProductionPlanNumber(String date);
+    String createProductionPlanNumber(String date);
 	
 	//생산계획 등록
-	public void insertProductionPlan(ProductionPlanVO planVO);
+    void insertProductionPlan(ProductionPlanVO planVO);
 	
 	//생산계획목록 조회
-	public List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO);
+    List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO);
 	
 	//생산계획목록 삭제
-	public void deleteProductionPlan(int planId);
+    void deleteProductionPlan(int planId);
+	
+	//생산계획목록 상태 수정
+	public void updatePlanStatus(ProductionPlanVO planVO);
 	
 }//ProductionplanDAO

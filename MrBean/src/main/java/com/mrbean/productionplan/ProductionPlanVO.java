@@ -22,9 +22,9 @@ public class ProductionPlanVO {
 	private String remark; // 비고
 	private String createdBy;//등록자 
 	
-	private ProductionplanStatus plStatus; //계획상태
+	private ProductionplanStatus plStatus; //계획상태(PLANNED,IN_PROGRESS,COMPLETED)
 	private ProductionplanPriority priority; //우선순위
-
+	
 
 	
 	

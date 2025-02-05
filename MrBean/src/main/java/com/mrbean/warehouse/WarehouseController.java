@@ -41,7 +41,7 @@ public class WarehouseController {
             logger.error("유효성 검사 실패: {}", result.getAllErrors());
             Map<String, String> errorResponse = new HashMap<>();
             StringBuilder errorMessages = new StringBuilder("유효성 검사 실패:\n");
-            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()).append(""));
+            result.getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()));
             errorResponse.put("message", errorMessages.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -95,8 +95,8 @@ public class WarehouseController {
 //    }
     // ApiResponse 클래스
     public static class ApiResponse {
-        private String message;
-        private List<String> errors;
+        private final String message;
+        private final List<String> errors;
 
         public ApiResponse(String message, List<String> errors) {
             this.message = message;
@@ -109,6 +109,23 @@ public class WarehouseController {
 
         public List<String> getErrors() {
             return errors;
+        }
+    }
+
+    /**
+     * 창고 목록 조회 (GET)
+     * Example: GET http://localhost:8080/warehouses
+     */
+    @GetMapping("/warehouses")
+    public ResponseEntity<?> getWarehouseList() {
+        try {
+            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
+            return ResponseEntity.ok(warehouseList);
+        } catch (Exception e) {
+            logger.error("창고 목록 조회 중 오류 발생", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
         }
     }
 }

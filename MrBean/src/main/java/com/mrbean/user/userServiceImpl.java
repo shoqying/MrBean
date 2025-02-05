@@ -29,6 +29,12 @@ public class userServiceImpl implements userService {
     }
 
     @Override
+    public List<userVO> getUsersByRole(String role) {
+        return userDAO.getUsersByRole(role); // Mapper 호출
+    }
+
+    
+    @Override
     public void updateUser(userVO user) {
         userDAO.updateUser(user);
     }

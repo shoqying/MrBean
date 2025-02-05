@@ -71,6 +71,12 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 		sqs.delete(NAMESPACE + "deletePP",planId);
 	}
 
+	@Override
+	public void updatePlanStatus(ProductionPlanVO planVO) {
+		sqs.update(NAMESPACE + "updatePlanStatus",planVO);
+		
+	}
+
    
 
 }//ProductionplanImpl

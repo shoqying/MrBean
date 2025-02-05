@@ -51,6 +51,18 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		pdao.deleteProductionPlan(planId);
 		
 	}
+	
+	/**
+	 * 생산계획 상태 변경
+	 * 
+	 */
+	
+	@Override
+	public void updatePlanStatus(ProductionPlanVO planVO) {
+
+		pdao.updatePlanStatus(planVO);
+		
+	}
 
 
 	
