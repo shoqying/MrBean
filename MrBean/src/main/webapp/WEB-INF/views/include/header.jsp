@@ -24,7 +24,13 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   
   <!-- jQuery를 먼저 로드 -->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- ChatGPT API -->
+  <script src="<c:url value='/resources/js/components/search.js'/>"></script>
+
+  <!-- search CSS File -->
+  <link href="<c:url value='/resources/css/search.css'/>" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="${pageContext.request.contextPath}/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,10 +74,11 @@
     </div>
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <form class="search-form d-flex align-items-center" id="searchForm">
             <input type="text" name="query" placeholder="Search" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
+        <div id="searchResultsContainer" class="search-results-popup"></div>
     </div>
 
     <nav class="header-nav ms-auto">
@@ -378,7 +385,10 @@
           </c:forEach>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div>
+    <!-- End Page Title -->
+
+
 
 
 
