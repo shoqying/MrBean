@@ -20,7 +20,7 @@ public class WorkOrdersVO {
     private Timestamp workEndTime;          // 작업종료시간
     private Date workCreatedAt;      // 등록일시
     private Date workUpdatedAt;      // 수정일시
-    
+    private boolean shouldUpdatePlan;  // plan 상태 업데이트 여부 플래그
     
     private int planId; // 생산계획 ID
     private String rmlNo; // 원자재 로트 번호
@@ -34,4 +34,6 @@ public class WorkOrdersVO {
     private String searchKeyword;           // 검색어
     
     
-}
+    
+    
+} //WorkOrdersVO

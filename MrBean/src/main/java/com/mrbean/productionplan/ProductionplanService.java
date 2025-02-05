@@ -12,6 +12,11 @@ public interface ProductionplanService {
 	
 	// 생산 목록
 	public List<ProductionPlanVO> getPlanList(ProductionPlanVO planVO);
+
+	// 생산 목록(모달용)
+	public List<ProductionPlanVO> getPlanListM(ProductionPlanVO planVO);
+	
+	
 	
 	// 생산 목록 삭제
 

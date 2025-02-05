@@ -22,6 +22,9 @@ public interface WorkOrdersDAO {
 	
     //생산계획 ID 로 작업목록 조회
    	public List<WorkOrdersVO> findByPlanId(int planId);
+   	
+    // id 조회
+    public Integer getPlanIdByWorkId(int workId);
     
     
     

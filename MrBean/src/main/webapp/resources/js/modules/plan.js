@@ -2,42 +2,22 @@
  * plan.js
  * 생산계획 관련 모듈
  */
-import { API, SELECTORS } from '../common/constants.js';
+import { API, SELECTORS, STATUS, DEFAULTS, MESSAGES } from '../common/constants.js';
 import { utils } from '../common/utils.js';
 
 export const planModule = {
-    // 폼 제출 중복 방지 플래그
-    isSubmitting: false,
-
-    /**
-     * 상태 코드를 표시용 텍스트로 변환
-     * @param {string} status - 상태 코드
-     */
-    getStatusDisplayName: function(status) {
-        const statusNames = {
-            'PLANNED': 'PLANNED',
-            'IN_PROGRESS': 'IN_PROGRESS',
-            'COMPLETED': 'COMPLETED',
-            'CANCELLED': 'CANCELLED'
-        };
-        return statusNames[status] || status;
+    // 상태 관리
+    state: {
+        isSubmitting: false,
+        lastUpdate: null
     },
 
     /**
      * 생산계획 번호 자동 생성
      */
     generateNumber: function() {
-        $.ajax({
-            url: API.PLAN.NUMBER,
-            type: 'GET',
-            success: function(planNumber) {
-                if(planNumber) {
-                    $(SELECTORS.FORM.PLAN_NUMBER).val(planNumber.trim());
-                }
-            },
-            error: function() {
-                alert('번호 생성에 실패했습니다.');
-            }
+        utils.numberUtils.generateNumber('plan', (number) => {
+            $(SELECTORS.FORM.PLAN_NUMBER).val(number);
         });
     },
     
@@ -47,10 +27,10 @@ export const planModule = {
     validateForm: function() {
         const startDate = $(SELECTORS.FORM.START_DATE).val();
         const endDate = $(SELECTORS.FORM.END_DATE).val();
-        if(!utils.validateDates(startDate, endDate)) return false;
+        if(!utils.dateUtils.validateDates(startDate, endDate)) return false;
 
         const quantity = $(SELECTORS.FORM.QUANTITY).val();
-        if(!utils.validateQuantity(quantity)) return false;
+        if(!utils.numberUtils.validateQuantity(quantity)) return false;
 
         return true;
     },
@@ -59,9 +39,9 @@ export const planModule = {
      * 생산계획 등록
      */
     submit: function() {
-        if(this.isSubmitting || !this.validateForm()) return;
+        if(this.state.isSubmitting || !this.validateForm()) return;
 
-        this.isSubmitting = true;
+        this.state.isSubmitting = true;
         $(SELECTORS.FORM.INSERT_BTN).prop('disabled', true);
 
         const formData = {
@@ -74,7 +54,7 @@ export const planModule = {
             remark: $(SELECTORS.FORM.REMARK).val(),
             priority: $(SELECTORS.FORM.PRIORITY).val(),
             plStatus: $(SELECTORS.FORM.PLSTATUS).val(),
-            createdBy: "SYSTEM"
+            createdBy: DEFAULTS.WORK.CREATED_BY
         };
 
         $.ajax({
@@ -82,171 +62,170 @@ export const planModule = {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(formData),
-            success: function(response) {
+            success: (response) => {
                 this.updateList(response);
-                alert("생산계획이 등록되었습니다.");
+                alert(MESSAGES.SUCCESS.PLAN_CREATE);
                 this.resetForm();
-            }.bind(this),
-            error: function() {
-                alert('생산계획 등록에 실패했습니다.');
             },
-            complete: function() {
-                this.isSubmitting = false;
+            error: () => {
+                alert(MESSAGES.ERROR.PLAN_CREATE);
+            },
+            complete: () => {
+                this.state.isSubmitting = false;
                 $(SELECTORS.FORM.INSERT_BTN).prop('disabled', false);
-            }.bind(this)
+            }
         });
     },
     
     /**
      * 생산계획 상태 업데이트
-     * @param {number} planId - 계획 ID
-     * @param {string} plStatus - 변경할 상태
      */
     updatePlanStatus: function(planId, plStatus) {
         $.ajax({
-            url: API.PLAN.STATUS + '/' + planId + '/status',
+            url: `${API.PLAN.STATUS}/${planId}/status`,
             type: 'PATCH',
             contentType: 'application/json',
             data: JSON.stringify({ plStatus: plStatus }),
-            success: function(response) {
+            success: (response) => {
                 this.updateList(response);
-                console.log('계획 상태 업데이트 완료:', plStatus);
-            }.bind(this),
-            error: function() {
-                console.error('계획 상태 변경 실패');
+                console.log('Plan status updated:', plStatus);
+            },
+            error: () => {
+                console.error('Failed to update plan status');
+                alert(MESSAGES.ERROR.STATUS_UPDATE);
             }
         });
     },
 
     /**
      * 생산계획 삭제
-     * @param {number} planId - 삭제할 계획 ID
      */
     delete: function(planId) {
-        if(!confirm('이 생산계획을 삭제하시겠습니까?')) return;
+        if(!confirm(MESSAGES.CONFIRM.DELETE_PLAN)) return;
         
         $.ajax({
-            url: API.PLAN.DELETE + planId,
+            url: `${API.PLAN.DELETE}${planId}`,
             type: 'DELETE',
-            success: function(response) {
+            success: (response) => {
                 this.updateList(response);
-                alert('생산계획이 삭제되었습니다.');
-            }.bind(this),
-            error: function() {
-                alert('삭제에 실패했습니다.');
+                alert(MESSAGES.SUCCESS.PLAN_DELETE);
+            },
+            error: () => {
+                alert(MESSAGES.ERROR.PLAN_DELETE);
             }
         });
     },
 
     /**
      * 생산계획 목록 업데이트
-     * @param {Array} planList - 계획 목록 데이터
      */
     updateList: function(planList) {
         const tbody = $(SELECTORS.TABLE.BODY);
         tbody.empty();
-        const self = this;
 
-        planList.forEach(function(plan) {
-            const row = $('<tr>').append(
-                $('<td>').text(plan.planNumber || ''),
-                $('<td>').text(plan.priority || ''),
-                $('<td>').text(plan.planType || ''),
-                $('<td>').text(utils.formatDate(plan.planStartDate) || ''),
-                $('<td>').text(utils.formatDate(plan.planEndDate) || ''),
-                $('<td>').append(
-                    $('<span>')
-                        .addClass('badge ' + self.getStatusBadgeClass(plan.plStatus))
-                        .text(self.getStatusDisplayName(plan.plStatus))
-                ),
-                $('<td>').text(plan.productCode || ''),
-                $('<td>').text(plan.planQuantity || ''),
-                $('<td>').text(plan.remark || ''),
-                $('<td>').text(plan.createdBy || ''),
-                $('<td>').append(
-                    $('<button>')
-                        .addClass('btn btn-danger btn-sm')
-                        .html('<i class="bi bi-trash"></i>')
-                        .on('click', function() {
-                            self.delete(plan.planId);
-                        })
-                )
-            );
+        planList.forEach(plan => {
+            const row = this.createPlanRow(plan);
             tbody.append(row);
         });
+
+        this.state.lastUpdate = new Date();
     },
-    
+
     /**
-     * 상태별 배지 클래스 반환
-     * @param {string} status - 상태 코드
+     * 계획 행 생성
      */
-    getStatusBadgeClass: function(status) {
-        const statusClasses = {
-            'PLANNED': 'bg-primary',
-            'IN_PROGRESS': 'bg-warning',
-            'COMPLETED': 'bg-success',
-            'CANCELLED': 'bg-secondary'
-        };
-        return statusClasses[status] || 'bg-light';
+    createPlanRow: function(plan) {
+        return $('<tr>').append(
+            $('<td>').text(plan.planNumber || ''),
+            $('<td>').text(plan.priority || ''),
+            $('<td>').text(plan.planType || ''),
+            $('<td>').text(utils.dateUtils.formatDate(plan.planStartDate) || ''),
+            $('<td>').text(utils.dateUtils.formatDate(plan.planEndDate) || ''),
+            $('<td>').append(
+                $('<span>')
+                    .addClass('badge ' + utils.statusUtils.getBadgeClass(plan.plStatus))
+                    .text(utils.statusUtils.getDisplayName(plan.plStatus, 'plan'))
+            ),
+            $('<td>').text(plan.productCode || ''),
+            $('<td>').text(plan.planQuantity || ''),
+            $('<td>').text(plan.remark || ''),
+            $('<td>').text(plan.createdBy || ''),
+            $('<td>').append(
+                $('<button>')
+                    .addClass('btn btn-danger btn-sm')
+                    .html('<i class="bi bi-trash"></i>')
+                    .on('click', () => this.delete(plan.planId))
+            )
+        );
     },
     
     /**
      * 폼 초기화
      */
     resetForm: function() {
-        $(SELECTORS.FORM.PLAN_NUMBER).val('');
-        $(SELECTORS.FORM.PRIORITY).val('MEDIUM');
-        $(SELECTORS.FORM.PLAN_TYPE).val('일일');
+        // 기본값 정의
+        const defaultValues = {
+            priority: DEFAULTS.PLAN.PRIORITY,
+            planType: DEFAULTS.PLAN.PLAN_TYPE,
+            plStatus: DEFAULTS.PLAN.STATUS
+        };
+        
+        // 모든 입력 필드 초기화
         $(SELECTORS.FORM.START_DATE).val('');
         $(SELECTORS.FORM.END_DATE).val('');
-        $(SELECTORS.FORM.PRODUCT_CODE).val('케냐');
         $(SELECTORS.FORM.QUANTITY).val('');
         $(SELECTORS.FORM.REMARK).val('');
-        $(SELECTORS.FORM.PLSTATUS).val('PLANNED');
+        $(SELECTORS.FORM.PRODUCT_CODE).val('');
         
+        // 기본값 설정
+        $(SELECTORS.FORM.PRIORITY).val(defaultValues.priority);
+        $(SELECTORS.FORM.PLAN_TYPE).val(defaultValues.planType);
+        $(SELECTORS.FORM.PLSTATUS).val(defaultValues.plStatus);
+        
+        // 계획번호 재생성
         this.generateNumber();
+        
+        // 유효성 검사 피드백 제거
+        $('.is-invalid').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
     },
-    
+
     /**
      * 이벤트 리스너 설정
      */
     setupEventListeners: function() {
-        const self = this;
-        
-        // 이벤트 리스너 중복 방지를 위해 이전 이벤트 제거
-        $(SELECTORS.FORM.INSERT_BTN).off('click').on('click', function() {
-            self.submit();
+        // 등록 버튼 이벤트
+        utils.eventUtils.bindSafe(SELECTORS.FORM.INSERT_BTN, 'click', 'plan', () => {
+            this.submit();
         });
 
-        $(SELECTORS.FORM.RESET_BTN).off('click').on('click', function() {
-            if(confirm('모든 입력을 초기화하시겠습니까?')) {
-                self.resetForm();
+        // 초기화 버튼 이벤트
+        utils.eventUtils.bindSafe(SELECTORS.FORM.RESET_BTN, 'click', 'plan', () => {
+            if(confirm(MESSAGES.CONFIRM.RESET_FORM)) {
+                this.resetForm();
             }
         });
 
-        // 날짜 변경 이벤트
-        $(SELECTORS.FORM.START_DATE).off('change').on('change', function() {
+        // 날짜 입력 이벤트
+        utils.eventUtils.bindSafe(SELECTORS.FORM.START_DATE, 'change', 'plan', () => {
             const endDate = $(SELECTORS.FORM.END_DATE).val();
-            if(endDate) utils.validateDates($(this).val(), endDate);
+            if(endDate) utils.dateUtils.validateDates($(SELECTORS.FORM.START_DATE).val(), endDate);
         });
 
-        $(SELECTORS.FORM.END_DATE).off('change').on('change', function() {
+        utils.eventUtils.bindSafe(SELECTORS.FORM.END_DATE, 'change', 'plan', () => {
             const startDate = $(SELECTORS.FORM.START_DATE).val();
-            if(startDate) utils.validateDates(startDate, $(this).val());
+            if(startDate) utils.dateUtils.validateDates(startDate, $(SELECTORS.FORM.END_DATE).val());
         });
 
         // 수량 입력 이벤트
-        $(SELECTORS.FORM.QUANTITY).off('input').on('input', function() {
-            const quantity = parseInt($(this).val());
-            if(isNaN(quantity) || quantity <= 0) {
-                $(this).addClass('is-invalid');
-                if(!$(this).next('.invalid-feedback').length) {
-                    $(this).after('<div class="invalid-feedback">수량은 0보다 커야 합니다.</div>');
-                }
-            } else {
-                $(this).removeClass('is-invalid');
-                $(this).next('.invalid-feedback').remove();
-            }
+        utils.eventUtils.bindSafe(SELECTORS.FORM.QUANTITY, 'input', 'plan', (e) => {
+            const quantity = parseInt($(e.target).val());
+            const isValid = !isNaN(quantity) && quantity > 0;
+            utils.formUtils.showValidationFeedback(
+                e.target,
+                isValid,
+                '수량은 0보다 커야 합니다.'
+            );
         });
     },
 
@@ -256,5 +235,6 @@ export const planModule = {
     init: function() {
         this.generateNumber();
         this.setupEventListeners();
+        console.log('Plan module initialized');
     }
 };
