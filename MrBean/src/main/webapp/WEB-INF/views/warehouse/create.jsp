@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
@@ -28,6 +29,7 @@
                             placeholder="예: A1"
                             required
                             autocomplete="off"
+                            autofocus
                             oninput="validateInput('wCode')"
                             title="창고 코드를 입력하세요."
                         />
@@ -59,14 +61,7 @@
                     </small>
                 </div>
 
-                <!-- 주소 검색 버튼 -->
-                <div class="col-sm-5">
-                    <button type="button" class="btn btn-outline-secondary mb-3" onclick="openAddressPopup();" title="주소 검색">
-                        주소 검색
-                    </button>
-                </div>
-
-                <!-- 전체 도로명주소 -->
+                <!-- 전체 주소 -->
                 <div class="col-sm-7">
                     <div class="form-floating mb-3">
                         <input
@@ -79,17 +74,31 @@
                             readonly
                             autocomplete="off"
                             oninput="validateInput('wRoadFullAddr')"
-                            title="전체 도로명 주소를 입력하세요."
+                            title="전체 주소를 입력하세요."
                         />
-                        <label for="wRoadFullAddr">전체 도로명주소</label>
+                        <label for="wRoadFullAddr">전체 주소</label>
                     </div>
                     <small id="wRoadFullAddrError" class="form-text text-danger" style="display: none;">
                         도로명 주소를 입력해주세요.
                     </small>
                 </div>
 
-                <!-- 상세주소 -->
+                <!-- 참고항목 -->
                 <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sample2_extraAddress"
+                            placeholder="참고항목"
+                            readonly
+                        />
+                        <label for="sample2_extraAddress">참고항목</label>
+                    </div>
+                </div>
+
+                <!-- 상세주소 -->
+                <div class="col-md-7">
                     <div class="form-floating mb-3">
                         <input
                             type="text"
@@ -110,7 +119,7 @@
                 </div>
 
                 <!-- 우편번호 -->
-                <div class="col-sm-7">
+                <div class="col-sm-5">
                     <div class="form-floating mb-3">
                         <input
                             type="text"
@@ -163,18 +172,16 @@
         </div>
     </div>
 </div>
+
 <!-- Address Search Modal -->
 <div class="modal fade" id="addressSearchModal" tabindex="-1" role="dialog" aria-labelledby="addressSearchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addressSearchModalLabel">주소 검색</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
-                <iframe id="addressSearchFrame" src="" width="100%" height="450px" frameborder="0"></iframe>
+                <div id="postcodeContainer" style="width:100%; height:450px;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -182,11 +189,66 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
-<script src="<c:url value='/resources/js/warehouse/addressPopup.js'/>"></script>
 <script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#addressSearchModal').on('show.bs.modal', function (e) {
+        $('#addressSearchModal').removeAttr('inert'); // Remove inert attribute when modal is shown
+    });
+
+    $('#addressSearchModal').on('hide.bs.modal', function (e) {
+        $('#addressSearchModal').attr('inert', ''); // Add inert attribute when modal is hidden
+    });
+
+    $('#addressSearchModal').on('hidden.bs.modal', function (e) {
+    });
+
+    // Add event listener for the close button
+    $('.close, .btn-secondary').on('click', function() {
+        $('#addressSearchModal').modal('hide');
+    });
+});
+
+function openAddressPopup() {
+    var modal = document.getElementById('addressSearchModal');
+    modal.removeAttribute('inert');
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.roadAddress; // Always use road address
+            var extraAddr = '';
+
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraAddr !== '') {
+                extraAddr = ' (' + extraAddr + ')';
+            }
+
+            document.getElementById('sample2_extraAddress').value = extraAddr;
+            document.getElementById('wZipNo').value = data.zonecode;
+            document.getElementById('wRoadFullAddr').value = addr;
+            document.getElementById('wAddrDetail').focus();
+
+            $('#addressSearchModal').modal('hide');
+            modal.setAttribute('inert', '');
+        },
+        width: '100%',
+        height: '100%'
+    }).embed(document.getElementById('postcodeContainer'));
+
+    $('#addressSearchModal').modal('show');
+}
+
+document.getElementById('wRoadFullAddr').addEventListener('click', openAddressPopup);
+document.getElementById('wZipNo').addEventListener('click', openAddressPopup);
+</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-</html>

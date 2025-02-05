@@ -3,10 +3,10 @@ package com.mrbean.stockmaterials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +68,26 @@ public class StockMaterialsController {
         model.addAttribute("totalPages", totalPages);
 
         return "stock/list";
+    }
+    
+    // ** AJAX 요청을 처리하는 API (자동 갱신)**
+    @GetMapping("/list/update")
+    @ResponseBody
+    public List<StockMaterialsVO> updateStockMaterials(
+            @RequestParam(defaultValue = "latest") String sortOption,
+            @RequestParam(defaultValue = "1") int page) {
+
+        String sortColumn = "rml_date"; 
+        String sortDirection = "DESC"; 
+
+        if ("oldest".equals(sortOption)) {
+            sortDirection = "ASC";
+        }
+
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
+
+        return stockMaterialsService.getStockMaterials(sortColumn, sortDirection, pageSize, offset);
     }
 
 

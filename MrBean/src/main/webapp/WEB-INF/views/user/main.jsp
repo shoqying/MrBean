@@ -5,20 +5,130 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>new page</title>
+    <title>Animated Captions - Coffee Theme</title>
 
     <!-- SweetAlert2 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Chart.js 라이브러리 (버전에 따라 CDN 수정 가능) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
-    <!-- 필요하다면 추가 CSS 작성 -->
     <style>
-        /* 예시 스타일 */
-        .chart-container {
-            width: 80%;
-            max-width: 900px;
-            margin: 30px auto;
+        /* 전체 스타일 */
+        body {
+            font-family: 'Lobster', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f3eacb, #d6c3a2);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* 이미지 컨테이너 */
+        .image-container {
+            position: relative;
+            text-align: center;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .image-container img {
+            width: 50%;
+            height: auto;
+            max-height: 80vh;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 문구 스타일 */
+        .caption {
+            position: absolute;
+            top: 12%; /* 글자를 조금 더 위로 이동 */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .caption span {
+            display: inline-block;
+            font-size: 1vw; /* 글자 크기 */
+            font-weight: 600;
+            color: #f8f5f2;
+            padding: 0.5vw 1vw; /* 반응형 패딩 */
+            border-radius: 5px;
+            background: linear-gradient(to right, #A67B5B, #6F4E37);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(100px);
+            animation: flyIn 2s ease-in-out forwards;
+        }
+
+        /* 각 글자 애니메이션 딜레이 */
+        .caption span:nth-child(1) { animation-delay: 0s; }
+        .caption span:nth-child(2) { animation-delay: 0.5s; }
+        .caption span:nth-child(3) { animation-delay: 1s; }
+        .caption span:nth-child(4) { animation-delay: 1.5s; }
+        .caption span:nth-child(5) { animation-delay: 2s; }
+        .caption span:nth-child(6) { animation-delay: 2.5s; }
+        .caption span:nth-child(7) { animation-delay: 3s; }
+
+        /* 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes flyIn {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 1024px) {
+            .image-container img {
+                width: 70%;
+            }
+            .caption span {
+                font-size: 1.5vw;
+                padding: 0.6vw 1.2vw;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .image-container img {
+                width: 80%;
+            }
+            .caption span {
+                font-size: 1.8vw;
+                padding: 0.8vw 1.6vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-container img {
+                width: 90%;
+            }
+            .caption span {
+                font-size: 2.2vw;
+                padding: 1vw 2vw;
+            }
         }
     </style>
 </head>
@@ -26,15 +136,15 @@
     <%-- 헤더 영역 include --%>
     <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-    <!-- SweetAlert2를 이용한 성공 및 에러 메시지 처리 -->
+    <%-- SweetAlert2 메시지 처리 --%>
     <script>
         <c:if test="${not empty success}">
-            const successMessage = '${success}'; 
+            const successMessage = '${success}';
             let messageTitle = '';
             let messageText = '';
 
             if (successMessage === 'login') {
-                messageTitle = '반갑습니다.';
+                messageTitle = '반갑습니다!';
                 messageText = '로그인 되셨습니다.';
             } else if (successMessage === 'logout') {
                 messageTitle = '로그아웃 완료';
@@ -54,7 +164,7 @@
                 icon: 'success',
                 title: messageTitle,
                 text: messageText,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#6F4E37',
                 confirmButtonText: '확인'
             });
         </c:if>
@@ -63,93 +173,26 @@
             Swal.fire({
                 icon: 'error',
                 title: '접근 제한',
-                text: '${error}', // Controller에서 전달된 에러 메시지
-                confirmButtonColor: '#d33',
+                text: '${error}',
+                confirmButtonColor: '#A67B5B',
                 confirmButtonText: '확인'
             });
         </c:if>
     </script>
 
-    <hr />
-
-    <!-- 생산계획 차트를 표시할 섹션 -->
-    <div class="container">
-        <h2>생산계획 차트</h2>
-
-        <!-- 차트 캔버스를 감싸는 컨테이너 -->
-        <div class="chart-container">
-            <canvas id="planChart"></canvas>
+    <%-- 이미지 및 문구 --%>
+    <div class="image-container">
+        <img src="${pageContext.request.contextPath}/resources/assets/img/mr.bean.png" alt="Bean Image">
+        <div class="caption">
+            <span>Mr.김</span>
+            <span>Ms.박</span>
+            <span>Mr.장</span>
+            <span>Mr.정</span>
+            <span>Mr.조</span>
+            <span>Mr.허</span>
+            <span>Mr.황</span>
         </div>
     </div>
-
-    <!-- Chart.js 스크립트 -->
-    <script>
-        // Controller에서 planList를 전달받았다고 가정
-        let planLabels = [];
-        let planData = [];
-
-        // JSTL을 통해 planList에서 planNumber, planQuantity를 가져온다
-        <c:forEach var="plan" items="${planList}">
-            planLabels.push('${plan.planNumber}');
-            planData.push(${plan.planQuantity});
-        </c:forEach>
-
-        // 차트 그릴 컨텍스트
-        const ctx = document.getElementById('planChart').getContext('2d');
-
-        // 선 아래 영역을 그라디언트(Gradient)로 채울 설정
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(54, 162, 235, 0.6)');  // 위쪽 색
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');  // 아래쪽(투명)
-
-        const data = {
-            labels: planLabels,
-            datasets: [{
-                label: '생산계획 수량',
-                data: planData,
-                backgroundColor: gradient,             // 라인 아래 그라디언트 채우기
-                borderColor: 'rgba(54, 162, 235, 1)',  // 라인 색상
-                borderWidth: 2,
-                fill: true,        // 라인 아래로 채우기
-                tension: 0.3,      // 선 곡률 (0 ~ 1)
-                pointRadius: 4,    // 각 데이터 지점의 원 크기
-                pointBackgroundColor: 'rgba(54, 162, 235, 1)'
-            }]
-        };
-
-        const config = {
-            type: 'line',  // 라인 차트
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: '생산계획 수량 차트'
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    legend: {
-                        display: true
-                    }
-                },
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true // Y축 0부터 시작
-                    }
-                }
-            }
-        };
-
-        // 차트 생성
-        new Chart(ctx, config);
-    </script>
 
     <%-- 푸터 영역 include --%>
     <%@ include file="/WEB-INF/views/include/footer.jsp" %>

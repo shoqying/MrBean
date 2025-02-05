@@ -15,4 +15,7 @@ public interface RawMaterialsReceivingService {
 
     // 원자제 입고 정보 전체 조회
     List<RawMaterialsReceivingVO> getAllRawMaterials();
+    
+    // 원자제 입고 등록 페이지
+    void registerRawMaterial(RawMaterialsReceivingVO rrVO);
 }
