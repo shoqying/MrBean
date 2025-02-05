@@ -2,6 +2,7 @@ package com.mrbean.products;
 
 import lombok.Data;
 
+
 @Data
 public class ProductsVO {
 	

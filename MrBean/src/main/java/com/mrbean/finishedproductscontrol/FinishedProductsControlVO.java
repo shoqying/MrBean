@@ -5,8 +5,10 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.finishedproductslot.FinishedProductsLotVO;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.products.ProductsVO;
+import com.mrbean.warehouse.WarehouseDTO;
 
 import lombok.Data;
 
@@ -15,7 +17,7 @@ public class FinishedProductsControlVO {
 	
 	private int fpcBno; // 순번
 	private Timestamp fpcDate; // 제조일
-	private String fpcLotbno; // LOT번호(완제품)
+	private String fplNo; // LOT번호(완제품)
 	private String pCode; // 제품 code
 	private Date fpcExpirydate; // 완재품 유통기한
 	private Timestamp fpcCheckdate; // 검사 일자
@@ -24,6 +26,7 @@ public class FinishedProductsControlVO {
 	private double fpcYield; // 수율
 	private int planId; // plan_id
 	private double fpcQuantity; // 검사량
+	private int planQuantity; // 검사량
 	
 	// join 매핑
 //	private String pName; // 제품 명
@@ -32,6 +35,9 @@ public class FinishedProductsControlVO {
 	// join을 사용하여 생성된 정보 저장
 	private List<ProductionPlanVO> productionPlanList;
 	private List<ProductsVO> productsList;
+	private List<WarehouseDTO> warehouseList;
+	private List<FinishedProductsLotVO> finishedProductsLotList;
+	
 
 
 }

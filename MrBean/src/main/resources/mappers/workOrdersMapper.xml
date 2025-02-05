@@ -8,22 +8,33 @@
         <id property="workId" column="work_id" />
         <result property="workOrderNo" column="work_order_no" />
         <result property="workPlanNo" column="work_plan_no" />
-        <result property="workPlanDate" column="work_plan_date" />
+        <result property="workStartDate" column="work_start_date" />
         <result property="workQuantity" column="work_quantity" />
         <result property="workStatus" column="work_status" />
         <result property="workRemark" column="work_remark" />
         <result property="workCreatedBy" column="work_created_by" />
         <result property="workCreatedAt" column="work_created_at" />
         <result property="workUpdatedAt" column="work_updated_at" />
+        <result property="rmlNo" column="rml_no" />
+        
+        <result property="completedQuantity" column="completed_quantity" />
+        <result property="workStartTime" column="work_start_time" />
+        <result property="workEndTime" column="work_end_time" />
+        <result property="planId" column="plan_id" />
+        
+        <!-- 검색용 아직 안쓰고 있음 -->
+        <result property="searchStartDate" column="search_start_date" />
+        <result property="searchEndDate" column="search_end_date" />
+        <result property="searchKeyword" column="search_keyword" />
     </resultMap>    
     
     
-	<select id="getLastNumberForDate" resultType = "String">
-        SELECT work_order_no
-        FROM work_orders
-        WHERE plan_no LIKE CONCAT('WO-', #{date}, '-%')
-        ORDER BY plan_no DESC 
-        LIMIT 1	
+	<select id="getLastNumberForDate" resultType="String">
+	    SELECT work_order_no
+	    FROM work_orders
+	    WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
+	    ORDER BY work_order_no DESC 
+	    LIMIT 1	
 	</select>
 	
 	
@@ -34,7 +45,59 @@
 	</select>
     
     
+     
+ 	<delete id="deleteWO">
+ 		DELETE FROM work_orders WHERE work_id = #{workId}
+ 		
+ 	</delete>
+ 	
+ 	<!-- 작업지시 등록 -->
+    <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
+        INSERT INTO work_orders (
+            work_order_no,
+            plan_id,
+            work_plan_no,
+            work_start_date,
+            work_quantity,
+            <!-- completed_quantity, -->
+            work_status,
+            work_remark,
+            work_created_by,
+            rml_no
+            
+            
+            
+        ) VALUES (
+            #{workOrderNo},
+            #{planId},
+            #{workPlanNo},
+            #{workStartDate},
+            #{workQuantity},
+            <!-- 0, -->
+            #{workStatus},
+            #{workRemark},
+            #{workCreatedBy},
+            #{rmlNo}
+        )
+    </insert>
     
+    <!-- 작업상태 변경 -->
+    <update id="updateWorkStatus">
+	    UPDATE work_orders 
+	    SET work_status = #{workStatus}
+	        <!-- work_updated_at = #{workUpdatedAt}, -->
+	        <!-- work_start_time = #{workStartTime}, -->
+	        <!-- work_end_time = #{workEndTime} -->
+	    WHERE work_id = #{workId}
+    </update>
+    
+    
+    
+    <select id="getPlanIdByWorkId" resultType="integer">
+        SELECT plan_id 
+        FROM work_orders 
+        WHERE work_id = #{workId}
+    </select>
     
     
 </mapper>

@@ -20,6 +20,22 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 	
 	@Inject
 	private SqlSession sqlSession;
+	
+	
+	
+	
+
+	@Override
+	public Map<String, Object> selectRawMaterialsData() throws Exception {
+		logger.info("selectRawMaterialsData() 호출");
+		return sqlSession.selectOne(NAMESPACE + "selectRawMaterialsData");
+	}
+
+	@Override
+	public void insertRawMaterialsQualityControl(Map<String, Object> params) throws Exception {
+		logger.info("insertRawMaterialsQualityControl() 호출");
+		sqlSession.insert(NAMESPACE + "insertRawMaterialsQualityControl", params);
+	}
 
 	@Override
 	public List<RawMaterialsQualityControlVO> selectRawMaterialsQualityControl() throws Exception {

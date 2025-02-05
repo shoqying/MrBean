@@ -40,6 +40,18 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		
 	}
 	
+	
+	/**
+	 * 생산계획목록 조회(모달용)
+	 */
+	@Override
+	public List<ProductionPlanVO> getPlanListM(ProductionPlanVO planVO) {
+		logger.info("getPlanListM() 호출");
+		
+		List<ProductionPlanVO> result = pdao.createPlanListM(planVO);
+		return result;
+	}
+
 	/**
 	 * 생산계획 목록 삭제
 	 * 
@@ -49,6 +61,18 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		logger.info("deletePlan 호출");
 		
 		pdao.deleteProductionPlan(planId);
+		
+	}
+	
+	/**
+	 * 생산계획 상태 변경
+	 * 
+	 */
+	
+	@Override
+	public void updatePlanStatus(ProductionPlanVO planVO) {
+
+		pdao.updatePlanStatus(planVO);
 		
 	}
 

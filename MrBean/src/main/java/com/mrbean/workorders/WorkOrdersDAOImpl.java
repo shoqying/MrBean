@@ -64,8 +64,35 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO{
     */
 
 	@Override
-	public void deleteWorkOrders(int wordId) {
-		sqs.delete(NAMESPACE + "deleteWO",wordId);		
+	public void deleteWorkOrders(int workId) {
+		sqs.delete(NAMESPACE + "deleteWO",workId);		
+	}
+	
+	/**
+	 * 
+	 * 작업 상태변경
+	 */
+
+	@Override
+	public void updateWorkStatus(WorkOrdersVO workVO) {
+		sqs.update(NAMESPACE + "updateWorkStatus", workVO);
+		
+	}
+	
+	/**
+	 * 생산계획 ID 로 작업목록 조회
+	 * 
+	 */
+	@Override
+	public List<WorkOrdersVO> findByPlanId(int planId) {
+		return sqs.selectList(NAMESPACE + "findByPlanId", planId);
 	}
 
+	@Override
+	public Integer getPlanIdByWorkId(int workId) {
+		return sqs.selectOne(NAMESPACE + "getPlanIdByWorkId", workId);
+	}
+
+	
+	
 } //WorkOrdersDAOImpl

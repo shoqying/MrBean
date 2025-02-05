@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mrbean.productionplan.ProductionPlanVO;
+
 @Repository
 public class userDAOImpl implements userDAO {
 
@@ -25,6 +27,11 @@ public class userDAOImpl implements userDAO {
     }
 
     @Override
+    public List<userVO> getUsersByRole(String role) {
+        return sqlSession.selectList(NAMESPACE + ".getUsersByRole", role);
+    }
+    
+    @Override
     public void createUser(userVO user) {
         sqlSession.insert(NAMESPACE + ".createUser", user);
     }
@@ -40,5 +47,18 @@ public class userDAOImpl implements userDAO {
         sqlSession.update(NAMESPACE + ".updateUserPassword", user);
     }
     
+    @Override
+    public int countUsersByRole(String role) {
+        System.out.println("DAO - Role Parameter: " + role);
+        int count = sqlSession.selectOne(NAMESPACE + ".countUsersByRole", role);
+        System.out.println("DAO - Result Count: " + count);
+        return count;
+    }
+    
+    @Override
+    public List<ProductionPlanVO> getUserProductionPlans(String createdBy) {
+        return sqlSession.selectList(NAMESPACE + ".getUserProductionPlans", createdBy);
+      
+    }
 }
 
