@@ -16,7 +16,16 @@
         <result property="workCreatedAt" column="work_created_at" />
         <result property="workUpdatedAt" column="work_updated_at" />
         <result property="rmlNo" column="rml_no" />
-    	<result property="workQuantity" column="rr_quantity" />
+        
+        <result property="completedQuantity" column="completed_quantity" />
+        <result property="workStartTime" column="work_start_time" />
+        <result property="workEndTime" column="work_end_time" />
+        <result property="planId" column="plan_id" />
+        
+        <!-- 검색용 아직 안쓰고 있음 -->
+        <result property="searchStartDate" column="search_start_date" />
+        <result property="searchEndDate" column="search_end_date" />
+        <result property="searchKeyword" column="search_keyword" />
     </resultMap>    
     
     
@@ -81,6 +90,14 @@
 	        <!-- work_end_time = #{workEndTime} -->
 	    WHERE work_id = #{workId}
     </update>
+    
+    
+    
+    <select id="getPlanIdByWorkId" resultType="integer">
+        SELECT plan_id 
+        FROM work_orders 
+        WHERE work_id = #{workId}
+    </select>
     
     
 </mapper>

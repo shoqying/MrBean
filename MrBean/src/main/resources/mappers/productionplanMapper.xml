@@ -56,8 +56,17 @@
 	        #{priority}        <!-- priority -> plan_priority로 매핑 -->
 	    )
 	</insert>
-
+	
 	<select id="selectPP" resultMap="ProductionPlanVOResultMap">
+		SELECT *
+		FROM production_plan
+		ORDER BY plan_no DESC;
+	</select>
+
+
+
+
+	<select id="selectPPM" resultMap="ProductionPlanVOResultMap">
 	    SELECT *
 	    FROM production_plan
 	    <where>

@@ -2,7 +2,7 @@
  * work.js
  * 작업지시 관련 모듈
  */
-import { API, SELECTORS } from '../common/constants.js';
+import { API, SELECTORS, STATUS, DEFAULTS, MESSAGES } from '../common/constants.js';
 import { utils } from '../common/utils.js';
 
 export const workModule = {
@@ -14,60 +14,23 @@ export const workModule = {
     },
 
     /**
-     * 상태 코드를 표시용 텍스트로 변환
-     */
-    getStatusDisplayName: function(status) {
-        const statusNames = {
-            'WAITING': 'WAITING',
-            'IN_PROGRESS': 'IN_PROGRESS',
-            'COMPLETED': 'COMPLETED',
-            'STOPPED': 'STOPPED'
-        };
-        return statusNames[status] || status;
-    },
-
-    /**
-     * 상태별 배지 클래스 반환
-     */
-    getStatusBadgeClass: function(status) {
-        const statusClasses = {
-            'WAITING': 'bg-secondary',
-            'IN_PROGRESS': 'bg-warning',
-            'COMPLETED': 'bg-success',
-            'STOPPED': 'bg-danger'
-        };
-        return statusClasses[status] || 'bg-light';
-    },
-
-    /**
-     * 상태별 버튼 활성화 여부 반환
-     */
-    getButtonStates: function(status) {
-        return {
-            start: ['WAITING', 'STOPPED'].indexOf(status) !== -1,
-            complete: status === 'IN_PROGRESS',
-            stop: status === 'IN_PROGRESS'
-        };
-    },
-
-    /**
      * 작업지시 번호 자동 생성
      */
     generateNumber: function() {
-        const self = this;
-        $.ajax({
-            url: API.WORK.NUMBER,
-            type: 'GET',
-            success: function(workNumber) {
-                if(workNumber) {
-                    $(SELECTORS.FORM.WORK_NUMBER).val(workNumber.trim());
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('작업지시 번호 생성 실패:', error);
-                alert('작업지시 번호 생성에 실패했습니다.');
-            }
+        utils.numberUtils.generateNumber('work', (number) => {
+            $(SELECTORS.FORM.WORK_NUMBER).val(number);
         });
+    },
+
+    /**
+     * 버튼 상태 반환
+     */
+    getButtonStates: function(status) {
+        return {
+            start: [STATUS.WORK.WAITING, STATUS.WORK.STOPPED].includes(status),
+            complete: status === STATUS.WORK.IN_PROGRESS,
+            stop: status === STATUS.WORK.IN_PROGRESS
+        };
     },
 
     /**
@@ -75,37 +38,39 @@ export const workModule = {
      */
     createButtonGroup: function(work) {
         const buttonStates = this.getButtonStates(work.workStatus);
-        const self = this;
         
         return $('<div>').addClass('btn-group').append(
+            // 시작 버튼
             $('<button>')
                 .addClass('btn btn-primary btn-sm')
-                .toggleClass('active', work.workStatus === 'IN_PROGRESS')
+                .toggleClass('active', work.workStatus === STATUS.WORK.IN_PROGRESS)
                 .prop('disabled', !buttonStates.start)
                 .html('<i class="bi bi-play-fill"></i> 시작')
-                .on('click', function(e) {
+                .on('click', (e) => {
                     e.stopPropagation();
-                    self.updateWorkStatus(work.workId, 'IN_PROGRESS');
+                    this.updateWorkStatus(work.workId, STATUS.WORK.IN_PROGRESS);
                 }),
             
+            // 완료 버튼
             $('<button>')
                 .addClass('btn btn-success btn-sm')
-                .toggleClass('active', work.workStatus === 'COMPLETED')
+                .toggleClass('active', work.workStatus === STATUS.WORK.COMPLETED)
                 .prop('disabled', !buttonStates.complete)
                 .html('<i class="bi bi-check-lg"></i> 완료')
-                .on('click', function(e) {
+                .on('click', (e) => {
                     e.stopPropagation();
-                    self.updateWorkStatus(work.workId, 'COMPLETED');
+                    this.updateWorkStatus(work.workId, STATUS.WORK.COMPLETED);
                 }),
                 
+            // 중지 버튼
             $('<button>')
                 .addClass('btn btn-danger btn-sm')
-                .toggleClass('active', work.workStatus === 'STOPPED')
+                .toggleClass('active', work.workStatus === STATUS.WORK.STOPPED)
                 .prop('disabled', !buttonStates.stop)
                 .html('<i class="bi bi-stop-fill"></i> 중지')
-                .on('click', function(e) {
+                .on('click', (e) => {
                     e.stopPropagation();
-                    self.updateWorkStatus(work.workId, 'STOPPED');
+                    this.updateWorkStatus(work.workId, STATUS.WORK.STOPPED);
                 })
         );
     },
@@ -114,9 +79,7 @@ export const workModule = {
      * 생산계획 선택 처리
      */
     selectPlan: function(plan) {
-        if (!plan) {
-            return;
-        }
+        if (!plan) return;
         
         this.state.selectedPlan = plan;
         $(SELECTORS.FORM.WORK_PLAN_NO).val(plan.planNumber);
@@ -130,27 +93,25 @@ export const workModule = {
      */
     validateForm: function() {
         if(!this.state.selectedPlan) {
-            alert('생산계획을 선택해주세요.');
+            alert(MESSAGES.ERROR.PLAN_REQUIRED);
             return false;
         }
 
         const workDate = $(SELECTORS.FORM.WORK_PLAN_DATE).val();
         if(!workDate) {
-            alert('작업예정일을 입력해주세요.');
+            alert(MESSAGES.ERROR.DATE_REQUIRED);
             return false;
         }
 
         const quantity = parseInt($(SELECTORS.FORM.WORK_QUANTITY).val());
-        return utils.validateQuantity(quantity, this.state.selectedPlan.planQuantity);
+        return utils.numberUtils.validateQuantity(quantity, this.state.selectedPlan.planQuantity);
     },
 
     /**
      * 작업지시 등록
      */
     submit: function() {
-        if(this.state.isSubmitting || !this.validateForm()) {
-            return;
-        }
+        if(this.state.isSubmitting || !this.validateForm()) return;
 
         this.state.isSubmitting = true;
         $(SELECTORS.FORM.INSERT_BTN).prop('disabled', true);
@@ -161,114 +122,83 @@ export const workModule = {
             workPlanNo: this.state.selectedPlan.planNumber,
             workPlanDate: $(SELECTORS.FORM.WORK_PLAN_DATE).val(),
             workQuantity: parseInt($(SELECTORS.FORM.WORK_QUANTITY).val()),
-            workStatus: $(SELECTORS.FORM.WORK_STATUS).val(),
             workRemark: $(SELECTORS.FORM.WORK_REMARK).val(),
-            workCreatedBy: "SYSTEM"
+            workCreatedBy: DEFAULTS.WORK.CREATED_BY,
+            workStatus: STATUS.WORK.WAITING,  // 명시적으로 WAITING 상태 설정
+            shouldUpdatePlan: true  // plan 상태도 함께 업데이트
         };
 
-        const self = this;
         $.ajax({
             url: API.WORK.CREATE,
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(formData),
-            success: function(response) {
-                self.updateList(response);
-                alert("작업지시가 등록되었습니다.");
-                self.resetForm();
+            success: (response) => {
+                this.updateList(response);
+                alert(MESSAGES.SUCCESS.WORK_CREATE);
+                this.resetForm();
             },
-            error: function(xhr, status, error) {
-                console.error('작업지시 등록 실패:', error);
-                alert('작업지시 등록에 실패했습니다.');
+            error: () => {
+                alert(MESSAGES.ERROR.WORK_CREATE);
             },
-            complete: function() {
-                self.state.isSubmitting = false;
+            complete: () => {
+                this.state.isSubmitting = false;
                 $(SELECTORS.FORM.INSERT_BTN).prop('disabled', false);
             }
         });
     },
 
     /**
-     * 작업상태 업데이트 및 생산계획 상태 연동
+     * 작업상태 업데이트
      */
- 
-	 updateWorkStatus: function(workId, status) {
-	     if (!workId || !status) {
-	         return;
-	     }
-	     
-	     const self = this;
-	     $.ajax({
-	         url: API.WORK.STATUS + '/' + workId + '/status',
-	         type: 'PATCH',
-	         contentType: 'application/json',
-	         data: JSON.stringify({ workStatus: status }),
-	         success: function(response) {
-	             const currentWork = response.find(function(work) {
-	                 return work.workId === workId;
-	             });
-	
-	             if(currentWork && currentWork.planId) {
-	                 const sameWorks = response.filter(function(work) {
-	                     return work.planId === currentWork.planId;
-	                 });
-	                 
-	                 // 작업상태에 따른 생산계획 상태 매핑
-	                 let planStatus;
-	                 switch(status) {
-	                     case 'WAITING':
-	                         planStatus = 'PLANNED';
-	                         break;
-	                     case 'IN_PROGRESS':
-	                         planStatus = 'IN_PROGRESS';
-	                         break;
-	                     case 'COMPLETED':
-	                         // 모든 작업이 완료된 경우에만 생산계획을 완료 상태로 변경
-	                         const allCompleted = sameWorks.every(function(work) {
-	                             return work.workStatus === 'COMPLETED';
-	                         });
-	                         planStatus = allCompleted ? 'COMPLETED' : 'IN_PROGRESS';
-	                         break;
-	                     case 'STOPPED':
-	                         planStatus = 'STOPPED';
-	                         break;
-	                     default:
-	                         planStatus = 'PLANNED';
-	                 }
-	
-	                 if (window.planModule && typeof window.planModule.updatePlanStatus === 'function') {
-	                     window.planModule.updatePlanStatus(currentWork.planId, planStatus);
-	                 }
-	             }
-	
-	             self.updateList(response);
-	         },
-	         error: function(xhr, status, error) {
-	             console.error('작업 상태 변경 실패:', error);
-	             alert('상태 변경에 실패했습니다.');
-	         }
-	     });
-	 },
+    updateWorkStatus: function(workId, status) {
+        // 해당 작업의 planId를 찾기
+        const workRow = $(`[data-work-id="${workId}"]`).closest('tr');
+        const planNo = workRow.find('td:eq(1)').text();  // 두 번째 열의 planNo 가져오기
+        const planId = workRow.data('plan-id');  // 행에 planId 데이터 추가
+
+        const data = {
+            workId: workId,
+            workStatus: status,
+            workPlanNo: planNo,         // 생산계획 번호 추가
+            planId: planId,           // planId 추가
+            shouldUpdatePlan: true      // plan 상태 업데이트 플래그
+        };
+
+        $.ajax({
+            url: `${API.WORK.STATUS}/${workId}/status`,
+            type: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: (response) => {
+                this.updateList(response);
+                console.log('Work and Plan status updated:', status);
+            },
+            error: () => {
+                console.error('Failed to update status');
+                alert(MESSAGES.ERROR.STATUS_UPDATE);
+            }
+        });
+    },
+
+
 
     /**
      * 작업지시 삭제
      */
     delete: function(workId) {
-        if(!workId || !confirm('이 작업계획을 삭제하시겠습니까?')) {
-            return;
-        }
+        if(!workId || !confirm(MESSAGES.CONFIRM.DELETE_WORK)) return;
         
-        const self = this;
         $.ajax({
-            url: API.WORK.DELETE + workId,
+            url: `${API.WORK.DELETE}${workId}`,
             type: 'DELETE',
-            success: function(response) {
-                self.updateList(response);
-                alert('작업계획이 삭제되었습니다.');
+            success: (response) => {
+                this.updateList(response);
+                alert(MESSAGES.SUCCESS.WORK_DELETE);
             },
-            error: function(xhr, status, error) {
-                console.error('작업 삭제 실패:', error);
-                alert('삭제에 실패했습니다.');
+            error: (xhr, status, error) => {
+                console.error('Failed to delete work:', error);
+                alert(MESSAGES.ERROR.WORK_DELETE);
             }
         });
     },
@@ -284,37 +214,45 @@ export const workModule = {
 
         const tbody = $(SELECTORS.TABLE.BODY);
         tbody.empty();
-        const self = this;
 
-        workList.forEach(function(work) {
-            const row = $('<tr>').append(
-                $('<td>').text(work.workOrderNo || ''),
-                $('<td>').text(work.workPlanNo || ''),
-                $('<td>').text(utils.formatDate(work.workPlanDate) || ''),
-                $('<td>').text(work.workQuantity || ''),
-                $('<td>').append(
-                    $('<span>')
-                        .addClass('badge ' + self.getStatusBadgeClass(work.workStatus))
-                        .text(self.getStatusDisplayName(work.workStatus))
-                ),
-                $('<td>').text(work.workRemark || ''),
-                $('<td>').text(work.workCreatedBy || ''),
-                $('<td>').append(self.createButtonGroup(work)),
-                $('<td>').append(
-                    $('<button>')
-                        .addClass('btn btn-danger btn-sm ' + SELECTORS.TABLE.DELETE_BTN.slice(1))
-                        .data('work-id', work.workId)
-                        .html('<i class="bi bi-trash"></i>')
-                        .on('click', function(e) {
-                            e.stopPropagation();
-                            self.delete(work.workId);
-                        })
-                )
-            );
+        workList.forEach(work => {
+            const row = this.createWorkRow(work);
             tbody.append(row);
         });
 
         this.state.lastUpdate = new Date();
+    },
+
+    /**
+     * 작업 행 생성
+     */
+    createWorkRow: function(work) {
+        return $('<tr>')
+        .data('plan-id', work.planId)    
+        .append(
+            $('<td>').text(work.workOrderNo || ''),
+            $('<td>').text(work.workPlanNo || ''),
+            $('<td>').text(utils.dateUtils.formatDate(work.workPlanDate) || ''),
+            $('<td>').text(work.workQuantity || ''),
+            $('<td>').append(
+                $('<span>')
+                    .addClass('badge ' + utils.statusUtils.getBadgeClass(work.workStatus))
+                    .text(utils.statusUtils.getDisplayName(work.workStatus, 'work'))
+            ),
+            $('<td>').text(work.workRemark || ''),
+            $('<td>').text(work.workCreatedBy || ''),
+            $('<td>').append(this.createButtonGroup(work)),
+            $('<td>').append(
+                $('<button>')
+                    .addClass('btn btn-danger btn-sm ' + SELECTORS.TABLE.DELETE_BTN.slice(1))
+                    .data('work-id', work.workId)
+                    .html('<i class="bi bi-trash"></i>')
+                    .on('click', (e) => {
+                        e.stopPropagation();
+                        this.delete(work.workId);
+                    })
+            )
+        );
     },
 
     /**
@@ -323,15 +261,11 @@ export const workModule = {
     resetForm: function() {
         this.state.selectedPlan = null;
         
-        $(SELECTORS.FORM.WORK_NUMBER).val('');
-        $(SELECTORS.FORM.WORK_PLAN_NO).val('');
-        $(SELECTORS.FORM.WORK_PLAN_DATE).val('');
-        $(SELECTORS.FORM.WORK_QUANTITY).val('');
-        $(SELECTORS.FORM.WORK_REMARK).val('');
-        $(SELECTORS.FORM.WORK_STATUS).val('WAITING');
+        const defaultValues = {
+            workStatus: DEFAULTS.WORK.STATUS
+        };
         
-        $(SELECTORS.FORM.PLAN_TYPE).val('');
-        $(SELECTORS.FORM.PRODUCT_CODE).val('');
+        utils.formUtils.resetForm(SELECTORS.FORM.WORK_ORDER_FORM, defaultValues);
         $(SELECTORS.FORM.PLAN_QUANTITY_DISPLAY).text('0');
         
         this.generateNumber();
@@ -341,41 +275,40 @@ export const workModule = {
      * 이벤트 리스너 설정
      */
     setupEventListeners: function() {
-        const self = this;
-        
-        // 이벤트 리스너 중복 방지를 위한 네임스페이스 사용
-        $(SELECTORS.FORM.INSERT_BTN).off('click.work').on('click.work', function() {
-            self.submit();
+        // 등록 버튼 이벤트
+        utils.eventUtils.bindSafe(SELECTORS.FORM.INSERT_BTN, 'click', 'work', () => {
+            this.submit();
         });
 
-        $(SELECTORS.FORM.RESET_BTN).off('click.work').on('click.work', function() {
-            if(confirm('모든 입력을 초기화하시겠습니까?')) {
-                self.resetForm();
+        // 초기화 버튼 이벤트
+        utils.eventUtils.bindSafe(SELECTORS.FORM.RESET_BTN, 'click', 'work', () => {
+            if(confirm(MESSAGES.CONFIRM.RESET_FORM)) {
+                this.resetForm();
             }
         });
 
-        $(SELECTORS.FORM.WORK_ORDER_FORM).off('submit.work').on('submit.work', function(e) {
+        // 폼 제출 방지
+        utils.eventUtils.bindSafe(SELECTORS.FORM.WORK_ORDER_FORM, 'submit', 'work', (e) => {
             e.preventDefault();
             return false;
         });
 
         // 수량 입력 validation
-        $(SELECTORS.FORM.WORK_QUANTITY).off('input.work').on('input.work', function() {
-            const quantity = parseInt($(this).val());
-            const maxQuantity = self.state.selectedPlan ? self.state.selectedPlan.planQuantity : null;
+        utils.eventUtils.bindSafe(SELECTORS.FORM.WORK_QUANTITY, 'input', 'work', (e) => {
+            const quantity = parseInt($(e.target).val());
+            const maxQuantity = this.state.selectedPlan ? this.state.selectedPlan.planQuantity : null;
+            let isValid = true;
+            let message = '';
 
             if (!quantity || quantity <= 0) {
-                $(this).addClass('is-invalid');
-                $(this).next('.invalid-feedback').remove();
-                $(this).after('<div class="invalid-feedback">수량은 0보다 커야 합니다.</div>');
+                isValid = false;
+                message = '수량은 0보다 커야 합니다.';
             } else if (maxQuantity && quantity > maxQuantity) {
-                $(this).addClass('is-invalid');
-                $(this).next('.invalid-feedback').remove();
-                $(this).after('<div class="invalid-feedback">수량은 ' + maxQuantity + '를 초과할 수 없습니다.</div>');
-            } else {
-                $(this).removeClass('is-invalid');
-                $(this).next('.invalid-feedback').remove();
+                isValid = false;
+                message = `수량은 ${maxQuantity}를 초과할 수 없습니다.`;
             }
+
+            utils.formUtils.showValidationFeedback(e.target, isValid, message);
         });
     },
 
@@ -383,24 +316,25 @@ export const workModule = {
      * 작업관리 버튼 초기화
      */
     initializeButtons: function() {
-        const self = this;
-        $(SELECTORS.TABLE.BUTTON_GROUP).each(function() {
-            const workId = $(this).data('work-id');
-            const workStatus = $(this).data('work-status');
+        $(SELECTORS.TABLE.BUTTON_GROUP).each((_, group) => {
+            const $group = $(group);
+            const workId = $group.data('work-id');
+            const workStatus = $group.data('work-status');
             
-            $(this).empty().append(
-                self.createButtonGroup({
+            $group.empty().append(
+                this.createButtonGroup({
                     workId: workId,
                     workStatus: workStatus
                 })
             );
         });
 
-        $(SELECTORS.TABLE.DELETE_BTN).each(function() {
-            const workId = $(this).data('work-id');
-            $(this).off('click').on('click', function(e) {
+        $(SELECTORS.TABLE.DELETE_BTN).each((_, btn) => {
+            const $btn = $(btn);
+            const workId = $btn.data('work-id');
+            utils.eventUtils.bindSafe($btn, 'click', 'work', (e) => {
                 e.stopPropagation();
-                self.delete(workId);
+                this.delete(workId);
             });
         });
     },

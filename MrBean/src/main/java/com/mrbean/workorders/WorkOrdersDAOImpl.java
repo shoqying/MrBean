@@ -88,6 +88,11 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO{
 		return sqs.selectList(NAMESPACE + "findByPlanId", planId);
 	}
 
+	@Override
+	public Integer getPlanIdByWorkId(int workId) {
+		return sqs.selectOne(NAMESPACE + "getPlanIdByWorkId", workId);
+	}
+
 	
 	
 } //WorkOrdersDAOImpl
