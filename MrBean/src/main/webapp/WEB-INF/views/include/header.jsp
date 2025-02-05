@@ -62,7 +62,7 @@
   <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
 
-<body>  
+<body>
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
@@ -99,12 +99,12 @@
                             <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
                                  class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
                         </c:when>
-                        
+
                         <c:otherwise>
     						<img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
         						 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
 						</c:otherwise>
-                        
+
 
 
                    		 </c:choose>
@@ -120,7 +120,7 @@
             </c:otherwise>
         </c:choose>
     </span>
- 
+
 
 
                 </a>
@@ -165,7 +165,7 @@
   <!-- "PAGES" 스타일 섹션 -->
 <li class="nav-heading">PAGES</li>
 
-  
+
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <!-- "PAGES" 스타일 섹션 -->
@@ -346,9 +346,6 @@
                 </a>
             </li>
         </c:if>
-
-
-
     <!-- 로그아웃 버튼: 로그인 상태일 때만 표시 -->
     <li class="nav-item">
       <c:choose>
@@ -360,33 +357,69 @@
         </c:when>
       </c:choose>
     </li>
-
-
-    
-    
   </ul>
 </aside>
   <main id="main" class="main">
+  <div class="pagetitle">
+    <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
+    <nav>
+      <ol class="breadcrumb horizontal-links">
+        <li class="breadcrumb-item">
+          <a href="${pageContext.request.contextPath}/user/mcount">
+            <i class="bi bi-house-door"></i> Member ratio
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="${pageContext.request.contextPath}/user/process">
+            <i class="bi bi-house-door"></i> process
+          </a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+      <div class="pagetitle">
+        <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
+            <c:forEach var="crumb" items="${breadcrumbList}">
+              <c:choose>
+                <c:when test="${crumb.active}">
+                  <li class="breadcrumb-item active">${crumb.label}</li>
+                </c:when>
+                <c:otherwise>
+                  <li class="breadcrumb-item"><a href="${crumb.link}">${crumb.label}</a></li>
+                </c:otherwise>
+              </c:choose>
+            </c:forEach>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+  <style>
+    .horizontal-links {
+      display: flex;
+      flex-direction: row;
+      gap: 20px; /* 링크 간 간격 조정 */
+      padding: 0;
+      list-style: none;
+    }
+    .horizontal-links .breadcrumb-item {
+      margin-bottom: 0; /* 세로 간격 제거 */
+    }
+    .horizontal-links .breadcrumb-item a {
+      text-decoration: none;
+      color: #6F4E37; /* 커피색 (Hex 코드) */
+      font-weight: bold; /* 강조를 위해 굵게 설정 */
+    }
+    .horizontal-links .breadcrumb-item a:hover {
+      text-decoration: underline;
+      color: #8B5A2B; /* 호버 시 조금 더 진한 커피색 */
+    }
+  </style>
 
-    <div class="pagetitle">
-      <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
-          <c:forEach var="crumb" items="${breadcrumbList}">
-            <c:choose>
-              <c:when test="${crumb.active}">
-                <li class="breadcrumb-item active">${crumb.label}</li>
-              </c:when>
-              <c:otherwise>
-                <li class="breadcrumb-item"><a href="${crumb.link}">${crumb.label}</a></li>
-              </c:otherwise>
-            </c:choose>
-          </c:forEach>
-        </ol>
-      </nav>
-    </div>
-    <!-- End Page Title -->
+
+
 
 
 
