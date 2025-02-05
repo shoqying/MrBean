@@ -18,6 +18,5 @@ public interface WorkOrdersService {
 	// 작업지시 상태변경
     void updateWorkStatus(WorkOrdersVO workVO);
 	
-} //WorkOrdersService
-
+} //WorkOrdersService 
 
