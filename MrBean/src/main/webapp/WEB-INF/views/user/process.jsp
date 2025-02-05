@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <!DOCTYPE html>
@@ -6,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>생산 계획 및 진행도</title>
+    <title>생산 계획 상태별 진행도</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .container {
@@ -29,51 +30,71 @@
 </head>
 <body>
 <div class="container">
-    <h1>생산 계획 및 진행도</h1>
-
-    <!-- 그래프가 표시될 영역 -->
-    <canvas id="productionProgressChart" width="800" height="400"></canvas>
+    <h1>생산 계획 상태별 진행도</h1>
+    <canvas id="statusChart" width="800" height="400"></canvas>
 </div>
 
 <script>
     // JSP에서 데이터 전달
-    const planLabels = [
+    const waitingQuantities = [
         <c:forEach var="plan" items="${planList}">
-            '${plan.planNumber}',
+            <c:if test="${plan.plStatus == 'WAITING'}">
+                ${plan.planQuantity},
+            </c:if>
         </c:forEach>
     ];
 
-    const planQuantities = [
+    const plannedQuantities = [
         <c:forEach var="plan" items="${planList}">
-            ${plan.planQuantity},
+            <c:if test="${plan.plStatus == 'PLANNED'}">
+                ${plan.planQuantity},
+            </c:if>
         </c:forEach>
     ];
 
-    const progressQuantities = [
+    const inProgressQuantities = [
         <c:forEach var="plan" items="${planList}">
-            ${plan.progressQuantity}, // 실제 진행 수량 (progressQuantity 속성 필요)
+            <c:if test="${plan.plStatus == 'IN_PROGRESS'}">
+                ${plan.planQuantity},
+            </c:if>
         </c:forEach>
     ];
 
-    // Chart.js 그래프 생성
-    const ctx = document.getElementById('productionProgressChart').getContext('2d');
-    const productionProgressChart = new Chart(ctx, {
-        type: 'bar', // 막대 그래프
+    const completedQuantities = [
+        <c:forEach var="plan" items="${planList}">
+            <c:if test="${plan.plStatus == 'COMPLETED'}">
+                ${plan.planQuantity},
+            </c:if>
+        </c:forEach>
+    ];
+
+    // Chart.js로 그래프 생성
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: planLabels, // 생산 계획 번호
+            labels: ['WAITING', 'PLANNED', 'IN_PROGRESS', 'COMPLETED'], // 상태별
             datasets: [
                 {
-                    label: '계획 수량',
-                    data: planQuantities,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)', // 파란색
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                },
-                {
-                    label: '진행된 수량',
-                    data: progressQuantities,
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)', // 녹색
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    label: '상태별 수량',
+                    data: [
+                        waitingQuantities.reduce((a, b) => a + b, 0), // WAITING 총합
+                        plannedQuantities.reduce((a, b) => a + b, 0), // PLANNED 총합
+                        inProgressQuantities.reduce((a, b) => a + b, 0), // IN_PROGRESS 총합
+                        completedQuantities.reduce((a, b) => a + b, 0), // COMPLETED 총합
+                    ],
+                    backgroundColor: [
+                        'rgba(153, 102, 255, 0.5)', // WAITING 색상
+                        'rgba(54, 162, 235, 0.5)',  // PLANNED 색상
+                        'rgba(255, 206, 86, 0.5)',  // IN_PROGRESS 색상
+                        'rgba(75, 192, 192, 0.5)',  // COMPLETED 색상
+                    ],
+                    borderColor: [
+                        'rgba(153, 102, 255, 1)', // WAITING 색상
+                        'rgba(54, 162, 235, 1)',  // PLANNED 색상
+                        'rgba(255, 206, 86, 1)',  // IN_PROGRESS 색상
+                        'rgba(75, 192, 192, 1)',  // COMPLETED 색상
+                    ],
                     borderWidth: 1,
                 },
             ],
@@ -82,12 +103,11 @@
             responsive: true,
             plugins: {
                 legend: {
-                    display: true,
-                    position: 'top',
+                    display: false,
                 },
                 title: {
                     display: true,
-                    text: '생산 계획 및 진행도 비교',
+                    text: '상태별 생산 계획 진행도 비교',
                 },
             },
             scales: {
@@ -102,7 +122,6 @@
         },
     });
 </script>
-
 </body>
 </html>
 
