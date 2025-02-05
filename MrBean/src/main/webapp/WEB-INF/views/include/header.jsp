@@ -100,10 +100,12 @@
                                  class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
                         </c:when>
 
+
                         <c:otherwise>
     						<img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
         						 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
 						</c:otherwise>
+
 
 
 
@@ -158,6 +160,7 @@
 		</li>
 	 </ul>
    </nav>
+
 </header>
 
 

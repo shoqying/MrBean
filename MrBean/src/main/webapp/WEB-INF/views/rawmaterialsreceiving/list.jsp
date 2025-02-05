@@ -5,7 +5,7 @@
 
 
     <meta charset="UTF-8">
-    <title>원자제 입고 정보</title>
+    <title>원자재 입고 정보</title>
 </head>
 <body>
 
@@ -44,14 +44,14 @@
 
 
 
-    <h1>원자제 입고 목록</h1>
-    <!-- 원자제 입고 목록을 테이블로 표시 -->
+    <h1>원자재 입고 목록</h1>
+    <!-- 원자재 입고 목록을 테이블로 표시 -->
     <table border="1">
         <thead>
             <tr>
                 <th>입고번호</th>
                 <th>로트번호</th>
-                <th>원자제 코드번호</th>
+                <th>원자재 코드번호</th>
                 <th>수량</th>
                 <th>단위</th>
                 <th>유통기한</th>
@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- 원자제 입고 정보 목록 출력 -->
+            <!-- 원자재 입고 정보 목록 출력 -->
             <c:forEach var="item" items="${rawMaterials}">
                 <tr>
                     <td>${item.rrNo}</td>
@@ -77,9 +77,9 @@
     </table>
 
     <br>
-    <a href="<c:url value='/createForm' />"> 원자제 입고 등록</a>
+    <a href="<c:url value='/rawmaterialsreceiving/register' />"> 원자재 입고 등록</a>
     <br>
-     <a href="<c:url value='/createForm' />"> 원자제 lot번호 등록</a>
+     <a href="<c:url value='/createForm' />"> 원자재 lot번호 등록</a>
 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
