@@ -40,18 +40,6 @@ public class ProductionplanServiceImpl implements ProductionplanService {
 		
 	}
 	
-	
-	/**
-	 * 생산계획목록 조회(모달용)
-	 */
-	@Override
-	public List<ProductionPlanVO> getPlanListM(ProductionPlanVO planVO) {
-		logger.info("getPlanListM() 호출");
-		
-		List<ProductionPlanVO> result = pdao.createPlanListM(planVO);
-		return result;
-	}
-
 	/**
 	 * 생산계획 목록 삭제
 	 * 

@@ -2,8 +2,6 @@ package com.mrbean.user;
 
 import java.util.List;
 
-import com.mrbean.productionplan.ProductionPlanVO;
-
 public interface userService {
     userVO getUserById(String userId); // 사용자 단일 조회
     List<userVO> getAllUsers(); // 모든 사용자 조회
@@ -11,6 +9,5 @@ public interface userService {
     void updateUser(userVO user); // 사용자 업데이트
     void updatePassword(userVO user); // 사용자 비밀번호 업데이트 추가
     List<userVO> getUsersByRole(String role); // 특정 회원 조회
-    int countUsersByRole(String role); // 역할별 사용자 수 조회
-    List<ProductionPlanVO> getUserProductionPlans(String createdBy); // 생산 계획 가져오기
-    }
+
+}

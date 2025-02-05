@@ -8,7 +8,7 @@
         <id property="workId" column="work_id" />
         <result property="workOrderNo" column="work_order_no" />
         <result property="workPlanNo" column="work_plan_no" />
-        <result property="workStartDate" column="work_start_date" />
+        <result property="workPlanDate" column="work_plan_date" />
         <result property="workQuantity" column="work_quantity" />
         <result property="workStatus" column="work_status" />
         <result property="workRemark" column="work_remark" />
@@ -16,16 +16,7 @@
         <result property="workCreatedAt" column="work_created_at" />
         <result property="workUpdatedAt" column="work_updated_at" />
         <result property="rmlNo" column="rml_no" />
-        
-        <result property="completedQuantity" column="completed_quantity" />
-        <result property="workStartTime" column="work_start_time" />
-        <result property="workEndTime" column="work_end_time" />
-        <result property="planId" column="plan_id" />
-        
-        <!-- 검색용 아직 안쓰고 있음 -->
-        <result property="searchStartDate" column="search_start_date" />
-        <result property="searchEndDate" column="search_end_date" />
-        <result property="searchKeyword" column="search_keyword" />
+    	<result property="workQuantity" column="rr_quantity" />
     </resultMap>    
     
     
@@ -57,7 +48,7 @@
             work_order_no,
             plan_id,
             work_plan_no,
-            work_start_date,
+            work_plan_date,
             work_quantity,
             <!-- completed_quantity, -->
             work_status,
@@ -71,7 +62,7 @@
             #{workOrderNo},
             #{planId},
             #{workPlanNo},
-            #{workStartDate},
+            #{workPlanDate},
             #{workQuantity},
             <!-- 0, -->
             #{workStatus},
@@ -90,14 +81,6 @@
 	        <!-- work_end_time = #{workEndTime} -->
 	    WHERE work_id = #{workId}
     </update>
-    
-    
-    
-    <select id="getPlanIdByWorkId" resultType="integer">
-        SELECT plan_id 
-        FROM work_orders 
-        WHERE work_id = #{workId}
-    </select>
     
     
 </mapper>

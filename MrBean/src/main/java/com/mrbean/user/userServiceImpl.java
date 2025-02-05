@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mrbean.productionplan.ProductionPlanVO;
-
 @Service
 public class userServiceImpl implements userService {
 
@@ -77,20 +75,4 @@ public class userServiceImpl implements userService {
                 })
                 .collect(Collectors.toList());
     }
-    
-    @Override
-    public int countUsersByRole(String role) {
-        int count = userDAO.countUsersByRole(role);
-        System.out.println("Service - Role: " + role + ", Count: " + count);
-        return count;
-    }
-    
-    
-    @Override
-    public List<ProductionPlanVO> getUserProductionPlans(String createdBy) {
-        // userDAO에서 데이터를 가져오는 메서드 호출
-        return userDAO.getUserProductionPlans(createdBy);
-    }
-    
-    
 }

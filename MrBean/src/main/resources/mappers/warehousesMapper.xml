@@ -51,4 +51,16 @@
         WHERE w_code = #{wCode}
     </select>
 
+    <!-- 창고 목록 조회 -->
+    <select id="selectWarehouseList" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+    </select>
+
 </mapper>

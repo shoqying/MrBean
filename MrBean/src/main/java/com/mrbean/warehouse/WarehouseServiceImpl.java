@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +44,15 @@ public class WarehouseServiceImpl implements WarehouseService {
     public boolean isWarehouseCodeExist(String wCode) throws Exception{
         try {
             return warehouseRepository.checkWarehouseCodeExists(wCode);  // MyBatis Mapper 호출
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<WarehouseVO> getWarehouseList() throws Exception {
+        try {
+            return warehouseRepository.selectWarehouseList();  // MyBatis Mapper 호출
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
