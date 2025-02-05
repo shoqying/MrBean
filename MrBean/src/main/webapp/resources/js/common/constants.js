@@ -41,6 +41,7 @@ export const SELECTORS = {
         WORK_PLAN_NO: '#workPlanNo',
         WORK_STATUS: '.workStatus',
         WORK_QUANTITY: '#workQuantity',
+        WORK_COMQUANTITY:'#completedQuantity',
         WORK_START_DATE: '#workStartDate',
         WORK_REMARK: '#workRemark',
         

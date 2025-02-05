@@ -173,6 +173,7 @@ export const workModule = {
             success: (response) => {
                 this.updateList(response);
                 console.log('Work and Plan status updated:', status);
+                console.log('data:', data);
             },
             error: () => {
                 console.error('Failed to update status');
@@ -224,7 +225,7 @@ export const workModule = {
     },
 
     /**
-     * 작업 행 생성
+     * 작업지시 행 생성 
      */
     createWorkRow: function(work) {
         return $('<tr>')
@@ -234,6 +235,7 @@ export const workModule = {
             $('<td>').text(work.workPlanNo || ''),
             $('<td>').text(utils.dateUtils.formatDate(work.workStartDate) || ''),
             $('<td>').text(work.workQuantity || ''),
+            $('<td>').text(work.completedQuantity || ''),
             $('<td>').append(
                 $('<span>')
                     .addClass('badge ' + utils.statusUtils.getBadgeClass(work.workStatus))

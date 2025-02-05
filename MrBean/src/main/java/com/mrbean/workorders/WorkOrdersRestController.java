@@ -121,6 +121,7 @@ public class WorkOrdersRestController {
             Integer planId = wos.getPlanIdByWorkId(workId);
             logger.info("상태변경 호출");
             logger.info("planId: {}", planId);
+            logger.info("workVO: {}", workVO);
             
             // planId를 workVO에도 설정
             workVO.setPlanId(planId);

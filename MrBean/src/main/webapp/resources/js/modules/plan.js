@@ -52,7 +52,6 @@ export const planModule = {
             productCode: $(SELECTORS.FORM.PRODUCT_CODE).val(),
             planQuantity: parseInt($(SELECTORS.FORM.QUANTITY).val()),
             remark: $(SELECTORS.FORM.REMARK).val(),
-            priority: $(SELECTORS.FORM.PRIORITY).val(),
             plStatus: $(SELECTORS.FORM.PLSTATUS).val(),
             createdBy: DEFAULTS.WORK.CREATED_BY
         };
@@ -137,7 +136,6 @@ export const planModule = {
     createPlanRow: function(plan) {
         return $('<tr>').append(
             $('<td>').text(plan.planNumber || ''),
-            $('<td>').text(plan.priority || ''),
             $('<td>').text(plan.planType || ''),
             $('<td>').text(utils.dateUtils.formatDate(plan.planStartDate) || ''),
             $('<td>').text(utils.dateUtils.formatDate(plan.planEndDate) || ''),
@@ -165,7 +163,6 @@ export const planModule = {
     resetForm: function() {
         // 기본값 정의
         const defaultValues = {
-            priority: DEFAULTS.PLAN.PRIORITY,
             planType: DEFAULTS.PLAN.PLAN_TYPE,
             plStatus: DEFAULTS.PLAN.STATUS
         };
@@ -178,7 +175,6 @@ export const planModule = {
         $(SELECTORS.FORM.PRODUCT_CODE).val('');
         
         // 기본값 설정
-        $(SELECTORS.FORM.PRIORITY).val(defaultValues.priority);
         $(SELECTORS.FORM.PLAN_TYPE).val(defaultValues.planType);
         $(SELECTORS.FORM.PLSTATUS).val(defaultValues.plStatus);
         
