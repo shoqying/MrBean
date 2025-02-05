@@ -252,28 +252,45 @@ public class userController {
 
         
     
-        @GetMapping("/user/graph")
+
+        @GetMapping("/user/mcount")
         public String showGraph(Model model, HttpSession session) {
-            // 세션에서 로그인된 사용자 정보 확인
-            Object loggedInUser = session.getAttribute("loggedInUser"); // 세션에 저장된 사용자 정보
+            Object loggedInUser = session.getAttribute("loggedInUser");
 
             if (loggedInUser == null) {
-                // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
                 return "redirect:/user/login";
             }
 
-            // 로그인된 경우 그래프 데이터를 추가
-            int adminCount = 10;    // Admin 수
-            int managerCount = 20;  // Manager 수
-            int memberCount = 70;   // Member 수
+            int adminCount = userService.countUsersByRole("ADMIN");
+            int managerCount = userService.countUsersByRole("MANAGER");
+            int memberCount = userService.countUsersByRole("MEMBER");
+
+            System.out.println("Controller - Admin Count: " + adminCount);
+            System.out.println("Controller - Manager Count: " + managerCount);
+            System.out.println("Controller - Member Count: " + memberCount);
 
             model.addAttribute("adminCount", adminCount);
             model.addAttribute("managerCount", managerCount);
             model.addAttribute("memberCount", memberCount);
 
-            return "user/graph"; // graph.jsp 페이지 반환
+            return "user/mcount";
         }
-    
+
+        
+        @GetMapping("/process")
+        public String showProcessPage(Model model, HttpSession session) {
+            userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/user/login";
+            }
+
+            // 사용자 이름 기반으로 생산 계획 가져오기
+            List<ProductionPlanVO> planList = userService.getUserProductionPlans(loggedInUser.getUUsername());
+            model.addAttribute("planList", planList);
+
+            return "user/process"; // JSP 파일 경로
+        }
+
         
 
     // 샘플페이지 연결

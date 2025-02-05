@@ -67,6 +67,18 @@
     FROM users
 </select>
 
+  <select id="countUsersByRole" parameterType="string" resultType="int">
+    SELECT COUNT(*) 
+    FROM users 
+    WHERE u_roleenum = #{role}
+</select>
+
+ <!-- 사용자 생성 생산 계획 가져오기 -->
+<select id="getUserProductionPlans" resultType="com.mrbean.productionplan.ProductionPlanVO">
+    SELECT *
+    FROM production_plan
+    WHERE plan_created_by = #{createdBy}
+</select>
 
 
 
