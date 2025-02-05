@@ -31,16 +31,16 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	}
 
 	@Override
-	public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception {
+	public void updateQualityCheck(FinishedProductsControlVO vo) throws Exception {
 		logger.info("updateQualityCheck() 호출");
-		finishedProductsControlDAO.updateQualityCheck(fpcBno, fpcQualityCheck);
+		finishedProductsControlDAO.updateQualityCheck(vo);
 		
 	}
 
 	@Override
-	public void updateStatus(int fpcBno, String fpcStatus) throws Exception {
+	public void updateStatus(FinishedProductsControlVO vo) throws Exception {
 		logger.info("updateStatus() 호출");
-		finishedProductsControlDAO.updateStatus(fpcBno, fpcStatus);
+		finishedProductsControlDAO.updateStatus(vo);
 		
 	}
 
@@ -55,6 +55,13 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		logger.info("insertFinishedProductLot() 호출");
         finishedProductsControlDAO.insertFinishedProductLot();
 	
+	}
+
+	@Override
+	public void deleteFinishedProductLot(int fpcBno) throws Exception {
+		logger.info("deleteFinishedProductLot() 호출");
+		finishedProductsControlDAO.deleteFinishedProductLot(fpcBno);
+		
 	}
 
 	@Override

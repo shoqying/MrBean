@@ -45,7 +45,7 @@ public class WorkOrdersRestController {
         try {
             wos.insertWorkOrders(workVO);
             List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-            rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+            // rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
             logger.info("등록완료");
             return ResponseEntity.ok(workList);
         } catch (Exception e) {

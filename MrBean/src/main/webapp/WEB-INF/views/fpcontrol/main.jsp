@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <section class="section">
@@ -86,7 +83,7 @@
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcQualityCheck}">
-	                    		<select id="fpcQualityCheck_${vo.fpcBno}" onchange="updateQualityCheck(${vo.fpcBno}, this)">
+	                    		<select class="form-select" aria-label="Default select example" id="fpcQualityCheck_${vo.fpcBno}" onchange="updateQualityCheck(${vo.fpcBno}, this.value)">
 				                    <option value="PENDING" ${vo.fpcQualityCheck == 'PENDING' ? 'selected' : ''}>대기중</option>
 				                    <option value="COMPLETED" ${vo.fpcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
 				                </select>
@@ -96,15 +93,15 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.fpcStatus}">
-                    			<select id="fpcStatus_${vo.fpcBno}" onchange="updateStatus(${vo.fpcBno}, this)">
-				                    <option value="PENDING" ${vo.fpcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
-				                    <option value="PASS" ${vo.fpcStatus == 'PASS' ? 'selected' : ''}>합격</option>
-				                    <option value="FAIL" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
-				                </select>
-				            </c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
-                    	</c:choose>
+						    <c:when test="${not empty vo.fpcStatus and vo.fpcQualityCheck == 'COMPLETED'}">
+						        <select class="form-select" aria-label="Default select example" id="fpcStatus_${vo.fpcBno}" onchange="updateStatus(${vo.fpcBno}, this.value)">
+						            <option value="PENDING" ${vo.fpcStatus == 'PENDING' ? 'selected' : ''}>대기중</option>
+						            <option value="PASS" ${vo.fpcStatus == 'PASS' ? 'selected' : ''}>합격</option>
+						            <option value="FAIL" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
+						        </select>
+						    </c:when>
+						    <c:otherwise>값이 없습니다</c:otherwise>
+						</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
@@ -144,32 +141,37 @@
 		    
     
 	<script>
-    function updateQualityCheck(fpcBno, fpcQualityCheck, fplBatch) {
-        var qualityCheckValue = fpcQualityCheck.value;
+    function updateQualityCheck(fpcBno, fpcQualityCheck) {
         $.ajax({
             url: '/fpcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
-            data: { fpcBno: fpcBno, fpcQualityCheck: qualityCheckValue },
+            contentType: 'application/json',
+            data: JSON.stringify({ fpcBno: fpcBno, fpcQualityCheck: fpcQualityCheck }),
             success: function(response) {
                 alert("품질 검사 상태가 업데이트되었습니다.");
+                location.reload();  // 페이지 새로고침
             },
             error: function() {
                 alert("업데이트 실패");
+                location.reload();  // 페이지 새로고침
             }
         });
     }
 
     function updateStatus(fpcBno, fpcStatus) {
-        var statusValue = fpcStatus.value;
         $.ajax({
             url: '/fpcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
-            data: { fpcBno: fpcBno, fpcStatus: statusValue },
+            contentType: 'application/json',
+            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus }),
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
+                location.reload();  // 페이지 새로고침
+                
             },
             error: function() {
-                alert("업데이트 실패");
+                alert("업데이트 실패\n품질검사를 먼저 완료로 변경해 주세요");
+                location.reload();  // 페이지 새로고침
             }
         });
     }

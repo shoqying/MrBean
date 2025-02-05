@@ -50,8 +50,8 @@
 	    INSERT INTO finished_products_control(fpl_no, p_code, plan_id, plan_quantity)
 	    SELECT fpl.fpl_no, p.p_code, plan.plan_id, plan.plan_quantity
 		FROM finished_products_lot fpl
-		JOIN products p ON p.p_code = fpl.p_code
-		JOIN production_plan plan ON plan.plan_id = fpl.plan_id
+		LEFT JOIN products p ON p.p_code = fpl.p_code
+		LEFT JOIN production_plan plan ON plan.plan_id = fpl.plan_id
 		ORDER BY plan.plan_id desc
 		LIMIT 1
 	</insert>
@@ -72,20 +72,20 @@
         	   plan.plan_quantity,
         	   fpc.fpc_quantity
 		FROM finished_products_control fpc
-   	    JOIN products p on p.p_code = fpc.p_code
-   	    JOIN production_plan plan on plan.plan_id = fpc.plan_id
+   	    LEFT JOIN products p on p.p_code = fpc.p_code
+   	    LEFT JOIN production_plan plan on plan.plan_id = fpc.plan_id
     </select>
     
     
     <!-- 품질 검사 상태 업데이트 -->
-    <update id="updateQualityCheck" parameterType="map">
+    <update id="updateQualityCheck" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
         UPDATE finished_products_control
         SET fpc_quality_check = #{fpcQualityCheck}
         WHERE fpc_bno = #{fpcBno}
     </update>
 
     <!-- 상태 업데이트 -->
-    <update id="updateStatus" parameterType="map">
+    <update id="updateStatus" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
         UPDATE finished_products_control
         SET fpc_status = #{fpcStatus}
         WHERE fpc_bno = #{fpcBno}
@@ -102,22 +102,25 @@
         INSERT INTO finished_products_lot (fpl_no, fpl_batch, w_code, p_code)
 			SELECT 
 			    CONCAT(
-			        sp.p_code, '-', 
-			        sp.w_code, '-', 
+			        w.p_code, '-', 
+			        w.w_code, '-', 
 			        DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
 			        LPAD(COALESCE(MAX(fpl.fpl_batch), 0) + 1, 3, '0')
 			    ) AS fpl_no, -- LOT 번호 생성
 			    COALESCE(MAX(fpl.fpl_batch), 0) + 1 AS fpl_batch,
-			    sp.w_code,
-			    sp.p_code
+			    w.w_code,
+			    w.p_code
 			FROM 
-			    stock_products sp
-			LEFT JOIN 
-			    finished_products_lot fpl ON sp.w_code = fpl.w_code AND sp.p_code = fpl.p_code
-			GROUP BY 
-			sp.p_code, sp.w_code
-			LIMIT 1
+			    work_orders w
+            LIMIT 1;
     </insert>
+    
+    <!-- 완제품 LOT 번호 삭제 -->
+    <update id="deleteFinishedProductLot" parameterType="int">
+    	UPDATE finished_products_control
+    	SET fpl_no = null
+    	WHERE #{fpcBno}
+    </update>
 
     
     

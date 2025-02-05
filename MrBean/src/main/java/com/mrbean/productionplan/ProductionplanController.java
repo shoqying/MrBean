@@ -26,8 +26,6 @@ public class ProductionplanController {
 	private NumberGenerationService ngs;
 	@Inject
 	private ProductionplanService pps;
-	@Inject
-	private FinishedProductsControlService fpcs;
 	
 		/**
 		 * 생산계획등록 페이지(GET) - 등록 form 과 List 함께출력
@@ -59,7 +57,6 @@ public class ProductionplanController {
 			try {
 				// 생산계획 등록
 				pps.insertProductionPlan(planVO);
-				fpcs.insertFinishedProductControl();
 				
 				// 최신 목록 반환
 				List<ProductionPlanVO> planList = pps.getPlanList(planVO);

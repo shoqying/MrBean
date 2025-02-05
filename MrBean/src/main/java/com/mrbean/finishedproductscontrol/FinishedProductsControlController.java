@@ -11,14 +11,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.productionplan.ProductionPlanVO;
+import com.mrbean.products.ProductsService;
+import com.mrbean.products.ProductsVO;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.warehouse.WarehouseService;
+import com.mrbean.warehouse.WarehouseVO;
 
 
 @Controller
@@ -29,6 +37,12 @@ public class FinishedProductsControlController {
 	
 	@Autowired
 	private FinishedProductsControlService finishedProductsControlService;
+	
+	@Autowired
+	private ProductsService productsService;
+	
+	@Autowired
+	private WarehouseService warehouseService;
 	
 	
 	
@@ -47,28 +61,31 @@ public class FinishedProductsControlController {
 	// 완제품 품질 검사 상태 업데이트
     @PostMapping("/updateQualityCheck")
     @ResponseBody
-    public ResponseEntity<String> updateQualityCheck(@RequestParam int fpcBno, 
-    												@RequestParam String fpcQualityCheck) {
+    public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
         try {
-        	finishedProductsControlService.updateQualityCheck(fpcBno, fpcQualityCheck);
-        	if ("COMPLETED".equalsIgnoreCase(fpcQualityCheck)) {
-                // 예시: 관련 데이터를 다른 테이블에 저장하거나 추가 로직 실행
-        		finishedProductsControlService.insertFinishedProductLot();
-            }
+        	finishedProductsControlService.updateQualityCheck(vo);
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
         }
     }
     
-    
-
     // 완제품 상태 업데이트
-    @PostMapping("/updateStatus")
+	@PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestParam int fpcBno, @RequestParam String fpcStatus) {
+    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo, Model model) {
+		
         try {
-        	finishedProductsControlService.updateStatus(fpcBno, fpcStatus);
+        	List<ProductsVO> productsList = productsService.getProductList();
+        	// List<WarehouseVO> warehouseList = warehouseService.isWarehouseCodeExist(wCode);
+            
+        	finishedProductsControlService.updateStatus(fvo);
+    		if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
+    			finishedProductsControlService.insertFinishedProductLot();
+            }
+        	if (QualityControlStatus.PENDING.equals(fvo.getFpcStatus())) {
+        		finishedProductsControlService.deleteFinishedProductLot(fvo.getFpcBno());
+        	}
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");

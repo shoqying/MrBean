@@ -8,16 +8,19 @@ public interface FinishedProductsControlService {
     public List<FinishedProductsControlVO> getFinishedProductsControlList() throws Exception;
 	
 	// 완제품 품질 검사 상태 업데이트
-    public void updateQualityCheck(int fpcBno, String fpcQualityCheck) throws Exception;
+    public void updateQualityCheck(FinishedProductsControlVO vo) throws Exception;
 		
 	// 완제품 상태 업데이트
-    public void updateStatus(int fpcBno, String fpcStatus) throws Exception;
+    public void updateStatus(FinishedProductsControlVO vo) throws Exception;
 	
 	// 완제품 검사 목록 삭제
     public int deleteFinishedProduct(int rqcBno) throws Exception;
 
 	// 완제품 LOT 번호 생성
 	public void insertFinishedProductLot() throws Exception;
+	
+	// 완제품 LOT 번호 삭제
+	public void deleteFinishedProductLot(int fpcBno) throws Exception;
 	
 	// 완제품 목록 저장
 	public void insertFinishedProductControl() throws Exception;
