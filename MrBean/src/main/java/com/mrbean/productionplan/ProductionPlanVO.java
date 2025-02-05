@@ -2,7 +2,6 @@ package com.mrbean.productionplan;
 
 import java.sql.Date;
 
-import com.mrbean.enums.ProductionplanPriority;
 import com.mrbean.enums.ProductionplanStatus;
 
 import lombok.Data;
@@ -22,8 +21,9 @@ public class ProductionPlanVO {
 	private String remark; // 비고
 	private String createdBy;//등록자 
 	
-	private ProductionplanStatus plStatus; //계획상태(PLANNED,IN_PROGRESS,COMPLETED)
-	private ProductionplanPriority priority; //우선순위
+	private ProductionplanStatus plStatus; //계획상태(PLANNED,WAITING,IN_PROGRESS,COMPLETED,STOPPED)
+	
+	
 	
 
 	

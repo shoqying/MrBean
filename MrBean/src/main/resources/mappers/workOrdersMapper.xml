@@ -4,7 +4,6 @@
 <mapper namespace="com.mrbean.mappers.workOrdersMapper">
 
     <!-- ResultMap 정의 -->
-
 	<resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
 	   <!-- 기본키 -->
 	   <id property="workId" column="work_id"/>
@@ -36,7 +35,6 @@
 	   <result property="shouldUpdatePlan" column="should_update_plan"/>
 	</resultMap>    
 	    
-
     
 	<select id="getLastNumberForDate" resultType="String">
 	    SELECT work_order_no
@@ -66,7 +64,7 @@
             work_order_no,
             plan_id,
             work_plan_no,
-            work_plan_date,
+            work_start_date,
             work_quantity,
             <!-- completed_quantity, -->
             work_status,
@@ -80,7 +78,7 @@
             #{workOrderNo},
             #{planId},
             #{workPlanNo},
-            #{workPlanDate},
+            #{workStartDate},
             #{workQuantity},
             <!-- 0, -->
             #{workStatus},
@@ -99,6 +97,14 @@
 	        <!-- work_end_time = #{workEndTime} -->
 	    WHERE work_id = #{workId}
     </update>
+    
+    
+    
+    <select id="getPlanIdByWorkId" resultType="integer">
+        SELECT plan_id 
+        FROM work_orders 
+        WHERE work_id = #{workId}
+    </select>
     
     
 </mapper>
