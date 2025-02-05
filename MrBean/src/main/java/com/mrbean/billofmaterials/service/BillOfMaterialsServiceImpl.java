@@ -66,7 +66,6 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
 
     @Override
     public List<BillOfMaterialsDTO> getAllBoms() {
-
         return billOfMaterialsRepository.findAll();
     }
 

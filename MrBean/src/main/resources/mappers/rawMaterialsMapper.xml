@@ -39,4 +39,11 @@
     	DELETE FROM raw_materials WHERE rm_code = #{rmCode}
 	</delete>
 
+ <!-- 원자재 입고 등록 -->
+    <insert id="insertRawMaterialReceiving">
+        INSERT INTO raw_materials_receiving (rml_no, rr_bno, rm_code, rr_quantity, rr_unit, rr_expirydate)
+        VALUES (#{rmlNo}, #{rrBno}, #{rmCode}, #{rrQuantity}, #{rrUnit}, #{rrExpirydate})
+    </insert>
+
+
 </mapper>

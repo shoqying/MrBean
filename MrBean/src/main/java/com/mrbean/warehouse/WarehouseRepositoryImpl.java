@@ -4,6 +4,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class WarehouseRepositoryImpl implements WarehouseRepository {
 
@@ -29,6 +31,11 @@ public class WarehouseRepositoryImpl implements WarehouseRepository {
     @Override
     public WarehouseVO selectWarehouseByCode(String wCode) throws Exception {
         return sqlSession.selectOne(NAMESPACE + "selectWarehouseByCode", wCode);
+    }
+
+    @Override
+    public List<WarehouseVO> selectWarehouseList() {
+        return sqlSession.selectList(NAMESPACE + "selectWarehouseList");
     }
 
 }

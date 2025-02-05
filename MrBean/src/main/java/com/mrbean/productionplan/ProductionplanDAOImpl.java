@@ -60,20 +60,6 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
    }
 
    /**
-    * 생산계획목록 조회(모달용)
-    * 
-    * 
-    */
-   
-   
-   @Override
-	public List<ProductionPlanVO> createPlanListM(ProductionPlanVO planVO) {
-       List<ProductionPlanVO> result = sqs.selectList(NAMESPACE + "selectPPM", planVO);
-
-       return result;
-	}
-
-/**
     * 
     * 생산계획목록 삭제
     * 
@@ -85,13 +71,6 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 		sqs.delete(NAMESPACE + "deletePP",planId);
 	}
 
-	/**
-	 * 
-	 * 생산계획 상태 업데이트
-	 * 
-	 */
-	
-	
 	@Override
 	public void updatePlanStatus(ProductionPlanVO planVO) {
 		sqs.update(NAMESPACE + "updatePlanStatus",planVO);
