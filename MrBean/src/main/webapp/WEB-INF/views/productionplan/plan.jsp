@@ -16,7 +16,7 @@
             <div class="card-body">
               <h5 class="card-title"><i class="bi bi-pencil-square me-1"></i><b>생산계획 등록</b></h5>
               <!-- Floating Labels Form -->
-              <form class="row g-3" id = "planForm"> <!-- 아이디 확인  -->
+              <form class="row g-3" id = "a"> <!-- 아이디 확인  -->
                 <div class="col-md-6">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="planNumber" placeholder="생산계획 번호" readonly="readonly">
@@ -28,7 +28,7 @@
                     <select class="form-select" id="planType" aria-label="State">
                       <option selected>일일</option>
                       <option>주간</option>
-                      <option>월간</option>
+                      <option>분기</option>
                     </select>
                     <label for="planType">계획종류</label>
                   </div>
@@ -119,10 +119,9 @@
 				        <td>${plan.planEndDate}</td>
 				        <td>
 				            <span class="badge ${plan.plStatus == 'PLANNED' ? 'bg-primary' : 
-				            				 plan.plStatus == 'WAITING' ? 'bg-secondary' :
 				                             plan.plStatus == 'IN_PROGRESS' ? 'bg-warning' : 
 				                             plan.plStatus == 'COMPLETED' ? 'bg-success' : 
-				                             plan.plStatus == 'STOPPED' ? 'bg-danger' : 'bg-light'}">
+				                             plan.plStatus == 'CANCELLED' ? 'bg-secondary' : 'bg-light'}">
 				                ${plan.plStatus}
 				            </span>
 				        </td>

@@ -12,9 +12,6 @@ public interface ProductionplanDAO {
 	
 	//생산계획목록 조회
     List<ProductionPlanVO> createPlanList(ProductionPlanVO planVO);
-
-    //생산계획목록 조회(모달용)
-    List<ProductionPlanVO> createPlanListM(ProductionPlanVO planVO);
 	
 	//생산계획목록 삭제
     void deleteProductionPlan(int planId);

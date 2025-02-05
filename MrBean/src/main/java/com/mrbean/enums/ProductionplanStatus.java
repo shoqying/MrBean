@@ -2,8 +2,7 @@ package com.mrbean.enums;
 
 public enum ProductionplanStatus {
 	PLANNED,
-	WAITING,
+	CONFIRMED,
 	IN_PROGRESS,
-	COMPLETED,
-	STOPPED // ?????
+	COMPLETED
 }

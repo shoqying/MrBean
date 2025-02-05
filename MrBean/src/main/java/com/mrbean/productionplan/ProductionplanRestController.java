@@ -54,8 +54,6 @@ public class ProductionplanRestController {
     
     
     
-    
-    
     /**
      * 생산계획등록
      * http://localhost:8088/productionplan/api/plan
@@ -64,14 +62,9 @@ public class ProductionplanRestController {
     public ResponseEntity<?> planRegisterPOST(@RequestBody ProductionPlanVO planVO) {
     	logger.info("planRegisterPOST");
         try {
-        	// 생산계획 등록
             pps.insertProductionPlan(planVO);
-            
-         // 최신 목록 반환
             List<ProductionPlanVO> planList = pps.getPlanList(planVO);
-            
             return ResponseEntity.ok(planList);
-            
         } catch (Exception e) {
             logger.error("생산계획 등록 실패", e);
             return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
@@ -84,11 +77,7 @@ public class ProductionplanRestController {
      */
     @RequestMapping(value = "/generatePlanNumber", method = RequestMethod.GET)
     public String generatePlanNumber() {
-    	logger.info("generatePlanNumberGET()");
-    	
-    	String planNumber = ngs.generateNumber("productionplan");
-		logger.info("생산계획넘버 생성");
-        return planNumber;
+        return ngs.generateNumber("productionplan");
     }
 
     
@@ -116,12 +105,12 @@ public class ProductionplanRestController {
      */
     @RequestMapping(value = "/plan/{planId}/status", method = RequestMethod.PATCH)
     public ResponseEntity<?> updatePlanStatus(@PathVariable int planId, @RequestBody ProductionPlanVO planVO) {
+    	logger.info("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
     	
         try {
             planVO.setPlanId(planId);
             pps.updatePlanStatus(planVO);
             List<ProductionPlanVO> planList = pps.getPlanList(planVO);
-            logger.info("상태변경 실행");
             return ResponseEntity.ok(planList);
         } catch (Exception e) {
             logger.error("생산계획 상태 업데이트 실패", e);
