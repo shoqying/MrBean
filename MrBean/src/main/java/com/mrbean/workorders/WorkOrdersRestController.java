@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.mrbean.common.NumberGenerationService;
+import com.mrbean.enums.ProductionplanStatus;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
@@ -33,26 +34,34 @@ public class WorkOrdersRestController {
 	@Inject
 	private RawMaterialsQualityControlService rqcs;
 	
-	 
+	
 	
     /**
      * 작업지시 등록
      * http://localhost:8088/workorders/api/work
      */
-    @RequestMapping(value = "/work",method = RequestMethod.POST)
-    public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
-    	logger.info("workordersPOST");
-        try {
-            wos.insertWorkOrders(workVO);
-            List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-            rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
-            logger.info("등록완료");
-            return ResponseEntity.ok(workList);
-        } catch (Exception e) {
-            logger.error("생산계획 등록 실패", e);
-            return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
-        }
-    }
+	@RequestMapping(value = "/work",method = RequestMethod.POST)
+	public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
+	    logger.info("workordersPOST");
+	    try {
+	        // 작업지시 등록
+	        wos.insertWorkOrders(workVO);
+	        
+	        // 연관된 plan의 상태를 WAITING으로 업데이트
+	        ProductionPlanVO planVO = new ProductionPlanVO();
+	        planVO.setPlanId(workVO.getPlanId());
+	        planVO.setPlStatus(ProductionplanStatus.WAITING);
+	        pps.updatePlanStatus(planVO);
+	     // rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+	        
+	        List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+	        logger.info("등록완료");
+	        return ResponseEntity.ok(workList);
+	    } catch (Exception e) {
+	        logger.error("생산계획 등록 실패", e);
+	        return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
+	    }
+	}
 	
     
     /**
@@ -73,7 +82,7 @@ public class WorkOrdersRestController {
     @RequestMapping(value = "/plans", method = RequestMethod.GET)
     public ResponseEntity<List<ProductionPlanVO>> getPlanList(ProductionPlanVO planVO) {
         try {
-            List<ProductionPlanVO> planList = pps.getPlanList(planVO);
+            List<ProductionPlanVO> planList = pps.getPlanListM(planVO);
             return ResponseEntity.ok(planList);
         } catch (Exception e) {
             logger.error("생산계획 목록 조회 실패", e);
@@ -103,7 +112,6 @@ public class WorkOrdersRestController {
      * 
      */
     @RequestMapping(value = "/work/{workId}/status",method = RequestMethod.PATCH)
-
     public ResponseEntity<?> updateWorkStatus(@PathVariable int workId, @RequestBody WorkOrdersVO workVO) {
         	
         try {
@@ -155,8 +163,6 @@ public class WorkOrdersRestController {
             logger.error("작업상태변경 실패", e);
             return ResponseEntity.status(500).body("작업상태변경 실패");    
         }
-
-
     }
     
     

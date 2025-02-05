@@ -72,4 +72,12 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
 		wdao.updateWorkStatus(workVO);
 	}
 
+	@Override
+	public Integer getPlanIdByWorkId(int workId) {
+		return wdao.getPlanIdByWorkId(workId);
+	}
+	
+	
+	
+
 } //WorkOrdersServiceImpl
