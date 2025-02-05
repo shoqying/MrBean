@@ -67,6 +67,21 @@
                </div>	            
                
                <!-- 넷째 줄 -->
+				<div class="col-md-12">
+				  <div class="form-floating mb-3">
+				    <select class="form-select" id="wCode" aria-label="State">
+				      <option value="">창고를 선택하세요</option>
+				      <c:forEach var="warehouses" items="${wCodes}">
+				        <option value="${warehouses.wName}">${warehouses.wName}</option>
+				      </c:forEach>
+				    </select>
+				    <label for="wCode">창고구분</label>
+				  </div>
+				</div>
+               
+               
+               
+               <!-- 다섯째 줄 -->
                <div class="col-12">
                  <div class="form-floating">
                    <textarea class="form-control" placeholder="비고" id="workRemark" style="height: 100px"></textarea>
@@ -109,6 +124,7 @@
                    <th>생산계획번호</th>
                    <th>작업예정일</th>
                    <th>작업수량</th>
+                   <th>완료수량</th>
                    <th>작업상태</th>
                    <th>비고</th>
                    <th>등록자</th>
@@ -123,7 +139,9 @@
 				        <td>${work.workPlanNo}</td>
 				        <td>${work.workPlanDate}</td>
 				        <td>${work.workQuantity}</td>
+				        <td>${work.completedQuantity}</td>
 				        <td>
+				        	<input type="hidden" class="plan-id" value="${work.planId}"> <!-- 히든요소 -->
 				            <span class="badge ${work.workStatus == 'WAITING' ? 'bg-secondary' : 
 				                             work.workStatus == 'IN_PROGRESS' ? 'bg-warning' : 
 				                             work.workStatus == 'COMPLETED' ? 'bg-success' : 
@@ -187,7 +205,7 @@
            <tr>
              <th>계획번호</th>
              <th>계획종류</th>
-             <th>제품코드</th>
+             <th>제품명</th>
              <th>계획수량</th>
              <th>시작일자</th>
              <th>종료일자</th>

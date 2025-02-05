@@ -4,21 +4,39 @@
 <mapper namespace="com.mrbean.mappers.workOrdersMapper">
 
     <!-- ResultMap 정의 -->
-    <resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
-        <id property="workId" column="work_id" />
-        <result property="workOrderNo" column="work_order_no" />
-        <result property="workPlanNo" column="work_plan_no" />
-        <result property="workPlanDate" column="work_plan_date" />
-        <result property="workQuantity" column="work_quantity" />
-        <result property="workStatus" column="work_status" />
-        <result property="workRemark" column="work_remark" />
-        <result property="workCreatedBy" column="work_created_by" />
-        <result property="workCreatedAt" column="work_created_at" />
-        <result property="workUpdatedAt" column="work_updated_at" />
-        <result property="rmlNo" column="rml_no" />
-    	<result property="workQuantity" column="rr_quantity" />
-    </resultMap>    
-    
+
+	<resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
+	   <!-- 기본키 -->
+	   <id property="workId" column="work_id"/>
+	   
+	   <!-- 기본 필드 -->
+	   <result property="workOrderNo" column="work_order_no"/>
+	   <result property="workPlanNo" column="work_plan_no"/>
+	   <result property="workStartDate" column="work_start_date"/>
+	   <result property="workQuantity" column="work_quantity"/>
+	   <result property="workStatus" column="work_status"/>
+	   <result property="workRemark" column="work_remark"/>
+	   <result property="workCreatedBy" column="work_created_by"/>
+	   <result property="workCreatedAt" column="work_created_at"/>
+	   <result property="workUpdatedAt" column="work_updated_at"/>
+	   
+	   <!-- 추가 필드 -->
+	   <result property="rmlNo" column="rml_no"/>
+	   <result property="planId" column="plan_id"/>
+	   <result property="workStartTime" column="workStartTime"/>
+	   <result property="workEndTime" column="workEndTime"/>
+	   <result property="completedQuantity" column="completedQuantity"/>
+	   
+	   <!-- 검색용 파라미터 (테이블에 없는 필드) -->
+	   <result property="searchStartDate" column="search_start_date"/>
+	   <result property="searchEndDate" column="search_end_date"/>
+	   <result property="searchKeyword" column="search_keyword"/>
+	   
+	   <!-- VO 전용 필드 (테이블에 없음) -->
+	   <result property="shouldUpdatePlan" column="should_update_plan"/>
+	</resultMap>    
+	    
+
     
 	<select id="getLastNumberForDate" resultType="String">
 	    SELECT work_order_no

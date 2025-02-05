@@ -103,18 +103,60 @@ public class WorkOrdersRestController {
      * 
      */
     @RequestMapping(value = "/work/{workId}/status",method = RequestMethod.PATCH)
-    public ResponseEntity<?> updateWorkStatus(@PathVariable int workId, @RequestBody WorkOrdersVO workVO){
-    	try {
-    		workVO.setWorkId(workId);
-    		wos.updateWorkStatus(workVO);
-    		List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-    		return ResponseEntity.ok(workList);
-    		
-    	} catch(Exception e) {
-    		logger.error("작업상태변경 실패", e);
-    		return ResponseEntity.status(500).body("작업상태변경 실패");	
-    	}
-    	
+
+    public ResponseEntity<?> updateWorkStatus(@PathVariable int workId, @RequestBody WorkOrdersVO workVO) {
+        	
+        try {
+            workVO.setWorkId(workId);
+            
+            // 1. 먼저 workPlanNo로 planId를 조회 (이 부분을 원래대로 유지)
+            Integer planId = wos.getPlanIdByWorkId(workId);
+            logger.info("상태변경 호출");
+            logger.info("planId: {}", planId);
+            logger.info("workVO: {}", workVO);
+            
+            // planId를 workVO에도 설정
+            workVO.setPlanId(planId);
+            
+            // 작업 상태 업데이트
+            if (workVO.isShouldUpdatePlan() && planId != null) {
+                
+                // 2. 연관된 plan의 상태도 함께 업데이트  
+                ProductionPlanVO planVO = new ProductionPlanVO();
+                planVO.setPlanId(planId);  // 조회한 planId 사용
+                
+                // Work 상태에 따라 Plan 상태 설정
+                switch(workVO.getWorkStatus()) {
+                    case WAITING:
+                        planVO.setPlStatus(ProductionplanStatus.WAITING);
+                        break;
+                    case IN_PROGRESS:
+                        planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS); 
+                        break;
+                    case COMPLETED:
+                        planVO.setPlStatus(ProductionplanStatus.COMPLETED);
+                        break;
+                    case STOPPED:
+                        planVO.setPlStatus(ProductionplanStatus.STOPPED);
+                        break;
+                }
+                
+                // plan 상태 업데이트
+                pps.updatePlanStatus(planVO);
+            }
+            
+            // work 상태 업데이트
+            wos.updateWorkStatus(workVO);
+            List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+            
+            logger.info("상태변경 실행");
+            return ResponseEntity.ok(workList);
+        } catch(Exception e) {
+            logger.error("작업상태변경 실패", e);
+            return ResponseEntity.status(500).body("작업상태변경 실패");    
+        }
+
+
     }
     
     

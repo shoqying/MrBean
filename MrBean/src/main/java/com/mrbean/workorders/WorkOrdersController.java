@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.productionplan.ProductionPlanVO;
+import com.mrbean.warehouse.WarehouseVO;
 
 @Controller
 @RequestMapping(value = "/workorders")
@@ -41,8 +42,16 @@ public class WorkOrdersController {
 			List<WorkOrdersVO>workList = wos.getWorkList(workVO);
 			model.addAttribute("workList", workList);
 			logger.info("workList : "+ workList);
+			
+			// 창고에게 받은 목록 jsp에 뿌려주기
+		//	List<WarehouseVO> warehouses =
+		//	model.addAttribute("warehouses", warehouses);
+		//	logger.info("warehouses : "+ warehouses);
+			
 			return "workorders/work";
 		}
+		
+		
 		
 	
 

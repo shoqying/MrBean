@@ -25,16 +25,6 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-floating mb-3">
-                    <select class="form-select" id="priority" aria-label="State">
-                      <option selected>MEDIUM</option>
-                      <option>HIGH</option>
-                      <option>LOW</option>
-                    </select>
-                    <label for="priority">우선순위</label>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-floating mb-3">
                     <select class="form-select" id="planType" aria-label="State">
                       <option selected>일일</option>
                       <option>주간</option>
@@ -46,13 +36,13 @@
                 
                 
                 <div class="row mb-3">
-                  <label for="planStartDate" class="col-sm-1 col-form-label">시작일자</label>
+                  <label for="planStartDate" class="col-sm-1 col-form-label">시작 예정일</label>
                   <div class="col-sm-5">
                     <input type="date" class="form-control" id="planStartDate">
                   </div>
                 
                 
-                  <label for="planEndDate" class="col-sm-1 col-form-label">종료일자</label>
+                  <label for="planEndDate" class="col-sm-1 col-form-label">종료 예정일</label>
                   <div class="col-sm-5">
                     <input type="date" class="form-control" id="planEndDate">
                   </div>
@@ -109,10 +99,9 @@
                 <thead>
                   <tr>
                     <th>생산계획 번호</th>
-                    <th>우선순위</th>
                     <th>계획종류</th>
-                    <th>시작일자</th>
-                    <th>종료일자</th>
+                    <th>시작예정일</th>
+                    <th>종료예정일</th>
                     <th>계획상태</th>
                     <th>제품구분</th>
                     <th>계획수량(g)</th>
@@ -125,7 +114,6 @@
 				    <c:forEach var="plan" items="${planList}">
 				    <tr>
 				        <td>${plan.planNumber}</td>
-				        <td>${plan.priority}</td>
 				        <td>${plan.planType}</td>
 				        <td>${plan.planStartDate}</td>
 				        <td>${plan.planEndDate}</td>
