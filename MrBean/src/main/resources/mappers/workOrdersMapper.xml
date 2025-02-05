@@ -8,7 +8,7 @@
         <id property="workId" column="work_id" />
         <result property="workOrderNo" column="work_order_no" />
         <result property="workPlanNo" column="work_plan_no" />
-        <result property="workPlanDate" column="work_plan_date" />
+        <result property="workStartDate" column="work_start_date" />
         <result property="workQuantity" column="work_quantity" />
         <result property="workStatus" column="work_status" />
         <result property="workRemark" column="work_remark" />
@@ -57,7 +57,7 @@
             work_order_no,
             plan_id,
             work_plan_no,
-            work_plan_date,
+            work_start_date,
             work_quantity,
             <!-- completed_quantity, -->
             work_status,
@@ -71,7 +71,7 @@
             #{workOrderNo},
             #{planId},
             #{workPlanNo},
-            #{workPlanDate},
+            #{workStartDate},
             #{workQuantity},
             <!-- 0, -->
             #{workStatus},

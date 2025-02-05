@@ -11,7 +11,7 @@ public class WorkOrdersVO {
     private int workId;              // 작업 ID
     private String workOrderNo;      // 작업지시번호
     private String workPlanNo;       // 생산계획번호
-    private Date workPlanDate;       // 작업예정일
+    private Date workStartDate;       // 작업예정일
     private int workQuantity;        // 작업수량
     private int completedQuantity;          // 완료수량
     private String workRemark;       // 비고

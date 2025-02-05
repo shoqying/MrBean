@@ -97,7 +97,7 @@ export const workModule = {
             return false;
         }
 
-        const workDate = $(SELECTORS.FORM.WORK_PLAN_DATE).val();
+        const workDate = $(SELECTORS.FORM.WORK_START_DATE).val();
         if(!workDate) {
             alert(MESSAGES.ERROR.DATE_REQUIRED);
             return false;
@@ -120,7 +120,7 @@ export const workModule = {
             workOrderNo: $(SELECTORS.FORM.WORK_NUMBER).val(),
             planId: this.state.selectedPlan.planId,
             workPlanNo: this.state.selectedPlan.planNumber,
-            workPlanDate: $(SELECTORS.FORM.WORK_PLAN_DATE).val(),
+            workStartDate: $(SELECTORS.FORM.WORK_START_DATE).val(),
             workQuantity: parseInt($(SELECTORS.FORM.WORK_QUANTITY).val()),
             workRemark: $(SELECTORS.FORM.WORK_REMARK).val(),
             workCreatedBy: DEFAULTS.WORK.CREATED_BY,
@@ -232,7 +232,7 @@ export const workModule = {
         .append(
             $('<td>').text(work.workOrderNo || ''),
             $('<td>').text(work.workPlanNo || ''),
-            $('<td>').text(utils.dateUtils.formatDate(work.workPlanDate) || ''),
+            $('<td>').text(utils.dateUtils.formatDate(work.workStartDate) || ''),
             $('<td>').text(work.workQuantity || ''),
             $('<td>').append(
                 $('<span>')
