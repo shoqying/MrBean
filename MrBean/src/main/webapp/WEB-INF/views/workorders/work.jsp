@@ -53,8 +53,8 @@
                <!-- 셋째 줄 -->
                <div class="col-md-6">
                  <div class="form-floating">
-                   <input type="date" class="form-control" id="workPlanDate">
-                   <label for="workPlanDate">작업예정일</label>
+                   <input type="date" class="form-control" id="workStartDate">
+                   <label for="workStartDate">작업시작일</label>
                  </div>
                </div>
    
@@ -107,7 +107,7 @@
                  <tr>
                    <th>작업지시번호</th>
                    <th>생산계획번호</th>
-                   <th>작업예정일</th>
+                   <th>작업시작일</th>
                    <th>작업수량</th>
                    <th>작업상태</th>
                    <th>비고</th>
@@ -121,7 +121,7 @@
 				    <tr>
 				        <td>${work.workOrderNo}</td>
 				        <td>${work.workPlanNo}</td>
-				        <td>${work.workPlanDate}</td>
+				        <td>${work.workStartDate}</td>
 				        <td>${work.workQuantity}</td>
 				        <td>
 				            <span class="badge ${work.workStatus == 'WAITING' ? 'bg-secondary' : 

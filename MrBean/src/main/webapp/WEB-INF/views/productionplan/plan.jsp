@@ -38,7 +38,7 @@
                     <select class="form-select" id="planType" aria-label="State">
                       <option selected>일일</option>
                       <option>주간</option>
-                      <option>분기</option>
+                      <option>월간</option>
                     </select>
                     <label for="planType">계획종류</label>
                   </div>
