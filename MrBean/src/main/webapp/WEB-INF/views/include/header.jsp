@@ -362,24 +362,57 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
-          <c:forEach var="crumb" items="${breadcrumbList}">
-            <c:choose>
-              <c:when test="${crumb.active}">
-                <li class="breadcrumb-item active">${crumb.label}</li>
-              </c:when>
-              <c:otherwise>
-                <li class="breadcrumb-item"><a href="${crumb.link}">${crumb.label}</a></li>
-              </c:otherwise>
-            </c:choose>
-          </c:forEach>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
+  <nav>
+    <ol class="breadcrumb horizontal-links">
+      <li class="breadcrumb-item">
+        <a href="${pageContext.request.contextPath}/user/mcount">
+          <i class="bi bi-house-door"></i> Member ratio
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="${pageContext.request.contextPath}/user/process">
+          <i class="bi bi-house-door"></i> process
+        </a>
+      </li>
+      <c:forEach var="crumb" items="${breadcrumbList}">
+        <c:choose>
+          <c:when test="${crumb.active}">
+            <li class="breadcrumb-item active">${crumb.label}</li>
+          </c:when>
+          <c:otherwise>
+            <li class="breadcrumb-item"><a href="${crumb.link}">${crumb.label}</a></li>
+          </c:otherwise>
+        </c:choose>
+      </c:forEach>
+    </ol>
+  </nav>
+</div>
 
+<style>
+  .horizontal-links {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* 링크 간 간격 조정 */
+    padding: 0;
+    list-style: none;
+  }
+
+  .horizontal-links .breadcrumb-item {
+    margin-bottom: 0; /* 세로 간격 제거 */
+  }
+
+  .horizontal-links .breadcrumb-item a {
+    text-decoration: none;
+    color: #6f4e37; /* 커피색 (Hex 코드) */
+    font-weight: bold; /* 강조를 위해 굵게 설정 */
+  }
+
+  .horizontal-links .breadcrumb-item a:hover {
+    text-decoration: underline;
+    color: #8B5A2B; /* 호버 시 조금 더 진한 커피색 */
+  }
+</style>
 
 
 
