@@ -63,4 +63,17 @@
         FROM warehouses
     </select>
 
+    <!-- 창고 상세 정보 조회 -->
+    <select id="selectWarehouseDetails" parameterType="String" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+        WHERE w_code = #{wCode}
+    </select>
+
 </mapper>

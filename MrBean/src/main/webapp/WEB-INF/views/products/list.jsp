@@ -1,14 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>완제품 리스트</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<c:set var="pageTitle" value="완제품 리스트"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container">
@@ -107,48 +99,42 @@
             </div>
         </div>
     </div>
-
-    <!-- BOM 정보 모달 -->
-    <div class="modal" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- BOM 정보 폼 -->
-                    <form id="bomInfoForm">
-                        <div class="form-group">
-                            <label for="bomName">BOM 이름:</label>
-                            <input type="text" id="bomName" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rmCode">원자재 코드:</label>
-                            <input type="text" id="rmCode" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bomRatio">비율:</label>
-                            <input type="text" id="bomRatio" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bomDescription">설명:</label>
-                            <input type="text" id="bomDescription" class="form-control" readonly>
-                        </div>
-                    </form>
-                </div>
+<!-- BOM 정보 모달 -->
+<div class="modal" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- BOM 정보 폼 -->
+                <form id="bomInfoForm">
+                    <div class="form-group">
+                        <label for="bomName">BOM 이름:</label>
+                        <input type="text" id="bomName" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="rmCode">원자재 코드:</label>
+                        <input type="text" id="rmCode" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bomRatio">비율:</label>
+                        <input type="text" id="bomRatio" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bomDescription">설명:</label>
+                        <input type="text" id="bomDescription" class="form-control" readonly>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script src="<c:url value='/resources/js/bom/infoModal.js'/>"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
@@ -160,6 +146,5 @@
         </c:if>
     };
 </script>
-
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>
