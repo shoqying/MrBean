@@ -3,7 +3,7 @@
 
 <mapper namespace="com.mrbean.Mapper.BillOfMaterialsMapper">
 
-    <!-- BOM 정보와 원자재 정보를 조회하는 SQL -->
+    <!-- ResultMap 정의 -->
     <resultMap id="BillOfMaterialsResultMap" type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO">
         <id property="bomId" column="bom_id"/>
         <result property="bomName" column="bom_name"/>

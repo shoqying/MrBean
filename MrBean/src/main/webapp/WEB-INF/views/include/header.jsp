@@ -369,19 +369,15 @@
       <ol class="breadcrumb horizontal-links">
         <li class="breadcrumb-item">
           <a href="${pageContext.request.contextPath}/user/mcount">
-            <i class="bi bi-house-door"></i> Member ratio
-          </a>
+            <i class="bi bi-bar-chart-fill"></i>Member ratio</a>
         </li>
         <li class="breadcrumb-item">
           <a href="${pageContext.request.contextPath}/user/process">
-            <i class="bi bi-house-door"></i> process
-          </a>
+            <i class="bi bi-bar-chart"></i>process</a>
         </li>
       </ol>
     </nav>
   </div>
-      <div class="pagetitle">
-        <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
@@ -400,13 +396,6 @@
       </div>
       <!-- End Page Title -->
   <style>
-    .horizontal-links {
-      display: flex;
-      flex-direction: row;
-      gap: 20px; /* 링크 간 간격 조정 */
-      padding: 0;
-      list-style: none;
-    }
     .horizontal-links .breadcrumb-item {
       margin-bottom: 0; /* 세로 간격 제거 */
     }

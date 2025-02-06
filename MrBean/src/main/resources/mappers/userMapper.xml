@@ -18,6 +18,28 @@
         <result property="uUpdatedat" column="u_updatedat"/>
     </resultMap>
 
+ <!-- 사용자 생성 생산 계획 가져오기 -->
+    <select id="getUserProductionPlans" resultType="com.mrbean.productionplan.ProductionPlanVO">
+        SELECT 
+            plan_id AS planId,
+            plan_number AS planNumber,
+            plan_type AS planType,
+            plan_start_date AS planStartDate,
+            plan_end_date AS planEndDate,
+            product_code AS productCode,
+            bom_code AS bomCode,
+            plan_quantity AS planQuantity,
+            progress_quantity AS progressQuantity,
+            remark AS remark,
+            plan_created_by AS createdBy,
+            plan_status AS plStatus,       <!-- Enum 값 매핑 -->
+            priority AS priority           <!-- Enum 값 매핑 -->
+        FROM 
+            production_plan
+        WHERE 
+            plan_created_by = #{createdBy}
+    </select>
+
     <!-- 사용자 단일 조회 -->
      <!-- 사용자 삽입 -->
     <insert id="insertUser" parameterType="com.mrbean.user.userVO">
@@ -65,6 +87,12 @@
            u_email AS uEmail,
            u_roleenum AS uRoleenum
     FROM users
+</select>
+
+  <select id="countUsersByRole" parameterType="string" resultType="int">
+    SELECT COUNT(*) 
+    FROM users 
+    WHERE u_roleenum = #{role}
 </select>
 
 
