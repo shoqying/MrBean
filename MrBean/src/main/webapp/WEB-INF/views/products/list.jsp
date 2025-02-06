@@ -178,5 +178,15 @@
         }
     </script>
 
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script>
+    window.onload = function() {
+        <c:if test="${not empty message}">
+            showToast("${message}");
+        </c:if>
+    };
+</script>
+
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>

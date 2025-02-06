@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mrbean.billofmaterials.domain.BomDropdownDTO;
 
@@ -44,14 +45,22 @@ public class ProductsController {
     
     // 등록 처리
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerProduct(@ModelAttribute ProductsVO product, Model model) throws Exception {
+    public String registerProduct(@ModelAttribute ProductsVO product, RedirectAttributes rttr) {
         logger.info("registerProduct() 호출");
         
-        // 제품 등록 처리
-        productsService.registerProduct(product);
-        
-        // 메시지 전달 후 등록 페이지로 리다이렉트
-        model.addAttribute("message", "완제품이 등록되었습니다.");
+        try {
+            // 제품 등록 처리
+            productsService.registerProduct(product);
+            
+            // 성공 메시지 전달
+            rttr.addFlashAttribute("message", "✅ 완제품이 등록되었습니다.");
+        } catch (Exception e) {
+            logger.error("제품 등록 실패", e);
+            
+            // 실패 메시지 전달
+            rttr.addFlashAttribute("message", "❌ 등록에 실패했습니다. 다시 시도해주세요.");
+        }
+
         return "redirect:/products/register";
     }
     
@@ -78,26 +87,34 @@ public class ProductsController {
 	    
 	// 완제품 수정
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String updateProduct(@ModelAttribute ProductsVO productsVO) throws Exception {
-        logger.info("완제품 수정 요청: " + productsVO);
+    public String updateProduct(@ModelAttribute ProductsVO products, RedirectAttributes rttr) throws Exception {
+        logger.info("완제품 수정 요청: " + products);
 
-        // 서비스에서 수정 처리
-        productsService.updateProduct(productsVO);
+        try {
+            productsService.updateProduct(products);
+            rttr.addFlashAttribute("message", "✅ 제품 정보가 수정되었습니다.");
+        } catch (Exception e) {
+            logger.error("제품 수정 실패", e);
+            rttr.addFlashAttribute("message", "❌ 제품 수정에 실패했습니다. 다시 시도해주세요.");
+        }
 
-        // 수정 후 리스트 페이지로 이동
-        return "redirect:/products/list";  // 수정 후 목록 페이지로 리다이렉트
+        return "redirect:/products/list";
     }
     
     // 완제품 삭제
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteProduct(@RequestParam("pCode") String pCode) throws Exception {
+    public String deleteProduct(@RequestParam("pCode") String pCode, RedirectAttributes rttr) throws Exception {
         logger.info("완제품 삭제 요청: pCode = {}", pCode);
 
-        // 서비스에서 삭제 처리
-        productsService.deleteProduct(pCode);
+        try {
+            productsService.deleteProduct(pCode);
+            rttr.addFlashAttribute("message", "🗑️ 제품이 삭제되었습니다.");
+        } catch (Exception e) {
+            logger.error("제품 삭제 실패", e);
+            rttr.addFlashAttribute("message", "❌ 제품 삭제에 실패했습니다. 다시 시도해주세요.");
+        }
 
-        // 삭제 후 완제품 목록 페이지로 리다이렉트
-        return "redirect:/products/list";  // 삭제 후 목록 페이지로 리다이렉트
+        return "redirect:/products/list";
     }
     
     // BOM 목록을 드롭다운용으로 가져오는 메서드
