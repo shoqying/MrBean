@@ -150,34 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        function openBomInfoModal(bomId) {
-            // BOM 정보를 AJAX로 가져오기
-            $.ajax({
-                url: '/billofmaterials',  // 서버의 URL (이 부분은 실제 서버 경로에 맞게 수정)
-                method: 'GET',
-                data: { bomId: bomId }, // BOM ID를 서버에 전달
-                success: function(response) {
-                    if (response) {
-                        document.getElementById("bomName").value = response.bomName || '';
-                        document.getElementById("rmCode").value = response.rmCode || '';
-                        document.getElementById("bomRatio").value = response.bomRatio || '';
-                        document.getElementById("bomDescription").value = response.bomDescription || '';
-                        $('#editBomModal').modal('show'); // 모달을 표시
-                    } else {
-                        alert("BOM 정보를 가져오는 데 실패했습니다.");
-                    }
-                },
-
-        function openEditModal(pCode, pName, pDescription, bomId) {
-            // 모달에 완제품 정보를 채운다
-            document.getElementById("pCode").value = pCode;
-            document.getElementById("pName").value = pName;
-            document.getElementById("pDescription").value = pDescription;
-            document.getElementById("bomId").value = bomId;
-        }
-    </script>
-
+<script src="<c:url value='/resources/js/bom/infoModal.js'/>"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
 <script>
