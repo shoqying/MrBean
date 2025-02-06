@@ -25,6 +25,10 @@
 	   <result property="workStartTime" column="workStartTime"/>
 	   <result property="workEndTime" column="workEndTime"/>
 	   <result property="completedQuantity" column="completedQuantity"/>
+	   <result property="wCode" column="w_code"/>
+	   <result property="wName" column="w_name"/>
+	   <result property="pName" column="p_name"/>
+	   
 	   
 	   <!-- 검색용 파라미터 (테이블에 없는 필드) -->
 	   <result property="searchStartDate" column="search_start_date"/>
@@ -70,7 +74,11 @@
             work_status,
             work_remark,
             work_created_by,
-            rml_no
+            rml_no,
+            w_code,
+            w_name,
+            p_name
+          
             
             
             
@@ -84,7 +92,11 @@
             #{workStatus},
             #{workRemark},
             #{workCreatedBy},
-            #{rmlNo}
+            #{rmlNo},
+            #{wCode},
+            #{wName},
+            #{pName}
+            
         )
     </insert>
     

@@ -69,10 +69,10 @@
                <!-- 넷째 줄 -->
 				<div class="col-md-12">
 				  <div class="form-floating mb-3">
-				    <select class="form-select" id="wCode" aria-label="State">
+				    <select class="form-select" id="wName" aria-label="State">
 				      <option value="">창고를 선택하세요</option>
-				      <c:forEach var="warehouses" items="${wCodes}">
-				        <option value="${warehouses.wName}">${warehouses.wName}</option>
+				      <c:forEach var="warehouses" items="${warehouses}">
+				        <option value="${warehouses.WName}" data-code="${warehouses.WCode}">${warehouses.WName}/${warehouses.WCode}</option>
 				      </c:forEach>
 				    </select>
 				    <label for="wCode">창고구분</label>
@@ -121,6 +121,7 @@
                <thead>
                  <tr>
                    <th>작업지시번호</th>
+                   <th>제품명</th>
                    <th>생산계획번호</th>
                    <th>작업시작일</th>
                    <th>작업수량</th>
@@ -136,6 +137,7 @@
 				    <c:forEach var="work" items="${workList}">
 				    <tr>
 				        <td>${work.workOrderNo}</td>
+				        <td>${work.PName}</td>
 				        <td>${work.workPlanNo}</td>
 				        <td>${work.workStartDate}</td>
 				        <td>${work.workQuantity}</td>

@@ -44,6 +44,10 @@ export const SELECTORS = {
         WORK_COMQUANTITY:'#completedQuantity',
         WORK_START_DATE: '#workStartDate',
         WORK_REMARK: '#workRemark',
+        WAREHOUSE: '#wName',
+        
+        
+        
         
         // Common Form Elements
         INSERT_BTN: '#insertBtn',
