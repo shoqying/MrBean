@@ -92,9 +92,22 @@
                 </div>
 
                 <!-- 보관 방법 입력 필드 -->
-                <div class="form-group">
-                    <label for="rmStorageMethod">보관 방법:</label>
-                    <form:input path="rmStorageMethod" id="rmStorageMethod" type="text" class="form-control" required="true" />
+                    <div class="form-group">
+                        <label for="wDescription">보관 방법:</label>
+                    <div class="form-floating mb-3">
+                        <textarea
+                            class="form-control"
+                            id="wDescription"
+                            name="wDescription"
+                            placeholder="보관 방법에 대한 설명(최대 500자)"
+                            rows="4"
+                            autocomplete="off"
+                            style="height: 120px; resize: none; overflow-y: auto;"
+                            oninput="updateCharacterCount()"
+                            title="보관 방법에 대해 자세한 정보를 적어주세요."
+                        ></textarea>
+                    </div>
+                    <small id="charCount" class="text-muted" style="float: right;">0/500</small>
                 </div>
 
                 <!-- 폼 하단 버튼들 정렬 -->
@@ -116,6 +129,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 	<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+	<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
 	<script>
 	    window.onload = function() {
 	        <c:if test="${not empty message}">

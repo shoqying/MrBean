@@ -58,7 +58,7 @@
 <%--             <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-info">대시보드</a> --%>
             
             <!-- 등록 페이지로 돌아가는 버튼 -->
-            <a href="${pageContext.request.contextPath}/warehouse/create" class="btn btn-primary">등록 페이지</a>
+            <a href="${pageContext.request.contextPath}/warehouses/create" class="btn btn-primary">등록 페이지</a>
         </div>
     </div>
 

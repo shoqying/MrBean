@@ -185,7 +185,7 @@
             </a>
           </li>
           <li>
-            <a href="/warehouses/create">
+            <a href="/warehouses">
               <i class="bi bi-circle"></i><span>창고</span>
             </a>
           </li>
