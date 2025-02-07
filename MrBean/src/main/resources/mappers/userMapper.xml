@@ -18,7 +18,7 @@
         <result property="uUpdatedat" column="u_updatedat"/>
     </resultMap>
 
- <!-- 사용자 생성 생산 계획 가져오기 -->
+    <!-- 사용자 생성 생산 계획 가져오기 -->
     <select id="getUserProductionPlans" resultType="com.mrbean.productionplan.ProductionPlanVO">
         SELECT 
             plan_id AS planId,
@@ -41,14 +41,15 @@
     </select>
 
     <!-- 사용자 단일 조회 -->
-     <!-- 사용자 삽입 -->
-    <insert id="insertUser" parameterType="com.mrbean.user.userVO">
-         INSERT INTO users (u_userid, u_username, u_email, u_phonenumber, 
-        u_passwordhash, u_roleenum, u_createdby, u_createat, u_updatedat)
-    VALUES (#{uUserid}, #{uUsername}, #{uEmail}, #{uPhonenumber}, 
-        #{uPasswordhash}, #{uRoleenum}, #{uCreatedby}, #{uCreateat}, #{uUpdatedat})
-    </insert>
-    
+    <select id="getUserById" parameterType="java.lang.String" resultMap="memberMap">
+        SELECT 
+            u_userid, u_username, u_email, u_phonenumber, 
+            u_passwordhash, u_roleenum, u_createdby, u_createat, u_updatedat
+        FROM 
+            users
+        WHERE 
+            u_userid = #{uUserid}
+    </select>
 
     <!-- 사용자 목록 조회 -->
     <select id="readAllUsers" resultMap="memberMap">
@@ -59,53 +60,75 @@
             users
     </select>
 
-<select id="getUsersByRole" parameterType="string" resultType="com.mrbean.user.userVO">
-    SELECT u_userid AS uUserid,
-           u_username AS uUsername,
-           u_phonenumber AS uPhonenumber,
-           u_email AS uEmail,
-           u_roleenum AS uRoleenum
-    FROM users
-    WHERE u_roleenum = #{role}
-</select>
+    <select id="getUsersByRole" parameterType="string" resultType="com.mrbean.user.userVO">
+        SELECT u_userid AS uUserid,
+               u_username AS uUsername,
+               u_phonenumber AS uPhonenumber,
+               u_email AS uEmail,
+               u_roleenum AS uRoleenum
+        FROM users
+        WHERE u_roleenum = #{role}
+    </select>
 
+    <select id="getAllUsers" resultType="com.mrbean.user.userVO">
+        SELECT u_userid AS uUserid,
+               u_username AS uUsername,
+               u_phonenumber AS uPhonenumber,
+               u_email AS uEmail,
+               u_roleenum AS uRoleenum
+        FROM users
+    </select>
 
+    <select id="countUsersByRole" parameterType="string" resultType="int">
+        SELECT COUNT(*) 
+        FROM users 
+        WHERE u_roleenum = #{role}
+    </select>
 
-<select id="getUserById" parameterType="java.lang.String" resultMap="memberMap">
-    SELECT 
-        u_userid, u_username, u_email, u_phonenumber, 
-        u_passwordhash, u_roleenum, u_createdby, u_createat, u_updatedat
-    FROM 
-        users
-    WHERE 
-        u_userid = #{uUserid}
-</select>
-<select id="getAllUsers" resultType="com.mrbean.user.userVO">
-    SELECT u_userid AS uUserid,
-           u_username AS uUsername,
-           u_phonenumber AS uPhonenumber,
-           u_email AS uEmail,
-           u_roleenum AS uRoleenum
-    FROM users
-</select>
+    <select id="findUserByDetails" parameterType="map" resultMap="memberMap">
+        SELECT 
+            u_userid AS uUserid,
+            u_username AS uUsername,
+            u_email AS uEmail,
+            u_phonenumber AS uPhonenumber,
+            u_passwordhash AS uPasswordhash,
+            u_roleenum AS uRoleenum,
+            u_createdby AS uCreatedby,
+            u_createat AS uCreateat,
+            u_updatedat AS uUpdatedat
+        FROM 
+            users
+        WHERE 
+            u_userid = #{username}  
+            AND u_username = #{name}
+            AND u_email = #{email}
+            AND u_phonenumber = #{phoneNumber}
+    </select>
 
-  <select id="countUsersByRole" parameterType="string" resultType="int">
-    SELECT COUNT(*) 
-    FROM users 
-    WHERE u_roleenum = #{role}
-</select>
-
-
-
+    <select id="getUserByUsername" parameterType="string" resultMap="memberMap">
+        SELECT 
+            u_userid AS uUserid,
+            u_username AS uUsername,
+            u_email AS uEmail,
+            u_phonenumber AS uPhonenumber,
+            u_passwordhash AS uPasswordhash,
+            u_roleenum AS uRoleenum,
+            u_createdby AS uCreatedby,
+            u_createat AS uCreateat,
+            u_updatedat AS uUpdatedat
+        FROM 
+            users
+        WHERE 
+            u_userid = #{username}
+    </select>
 
     <!-- 사용자 추가 -->
-<insert id="createUser" parameterType="com.mrbean.user.userVO">
-    INSERT INTO users (u_userid, u_username, u_email, u_phonenumber, 
-        u_passwordhash, u_roleenum, u_createdby, u_createat)
-    VALUES (#{uUserid}, #{uUsername}, #{uEmail}, #{uPhonenumber}, 
-        #{uPasswordhash}, #{uRoleenum}, #{uCreatedby}, #{uCreateat})
-</insert>
-
+    <insert id="createUser" parameterType="com.mrbean.user.userVO">
+        INSERT INTO users (u_userid, u_username, u_email, u_phonenumber, 
+            u_passwordhash, u_roleenum, u_createdby, u_createat)
+        VALUES (#{uUserid}, #{uUsername}, #{uEmail}, #{uPhonenumber}, 
+            #{uPasswordhash}, #{uRoleenum}, #{uCreatedby}, #{uCreateat})
+    </insert>
 
     <!-- 사용자 업데이트 -->
     <update id="updateUser" parameterType="com.mrbean.user.userVO">
@@ -120,7 +143,8 @@
         WHERE 
             u_userid = #{uUserid}
     </update>
-       <!-- 비밀번호만 업데이트 -->
+
+    <!-- 비밀번호만 업데이트 -->
     <update id="updateUserPassword" parameterType="com.mrbean.user.userVO">
         UPDATE users
         SET u_passwordhash = #{uPasswordhash}

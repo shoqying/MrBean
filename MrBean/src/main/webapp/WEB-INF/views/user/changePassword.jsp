@@ -7,25 +7,36 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header text-center" style="background: linear-gradient(90deg, #ff8a00, #e52e71); color: white;">
+            <!-- 비밀번호 변경 카드 -->
+            <div class="card shadow-lg border-0 rounded-4" style="background: linear-gradient(145deg, #f5f7fa, #c3cfe2);">
+                <div class="card-header text-center" style="background: linear-gradient(90deg, #ff8a00, #e52e71); color: white; border-radius: 10px 10px 0 0;">
                     <h2 class="fw-bold mb-0">비밀번호 변경</h2>
                 </div>
                 <div class="card-body p-5">
+                    <!-- 비밀번호 변경 폼 -->
                     <form method="POST" action="${pageContext.request.contextPath}/user/changePassword" onsubmit="return validatePasswordMatch();">
+                        <!-- 현재 비밀번호 -->
                         <div class="form-floating mb-4">
                             <input type="password" id="currentPassword" name="currentPassword" class="form-control rounded-4" placeholder="현재 비밀번호" required>
                             <label for="currentPassword">현재 비밀번호</label>
                         </div>
+
+                        <!-- 새 비밀번호 -->
                         <div class="form-floating mb-4">
                             <input type="password" id="newPassword" name="newPassword" class="form-control rounded-4" placeholder="새 비밀번호" required>
                             <label for="newPassword">새 비밀번호</label>
                         </div>
+
+                        <!-- 새 비밀번호 확인 -->
                         <div class="form-floating mb-4">
                             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control rounded-4" placeholder="새 비밀번호 확인" required>
                             <label for="confirmPassword">새 비밀번호 확인</label>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 rounded-4">비밀번호 변경</button>
+
+                        <!-- 비밀번호 변경 버튼 -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-4">비밀번호 변경</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -34,6 +45,7 @@
 </div>
 
 <script>
+    // 비밀번호 일치 확인
     function validatePasswordMatch() {
         const newPassword = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
@@ -48,7 +60,6 @@
             });
             return false;
         }
-
         return true;
     }
 

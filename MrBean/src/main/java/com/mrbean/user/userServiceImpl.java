@@ -1,6 +1,8 @@
 package com.mrbean.user;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +94,21 @@ public class userServiceImpl implements userService {
         return userDAO.getUserProductionPlans(createdBy);
     }
     
+    @Override
+    public userVO findUserByDetails(String username, String name, String email, String phoneNumber) {
+        Map<String, Object> userDetails = new HashMap<>();
+        userDetails.put("username", username);
+        userDetails.put("name", name);
+        userDetails.put("email", email);
+        userDetails.put("phoneNumber", phoneNumber);
+
+        return userDAO.findUserByDetails(userDetails);
+    }
+    
+    @Override
+    public userVO getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
+    }
+
     
 }

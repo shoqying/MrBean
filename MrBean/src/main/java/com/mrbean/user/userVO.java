@@ -29,16 +29,35 @@ public class userVO {
 
     // Role Enum 정의
     public enum Role {
-        ADMIN, MANAGER, MEMBER
-    }
+        ADMIN, MANAGER, MEMBER;
 
-    // Enum 변환 메서드
-    public static Role fromString(String value) {
-        for (Role role : Role.values()) {
-            if (role.name().equalsIgnoreCase(value)) {
-                return role;
+        /**
+         * Enum 값 유효성 확인 메서드
+         * @param value 문자열로 전달받은 역할
+         * @return 역할이 유효하면 true, 아니면 false
+         */
+        public static boolean isValid(String value) {
+            for (Role role : Role.values()) {
+                if (role.name().equalsIgnoreCase(value)) {
+                    return true;
+                }
             }
+            return false;
         }
-        throw new IllegalArgumentException("No enum constant for value: " + value);
+
+        /**
+         * 문자열을 Enum으로 변환하는 메서드
+         * @param value 문자열로 전달받은 역할
+         * @return 변환된 Role Enum 값
+         * @throws IllegalArgumentException 유효하지 않은 값일 경우 예외 발생
+         */
+        public static Role fromString(String value) {
+            for (Role role : Role.values()) {
+                if (role.name().equalsIgnoreCase(value)) {
+                    return role;
+                }
+            }
+            throw new IllegalArgumentException("Invalid Role value: " + value);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.mrbean.user;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,16 @@ public class userDAOImpl implements userDAO {
         return sqlSession.selectList(NAMESPACE + ".getUserProductionPlans", createdBy);
       
     }
+    
+    @Override
+    public userVO findUserByDetails(Map<String, Object> userDetails) {
+        return sqlSession.selectOne(NAMESPACE + ".findUserByDetails", userDetails);
+    }
+    
+    @Override
+    public userVO getUserByUsername(String username) {
+        return sqlSession.selectOne(NAMESPACE + ".getUserByUsername", username);
+    }
+
 }
 

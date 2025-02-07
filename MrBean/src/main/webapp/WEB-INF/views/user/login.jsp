@@ -35,7 +35,7 @@
                     <!-- 추가 옵션 -->
                     <div class="mt-3 text-center">
                         <a href="${pageContext.request.contextPath}/user/register" style="text-decoration: none; color: #5b86e5;">회원가입</a> |
-                        <a href="${pageContext.request.contextPath}/user/changePassword" style="text-decoration: none; color: #5b86e5;">비밀번호 찾기</a>
+                        <a href="${pageContext.request.contextPath}/user/findPassword1" style="text-decoration: none; color: #5b86e5;">비밀번호 찾기</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 package com.mrbean.user;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mrbean.productionplan.ProductionPlanVO;
 
@@ -13,6 +14,7 @@ public interface userDAO {
     List<userVO> getUsersByRole(String role); // 특정 직급 사용자 조회
     int countUsersByRole(String role); // 역할별 사용자 수 조회
     List<ProductionPlanVO> getUserProductionPlans(String createdBy); // 생산 계획 가져오기
-    
+    userVO findUserByDetails(Map<String, Object> userDetails);
+    userVO getUserByUsername(String username); // 사용자 이름으로 조회
 
 }
