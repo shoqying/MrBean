@@ -1,8 +1,10 @@
 package com.mrbean.warehouse;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -103,41 +105,22 @@ public class WarehouseController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
-    // ApiResponse 클래스
-    public static class ApiResponse {
-        private final String message;
-        private final List<String> errors;
-
-        public ApiResponse(String message, List<String> errors) {
-            this.message = message;
-            this.errors = errors;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public List<String> getErrors() {
-            return errors;
-        }
-    }
-
     /**
      * 창고 목록 조회 (GET)
      * Example: GET http://localhost:8080/warehouses
      */
-    @GetMapping("/warehouses")
-    public ResponseEntity<?> getWarehouseList() {
-        try {
-            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
-            return ResponseEntity.ok(warehouseList);
-        } catch (Exception e) {
-            logger.error("창고 목록 조회 중 오류 발생", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
-        }
-    }
+//    @GetMapping("/warehouses")
+//    public ResponseEntity<?> getWarehouseList() {
+//        try {
+//            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
+//            return ResponseEntity.ok(warehouseList);
+//        } catch (Exception e) {
+//            logger.error("창고 목록 조회 중 오류 발생", e);
+//            return ResponseEntity
+//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
+//        }
+//    }
 
     /**
      * 창고 정보 수정 (PUT)
@@ -147,7 +130,7 @@ public class WarehouseController {
     public ResponseEntity<?> updateWarehouse(@PathVariable String wCode, @Validated @RequestBody WarehouseDTO warehouse, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errors = result.getAllErrors().stream()
-                    .map(error -> error.getDefaultMessage())
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -180,5 +163,17 @@ public class WarehouseController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse("창고 정보 삭제 실패", List.of(e.getMessage())));
         }
+    }
+    // ApiResponse 클래스
+    @Getter
+    public static class ApiResponse {
+        private final String message;
+        private final List<String> errors;
+
+        public ApiResponse(String message, List<String> errors) {
+            this.message = message;
+            this.errors = errors;
+        }
+
     }
 }
