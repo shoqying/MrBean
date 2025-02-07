@@ -140,8 +140,8 @@
     <script>
         <c:if test="${not empty success}">
             const successMessage = '${success}';
-            let messageTitle = '';
-            let messageText = '';
+            let messageTitle = '회원가입 ';
+            let messageText = '회원가입 진심으로 축하드립니다.';
 
             if (successMessage === 'login') {
                 messageTitle = '반갑습니다!';

@@ -13,4 +13,7 @@ public interface userService {
     List<userVO> getUsersByRole(String role); // 특정 회원 조회
     int countUsersByRole(String role); // 역할별 사용자 수 조회
     List<ProductionPlanVO> getUserProductionPlans(String createdBy); // 생산 계획 가져오기
+    userVO findUserByDetails(String username, String name, String email, String phoneNumber);
+    userVO getUserByUsername(String username); // 사용자 이름으로 조회
+
     }
