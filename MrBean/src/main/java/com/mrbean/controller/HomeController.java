@@ -143,6 +143,7 @@ public class HomeController {
 		try {
 			List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
 			model.addAttribute("warehouseList", warehouseList);
+			System.out.println(warehouseList);
 			return "warehouse/list"; // JSP file name
 		} catch (Exception e) {
 			logger.error("창고 목록 조회 중 오류 발생", e);

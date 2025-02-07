@@ -29,21 +29,21 @@
                 <!-- 창고 목록을 반복하여 출력 -->
                 <c:forEach var="warehouse" items="${warehouseList}">
                     <tr class="text-center">
-                        <td>${warehouse.wCode}</td>
-                        <td>${warehouse.wName}</td>
-                        <td>${warehouse.wRoadFullAddr}</td>  
-                        <td>${warehouse.wAddrDetail}</td>  
-                        <td>${warehouse.wZipNo}</td>  
-                        <td>${warehouse.wDescription}</td>  
+                        <td>${warehouse.WCode}</td>
+                        <td>${warehouse.WName}</td>
+                        <td>${warehouse.WRoadFullAddr}</td>  
+                        <td>${warehouse.WAddrDetail}</td>  
+                        <td>${warehouse.WZipNo}</td>  
+                        <td>${warehouse.WDescription}</td>  
                         <td>
                             <!-- 수정 버튼 -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"
-                                    onclick="openEditModal('${warehouse.wCode}', '${warehouse.wName}', '${warehouse.wRoadFullAddr}', '${warehouse.wAddrDetail}', '${warehouse.wZipNo}', '${warehouse.wDescription}',)">
+                                    onclick="openEditModal('${warehouse.WCode}', '${warehouse.WName}', '${warehouse.WRoadFullAddr}', '${warehouse.WAddrDetail}', '${warehouse.WZipNo}', '${warehouse.WDescription}',)">
                                 수정
                             </button>
                             <!-- 삭제 버튼 -->
                             <form action="${pageContext.request.contextPath}/warehouse/delete" method="post" style="display:inline;">
-                                <input type="hidden" name="wCode" value="${warehouse.wCode}">
+                                <input type="hidden" name="wCode" value="${warehouse.WCode}">
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
                             </form>
                         </td>
@@ -128,6 +128,7 @@
             document.getElementById("wDescription").value = wDescription;
         }
     </script>
+
 
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
