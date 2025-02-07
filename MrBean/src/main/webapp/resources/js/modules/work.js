@@ -124,6 +124,8 @@ export const workModule = {
             workQuantity: parseInt($(SELECTORS.FORM.WORK_QUANTITY).val()),
             workRemark: $(SELECTORS.FORM.WORK_REMARK).val(),
             workCreatedBy: DEFAULTS.WORK.CREATED_BY,
+            wName: $(SELECTORS.FORM.WAREHOUSE).val(),
+            wCode: $(SELECTORS.FORM.WAREHOUSE + ' option:selected').data('code'),
             workStatus: STATUS.WORK.WAITING,  // 명시적으로 WAITING 상태 설정
             shouldUpdatePlan: true  // plan 상태도 함께 업데이트
         };
@@ -135,6 +137,7 @@ export const workModule = {
             data: JSON.stringify(formData),
             success: (response) => {
                 this.updateList(response);
+                console.log('formData:', formData);
                 alert(MESSAGES.SUCCESS.WORK_CREATE);
                 this.resetForm();
             },

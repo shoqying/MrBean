@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.enums.ProductionplanStatus;
 import com.mrbean.productionplan.ProductionPlanVO;
@@ -44,9 +46,23 @@ public class WorkOrdersRestController {
 	@RequestMapping(value = "/work",method = RequestMethod.POST)
 	public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
 	    logger.info("workordersPOST");
+	    logger.info("전체 요청 데이터: {}", workVO);
+	    logger.info("wName 값: {}", workVO.getWName());
+	    logger.info("wName 타입: {}", (workVO.getWName() != null ? workVO.getWName().getClass().getName() : "null"));
 	    try {
+	    	
+	        // Jackson이 어떻게 데이터를 파싱하는지 확인
+	        ObjectMapper mapper = new ObjectMapper();
+	        String jsonStr = mapper.writeValueAsString(workVO);
+	        logger.info("JSON 형태로 변환된 데이터: {}", jsonStr);
+	    	
+	    	
+	    	
+	    	
+	    	
 	        // 작업지시 등록
 	        wos.insertWorkOrders(workVO);
+	        
 	        
 	        // 연관된 plan의 상태를 WAITING으로 업데이트
 	        ProductionPlanVO planVO = new ProductionPlanVO();
@@ -56,6 +72,7 @@ public class WorkOrdersRestController {
 	     // rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
 	        
 	        List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+	        logger.info("workList $$$$$$$$$$$$$$: "+ workList);
 	        logger.info("등록완료");
 	        return ResponseEntity.ok(workList);
 	    } catch (Exception e) {

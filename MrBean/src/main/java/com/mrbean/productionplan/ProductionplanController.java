@@ -43,7 +43,7 @@ public class ProductionplanController {
 			
 			logger.info("planList : "+ planList);
 			return "productionplan/plan";
-		}
+		}//
 		
 
 		
