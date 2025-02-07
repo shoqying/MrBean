@@ -29,6 +29,7 @@
     							${product.bomId}
 							</button>
                         </td>
+                        
                         <td>
                             <!-- 수정 버튼 -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"
