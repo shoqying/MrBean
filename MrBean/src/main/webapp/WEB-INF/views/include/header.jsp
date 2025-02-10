@@ -1,3 +1,4 @@
+<!-- header.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -7,12 +8,12 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title><c:out value="${pageTitle} - MrBean" default="MrBean"/></title>
   <meta content="MrBean Web Application" name="description">
-<meta content="MrBean, Web, Management" name="keywords">
+  <meta content="MrBean, Web, Management" name="keywords">
 
   <!-- Toast CSS -->
   <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css'/>">
 
-  <!-- Costom CSS -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="<c:url value='/resources/css/bomStyle.css'/>">
 
   <!-- Favicons -->
@@ -22,14 +23,22 @@
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  
-  <!-- jQuery를 먼저 로드 -->
+
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- Chatbot JS Files -->
+  <script src="<c:url value='/resources/js/chatbot/request2.js'/>"></script>
+    <script src="<c:url value='/resources/js/chatbot/spinner.js'/>"></script>
 
   <!-- ChatGPT API -->
   <script src="<c:url value='/resources/js/components/search.js'/>"></script>
 
-  <!-- search CSS File -->
+  <!-- Chatbot CSS File -->
+  <link href="<c:url value='/resources/css/chatBotStyle.css'/>" rel="stylesheet">
+  <link href="<c:url value='/resources/css/chatBotWindow.css'/>" rel="stylesheet">
+
+  <!-- Search CSS File -->
   <link href="<c:url value='/resources/css/search.css'/>" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -61,7 +70,6 @@
   <!-- Navigation JS File -->
   <script src="${pageContext.request.contextPath}/resources/assets/js/navigation.js"></script>
 </head>
-
 <body>
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">

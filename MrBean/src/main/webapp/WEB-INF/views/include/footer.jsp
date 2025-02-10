@@ -6,6 +6,29 @@
     <div class="credits">
       Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
+    <!-- Chatbot Button -->
+    <div id="chatbot-button" class="chatbot-button">
+        <i class="bi bi-chat-dots"></i>
+    </div>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-window" class="chatbot-window">
+        <div class="chatbot-header">
+            <h5>Chatbot</h5>
+            <button id="close-chatbot" class="close-chatbot">&times;</button>
+        </div>
+        <div class="chatbot-body">
+            <div id="chatbot-messages" class="chatbot-messages"></div>
+
+            <!-- Spinner for loading -->
+            <div id="chatbot-spinner" class="spinner-border text-dark" role="status" style="display: none;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
+            <button id="send-chatbot" class="send-chatbot">Send</button>
+        </div>
+    </div>
 </footer>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -22,5 +45,6 @@
 
 <!-- Template Main JS File -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+
 </body>
 </html>
