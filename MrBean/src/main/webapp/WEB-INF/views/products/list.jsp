@@ -1,14 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>완제품 리스트</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<c:set var="pageTitle" value="완제품 리스트"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
     <div class="container">
@@ -37,6 +29,7 @@
     							${product.bomId}
 							</button>
                         </td>
+                        
                         <td>
                             <!-- 수정 버튼 -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"
@@ -107,76 +100,52 @@
             </div>
         </div>
     </div>
-
-    <!-- BOM 정보 모달 -->
-    <div class="modal" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- BOM 정보 폼 -->
-                    <form id="bomInfoForm">
-                        <div class="form-group">
-                            <label for="bomName">BOM 이름:</label>
-                            <input type="text" id="bomName" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rmCode">원자재 코드:</label>
-                            <input type="text" id="rmCode" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bomRatio">비율:</label>
-                            <input type="text" id="bomRatio" class="form-control" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bomDescription">설명:</label>
-                            <input type="text" id="bomDescription" class="form-control" readonly>
-                        </div>
-                    </form>
-                </div>
+<!-- BOM 정보 모달 -->
+<div class="modal" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
+<!--                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+<!--                     <span aria-hidden="true">&times;</span> -->
+<!--                 </button> -->
+            </div>
+            <div class="modal-body">
+                <!-- BOM 정보 폼 -->
+                <form id="bomInfoForm">
+                    <div class="form-group">
+                        <label for="bomName">BOM 이름:</label>
+                        <input type="text" id="bomName" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="rmCode">원자재 코드:</label>
+                        <input type="text" id="rmCode" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bomRatio">비율:</label>
+                        <input type="text" id="bomRatio" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bomDescription">설명:</label>
+                        <input type="text" id="bomDescription" class="form-control" readonly>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        function openBomInfoModal(bomId) {
-            // BOM 정보를 AJAX로 가져오기
-            $.ajax({
-                url: '/billofmaterials',  // 서버의 URL (이 부분은 실제 서버 경로에 맞게 수정)
-                method: 'GET',
-                data: { bomId: bomId }, // BOM ID를 서버에 전달
-                success: function(response) {
-                    if (response) {
-                        document.getElementById("bomName").value = response.bomName || '';
-                        document.getElementById("rmCode").value = response.rmCode || '';
-                        document.getElementById("bomRatio").value = response.bomRatio || '';
-                        document.getElementById("bomDescription").value = response.bomDescription || '';
-                        $('#editBomModal').modal('show'); // 모달을 표시
-                    } else {
-                        alert("BOM 정보를 가져오는 데 실패했습니다.");
-                    }
-                },
-
-        function openEditModal(pCode, pName, pDescription, bomId) {
-            // 모달에 완제품 정보를 채운다
-            document.getElementById("pCode").value = pCode;
-            document.getElementById("pName").value = pName;
-            document.getElementById("pDescription").value = pDescription;
-            document.getElementById("bomId").value = bomId;
-        }
-    </script>
-
+<script src="<c:url value='/resources/js/bom/infoModal.js'/>"></script>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script>
+    window.onload = function() {
+        <c:if test="${not empty message}">
+            showToast("${message}");
+        </c:if>
+    };
+</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>

@@ -29,6 +29,11 @@ public class WarehouseRepositoryImpl implements WarehouseRepository {
     }
 
     @Override
+    public boolean checkWarehouseNameExists(String wName) {
+        return sqlSession.selectOne(NAMESPACE + "checkWarehouseNameExists", wName);
+    }
+
+    @Override
     public WarehouseVO selectWarehouseByCode(String wCode) throws Exception {
         return sqlSession.selectOne(NAMESPACE + "selectWarehouseByCode", wCode);
     }
@@ -38,4 +43,13 @@ public class WarehouseRepositoryImpl implements WarehouseRepository {
         return sqlSession.selectList(NAMESPACE + "selectWarehouseList");
     }
 
+    @Override
+    public void updateWarehouse(WarehouseVO warehouseVO) {
+        sqlSession.update(NAMESPACE + "updateWarehouse", warehouseVO);
+    }
+
+    @Override
+    public void deleteWarehouse(String wCode) {
+        sqlSession.delete(NAMESPACE + "deleteWarehouse", wCode);
+    }
 }

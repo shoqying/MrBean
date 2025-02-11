@@ -39,6 +39,14 @@
         WHERE w_code = #{warehouseCode}
     </select>
 
+    <!-- 창고 이름 중복 체크 -->
+    <select id="checkWarehouseNameExists" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM warehouses
+        WHERE w_name = #{warehouseName}
+    </select>
+
+    <!-- 창고 코드로 창고 조회 -->
     <select id="selectWarehouseByCode" parameterType="String" resultMap="warehouseResultMap">
         SELECT
             w_code,
@@ -62,5 +70,36 @@
             w_description
         FROM warehouses
     </select>
+
+    <!-- 창고 상세 정보 조회 -->
+    <select id="selectWarehouseDetails" parameterType="String" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+        WHERE w_code = #{wCode}
+    </select>
+
+    <!-- 창고 정보 수정 -->
+    <update id="updateWarehouse" parameterType="com.mrbean.warehouse.WarehouseVO">
+        UPDATE warehouses
+        SET
+            w_name = #{wName},
+            w_road_full_addr = #{wRoadFullAddr},
+            w_addr_detail = #{wAddrDetail},
+            w_zip_no = #{wZipNo},
+            w_description = #{wDescription}
+        WHERE w_code = #{wCode}
+    </update>
+
+    <!-- 창고 삭제 -->
+    <delete id="deleteWarehouse" parameterType="String">
+        DELETE FROM warehouses
+        WHERE w_code = #{wCode}
+    </delete>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.mrbean.rawmaterials;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -33,14 +34,23 @@ public class RawMaterialsController {
 
     // 원자재 등록 처리
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerRawMaterial(@ModelAttribute("rawMaterialsVO") RawMaterialsVO rawMaterialsVO) throws Exception {
+    public String registerRawMaterial(@ModelAttribute("rawMaterialsVO") RawMaterialsVO rawMaterialsVO, RedirectAttributes rttr) throws Exception {
         logger.info("원자재 등록 요청: {}", rawMaterialsVO);
 
-        // 원자재 등록 서비스 호출
-        rawMaterialsService.registerRawMaterial(rawMaterialsVO);
-        logger.info("원자재 등록 완료: {}", rawMaterialsVO);
+        try {
+            // 제품 등록 처리
+            rawMaterialsService.registerRawMaterial(rawMaterialsVO);
+            
+            // 성공 메시지 전달
+            rttr.addFlashAttribute("message", "✅ 원자재가 등록되었습니다.");
+        } catch (Exception e) {
+            logger.error("원자재 등록 실패", e);
+            
+            // 실패 메시지 전달
+            rttr.addFlashAttribute("message", "❌ 등록에 실패했습니다. 다시 시도해주세요.");
+        }
 
-        return "redirect:/rawMaterials/list";  // 등록 후 원자재 리스트 페이지로 이동
+        return "redirect:/rawMaterials/register";
     }
     
     // 원자재 리스트 페이지로 이동
@@ -57,25 +67,33 @@ public class RawMaterialsController {
     
     // 원자재 수정
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String updateRawMaterial(@ModelAttribute RawMaterialsVO rawMaterialsVO) throws Exception {
+    public String updateRawMaterial(@ModelAttribute RawMaterialsVO rawMaterialsVO, RedirectAttributes rttr) throws Exception {
         logger.info("원자재 수정 요청: " + rawMaterialsVO);
 
-        // 서비스에서 수정 처리
-        rawMaterialsService.updateRawMaterial(rawMaterialsVO);
+        try {
+        	rawMaterialsService.updateRawMaterial(rawMaterialsVO);
+            rttr.addFlashAttribute("message", "✅ 원자재 정보가 수정되었습니다.");
+        } catch (Exception e) {
+            logger.error("원자재 수정 실패", e);
+            rttr.addFlashAttribute("message", "❌ 원자재 수정에 실패했습니다. 다시 시도해주세요.");
+        }
 
-        // 수정 후 리스트 페이지로 이동
-        return "redirect:/rawMaterials/list";  // 수정 후 목록 페이지로 리다이렉트
+        return "redirect:/rawMaterials/list";
     }
     
     // 원자재 삭제
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteRawMaterial(@RequestParam("rmCode") String rmCode) throws Exception {
+    public String deleteRawMaterial(@RequestParam("rmCode") String rmCode, RedirectAttributes rttr) throws Exception {
         logger.info("원자재 삭제 요청: rmCode = {}", rmCode);
 
-        // 서비스에서 삭제 처리
-        rawMaterialsService.deleteRawMaterial(rmCode);
+        try {
+        	rawMaterialsService.deleteRawMaterial(rmCode);
+            rttr.addFlashAttribute("message", "🗑️ 원자재가 삭제되었습니다.");
+        } catch (Exception e) {
+            logger.error("원자재 삭제 실패", e);
+            rttr.addFlashAttribute("message", "❌ 원자재 삭제에 실패했습니다. 다시 시도해주세요.");
+        }
 
-        // 삭제 후 원자재 목록 페이지로 리다이렉트
-        return "redirect:/rawMaterials/list";  // 삭제 후 목록 페이지로 리다이렉트
+        return "redirect:/products/list";
     }
 }

@@ -1,10 +1,13 @@
 package com.mrbean.user;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.mrbean.productionplan.ProductionPlanVO;
 
 @Repository
 public class userDAOImpl implements userDAO {
@@ -45,5 +48,29 @@ public class userDAOImpl implements userDAO {
         sqlSession.update(NAMESPACE + ".updateUserPassword", user);
     }
     
+    @Override
+    public int countUsersByRole(String role) {
+        System.out.println("DAO - Role Parameter: " + role);
+        int count = sqlSession.selectOne(NAMESPACE + ".countUsersByRole", role);
+        System.out.println("DAO - Result Count: " + count);
+        return count;
+    }
+    
+    @Override
+    public List<ProductionPlanVO> getUserProductionPlans(String createdBy) {
+        return sqlSession.selectList(NAMESPACE + ".getUserProductionPlans", createdBy);
+      
+    }
+    
+    @Override
+    public userVO findUserByDetails(Map<String, Object> userDetails) {
+        return sqlSession.selectOne(NAMESPACE + ".findUserByDetails", userDetails);
+    }
+    
+    @Override
+    public userVO getUserByUsername(String username) {
+        return sqlSession.selectOne(NAMESPACE + ".getUserByUsername", username);
+    }
+
 }
 

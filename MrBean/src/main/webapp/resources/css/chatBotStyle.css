@@ -1,0 +1,92 @@
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.chatbot-button {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Make the button circular */
+    background: linear-gradient(45deg, #ff9999, #ff9966, #ffff99, #99ff99, #9999ff, #9966ff, #ff99ff, #ff9999);
+    background-size: 200% 200%; /* Ensure the gradient covers the button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.chatbot-button:hover {
+    transform: scale(1.1);
+    animation: gradient-animation 5s infinite linear; /* Animate gradient on hover */
+}
+
+.chatbot-window {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    border-radius: 10px; /* Ensure the window has rounded corners */
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animation for opening */
+    padding: 10px; /* Padding to ensure the content does not overlap with the border */
+}
+
+.chatbot-window.open {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.chatbot-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px; /* Adjusted to match the inner radius */
+    border-top-right-radius: 10px; /* Adjusted to match the inner radius */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.chatbot-input {
+    width: calc(100% - 60px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.send-chatbot {
+    width: 50px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

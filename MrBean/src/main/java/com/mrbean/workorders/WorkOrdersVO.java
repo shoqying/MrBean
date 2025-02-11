@@ -3,6 +3,7 @@ package com.mrbean.workorders;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mrbean.enums.WorkOrdersStatus;
 import lombok.Data;
 
@@ -21,6 +22,25 @@ public class WorkOrdersVO {
     private Date workCreatedAt;      // 등록일시
     private Date workUpdatedAt;      // 수정일시
     private boolean shouldUpdatePlan;  // plan 상태 업데이트 여부 플래그
+    
+    // 변수명은 camelCase를 사용 (첫 글자 소문자)
+    // 클래스명은 PascalCase를 사용 (첫 글자 대문자)  
+    // 위 사항을 지키지 못한 이름들 때문에 데이터 null값 발생으로  @JsonProperty 어노테이션 사용
+    
+    
+    @JsonProperty("wName")   // 자바 명명규칙을 안지켜서.. json과 호환성 문제 일으킴
+    private String wName;
+    
+    @JsonProperty("wCode")
+    private String wCode;
+    
+    @JsonProperty("pName")
+    private String pName;  //product
+    
+
+    
+    
+    
     
     private int planId; // 생산계획 ID
     private String rmlNo; // 원자재 로트 번호

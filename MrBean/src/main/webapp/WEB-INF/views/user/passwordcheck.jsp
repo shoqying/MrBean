@@ -1,23 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 추가 -->
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 추가 -->
+
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header text-center" style="background: #f8c471; color: white;">
+            <!-- 비밀번호 확인 카드 -->
+            <div class="card shadow-lg border-0 rounded-4" style="background: linear-gradient(145deg, #f5f7fa, #c3cfe2);">
+                <div class="card-header text-center" style="background: linear-gradient(90deg, #ff8a00, #e52e71); color: white; border-radius: 10px 10px 0 0;">
                     <h2 class="fw-bold mb-0">비밀번호 확인</h2>
                 </div>
                 <div class="card-body p-5">
                     <form action="${pageContext.request.contextPath}/user/passwordcheck" method="post">
+                        <!-- 비밀번호 입력 -->
                         <div class="form-floating mb-4">
-                            <input type="password" id="password" name="password" class="form-control rounded-4" placeholder="비밀번호">
+                            <input type="password" id="password" name="password" class="form-control rounded-4" placeholder="비밀번호" required>
                             <label for="password">비밀번호</label>
                         </div>
-                        <button class="btn btn-primary w-100 rounded-4" type="submit">확인</button>
+
+                        <!-- 확인 버튼 -->
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg rounded-4" type="submit">확인</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -38,4 +43,5 @@
         });
     }
 </script>
+
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

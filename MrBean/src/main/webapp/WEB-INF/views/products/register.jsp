@@ -42,10 +42,21 @@
 
                 <!-- 제품 설명 -->
                 <div class="form-group">
-                    <label for="pDescription">제품 설명:</label>
-                    <form:textarea path="pDescription" id="pDescription" class="form-control" required="true" maxlength="200"
-                                   pattern="^[a-zA-Z0-9가-힣\s]+$"
-                                   title="제품 설명은 필수 입력이며, 특수문자를 제외한 최대 200자까지만 입력 가능합니다."></form:textarea>
+                        <label for="wDescription">제품 설명:</label>
+                    <div class="form-floating mb-3">
+                        <textarea
+                            class="form-control"
+                            id="wDescription"
+                            name="wDescription"
+                            placeholder="제품 설명에 대한 설명(최대 500자)"
+                            rows="4"
+                            autocomplete="off"
+                            style="height: 120px; resize: none; overflow-y: auto;"
+                            oninput="updateCharacterCount()"
+                            title="제품 설명에 대해 자세한 정보를 적어주세요."
+                        ></textarea>
+                    </div>
+                    <small id="charCount" class="text-muted" style="float: right;">0/500</small>
                 </div>
 
                 <!-- BOM 목록 드롭다운 -->
@@ -68,6 +79,16 @@
             </form:form>
         </div>
     </div>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
+<script>
+    window.onload = function() {
+        <c:if test="${not empty message}">
+            showToast("${message}");
+        </c:if>
+    };
+</script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>

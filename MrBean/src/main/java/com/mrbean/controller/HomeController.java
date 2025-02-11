@@ -10,9 +10,14 @@ import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
 import com.mrbean.billofmaterials.service.BillOfMaterialsService;
 import com.mrbean.domain.BreadcrumbItem;
 import com.mrbean.rawmaterials.RawMaterialsService;
+import com.mrbean.warehouse.WarehouseController;
+import com.mrbean.warehouse.WarehouseService;
+import com.mrbean.warehouse.WarehouseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +34,13 @@ public class HomeController {
 
 	private final BillOfMaterialsService billOfMaterialsService;
 	private final RawMaterialsService rawMaterialService;
+	private final WarehouseService warehouseService;
 
 	@Autowired
-	public HomeController(BillOfMaterialsService billOfMaterialsService, RawMaterialsService rawMaterialService) {
+	public HomeController(BillOfMaterialsService billOfMaterialsService, RawMaterialsService rawMaterialService, WarehouseService warehouseService) {
 		this.billOfMaterialsService = billOfMaterialsService;
 		this.rawMaterialService = rawMaterialService;
+		this.warehouseService = warehouseService;
 	}
 
 	/**
@@ -131,4 +138,17 @@ public class HomeController {
 		return "billofmaterials/create";
 	}
 
+	@GetMapping("/warehouses")
+	public String getWarehouseList(Model model) {
+		try {
+			List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
+			model.addAttribute("warehouseList", warehouseList);
+			System.out.println(warehouseList);
+			return "warehouse/list"; // JSP file name
+		} catch (Exception e) {
+			logger.error("창고 목록 조회 중 오류 발생", e);
+			model.addAttribute("errorMessage", "창고 목록 조회 실패: " + e.getMessage());
+			return "error"; // Error JSP file name
+		}
+	}
 }

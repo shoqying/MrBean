@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.productionplan.ProductionPlanVO;
+import com.mrbean.warehouse.WarehouseService;
 import com.mrbean.warehouse.WarehouseVO;
 
 @Controller
@@ -28,6 +29,8 @@ public class WorkOrdersController {
 	private NumberGenerationService ngs;
 	@Inject
 	private WorkOrdersService wos;
+	@Inject
+	private WarehouseService whs;
 	
 		/**
 		 * 작업지시등록 페이지(GET) - 등록 form 과 List 함께출력
@@ -35,7 +38,7 @@ public class WorkOrdersController {
 		 * 
 		 */
 		@RequestMapping(value = "/work", method = RequestMethod.GET)
-		public String orderRegisterGET(Model model, WorkOrdersVO workVO) {
+		public String orderRegisterGET(Model model, WorkOrdersVO workVO) throws Exception {
 			logger.info("orderRegisterGET 호출()");
 
 			// 작업지시 목록을 조회해서 모델이 추가
@@ -44,9 +47,9 @@ public class WorkOrdersController {
 			logger.info("workList : "+ workList);
 			
 			// 창고에게 받은 목록 jsp에 뿌려주기
-		//	List<WarehouseVO> warehouses =
-		//	model.addAttribute("warehouses", warehouses);
-		//	logger.info("warehouses : "+ warehouses);
+			List<WarehouseVO> warehouses = whs.getWarehouseList();
+			model.addAttribute("warehouses", warehouses);
+			logger.info("warehouses : "+ warehouses);
 			
 			return "workorders/work";
 		}
