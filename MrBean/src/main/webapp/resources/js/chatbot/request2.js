@@ -1,115 +1,149 @@
 document.addEventListener('DOMContentLoaded', function() {
-        const chatbotButton = document.getElementById('chatbot-button');
-        const chatbotWindow = document.getElementById('chatbot-window');
-        const closeChatbot = document.getElementById('close-chatbot');
-        const sendChatbot = document.getElementById('send-chatbot');
-        const chatbotInput = document.getElementById('chatbot-input');
-        const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotButton = document.getElementById('chatbot-button');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const closeChatbot = document.getElementById('close-chatbot');
+    const sendChatbot = document.getElementById('send-chatbot');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotHeader = document.querySelector('.chatbot-header');
 
-        let isChatbotOpen = false;
+    let isChatbotOpen = false;
+    let isDragging = false;
+    let offsetX, offsetY;
+    let isResizing = false;
+    let initialWidth, initialHeight, initialX, initialY;
 
-        chatbotButton.addEventListener('click', () => {
-            isChatbotOpen = !isChatbotOpen;
-            chatbotWindow.style.display = isChatbotOpen ? 'flex' : 'none';
-        });
+    // 대화창 초기 위치 및 크기 설정
+    chatbotWindow.style.position = 'fixed';
+    chatbotWindow.style.left = '80px';
+    chatbotWindow.style.bottom = '0px';
+    chatbotWindow.style.width = '400px';
+    chatbotWindow.style.height = '500px';
 
-        closeChatbot.addEventListener('click', function() {
-            isChatbotOpen = false;
-            chatbotWindow.style.display = 'none';
-        });
-
-        sendChatbot.addEventListener('click', sendMessage);
-        chatbotInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        async function sendMessage() {
-            const message = chatbotInput.value.trim();
-            if (!message) return;
-
-            addMessage('You', message);
-            chatbotInput.value = '';
-            sendChatbot.disabled = true; // Disable button during sending
-            await fetchChatbotResponse(message);
-            sendChatbot.disabled = false; // Enable button after response
-        }
-
-        function addMessage(sender, message) {
-            const messageElement = document.createElement('div');
-            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-            chatbotMessages.appendChild(messageElement);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        }
-
-        async function fetchChatbotResponse(message) {
-            try {
-                const response = await fetch('http://localhost:8000/process_query/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: message })
-                });
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    const formattedResponse = formatResponse(data.data);
-                    addMessage('Chatbot', formattedResponse);
-                } else {
-                    addMessage('Chatbot', 'Error: Unable to fetch response.');
-                }
-            } catch (error) {
-                addMessage('Chatbot', 'Error: Unable to connect to server.');
-            }
-        }
-
-        function formatResponse(responseData) {
-            if (responseData.type === 'dataframe') {
-                return generateTable(responseData.value);
-            }
-
-            // Handle non-table responses (JSON objects)
-            if (typeof responseData === 'object') {
-                return generateCollapsibleJSON(responseData);
-            }
-
-            // For simple string responses
-            return `<div style="white-space: pre-wrap; background-color: #f4f4f4; padding: 10px; border-radius: 5px;">${decodeHTML(responseData)}</div>`;
-        }
-
-        function generateTable(responseData) {
-            const { columns, data } = responseData;
-            let tableHTML = '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">';
-            tableHTML += '<thead><tr>';
-            columns.forEach(col => {
-                tableHTML += `<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: left;">${col}</th>`;
-            });
-            tableHTML += '</tr></thead><tbody>';
-            data.forEach(row => {
-                tableHTML += '<tr>';
-                row.forEach(cell => {
-                    tableHTML += `<td style="padding: 8px; border: 1px solid #ddd; text-align: left;">${decodeHTML(cell)}</td>`;
-                });
-                tableHTML += '</tr>';
-            });
-            tableHTML += '</tbody></table>';
-            return tableHTML;
-        }
-
-        function generateCollapsibleJSON(jsonData) {
-            let html = '<details style="margin-bottom: 20px;">';
-            html += '<summary class="json-toggle" style="cursor: pointer; font-weight: bold;">Click to view detailed response</summary>';
-            html += `<pre style="white-space: pre-wrap; background-color: #f4f4f4; padding: 10px; border-radius: 5px; font-family: monospace; margin: 0;">${JSON.stringify(jsonData, null, 2)}</pre>`;
-            html += '</details>';
-            return html;
-        }
-
-        function decodeHTML(html) {
-            var element = document.createElement('div');
-            if (html) {
-                element.innerHTML = html;
-                return element.textContent || element.innerText;
-            }
-            return '';
-        }
+    // 채팅창 열기/닫기
+    chatbotButton.addEventListener('click', () => {
+        isChatbotOpen = !isChatbotOpen;
+        chatbotWindow.style.display = isChatbotOpen ? 'flex' : 'none';
     });
+
+    closeChatbot.addEventListener('click', () => {
+        isChatbotOpen = false;
+        chatbotWindow.style.display = 'none';
+    });
+
+    // 메시지 전송
+    sendChatbot.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    async function sendMessage() {
+        const message = chatbotInput.value.trim();
+        if (!message) return;
+
+        addMessage('You', message);
+        chatbotInput.value = '';
+        sendChatbot.disabled = true;
+        sendChatbot.style.width = '14%';
+        sendChatbot.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="visually-hidden">Loading...</span>
+        `;
+
+        await fetchChatbotResponse(message);
+
+        sendChatbot.disabled = false;
+        sendChatbot.innerHTML = '<i class="bi bi-arrow-return-left"></i>';
+    }
+
+    function addMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', sender === 'You' ? 'user' : 'bot');
+        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    async function fetchChatbotResponse(message) {
+        try {
+            const response = await fetch('http://localhost:8000/process_query/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: message })
+            });
+            const data = await response.json();
+            addMessage('Chatbot', data?.data ? formatResponse(data.data) : 'Invalid response format.');
+        } catch (error) {
+            addMessage('Chatbot', 'Unable to connect to server.');
+        }
+    }
+
+    function formatResponse(responseData) {
+        try {
+            const parsedData = JSON.parse(responseData);
+            if (Array.isArray(parsedData)) {
+                return `<table border='1'><tr>${Object.keys(parsedData[0]).map(key => `<th>${key}</th>`).join('')}</tr>` +
+                    parsedData.map(item => `<tr>${Object.values(item).map(value => `<td>${value}</td>`).join('')}</tr>`).join('') + '</table>';
+            } else {
+                return `<pre>${JSON.stringify(parsedData, null, 2)}</pre>`;
+            }
+        } catch (e) {
+            return `<pre>${responseData}</pre>`;
+        }
+    }
+
+    // 입력 텍스트에 따라 채팅창 크기 조정
+    chatbotInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+
+    // 대화창 드래그
+    chatbotHeader.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        offsetX = e.clientX - parseInt(chatbotWindow.style.left, 10);
+        offsetY = e.clientY - parseInt(chatbotWindow.style.top, 10);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        if (isDragging) {
+            e.preventDefault();
+            chatbotWindow.style.left = `${e.clientX - offsetX}px`;
+            chatbotWindow.style.top = `${e.clientY - offsetY}px`;
+        }
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    // 크기 조정
+    document.getElementById('chatbot-resize-handle').addEventListener('mousedown', function(e) {
+        isResizing = true;
+        initialWidth = parseInt(chatbotWindow.style.width, 10);
+        initialHeight = parseInt(chatbotWindow.style.height, 10);
+        initialX = e.clientX;
+        initialY = e.clientY;
+        document.addEventListener('mousemove', onResize);
+        document.addEventListener('mouseup', stopResize);
+    });
+
+    function onResize(e) {
+        if (isResizing) {
+            const dx = e.clientX - initialX;
+            const dy = e.clientY - initialY;
+            chatbotWindow.style.width = initialWidth + dx + 'px';
+            chatbotWindow.style.height = initialHeight + dy + 'px';
+        }
+    }
+
+    function stopResize() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onResize);
+        document.removeEventListener('mouseup', stopResize);
+    }
+});
