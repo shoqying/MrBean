@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mrbean.mappers.finishedProductsOutgoingMapper">
+
+    <!-- 완제품 출고 정보 매핑 -->
+    <resultMap id="FinishedProductsOutgoingResultMap" type="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        <id property="foNo" column="fo_no"/>
+        <result property="fpcLotbno" column="fpc_lotbno"/>
+        <result property="fplNo" column="fpl_no"/>
+        <result property="pCode" column="p_code"/>
+        <result property="foQuantity" column="fo_quantity"/>
+        <result property="foUnit" column="fo_unit"/>
+        <result property="wCode" column="w_code"/>
+        <result property="foDate" column="fo_date"/>
+        <result property="foShippingLocationName" column="fo_shipping_location_name"/>
+        <result property="foShippingLocation" column="fo_shipping_location"/>
+        <result property="foBno" column="fo_bno"/>
+    </resultMap>
+
+    <!-- 완제품 출고 번호 생성 -->
+    <select id="createFinishedProductNo" resultType="String">
+        SELECT 'FP' || LPAD(SEQ_FINISHED_PRODUCTS_OUTGOING.NEXTVAL, 5, '0') FROM DUAL;
+    </select>
+
+    <!-- 완제품 출고 등록 -->
+    <insert id="registerFinishedProduct" parameterType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        INSERT INTO finished_products_outgoing
+        (
+            fo_no,                
+            fpc_lotbno,           
+            fpl_no,               
+            p_code,               
+            fo_quantity,          
+            fo_unit,              
+            w_code,               
+            fo_date,              
+            fo_shipping_location_name,  
+            fo_shipping_location,      
+            fo_bno                
+        )
+        VALUES
+        (
+            #{foNo},              
+            #{fpcLotbno},         
+            #{fplNo},             
+            #{pCode},             
+            #{foQuantity},        
+            #{foUnit},            
+            #{wCode},             
+            #{foDate},            
+            #{foShippingLocationName},  
+            #{foShippingLocation},    
+            #{foBno}              
+        )
+    </insert>
+
+    <!-- 완제품 출고 정보 수정 -->
+    <update id="updateFinishedProductsOutgoing" parameterType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        UPDATE finished_products_outgoing
+        SET 
+            fpc_lotbno = #{fpcLotbno},
+            fpl_no = #{fplNo},
+            p_code = #{pCode},
+            fo_quantity = #{foQuantity},
+            fo_unit = #{foUnit},
+            w_code = #{wCode},
+            fo_date = #{foDate},
+            fo_shipping_location_name = #{foShippingLocationName},
+            fo_shipping_location = #{foShippingLocation},
+            fo_bno = #{foBno}
+        WHERE fo_no = #{foNo}
+    </update>
+
+    <!-- 완제품 출고 정보 삭제 -->
+    <delete id="deleteFinishedProduct" parameterType="String">
+        DELETE FROM finished_products_outgoing WHERE fo_no = #{foNo}
+    </delete>
+
+    <!-- 모든 완제품 출고 정보 조회 -->
+    <select id="getAllFinishedProducts" resultMap="FinishedProductsOutgoingResultMap">
+        SELECT * FROM finished_products_outgoing
+    </select>
+
+    <!-- 특정 완제품 출고 정보 조회 (foNo 기반) -->
+    <select id="getFinishedProductByFoNo" parameterType="String" resultMap="FinishedProductsOutgoingResultMap">
+        SELECT * FROM finished_products_outgoing WHERE fo_no = #{foNo}
+    </select>
+
+</mapper>

@@ -5,7 +5,7 @@ import java.util.List;
 public interface RawMaterialsReceivingDAO {
   
     // 원자재 입고 번호 생성
-	public String creatRawMaterial(RawMaterialsReceivingVO material);
+	public int creatRawMaterial(RawMaterialsReceivingVO material);
 
     // 원자재 입고 정보 수정
     public String updateRawMaterial(RawMaterialsReceivingVO material);
@@ -18,4 +18,7 @@ public interface RawMaterialsReceivingDAO {
     
     // 원자재 입고 등록 메서드 추가
     void createRawMaterial(RawMaterialsReceivingVO rrVO);
+    
+    // 원자재 입고 등록
+    void registerRawMaterial(RawMaterialsReceivingVO rawMaterial) throws Exception;
 }
