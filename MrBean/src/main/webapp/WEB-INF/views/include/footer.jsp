@@ -12,9 +12,9 @@
     </div>
 
     <!-- Chatbot Window -->
-    <div id="chatbot-window" class="chatbot-window">
+    <div id="chatbot-window" class="chatbot-window" style="display: none;">
         <div class="chatbot-header">
-            <h5>Chatbot</h5>
+            <h5>Data bot</h5>
             <button id="close-chatbot" class="close-chatbot">&times;</button>
         </div>
         <div class="chatbot-body">
@@ -24,9 +24,12 @@
             <div id="chatbot-spinner" class="spinner-border text-dark" role="status" style="display: none;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-
-            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
-            <button id="send-chatbot" class="send-chatbot">Send</button>
+            <div id="chatbot-response" class="chatbot-response">
+                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
+                <button id="send-chatbot" class="send-chatbot"><i class="bi bi-arrow-return-left"></i></button>
+            </div>
+            <!-- Resize handle -->
+            <div id="chatbot-resize-handle"></div>
         </div>
     </div>
 </footer>
