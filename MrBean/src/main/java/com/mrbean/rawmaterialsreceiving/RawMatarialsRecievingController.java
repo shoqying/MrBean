@@ -4,7 +4,10 @@
 	import org.springframework.stereotype.Controller;
 	import org.springframework.ui.Model;
 	import org.springframework.web.bind.annotation.*;
-	import org.slf4j.Logger;
+
+import com.mrbean.rawmaterials.RawMaterialsVO;
+
+import org.slf4j.Logger;
 	import org.slf4j.LoggerFactory;
 	
 	import java.util.List;
@@ -39,6 +42,24 @@
 	        return "rawmaterialsreceiving/register"; // register.jsp로 이동
 	    }
 	    
+	 // 원자재 입고 등록 처리 (POST 요청) // http://localhost:8088/rawmaterialsreceiving/register
+	    @RequestMapping(value = "/register", method = RequestMethod.POST)
+	    public String registerRawMaterialsPOST(@ModelAttribute RawMaterialsReceivingVO rawMaterial, Model model) {
+	        logger.info(rawMaterial+"");
+	        logger.info("registerRawMaterialsPOST 호출() - 원자재 입고 등록 처리");
+
+	        try {
+	            // RawMaterialsReceivingService를 통해 원자재 입고 등록 로직 호출
+	            RawMaterialsReceivingService.registerRawMaterial(rawMaterial);
+	            model.addAttribute("message", "원자재 입고가 성공적으로 등록되었습니다.");
+	            return "redirect:/rawmaterialsreceiving/list"; // 등록 후 목록 페이지로 리다이렉트
+	        } catch (Exception e) {
+	            logger.error("원자재 입고 등록 중 오류 발생", e);
+	            model.addAttribute("errorMessage", "원자재 입고 등록 중 오류가 발생했습니다.");
+	            return "rawmaterialsreceiving/result"; // 에러 발생 시 등록 페이지로 돌아가기
+	        }
+	    }
+
 	
 
 	   

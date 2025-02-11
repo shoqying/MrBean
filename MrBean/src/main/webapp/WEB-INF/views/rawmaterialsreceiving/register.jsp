@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td><label for="rrBno">원자재 번호:</label></td>
-            <td><input type="number" id="rrBno" name="rrBno" required></td>
+            <td><input type="number" id="rrno" name="rrNo" required></td>
         </tr>
         <tr>
             <td><label for="rmCode">원자재 코드:</label></td>
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td><label for="rrExpirydate">유통기한:</label></td>
-            <td><input type="date" id="rrExpirydate" name="rrExpirydate" disabled></td>
+            <td><input type="date" id="rrExpirydate" name="rrExpirydate"></td>
         </tr>
     </table>
 

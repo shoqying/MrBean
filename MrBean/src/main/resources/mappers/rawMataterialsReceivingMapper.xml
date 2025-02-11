@@ -3,17 +3,45 @@
 
 <mapper namespace="com.mrbean.mappers.rawMataterialsReceivingMapper">
 
-	
-	
-	
-    <select id="d" >
-  
+    <!-- 원자재 입고 정보 매핑 -->
+    <resultMap id="RawMaterialsReceivingResultMap" type="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+        <id property="rrNo" column="rr_no"/>
+        <result property="rmlNo" column="rml_no"/>
+        <result property="rmlBno" column="rml_bno"/>
+        <result property="rmCode" column="rm_code"/>
+        <result property="rrQuantity" column="rr_quantity"/>
+        <result property="rrUnit" column="rr_unit"/>
+        <result property="rrExpirydate" column="rr_expirydate"/>
+    </resultMap>
+
+    <!-- 원자재 입고 번호 생성 -->
+    <select id="d" resultType="String">
+        <!-- 원자재 입고 번호를 생성하는 쿼리 예시 (데이터베이스에 맞는 쿼리로 수정 필요) -->
+        SELECT 'RR' || LPAD(SEQ_RAW_MATERIALS_RECEIVING.NEXTVAL, 5, '0') FROM DUAL;
     </select>
-    
-    
-    
-    
-    
-    
-    
+
+    <!-- 원자재 입고 등록 -->
+    <insert id="registerRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+        INSERT INTO rawmetarials_receiving
+        (
+            rr_no,      <!-- 원자재 입고 번호 -->
+            rml_no,     <!-- 원자재 로트 번호 -->
+            rml_bno,      <!-- 원자재 번호 -->
+            rm_code,    <!-- 원자재 코드 -->
+            rr_quantity,<!-- 원자재 수량 -->
+            rr_unit,    <!-- 원자재 단위 -->
+            rr_expirydate <!-- 원자재 유통기한 -->
+        )
+        VALUES
+        (
+            #{rrNo},       <!-- 원자재 입고 번호 -->
+            #{rmlNo},      <!-- 원자재 로트 번호 -->
+            #{rmlBno},      <!-- 원자재 번호 -->
+            #{rmCode},     <!-- 원자재 코드 -->
+            #{rrQuantity}, <!-- 원자재 수량 -->
+            #{rrUnit},     <!-- 원자재 단위 -->
+            #{rrExpirydate} <!-- 원자재 유통기한 -->
+        )
+    </insert>
+
 </mapper>
