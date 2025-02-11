@@ -13,6 +13,7 @@ public class StockMaterialsDAOImpl implements StockMaterialsDAO {
 
     @Autowired
     private SqlSession sqlSession;
+    
 
     @Override
     public List<StockMaterialsVO> getStockMaterials(String sortColumn, String sortDirection, int limit, int offset) {
@@ -30,8 +31,10 @@ public class StockMaterialsDAOImpl implements StockMaterialsDAO {
         return sqlSession.selectOne("com.mrbean.mappers.StockMaterialsMapper.getTotalCount");
     }
     
-//    @Override
-//    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
-//        sqlSession.insert("com.mrbean.mappers.StockMaterialsMapper.insertStockMaterials", stockMaterialsVO);
-//    }
+    @Override
+    public List<Map<String, Object>> getTotalStockByProduct() {
+        return sqlSession.selectList("com.mrbean.mappers.StockMaterialsMapper.getTotalStockByProduct");
+    }
+    
+  
 }

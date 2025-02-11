@@ -1,6 +1,7 @@
 package com.mrbean.stockmaterials;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,9 @@ public class StockMaterialsSeriveceImpl implements StockMaterialsService {
     }
     
     
-//    @Override
-//    public void insertStockMaterials(StockMaterialsVO stockMaterialsVO) {
-//        // 원자재 등록 처리
-//        stockMaterialsDAO.insertStockMaterials(stockMaterialsVO);
-//    }
+    @Override
+    public List<Map<String, Object>> getTotalStockByProduct() {
+        return stockMaterialsDAO.getTotalStockByProduct();
+    }
 
 }

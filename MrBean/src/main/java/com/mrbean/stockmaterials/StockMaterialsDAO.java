@@ -1,6 +1,7 @@
 package com.mrbean.stockmaterials;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StockMaterialsDAO {
 	
@@ -22,6 +23,8 @@ public interface StockMaterialsDAO {
      */
     int getTotalCount();
     
-    // 원자재 등록
-    // void insertStockMaterials(StockMaterialsVO stockMaterialsVO);
+    // 총 재고량 확인
+    List<Map<String, Object>> getTotalStockByProduct();
+    
+    
 }

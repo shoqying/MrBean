@@ -32,7 +32,7 @@ form {
 #form_f{
 	position: absolute;
     right: 9.7%;
-    top: 260px
+    top: 35.5%
 }
 
 #bbtn {
@@ -55,17 +55,13 @@ form {
 <h1>원자재 재고 목록</h1>
 
 
-
 <!-- 정렬 옵션 -->
-
 <form action="/stock/list" method="get" id="form_f">
-   
     <select name="sortOption" id="sortOption" class="form-select">
         <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
         <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
     </select>
     <button type="submit" class="btn btn-secondary">정렬</button>
- 
 </form>
 
 
@@ -74,7 +70,7 @@ form {
 <table class="table datatable">
     <thead>
         <tr>
-            <th>순번</th>
+          	<th>순번</th>
             <th>입고일</th>
             <th>수량</th>
             <th>단위</th>
@@ -82,7 +78,8 @@ form {
             <th>LOT번호</th>
             <th>원자재 코드</th>
             <th>유통기한</th>
-     
+            <th>총 수량</th>
+         
         </tr>
     </thead>
     <tbody>
@@ -96,9 +93,10 @@ form {
                 <td>${stockMaterial.rmlNo}</td>
                 <td>${stockMaterial.rmCode}</td>
                 <td>${stockMaterial.rrExpirydate}</td>
-            
+                <td>${stockMaterial.smTotal}</td>
             </tr>
         </c:forEach>
+		
     </tbody>
 </table>
 
@@ -119,6 +117,7 @@ form {
     // 일정 시간마다 새로고침
     setInterval(fetchUpdatedList, 100000); // 1분마다 호출
 </script>
+
 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

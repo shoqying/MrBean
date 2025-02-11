@@ -1,6 +1,7 @@
 package com.mrbean.stockmaterials;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StockMaterialsService {
 
@@ -22,7 +23,6 @@ public interface StockMaterialsService {
      */
     int getTotalCount();
     
-    // 원자재 등록
-    // void insertStockMaterials(StockMaterialsVO stockMaterialsVO);
+    List<Map<String, Object>> getTotalStockByProduct();
 
 }

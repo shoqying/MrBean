@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/stock")
@@ -62,6 +63,7 @@ public class StockMaterialsController {
 
         // 모델에 데이터 추가
         model.addAttribute("stockMaterials", stockMaterials);
+
         model.addAttribute("sortOption", sortOption); // 사용자가 선택한 정렬 옵션을 모델에 추가
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("page", page);
@@ -70,26 +72,11 @@ public class StockMaterialsController {
         return "stock/list";
     }
     
-    // ** AJAX 요청을 처리하는 API (자동 갱신)**
-    @GetMapping("/list/update")
+    @GetMapping("/totalStock")
     @ResponseBody
-    public List<StockMaterialsVO> updateStockMaterials(
-            @RequestParam(defaultValue = "latest") String sortOption,
-            @RequestParam(defaultValue = "1") int page) {
-
-        String sortColumn = "rml_date"; 
-        String sortDirection = "DESC"; 
-
-        if ("oldest".equals(sortOption)) {
-            sortDirection = "ASC";
-        }
-
-        int pageSize = 10;
-        int offset = (page - 1) * pageSize;
-
-        return stockMaterialsService.getStockMaterials(sortColumn, sortDirection, pageSize, offset);
+    public List<Map<String, Object>> getTotalStockByProduct() {
+        return stockMaterialsService.getTotalStockByProduct();
     }
-
 
     }
     

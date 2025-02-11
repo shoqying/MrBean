@@ -18,5 +18,6 @@ public class StockProductsVO {
     private Date fpcExpirydate; // 완제품 유통기한
     private int fpcBno; // 품질관리 순번
     private int planId; // plan_id
+    private int spTotal; // 총 수량
 	
 }
