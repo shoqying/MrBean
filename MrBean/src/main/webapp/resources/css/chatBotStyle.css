@@ -118,6 +118,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s;
+    width: 14%;
 }
 
 .send-chatbot:hover {
@@ -150,4 +151,13 @@ body {
 
 .chatbot-messages:hover {
     overflow-y: auto !important;
+}
+
+#chatbot-resize-handle {
+    width: 20px;
+    height: 20px;
+    cursor: se-resize; /* 크기 조정 커서 */
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }

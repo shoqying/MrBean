@@ -12,7 +12,7 @@
     </div>
 
     <!-- Chatbot Window -->
-    <div id="chatbot-window" class="chatbot-window">
+    <div id="chatbot-window" class="chatbot-window" style="display: none;">
         <div class="chatbot-header">
             <h5>Chatbot</h5>
             <button id="close-chatbot" class="close-chatbot">&times;</button>
@@ -25,8 +25,11 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
             <div id="chatbot-response" class="chatbot-response">
-            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
-            <button id="send-chatbot" class="send-chatbot">Send</button></div>
+                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
+                <button id="send-chatbot" class="send-chatbot"><i class="bi bi-arrow-return-left"></i></button>
+            </div>
+            <!-- Resize handle -->
+            <div id="chatbot-resize-handle"></div>
         </div>
     </div>
 </footer>
