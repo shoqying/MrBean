@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mrbean.enums.QualityControlStatus;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.workorders.WorkOrdersVO;
 
 @Repository
 public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO {
@@ -57,7 +58,7 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 
 	@Override
 	public void insertFinishedProductLot() throws Exception {
-		logger.info("insertFinishedProductLot() 호출");
+		logger.info("insertFinishedProductLot1() 호출");		
 		sqlSession.insert(NAMESPACE + "insertFinishedProductLot");
 	}
 	

@@ -45,26 +45,26 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 	}
 
 	@Override
-	public void updateQualityCheck(int rqcBno, String rqcQualityCheck) throws Exception {
+	public void updateQualityCheck(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("updateQualityCheck() 호출");
-		
-		Map<String, Object> params = new HashMap<>();
-	    params.put("rqcBno", rqcBno);
-	    params.put("rqcQualityCheck", rqcQualityCheck);
 	    
-	    sqlSession.update(NAMESPACE + "updateQualityCheck", params);
+	    sqlSession.update(NAMESPACE + "updateQualityCheck", vo);
 
 	}
 
 	@Override
-	public void updateStatus(int rqcBno, String rqcStatus) throws Exception {
+	public void updateStatus(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("updateStatus() 호출");
-		
-		Map<String, Object> params = new HashMap<>();
-	    params.put("rqcBno", rqcBno);
-	    params.put("rqcStatus", rqcStatus);
 
-	    sqlSession.update(NAMESPACE + "updateStatus", params);
+	    sqlSession.update(NAMESPACE + "updateStatus", vo);
+	}
+
+	@Override
+	public void deleteRawmaterialsDate(RawMaterialsQualityControlVO vo) throws Exception {
+		logger.info("deleteRawmaterialsDate() 호출");
+
+	    sqlSession.update(NAMESPACE + "deleteRawmaterialsDate", vo);
+		
 	}
 
 	@Override

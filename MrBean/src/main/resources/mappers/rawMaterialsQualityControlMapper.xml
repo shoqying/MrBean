@@ -10,6 +10,7 @@
 		<result property="rqcQualityCheck" column="rqc_quality_check"/>
 		<result property="rqcStatus" column="rqc_status"/>
 		<result property="workOrderNo" column="work_order_no"/>
+		<result property="bomId" column="bom_id"/>
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
@@ -38,7 +39,7 @@
 	    SELECT rml.rml_no AS rml_no, 
 	    	   work.work_order_no AS work_order_no
 	    FROM work_orders work
-	    JOIN rawmaterials_lot rml ON rml.rml_no = work.rml_no
+	    LEFT JOIN rawmaterials_lot rml ON rml.rml_no = work.rml_no
 	    ORDER BY work.work_order_no DESC
 	    LIMIT 1
 	</select>
@@ -56,31 +57,37 @@
         	   rml.rml_date,
         	   rml.rml_no,
         	   rml.rm_code,
-        	   rm.rm_name,
         	   rqc.rqc_date,
         	   rqc.rqc_quality_check,
         	   rqc.rqc_status,
         	   work.work_order_no,
         	   work.work_quantity
         	   FROM rawmaterials_quality_control rqc
-        	   JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
-        	   JOIN raw_materials rm on rm.rm_code = rml.rm_code
-        	   JOIN work_orders work on rqc.work_order_no = work.work_order_no
+        	   LEFT JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
+        	   LEFT JOIN work_orders work on rqc.work_order_no = work.work_order_no;
     </select>
     
     
     <!-- 품질 검사 상태 업데이트 -->
-    <update id="updateQualityCheck" parameterType="map">
+    <update id="updateQualityCheck" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
         UPDATE rawmaterials_quality_control
-        SET rqc_quality_check = #{rqcQualityCheck}
+        SET rqc_quality_check = #{rqcQualityCheck},
+        	rqc_date = now()
         WHERE rqc_bno = #{rqcBno}
     </update>
 
     <!-- 상태 업데이트 -->
-    <update id="updateStatus" parameterType="map">
+    <update id="updateStatus" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
         UPDATE rawmaterials_quality_control
         SET rqc_status = #{rqcStatus}
         WHERE rqc_bno = #{rqcBno}
+    </update>
+    
+    <!-- 원자재 검사 일자 삭제 -->
+    <update id="deleteRawmaterialsDate" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+    	UPDATE rawmaterials_quality_control
+    	SET rqc_date = NULL
+    	WHERE rqc_bno = #{rqcBno}
     </update>
     
     <!-- 원자재 검사 목록 삭제 -->
@@ -88,6 +95,8 @@
     	DELETE FROM rawmaterials_quality_control
     	WHERE rqc_bno = #{rqcBno}
     </delete>
+    
+    
     
     
     

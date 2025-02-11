@@ -38,12 +38,6 @@ public class FinishedProductsControlController {
 	@Autowired
 	private FinishedProductsControlService finishedProductsControlService;
 	
-	@Autowired
-	private ProductsService productsService;
-	
-	@Autowired
-	private WarehouseService warehouseService;
-	
 	
 	
 	
@@ -64,6 +58,9 @@ public class FinishedProductsControlController {
     public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
         try {
         	finishedProductsControlService.updateQualityCheck(vo);
+        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
+        		finishedProductsControlService.deleteFinishedProductLot(vo.getFpcBno());
+        	}
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
@@ -73,19 +70,14 @@ public class FinishedProductsControlController {
     // 완제품 상태 업데이트
 	@PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo, Model model) {
+    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo) {
 		
-        try {
-        	List<ProductsVO> productsList = productsService.getProductList();
-        	// List<WarehouseVO> warehouseList = warehouseService.isWarehouseCodeExist(wCode);
-            
+        try {            
         	finishedProductsControlService.updateStatus(fvo);
     		if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
     			finishedProductsControlService.insertFinishedProductLot();
             }
-        	if (QualityControlStatus.PENDING.equals(fvo.getFpcStatus())) {
-        		finishedProductsControlService.deleteFinishedProductLot(fvo.getFpcBno());
-        	}
+        	
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");

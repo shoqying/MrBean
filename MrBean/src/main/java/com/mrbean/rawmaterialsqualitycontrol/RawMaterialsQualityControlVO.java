@@ -20,6 +20,7 @@ public class RawMaterialsQualityControlVO {
 	private QualityControlStatus rqcQualityCheck; // 품질검사(대기중, 완료)
 	private QualityControlStatus rqcStatus; // 상태(합격, 불합격)
 	private String workOrderNo; // 작업지시번호
+	private String bomId;
 
 
 //	// join 매핑

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.workorders.WorkOrdersVO;
 
 public interface FinishedProductsControlDAO {
 	
@@ -18,8 +20,8 @@ public interface FinishedProductsControlDAO {
 	
 	// 완제품 검사 목록 삭제
     int deleteFinishedProduct(int rqcBno) throws Exception;
-	
-	// 완제품 LOT 번호 생성
+    
+    // 완제품 LOT 번호 생성
     void insertFinishedProductLot() throws Exception;
     
     // 완제품 LOT 번호 삭제

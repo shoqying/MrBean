@@ -2,7 +2,13 @@ package com.mrbean.finishedproductscontrol;
 
 import java.util.List;
 
+import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.workorders.WorkOrdersVO;
+
 public interface FinishedProductsControlService {
+	
+	// 완제품 검사 관리 데이터 조회, 저장
+	public void processAndInsertFinishedProducts(RawMaterialsQualityControlVO vo) throws Exception;
 
 	// 완제품 검사 관리 목록
     public List<FinishedProductsControlVO> getFinishedProductsControlList() throws Exception;
@@ -23,6 +29,6 @@ public interface FinishedProductsControlService {
 	public void deleteFinishedProductLot(int fpcBno) throws Exception;
 	
 	// 완제품 목록 저장
-	public void insertFinishedProductControl() throws Exception;
-
+	public void insertFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception;
+	
 }

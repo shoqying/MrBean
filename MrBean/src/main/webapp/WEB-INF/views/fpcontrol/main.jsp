@@ -3,7 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-<section class="section">
+	
+	<section class="section">
       <div class="row">
         <div class="col-lg-12">
 
@@ -16,6 +17,7 @@
                 <thead>
                   <tr>
 					<th>순번</th>
+					<th>작업 지시 번호</th>					
 		            <th>제조일</th>
 		            <th>완제품 LOT 번호</th>
 		            <th>BOM</th>
@@ -41,43 +43,49 @@
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcBno}">${vo.fpcBno}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
+                    	</c:choose>
+                    </td>
+                    <td>
+                    	<c:choose>
+                    		<c:when test="${not empty vo.workOrdersList[0].workOrderNo}">${vo.workOrdersList[0].workOrderNo}</c:when>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcDate}"><fmt:formatDate value="${vo.fpcDate}" pattern="yyyy-MM-dd" /></c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fplNo}">${vo.fplNo}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.productsList[0].bomId}">${vo.productsList[0].bomId}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.productsList[0].PName}">${vo.productsList[0].PName}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcExpirydate}"><fmt:formatDate value="${vo.fpcExpirydate}" pattern="yyyy-MM-dd" /></c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcCheckdate}"><fmt:formatDate value="${vo.fpcCheckdate}" pattern="yyyy-MM-dd" /></c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
@@ -88,7 +96,7 @@
 				                    <option value="COMPLETED" ${vo.fpcQualityCheck == 'COMPLETED' ? 'selected' : ''}>완료</option>
 				                </select>
 			                </c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
@@ -100,25 +108,25 @@
 						            <option value="FAIL" ${vo.fpcStatus == 'FAIL' ? 'selected' : ''}>불합격</option>
 						        </select>
 						    </c:when>
-						    <c:otherwise>값이 없습니다</c:otherwise>
+						    <c:otherwise>-</c:otherwise>
 						</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.productionPlanList[0].planQuantity}">${vo.productionPlanList[0].planQuantity}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcYield}">${vo.fpcYield * 100}%</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcQuantity}">${vo.fpcQuantity}</c:when>
-                    		<c:otherwise>값이 없습니다</c:otherwise>
+                    		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                        <td><button type="button" class="btn btn-danger" onclick="confirmDelete(${vo.fpcBno})">삭제</button></td>                  
@@ -141,7 +149,20 @@
 		    
     
 	<script>
+	
+	$(document).ready(function() {
+	    $('.form-select').each(function() {
+	        var rqcQualityCheck = $(this).val();  // 현재 선택된 값
+	        if (rqcQualityCheck === 'COMPLETED') {
+	            $(this).css('background-color', '#198754');  // 완료일 경우
+	        } else if (rqcQualityCheck === 'PENDING') {
+	            $(this).css('background-color', '#FFC107');  // 대기중일 경우
+	        }
+	    });
+	});
+	
     function updateQualityCheck(fpcBno, fpcQualityCheck) {
+    	
         $.ajax({
             url: '/fpcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
@@ -157,6 +178,19 @@
             }
         });
     }
+    
+    $(document).ready(function() {
+	    $('.form-select').each(function() {
+	        var rqcStatus = $(this).val();  // 현재 선택된 값
+	        if (rqcStatus === 'PASS') {
+	            $(this).css('background-color', '#198754');  // 완료일 경우
+	        } else if (rqcStatus === 'PENDING') {
+	            $(this).css('background-color', '#FFC107');  // 대기중일 경우
+	        } else if (rqcStatus === 'FAIL') {
+	            $(this).css('background-color', '#DC3545');  // 실패일 경우
+	        }
+	    });
+	});
 
     function updateStatus(fpcBno, fpcStatus) {
         $.ajax({
@@ -167,7 +201,6 @@
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침
-                
             },
             error: function() {
                 alert("업데이트 실패\n품질검사를 먼저 완료로 변경해 주세요");

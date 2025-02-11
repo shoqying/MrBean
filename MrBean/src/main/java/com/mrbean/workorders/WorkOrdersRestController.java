@@ -69,10 +69,13 @@ public class WorkOrdersRestController {
 	        planVO.setPlanId(workVO.getPlanId());
 	        planVO.setPlStatus(ProductionplanStatus.WAITING);
 	        pps.updatePlanStatus(planVO);
-	     // rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
 	        
 	        List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+
+	        rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+
 	        logger.info("workList $$$$$$$$$$$$$$: "+ workList);
+
 	        logger.info("등록완료");
 	        return ResponseEntity.ok(workList);
 	    } catch (Exception e) {
