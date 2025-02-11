@@ -24,9 +24,9 @@
             <div id="chatbot-spinner" class="spinner-border text-dark" role="status" style="display: none;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-
+            <div id="chatbot-response" class="chatbot-response">
             <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
-            <button id="send-chatbot" class="send-chatbot">Send</button>
+            <button id="send-chatbot" class="send-chatbot">Send</button></div>
         </div>
     </div>
 </footer>
