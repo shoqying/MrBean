@@ -11,10 +11,13 @@ public interface RawMaterialsQualityControlService {
     public List<RawMaterialsQualityControlVO> getRawMaterialsQualityControlList() throws Exception;
 	
 	// 원자재 품질 검사 상태 업데이트
-    public void updateQualityCheck(int rqcBno, String rqcQualityCheck) throws Exception;
+    public void updateQualityCheck(RawMaterialsQualityControlVO vo) throws Exception;
 	
 	// 원자재 상태 업데이트
-    public void updateStatus(int rqcBno, String rqcStatus) throws Exception;
+    public void updateStatus(RawMaterialsQualityControlVO vo) throws Exception;
+    
+    // 원자재 검사 일자 삭제
+    public void deleteRawmaterialsDate(RawMaterialsQualityControlVO vo) throws Exception;
     
 	// 원자재 검사 목록 삭제
     public int deleteRawMaterial(int rqcBno) throws Exception;

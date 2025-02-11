@@ -7,15 +7,14 @@
 		<id property="fpcBno" column="fpc_bno"/> <!-- PK 값 -->
 		<result property="fpcDate" column="fpc_date"/>
 		<result property="fplNo" column="fpl_no"/>
-		<result property="pCode" column="p_code"/>
 		<result property="fpcExpirydate" column="fpc_expirydate"/>
 		<result property="fpcCheckdate" column="fpc_checkdate"/>		
 		<result property="fpcQualityCheck" column="fpc_quality_check"/>
 		<result property="fpcStatus" column="fpc_status"/>
 		<result property="fpcYield" column="fpc_yield"/>
-		<result property="planId" column="plan_id"/>
 		<result property="fpcQuantity" column="fpc_quantity"/>
 		
+		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 		<collection property="productionPlanList" resultMap="productionPlanMap"/>
 		<collection property="productsList" resultMap="productsMap"/>
 		<collection property="warehouseList" resultMap="warehouseMap"/>		
@@ -43,16 +42,20 @@
 		<result property="pCode" column="p_code"/>
 		<result property="planId" column="plan_id"/>
 	</resultMap>
+	
+	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
+		<result property="workQuantity" column="work_quantity"/>
+		<result property="workOrderNo" column="work_order_no"/>
+	</resultMap>
 
 
 	<!-- 완재품 검사 관리 목록 저장 -->
-	<insert id="insertFinishedProductControl" parameterType="map">
-	    INSERT INTO finished_products_control(fpl_no, p_code, plan_id, plan_quantity)
-	    SELECT fpl.fpl_no, p.p_code, plan.plan_id, plan.plan_quantity
+	<insert id="insertFinishedProductControl">
+	    INSERT INTO finished_products_control(fpl_no, work_order_no, work_quantity)
+	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity
 		FROM finished_products_lot fpl
-		LEFT JOIN products p ON p.p_code = fpl.p_code
-		LEFT JOIN production_plan plan ON plan.plan_id = fpl.plan_id
-		ORDER BY plan.plan_id desc
+		LEFT JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+		ORDER BY work.work_id desc
 		LIMIT 1
 	</insert>
 
@@ -69,11 +72,12 @@
         	   fpc.fpc_quality_check,
         	   fpc.fpc_status,
         	   fpc.fpc_yield,
-        	   plan.plan_quantity,
+        	   work.work_order_no,
+        	   work.work_quantity,
         	   fpc.fpc_quantity
 		FROM finished_products_control fpc
    	    LEFT JOIN products p on p.p_code = fpc.p_code
-   	    LEFT JOIN production_plan plan on plan.plan_id = fpc.plan_id
+   	    LEFT JOIN work_orders work on work.work_order_no = fpc.work_order_no
     </select>
     
     
@@ -98,28 +102,28 @@
     </delete>
     
     <!-- 완제품 LOT 번호 생성 -->
-    <insert id="insertFinishedProductLot">
-        INSERT INTO finished_products_lot (fpl_no, fpl_batch, w_code, p_code)
+    <insert id="insertFinishedProductLot" parameterType="map">
+        INSERT INTO finished_products_lot (fpl_no, fpl_batch, work_order_no)
 			SELECT 
 			    CONCAT(
-			        w.p_code, '-', 
-			        w.w_code, '-', 
+			        'FLOT-',
 			        DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
 			        LPAD(COALESCE(MAX(fpl.fpl_batch), 0) + 1, 3, '0')
-			    ) AS fpl_no, -- LOT 번호 생성
+			    ) AS fpl_no,
 			    COALESCE(MAX(fpl.fpl_batch), 0) + 1 AS fpl_batch,
-			    w.w_code,
-			    w.p_code
+			    work.work_order_no
 			FROM 
-			    work_orders w
-            LIMIT 1;
+			    finished_products_lot fpl
+			JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+			GROUP BY work.work_order_no
+			LIMIT 1;
     </insert>
     
     <!-- 완제품 LOT 번호 삭제 -->
     <update id="deleteFinishedProductLot" parameterType="int">
     	UPDATE finished_products_control
-    	SET fpl_no = null
-    	WHERE #{fpcBno}
+    	SET fpl_no = NULL
+    	WHERE fpc_bno = #{fpcBno}
     </update>
 
     

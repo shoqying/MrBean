@@ -10,10 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.finishedproductscontrol.FinishedProductsControlService;
 
 
 @Controller
@@ -24,6 +28,9 @@ public class RawMaterialsQualityControlController {
 	
 	@Autowired
 	private RawMaterialsQualityControlService rawMaterialsQualityControlService;
+	
+	@Autowired
+	private FinishedProductsControlService finishedProductsControlService;
 	
 	
 	
@@ -43,9 +50,12 @@ public class RawMaterialsQualityControlController {
 	// 원자재 품질 검사 상태 업데이트
     @PostMapping("/updateQualityCheck")
     @ResponseBody
-    public ResponseEntity<String> updateQualityCheck(/*@SessionAttribute("userId")*/ @RequestParam int rqcBno, @RequestParam String rqcQualityCheck) {
+    public ResponseEntity<String> updateQualityCheck(/*@SessionAttribute("userId")*/ @RequestBody RawMaterialsQualityControlVO vo) {
         try {
-            rawMaterialsQualityControlService.updateQualityCheck(rqcBno, rqcQualityCheck);
+            rawMaterialsQualityControlService.updateQualityCheck(vo);
+            if (QualityControlStatus.PENDING.equals(vo.getRqcQualityCheck())) {
+        		rawMaterialsQualityControlService.deleteRawmaterialsDate(vo);
+        	}
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
@@ -55,9 +65,14 @@ public class RawMaterialsQualityControlController {
     // 원자재 상태 업데이트
     @PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(/*@SessionAttribute("userId")*/ @RequestParam int rqcBno, @RequestParam String rqcStatus) {
-        try {
-            rawMaterialsQualityControlService.updateStatus(rqcBno, rqcStatus);
+    public ResponseEntity<String> updateStatus(/*@SessionAttribute("userId")*/ @RequestBody RawMaterialsQualityControlVO vo) {
+    	
+    	try {
+    		rawMaterialsQualityControlService.updateStatus(vo);
+    		if (QualityControlStatus.PASS.equals(vo.getRqcStatus())) {
+        		finishedProductsControlService.processAndInsertFinishedProducts(vo);
+        	}
+
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
