@@ -14,7 +14,7 @@
     <!-- Chatbot Window -->
     <div id="chatbot-window" class="chatbot-window" style="display: none;">
         <div class="chatbot-header">
-            <h5>Chatbot</h5>
+            <h5>Data bot</h5>
             <button id="close-chatbot" class="close-chatbot">&times;</button>
         </div>
         <div class="chatbot-body">
