@@ -17,13 +17,14 @@
         <result property="fpcExpirydate" column="fpc_expirydate" />
         <result property="fpcBno" column="fpc_bno" />
         <result property="planId" column="plan_id" />
+         <result property="spTotal" column="sp_total" />
     </resultMap>
 
     <!-- 재고 목록 조회 -->
-    <select id="selectStockProducts" resultMap="StockProductsResultMap">
+ <select id="selectStockProducts" resultMap="StockProductsResultMap">
     SELECT 
         sp.sp_bno,
-        plan.plan_quantity,
+        plan.plan_quantity,  <!-- 여기에 쉼표 추가 -->
         sp.sp_unit,
         sp.sp_date,
         w.w_code, 
@@ -31,32 +32,41 @@
         p.p_code,
         fpc.fpc_expirydate,
         fpc.fpc_bno,
-        plan.plan_id
+        COALESCE(total_stockp.sp_total, 0) AS sp_total
     FROM 
         stock_products sp
-   	LEFT JOIN warehouses w ON sp.w_code = w.w_code
-    LEFT JOIN products p ON sp.p_code = p.p_code
+    JOIN warehouses w ON sp.w_code = w.w_code
+    JOIN products p ON sp.p_code = p.p_code
     LEFT JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
     LEFT JOIN production_plan plan ON sp.plan_id = plan.plan_id
     LEFT JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
-    WHERE 
-        plan.plan_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
-   ORDER BY 
-        ${sortColumn} ${sortDirection} <!-- 동적으로 정렬 컬럼과 방향 설정 -->
-    </select>
+    LEFT JOIN (
+        SELECT p_code, SUM(plan_quantity) AS sp_total
+        FROM stock_products
+        GROUP BY p_code
+    ) total_stockp 
+    ON sp.p_code = total_stockp.p_code
+    <choose>
+        <when test="sortColumn == 'sp_date'">ORDER BY sp.sp_date ${sortDirection}</when>
+        <when test="sortColumn == 'plan_quantity'">ORDER BY plan.plan_quantity ${sortDirection}</when>
+        <otherwise>ORDER BY sp.sp_bno ${sortDirection}</otherwise>
+    </choose>
+    LIMIT #{limit} OFFSET #{offset}
+</select>
+
 
     <!-- 총 항목 수 -->
+  <!-- 총 항목 수 -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM stock_products sp
+        
         JOIN warehouses w ON sp.w_code = w.w_code
         JOIN products p ON sp.p_code = p.p_code
         JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
         JOIN production_plan plan ON sp.plan_id = plan.plan_id
-      	JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
-        
-        WHERE 
-            plan.plan_quantity > 0 <!-- 조건을 추가하여 데이터 필터링 -->
+        JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
     </select>
+
 
 </mapper>
