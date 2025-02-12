@@ -21,6 +21,7 @@ public class StockMaterialsVO {
 	private String rmCode; // 원자재 코드
 	private Date rrExpirydate; // 원자재 유통기한
 	private String rrNo; // 원자재 입고 번호
+	private int smTotal; // 총 재고량
 
 
 }

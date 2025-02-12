@@ -82,6 +82,7 @@ form {
             <th>LOT번호</th>
             <th>원자재 코드</th>
             <th>유통기한</th>
+            <th>총 재고량<th>
      
         </tr>
     </thead>
@@ -96,6 +97,7 @@ form {
                 <td>${stockMaterial.rmlNo}</td>
                 <td>${stockMaterial.rmCode}</td>
                 <td>${stockMaterial.rrExpirydate}</td>
+                <td>${stockMaterial.smTotal}</td>
             
             </tr>
         </c:forEach>

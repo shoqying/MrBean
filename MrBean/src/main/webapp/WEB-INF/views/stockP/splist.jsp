@@ -78,6 +78,7 @@ form {
             <th>LOT번호</th>
             <th>제품 코드</th>
             <th>유통기한</th>
+            <th>총 재고량</th>
      
         </tr>
     </thead>
@@ -92,7 +93,7 @@ form {
                 <td>${stockProducts.fplNo}</td>
                 <td>${stockProducts.PCode}</td>
                 <td>${stockProducts.fpcExpirydate}</td>
-               
+                <td>${stockProducts.spTotal}</td>
             </tr>
         </c:forEach>
 		
