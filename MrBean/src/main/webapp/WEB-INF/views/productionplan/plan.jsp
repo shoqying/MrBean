@@ -49,13 +49,13 @@
                 </div>
 				<div class="col-md-6">
 				  <div class="form-floating mb-3">
-				    <select class="form-select" id="productCode" aria-label="State">
+				    <select class="form-select" id="pName" aria-label="State">
 				      <option value="">제품을 선택하세요</option>
 				      <c:forEach var="product" items="${productCodes}">
 				        <option value="${product.PName}">${product.PName}</option>
 				      </c:forEach>
 				    </select>
-				    <label for="productCode">제품구분</label>
+				    <label for="pName">제품구분</label>
 				  </div>
 				</div>
                 <div class="col-md-6">
@@ -126,7 +126,7 @@
 				                ${plan.plStatus}
 				            </span>
 				        </td>
-				        <td>${plan.productCode}</td>
+				        <td>${plan.PName}</td>
 				        <td>${plan.planQuantity}</td>
 				        <td>${plan.remark}</td>
 				        <td>${plan.createdBy}</td>

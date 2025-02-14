@@ -10,7 +10,7 @@
 	    <result property="planType" column="plan_type"/>
 	    <result property="planStartDate" column="plan_start_date"/>
 	    <result property="planEndDate" column="plan_end_date"/>
-	    <result property="productCode" column="product_code"/>
+	    <result property="pName" column="product_name"/>
 	    <result property="bomCode" column="bom_code"/>
 	    <result property="planQuantity" column="plan_quantity"/>
 	    <result property="plStatus" column="plan_status"/>
@@ -34,23 +34,23 @@
 	        plan_type,
 	        plan_start_date,
 	        plan_end_date,
-	        product_code,
+	        product_name,
 	        bom_code,
 	        plan_quantity,
 	        plan_remark,
 	        plan_created_by,
 	        plan_status
 	    ) VALUES(
-	        #{planNumber},  <!-- planNumber -> plan_no로 매핑 -->
-	        #{planType},    <!-- planType -> plan_type로 매핑 -->
-	        #{planStartDate},  <!-- planStartDate -> plan_start_date로 매핑 -->
-	        #{planEndDate},    <!-- planEndDate -> plan_end_date로 매핑 -->
-	        #{productCode},    <!-- productCode -> product_code로 매핑 -->
-	        #{bomCode},        <!-- bomCode -> bom_code로 매핑 -->
-	        #{planQuantity},   <!-- planQuantity -> plan_quantity로 매핑 -->
-	        #{remark},         <!-- remark -> plan_remark로 매핑 -->
-	        #{createdBy},      <!-- createdBy -> plan_created_by로 매핑 -->
-	        #{plStatus}         <!-- status -> plan_status로 매핑 -->
+	        #{planNumber},  
+	        #{planType},    
+	        #{planStartDate},  
+	        #{planEndDate},    
+	        #{pName},    
+	        #{bomCode},        
+	        #{planQuantity},   
+	        #{remark},         
+	        #{createdBy},      
+	        #{plStatus}         
 	    )
 	</insert>
 	
@@ -73,8 +73,8 @@
 	        <if test="planType != null and planType != ''">
 	            AND plan_type = #{planType}
 	        </if>
-	        <if test="productCode != null and productCode != ''">
-	            AND product_code = #{productCode}
+	        <if test="pName != null and pName != ''">
+	            AND product_name = #{pName}
 	        </if>
 	    </where>
 	    ORDER BY plan_no DESC

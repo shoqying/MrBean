@@ -124,13 +124,13 @@ export const Modal = {
         };
         
         const planType = this.$searchType.val();
-        const productCode = this.$searchProduct.val();
+        const pName = this.$searchProduct.val();
         
         if (planType && planType.trim()) {
             params.planType = planType.trim();
         }
-        if (productCode && productCode.trim()) {
-            params.productCode = productCode.trim();
+        if (pName && pName.trim()) {
+            params.pName = pName.trim();
         }
         
         return params;
@@ -191,7 +191,7 @@ export const Modal = {
             .append(
                 $('<td>').text(plan.planNumber || ''),
                 $('<td>').text(plan.planType || ''),
-                $('<td>').text(plan.productCode || ''),
+                $('<td>').text(plan.pName || ''),
                 $('<td>').text(plan.planQuantity || '0'),
                 $('<td>').text(utils.dateUtils.formatDate(plan.planStartDate) || ''),
                 $('<td>').text(utils.dateUtils.formatDate(plan.planEndDate) || ''),

@@ -26,7 +26,7 @@
             plan_type AS planType,
             plan_start_date AS planStartDate,
             plan_end_date AS planEndDate,
-            product_code AS productCode,
+            product_name AS pName,
             bom_code AS bomCode,
             plan_quantity AS planQuantity,
             progress_quantity AS progressQuantity,

@@ -49,7 +49,7 @@ export const planModule = {
             planType: $(SELECTORS.FORM.PLAN_TYPE).val(),
             planStartDate: $(SELECTORS.FORM.START_DATE).val(),
             planEndDate: $(SELECTORS.FORM.END_DATE).val(),
-            productCode: $(SELECTORS.FORM.PRODUCT_CODE).val(),
+            pName: $(SELECTORS.FORM.PRODUCT_NAME).val(),
             planQuantity: parseInt($(SELECTORS.FORM.QUANTITY).val()),
             remark: $(SELECTORS.FORM.REMARK).val(),
             plStatus: $(SELECTORS.FORM.PLSTATUS).val(),
@@ -62,6 +62,7 @@ export const planModule = {
             contentType: 'application/json',
             data: JSON.stringify(formData),
             success: (response) => {
+            	console.log('formData:', formData);
                 this.updateList(response);
                 alert(MESSAGES.SUCCESS.PLAN_CREATE);
                 this.resetForm();
@@ -144,7 +145,7 @@ export const planModule = {
                     .addClass('badge ' + utils.statusUtils.getBadgeClass(plan.plStatus))
                     .text(utils.statusUtils.getDisplayName(plan.plStatus, 'plan'))
             ),
-            $('<td>').text(plan.productCode || ''),
+            $('<td>').text(plan.pName || ''),
             $('<td>').text(plan.planQuantity || ''),
             $('<td>').text(plan.remark || ''),
             $('<td>').text(plan.createdBy || ''),
@@ -172,7 +173,7 @@ export const planModule = {
         $(SELECTORS.FORM.END_DATE).val('');
         $(SELECTORS.FORM.QUANTITY).val('');
         $(SELECTORS.FORM.REMARK).val('');
-        $(SELECTORS.FORM.PRODUCT_CODE).val('');
+        $(SELECTORS.FORM.PRODUCT_NAME).val('');
         
         // 기본값 설정
         $(SELECTORS.FORM.PLAN_TYPE).val(defaultValues.planType);
