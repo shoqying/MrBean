@@ -1,15 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-<html>
-<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>원자재 입고 등록</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<h2>원자재 입고 등록</h2>
+<h1>원자재 입고 등록</h1>
+
 
 <form action="<spring:url value='/rawmaterialsreceiving/register' />" method="post">
     <table>
@@ -18,8 +16,8 @@
             <td><input type="text" id="rmlNo" name="rmlNo" required></td>
         </tr>
         <tr>
-            <td><label for="rrBno">원자재 번호:</label></td>
-            <td><input type="number" id="rrno" name="rrNo" required></td>
+            <td><label for="rrNo">원자재 번호:</label></td>
+            <td><input type="number" id="rrNo" name="rrNo" required></td>
         </tr>
         <tr>
             <td><label for="rmCode">원자재 코드:</label></td>
@@ -47,7 +45,7 @@
     </table>
 
     <button type="submit">입고 등록</button>
-</form>
+    
+	</form>
 
-</body>
-</html>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

@@ -1,54 +1,35 @@
 package com.mrbean.rawmaterialsreceiving;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-
+import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;  // @Autowired 임포트 추가
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 public class RawMaterialsReceivingDAOImpl implements RawMaterialsReceivingDAO {
 
-    @Autowired  // @Inject 대신 @Autowired 사용
-    private SqlSession sqlSession;  // 변수명도 sqlSession으로 변경
+    private static final String NAMESPACE = "com.mrbean.mappers.rawMaterialsReceivingMapper.";
 
-    private static final String NAMESPACE = "com.mrbean.mappers.rawMataterialsReceivingMapper.";
-    
-    // 원자재 입고 번호 생성
+    @Inject
+    private SqlSession sqlSession;
+
     @Override
-    public int creatRawMaterial(RawMaterialsReceivingVO material) {
-        return sqlSession.insert(NAMESPACE + "registerRawMaterial", material);
+    public void createRawMaterial(RawMaterialsReceivingVO material) {
+        sqlSession.insert(NAMESPACE + "createRawMaterial", material);
     }
 
-    // 원자재 입고 정보 수정
     @Override
-    public String updateRawMaterial(RawMaterialsReceivingVO material) {
-        return null;
+    public void updateRawMaterial(RawMaterialsReceivingVO material) {
+        sqlSession.update(NAMESPACE + "updateRawMaterial", material);
     }
 
-    // 원자재 입고 정보 삭제
     @Override
     public void deleteRawMaterial(String rrNo) {
+        sqlSession.delete(NAMESPACE + "deleteRawMaterial", rrNo);
     }
 
-    // 원자재 입고 정보 전체 조회
     @Override
     public List<RawMaterialsReceivingVO> getAllRawMaterials() {
-        return null;
+        return sqlSession.selectList(NAMESPACE + "getAllRawMaterials");
     }
-
-    // 원자재 입고 등록
-    @Override
-    public void registerRawMaterial(RawMaterialsReceivingVO rawMaterial) {
-        sqlSession.insert(NAMESPACE + "registerRawMaterial", rawMaterial);
-    }
-
-	@Override
-	public void createRawMaterial(RawMaterialsReceivingVO rrVO) {
-		// TODO Auto-generated method stub
-		
-	}
 }

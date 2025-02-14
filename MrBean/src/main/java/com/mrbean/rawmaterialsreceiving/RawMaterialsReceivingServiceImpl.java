@@ -1,51 +1,47 @@
 package com.mrbean.rawmaterialsreceiving;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-
+import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RawMaterialsReceivingServiceImpl implements RawMaterialsReceivingService {
-	
-	
 
-    @Autowired
+    private static final Logger logger = LoggerFactory.getLogger(RawMaterialsReceivingServiceImpl.class);
+
+    @Inject
     private RawMaterialsReceivingDAO rawMaterialsReceivingDAO;
 
-    // 원자재 입고 번호 생성
     @Override
     public void createRawMaterial(RawMaterialsReceivingVO material) {
-        rawMaterialsReceivingDAO.creatRawMaterial(material);
+        logger.info("createRawMaterial 호출: " + material);
+        rawMaterialsReceivingDAO.createRawMaterial(material);
     }
 
-    // 원자재 입고 정보 수정
     @Override
     public String updateRawMaterial(RawMaterialsReceivingVO material) {
-        return rawMaterialsReceivingDAO.updateRawMaterial(material);
+        logger.info("updateRawMaterial 호출: " + material);
+        rawMaterialsReceivingDAO.updateRawMaterial(material);
+        return "수정 완료";
     }
 
-    // 원자재 입고 정보 삭제
     @Override
     public void deleteRawMaterial(String rrNo) {
+        logger.info("deleteRawMaterial 호출: rrNo = " + rrNo);
         rawMaterialsReceivingDAO.deleteRawMaterial(rrNo);
     }
 
-    // 원자재 입고 정보 전체 조회
     @Override
     public List<RawMaterialsReceivingVO> getAllRawMaterials() {
+        logger.info("getAllRawMaterials 호출");
         return rawMaterialsReceivingDAO.getAllRawMaterials();
     }
 
-    // 원자재 입고 등록 (구현)
     @Override
     public void registerRawMaterial(RawMaterialsReceivingVO rawMaterial) {
-        try {
-            rawMaterialsReceivingDAO.registerRawMaterial(rawMaterial);
-        } catch (Exception e) {
-            // 예외 처리
-            throw new RuntimeException("원자재 입고 등록 중 오류 발생", e);
-        }
+        logger.info("registerRawMaterial 호출: " + rawMaterial);
+        rawMaterialsReceivingDAO.createRawMaterial(rawMaterial);
     }
 }

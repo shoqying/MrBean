@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <meta charset="UTF-8">
-<title>완제품 출고 목록</title>
-</head>
-<body>
+<title>원자재 입고 목록</title>
 
 <style>
     table {
@@ -39,47 +38,40 @@
     }
 </style>
 
-<h1>완제품 출고 목록</h1>
-<!-- 완제품 출고 목록을 테이블로 표시 -->
+<h1>원자재 입고 목록</h1>
+
+<!-- 원자재 입고 목록을 테이블로 표시 -->
 <table>
     <thead>
         <tr>
-            <th>출고번호</th>
-            <th>로트번호</th>
-            <th>출고 품목 번호</th>
-            <th>제품 코드</th>
-            <th>출고 수량</th>
-            <th>단위</th>
-            <th>출고일</th>
-            <th>출고 위치명</th>
-            <th>출고 위치</th>
-            <th>출고 번호</th>
+            <th>원자재 입고 번호</th>
+            <th>원자재 로트 번호</th>
+            <th>원자재</th>
+            <th>원자재 코드</th>
+            <th>원자재 수량</th>
+            <th>원자재 유통기한</th>
             <th>수정</th>
             <th>삭제</th>
         </tr>
     </thead>
     <tbody>
-        <!-- 완제품 출고 정보 목록 출력 -->
-        <c:forEach var="item" items="${finishedProducts}">
+        <!-- 원자재 입고 정보 목록 출력 -->
+        <c:forEach var="item" items="${rawmaterialsReceiving}">
             <tr>
-                <td>${item.foNo}</td>
-                <td>${item.fpcLotbno}</td>
-                <td>${item.fplNo}</td>
-                <td>${item.pCode}</td>
-                <td>${item.foQuantity}</td>
-                <td>${item.foUnit}</td>
-                <td>${item.foDate}</td>
-                <td>${item.foShippingLocationName}</td>
-                <td>${item.foShippingLocation}</td>
-                <td>${item.foBno}</td>
-                <td><a href="<c:url value='/finishedproductsoutgoing/updateForm/${item.foNo}' />">수정</a></td>
-                <td><a href="<c:url value='/finishedproductsoutgoing/delete/${item.foNo}' />" onclick="return confirm('삭제하시겠습니까?')">삭제</a></td>
+                <td>${item.rrNo}</td>
+                <td>${item.rmlNo}</td>
+                <td>${item.rmlBno}</td>
+                <td>${item.rmCode}</td>
+                <td>${item.rrQuantity}</td>
+                <td>${item.rrExpirydate}</td>
+                <td><a href="<c:url value='/rawmaterialsreceiving/updateForm/${item.rrNo}' />">수정</a></td>
+                <td><a href="<c:url value='/rawmaterialsreceiving/delete/${item.rrNo}' />" onclick="return confirm('삭제하시겠습니까?')">삭제</a></td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
 
 <br>
-<a href="<c:url value='/finishedproductsoutgoing/register' />">완제품 출고 등록</a>
+<a href="<c:url value='/rawmaterialsreceiving/register' />">원자재 입고 등록</a>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

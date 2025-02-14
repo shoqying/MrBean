@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mrbean.mappers.rawMataterialsReceivingMapper">
+<mapper namespace="com.mrbean.mappers.rawMaterialsReceivingMapper">
 
     <!-- 원자재 입고 정보 매핑 -->
     <resultMap id="RawMaterialsReceivingResultMap" type="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
@@ -14,34 +14,35 @@
         <result property="rrExpirydate" column="rr_expirydate"/>
     </resultMap>
 
-    <!-- 원자재 입고 번호 생성 -->
-    <select id="d" resultType="String">
-        <!-- 원자재 입고 번호를 생성하는 쿼리 예시 (데이터베이스에 맞는 쿼리로 수정 필요) -->
-        SELECT 'RR' || LPAD(SEQ_RAW_MATERIALS_RECEIVING.NEXTVAL, 5, '0') FROM DUAL;
-    </select>
+    <!-- 원자재 입고 정보 등록 -->
+    <insert id="createRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+	    INSERT INTO rawmaterials_receiving 
+	    (rr_no, rml_no, rml_bno, rm_code, rr_quantity, rr_unit, rr_expirydate, available_stock)
+	    VALUES 
+	    (#{rrNo}, #{rmlNo}, #{rmlBno}, #{rmCode}, #{rrQuantity}, #{rrUnit}, 
+	     DATE_ADD(NOW(), INTERVAL 6 MONTH), 
+	     #{rrQuantity} - COALESCE(#{reservedQuantity}, 0))
+	</insert>
 
-    <!-- 원자재 입고 등록 -->
-    <insert id="registerRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
-        INSERT INTO rawmetarials_receiving
-        (
-            rr_no,      <!-- 원자재 입고 번호 -->
-            rml_no,     <!-- 원자재 로트 번호 -->
-            rml_bno,      <!-- 원자재 번호 -->
-            rm_code,    <!-- 원자재 코드 -->
-            rr_quantity,<!-- 원자재 수량 -->
-            rr_unit,    <!-- 원자재 단위 -->
-            rr_expirydate <!-- 원자재 유통기한 -->
-        )
-        VALUES
-        (
-            #{rrNo},       <!-- 원자재 입고 번호 -->
-            #{rmlNo},      <!-- 원자재 로트 번호 -->
-            #{rmlBno},      <!-- 원자재 번호 -->
-            #{rmCode},     <!-- 원자재 코드 -->
-            #{rrQuantity}, <!-- 원자재 수량 -->
-            #{rrUnit},     <!-- 원자재 단위 -->
-            #{rrExpirydate} <!-- 원자재 유통기한 -->
-        )
-    </insert>
+    <!-- 원자재 입고 정보 수정 -->
+    <update id="updateRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+        UPDATE rawmaterials_receiving
+        SET rml_no = #{rmlNo}, rml_bno = #{rmlBno}, rm_code = #{rmCode}, 
+            rr_quantity = #{rrQuantity}, rr_unit = #{rrUnit}, rr_expirydate = #{rrExpirydate}
+        WHERE rr_no = #{rrNo}
+    </update>
+
+    <!-- 원자재 입고 정보 삭제 -->
+    <delete id="deleteRawMaterial" parameterType="java.lang.String">
+        DELETE FROM rawmaterials_receiving
+        WHERE rr_no = #{rrNo}
+    </delete>
+
+    <!-- 원자재 입고 목록 조회 -->
+    <select id="getAllRawMaterials" resultMap="RawMaterialsReceivingResultMap">
+        SELECT rr_no, rml_no, rml_bno, rm_code, rr_quantity, rr_unit, rr_expirydate
+        FROM rawmaterials_receiving
+        ORDER BY rr_expirydate DESC
+    </select>
 
 </mapper>
