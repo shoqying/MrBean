@@ -29,9 +29,10 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	
 	
 	@Override
-	public void processAndInsertFinishedProducts(RawMaterialsQualityControlVO vo) throws Exception {
+	public void processAndInsertFinishedProducts() throws Exception {
 		logger.info("processAndInsertFinishedProducts() 호출");
-		finishedProductsControlDAO.insertFinishedProductLot();
+		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
+		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
 		finishedProductsControlDAO.insertFinishedProductControl();
 		
 	}
@@ -64,16 +65,16 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	}
 	
 	@Override
-	public void insertFinishedProductLot() throws Exception {
+	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
 		logger.info("insertFinishedProductLot() 호출");
-		finishedProductsControlDAO.insertFinishedProductLot();
+		finishedProductsControlDAO.insertFinishedProductLot(workOrdersNo);
 	
 	}
 
 	@Override
-	public void deleteFinishedProductLot(int fpcBno) throws Exception {
+	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductLot() 호출");
-		finishedProductsControlDAO.deleteFinishedProductLot(fpcBno);
+		finishedProductsControlDAO.deleteFinishedProductLot(vo);
 		
 	}
 
@@ -83,6 +84,14 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		finishedProductsControlDAO.insertFinishedProductControl();
 		
 	}
+
+	@Override
+	public String getWorkOrdersNo() throws Exception {
+		logger.info("getWorkOrdersNo() 호출");
+		return finishedProductsControlDAO.getWorkOrdersNo();
+		
+	}
+	
 	
 	
 	

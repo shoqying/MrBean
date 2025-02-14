@@ -37,7 +37,7 @@ public class RawMaterialsQualityControlController {
 	
 	
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void rmqControlGET(/*@SessionAttribute("userId")*/ String userId, Model model) throws Exception {
+	public void rmqControlGET(Model model) throws Exception {
 		logger.info("rmqControlGET() 호출");
 		
 		List<RawMaterialsQualityControlVO> rawMaterialsQualityControlList 
@@ -50,7 +50,7 @@ public class RawMaterialsQualityControlController {
 	// 원자재 품질 검사 상태 업데이트
     @PostMapping("/updateQualityCheck")
     @ResponseBody
-    public ResponseEntity<String> updateQualityCheck(/*@SessionAttribute("userId")*/ @RequestBody RawMaterialsQualityControlVO vo) {
+    public ResponseEntity<String> updateQualityCheck(@RequestBody RawMaterialsQualityControlVO vo) {
         try {
             rawMaterialsQualityControlService.updateQualityCheck(vo);
             if (QualityControlStatus.PENDING.equals(vo.getRqcQualityCheck())) {
@@ -65,12 +65,14 @@ public class RawMaterialsQualityControlController {
     // 원자재 상태 업데이트
     @PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(/*@SessionAttribute("userId")*/ @RequestBody RawMaterialsQualityControlVO vo) {
+    public ResponseEntity<String> updateStatus(@RequestBody RawMaterialsQualityControlVO vo) {
     	
     	try {
     		rawMaterialsQualityControlService.updateStatus(vo);
     		if (QualityControlStatus.PASS.equals(vo.getRqcStatus())) {
-        		finishedProductsControlService.processAndInsertFinishedProducts(vo);
+        		finishedProductsControlService.processAndInsertFinishedProducts();
+        	} else if (QualityControlStatus.PENDING.equals(vo.getRqcStatus())) {
+        		rawMaterialsQualityControlService.deleteRawmaterialsDate(vo);
         	}
 
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
@@ -82,7 +84,7 @@ public class RawMaterialsQualityControlController {
     // 원자재 검사 목록 삭제
     @PostMapping("/deleteRawMaterial")
     @ResponseBody
-    public ResponseEntity<String> deleteRawMaterial(/*@SessionAttribute("userId")*/ @RequestParam int rqcBno) {
+    public ResponseEntity<String> deleteRawMaterial(@RequestParam int rqcBno) {
         try {
             rawMaterialsQualityControlService.deleteRawMaterial(rqcBno);
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
