@@ -240,7 +240,7 @@ export const workModule = {
             $('<td>').text(work.workPlanNo || ''),
             $('<td>').text(utils.dateUtils.formatDate(work.workStartDate) || ''),
             $('<td>').text(work.workQuantity || ''),
-            $('<td>').text(work.completedQuantity || ''),
+            $('<td>').text(work.completedQuantity || '0'),
             $('<td>').append(
                 $('<span>')
                     .addClass('badge ' + utils.statusUtils.getBadgeClass(work.workStatus))

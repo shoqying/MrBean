@@ -1,6 +1,7 @@
 package com.mrbean.workorders;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -93,6 +94,28 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO{
 		return sqs.selectOne(NAMESPACE + "getPlanIdByWorkId", workId);
 	}
 
+	
+	/**
+	 * 
+	 * fffffffff
+	 * 
+	 */
+
+    @Override
+    public String getBomIdByPName(String pName) {
+        return sqs.selectOne(NAMESPACE + "getBomIdByPName", pName);
+    }
+    
+    @Override
+    public Map<String, Object> getBomInfoById(String bomId) {
+        return sqs.selectOne(NAMESPACE + "getBomInfoById", bomId);
+    }
+    
+    @Override
+    public int updateStockTotal(Map<String, Object> params) {
+        return sqs.update(NAMESPACE + "updateStockTotal", params);
+    }
+	
 	
 	
 } //WorkOrdersDAOImpl

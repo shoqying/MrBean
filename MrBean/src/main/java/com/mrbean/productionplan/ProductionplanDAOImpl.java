@@ -2,6 +2,7 @@ package com.mrbean.productionplan;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
@@ -97,7 +98,12 @@ public class ProductionplanDAOImpl implements ProductionplanDAO {
 		sqs.update(NAMESPACE + "updatePlanStatus",planVO);
 		
 	}
+	
+	
 
+	
+	
+	
    
 
 }//ProductionplanImpl
