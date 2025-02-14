@@ -45,8 +45,8 @@
    
                <div class="col-md-6">
                  <div class="form-floating">
-                   <input type="text" class="form-control" id="productCode" readonly>
-                   <label for="productCode">제품구분</label>
+                   <input type="text" class="form-control" id="pName" readonly>
+                   <label for="pName">제품구분</label>
                  </div>
                </div>
                
@@ -194,7 +194,7 @@
            </select>
          </div>
          <div class="col-md-4">
-           <input type="text" id="searchProductCode" class="form-control" placeholder="제품코드">
+           <input type="text" id="searchProductName" class="form-control" placeholder="제품명">
          </div>
          <div class="col-md-4">
            <button type="button" id="searchPlanBtn" class="btn btn-primary">

@@ -2,6 +2,7 @@ package com.mrbean.productionplan;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mrbean.enums.ProductionplanStatus;
 
 import lombok.Data;
@@ -13,7 +14,8 @@ public class ProductionPlanVO {
 	private String planType; // 생산계획 유형(일,월,반년등)\
 	private Date planStartDate; // 계획 시작일자
 	private Date planEndDate; // 계획 시작일자
-	private String productCode; // 제품코드
+	@JsonProperty("pName")
+	private String pName; // 제품명
 	private String bomCode; // bom코드
 	private int planQuantity; //생산계획수량
 	
@@ -25,11 +27,9 @@ public class ProductionPlanVO {
 	
 	
 	
-
 	
 	
 	
-
 }//ProductionVO
 
 

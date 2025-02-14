@@ -84,7 +84,7 @@ export const workModule = {
         this.state.selectedPlan = plan;
         $(SELECTORS.FORM.WORK_PLAN_NO).val(plan.planNumber);
         $(SELECTORS.FORM.PLAN_TYPE).val(plan.planType);
-        $(SELECTORS.FORM.PRODUCT_CODE).val(plan.productCode);
+        $(SELECTORS.FORM.PRODUCT_NAME).val(plan.pName);
         $(SELECTORS.FORM.PLAN_QUANTITY_DISPLAY).text(plan.planQuantity);
     },
 
@@ -118,6 +118,7 @@ export const workModule = {
 
         const formData = {
             workOrderNo: $(SELECTORS.FORM.WORK_NUMBER).val(),
+            pName: $(SELECTORS.FORM.PRODUCT_NAME).val(),
             planId: this.state.selectedPlan.planId,
             workPlanNo: this.state.selectedPlan.planNumber,
             workStartDate: $(SELECTORS.FORM.WORK_START_DATE).val(),
@@ -235,6 +236,7 @@ export const workModule = {
         .data('plan-id', work.planId)    
         .append(
             $('<td>').text(work.workOrderNo || ''),
+            $('<td>').text(work.pName || ''),
             $('<td>').text(work.workPlanNo || ''),
             $('<td>').text(utils.dateUtils.formatDate(work.workStartDate) || ''),
             $('<td>').text(work.workQuantity || ''),

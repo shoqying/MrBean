@@ -66,7 +66,7 @@ public class ProductionplanRestController {
         try {
         	// 생산계획 등록
             pps.insertProductionPlan(planVO);
-            
+            logger.info("planvo #######################:" + planVO);
          // 최신 목록 반환
             List<ProductionPlanVO> planList = pps.getPlanList(planVO);
             

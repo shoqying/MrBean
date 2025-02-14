@@ -33,7 +33,7 @@ export const SELECTORS = {
         PLAN_NUMBER: '#planNumber',
         PRIORITY: '#priority',
         PLAN_TYPE: '#planType',
-        PRODUCT_CODE: '#productCode',
+        PRODUCT_NAME: '#pName',
         PLSTATUS: '.plStatus',
         
         // Work Form Selectors
@@ -68,7 +68,7 @@ export const SELECTORS = {
         CONTAINER: '#planSearchModal',
         PLAN_LIST: '#planSearchResults',
         SEARCH_TYPE: '#searchPlanType',
-        SEARCH_PRODUCT: '#searchProductCode',
+        SEARCH_PRODUCT: '#searchProductName',
         SEARCH_BTN: '#searchPlanBtn',
         CLOSE_BTN: '.btn-close'
     }
