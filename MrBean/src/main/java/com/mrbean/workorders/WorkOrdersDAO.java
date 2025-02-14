@@ -1,6 +1,7 @@
 package com.mrbean.workorders;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface WorkOrdersDAO {
@@ -26,6 +27,12 @@ public interface WorkOrdersDAO {
     // id 조회
     public Integer getPlanIdByWorkId(int workId);
     
+    
+	// 재고수량 업데이트 
+	
+    public String getBomIdByPName(String pName);
+    public Map<String, Object> getBomInfoById(String bomId);
+    public int updateStockTotal(Map<String, Object> params);
     
     
 } //WorkOrdersDAO

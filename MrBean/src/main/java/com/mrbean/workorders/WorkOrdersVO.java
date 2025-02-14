@@ -37,8 +37,10 @@ public class WorkOrdersVO {
     @JsonProperty("pName")
     private String pName;  //product
     
-
     
+    @JsonProperty("pCode")
+    private String pCode;
+
     
     
     

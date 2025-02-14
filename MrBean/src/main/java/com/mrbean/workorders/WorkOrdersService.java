@@ -20,6 +20,8 @@ public interface WorkOrdersService {
     
     // id 조회
     public Integer getPlanIdByWorkId(int workId);
+    // stock 업데이트를 위한 메서드 추가
+    public void updateStockTotal(WorkOrdersVO workVO);
 	
 } //WorkOrdersService
 

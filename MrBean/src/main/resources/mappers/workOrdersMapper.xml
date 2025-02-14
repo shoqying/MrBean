@@ -119,4 +119,25 @@
     </select>
     
     
+    
+        <!-- 추가되는 매퍼 -->
+    <select id="getBomIdByPName" resultType="String">
+        SELECT b.bom_id
+        FROM products p
+        JOIN bill_of_materials b ON p.bom_id = b.bom_id
+        WHERE p.p_name = #{pName}
+    </select>
+    
+    <select id="getBomInfoById" resultType="java.util.HashMap">
+        SELECT bom_ratio, rm_code
+        FROM bill_of_materials
+        WHERE bom_id = #{bomId}
+    </select>
+    
+    <update id="updateStockTotal">
+        UPDATE stock_total
+        SET st_total = st_total - #{deductAmount}
+        WHERE rm_code = #{rmCode}
+    </update>
+    
 </mapper>
