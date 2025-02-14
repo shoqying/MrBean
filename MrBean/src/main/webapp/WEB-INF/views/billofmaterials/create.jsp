@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageTitle" value="자재 명세서 등록"/>
-
+<c:set var="pageTitle" value="BOM 등록"/>
+<c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">

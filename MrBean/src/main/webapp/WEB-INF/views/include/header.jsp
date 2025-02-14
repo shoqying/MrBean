@@ -372,7 +372,7 @@
 </aside>
   <main id="main" class="main">
   <div class="pagetitle">
-    <h1><c:out value="${pageTitle}" default="Mr.BEAN"/></h1>
+    <h1><c:out value="${sidebarTitle}" default="Mr.BEAN"/></h1>
     <nav>
       <ol class="breadcrumb horizontal-links">
         <li class="breadcrumb-item">
