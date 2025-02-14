@@ -270,13 +270,13 @@
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="icons-bootstrap.html">
-              <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+            <a href="/rawmaterialsreceiving/list">
+              <i class="bi bi-circle"></i><span>원자재 입고</span>
             </a>
           </li>
           <li>
-            <a href="icons-remix.html">
-              <i class="bi bi-circle"></i><span>Remix Icons</span>
+            <a href="/finishedproductsoutgoing/list">
+              <i class="bi bi-circle"></i><span>완제품 출고</span>
             </a>
           </li>
           <li>
