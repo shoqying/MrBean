@@ -1,21 +1,25 @@
 <!-- main.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageTitle" value="자재 명세서"/>
+<c:set var="pageTitle" value="BOM 목록"/>
+<c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<head>
+    <title>BOM 목록</title>
+</head>
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title">
-                    <i class="bi bi-list-check me-1"></i><b>목록</b>
-                </h5>
-                <button class="btn btn-success" onclick="goToCreatePage()">
-                    BOM 등록
-                </button>
-            </div>
             <div class="card">
                 <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title">
+                            <i class="bi bi-list-check me-1"></i><b>목록</b>
+                        </h5>
+                        <button class="btn btn-success" onclick="goToCreatePage()">
+                            BOM 등록
+                        </button>
+                    </div>
                     <table class="table datatable table-hover">
                         <thead>
                             <tr>
@@ -39,7 +43,9 @@
                                     <td>${bom.bomDescription}</td>
                                     <td>
                                        <button class="btn btn-sm btn-primary" onclick="editBOM('${bom.bomId}')">수정</button>
-                                       <button class="btn btn-sm btn-danger" onclick="deleteBom('${bom.bomId}')">삭제</button>
+                                       <button type="button" class="btn btn-danger btn-sm" onclick="{ deleteBom('${bom.bomId}'); }">
+                                           <i class="bi bi-trash"></i>
+                                       </button>
                                     </td>
                                 </tr>
                             </c:forEach>

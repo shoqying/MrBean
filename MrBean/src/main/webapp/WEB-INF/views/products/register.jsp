@@ -1,84 +1,73 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>완제품 등록</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<c:set var="pageTitle" value="완제품 등록"/>
+<c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">완제품 등록</h2>
-
-        <!-- 폼 컨테이너 -->
-        <div class="form-container">
-            <!-- 메시지 처리 -->
-            <c:if test="${not empty message}">
-                <div class="alert alert-success" role="alert">${message}</div>
-            </c:if>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="bi bi-pencil-square me-1"></i>완제품 등록
+            </h5>
 
             <!-- 제품 등록 폼 -->
-            <form:form method="post" modelAttribute="product">
+            <form:form modelAttribute="product" method="POST" action="/products/register" class="row g-3">
+
+                <!-- BOM 선택 -->
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <form:select path="bomId" id="bomId" class="form-control" required="true">
+                            <option value="" selected disabled>-- 선택하세요 --</option>
+                            <c:forEach var="bom" items="${bomList}">
+                                <option value="${bom.bomId}">${bom.bomName}</option>
+                            </c:forEach>
+                        </form:select>
+                        <label for="bomId">BOM 선택</label>
+                    </div>
+                    <small id="bomIdError" class="form-text text-danger" style="display: none;">BOM을 선택해주세요.</small>
+                </div>
+
                 <!-- 제품 코드 -->
-                <div class="form-group">
-                    <label for="pCode">제품 코드:</label>
-                    <form:input path="pCode" id="pCode" class="form-control" required="true" maxlength="20"
-                                pattern="^[a-zA-Z0-9]+$"
-                                title="제품 코드는 필수 입력이며, 최대 20자까지만 입력 가능합니다." />
+                <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <form:input path="pCode" id="pCode" type="text" class="form-control" placeholder="예: P123" required="true" title="제품 코드를 입력하세요."/>
+                        <label for="pCode">제품 코드</label>
+                    </div>
+                    <small id="pCodeError" class="form-text text-danger" style="display: none;">제품 코드를 입력해주세요.</small>
                 </div>
 
                 <!-- 제품명 -->
-                <div class="form-group">
-                    <label for="pName">제품명:</label>
-                    <form:input path="pName" id="pName" class="form-control" required="true" maxlength="50"
-                                pattern="^[a-zA-Z0-9가-힣\s]+$"
-                                title="제품명은 필수 입력이며, 최대 50자까지만 입력 가능합니다." />
+                <div class="col-md-7">
+                    <div class="form-floating mb-3">
+                        <form:input path="pName" id="pName" type="text" class="form-control" placeholder="예: 제품명" required="true" title="제품명을 입력하세요."/>
+                        <label for="pName">제품명</label>
+                    </div>
+                    <small id="pNameError" class="form-text text-danger" style="display: none;">제품명을 입력해주세요.</small>
                 </div>
 
                 <!-- 제품 설명 -->
-                <div class="form-group">
-                        <label for="wDescription">제품 설명:</label>
+                <div class="col-12">
                     <div class="form-floating mb-3">
-                        <textarea
-                            class="form-control"
-                            id="wDescription"
-                            name="wDescription"
-                            placeholder="제품 설명에 대한 설명(최대 500자)"
-                            rows="4"
-                            autocomplete="off"
-                            style="height: 120px; resize: none; overflow-y: auto;"
-                            oninput="updateCharacterCount()"
-                            title="제품 설명에 대해 자세한 정보를 적어주세요."
-                        ></textarea>
+                        <textarea class="form-control" id="pDescription" name="pDescription" placeholder="제품 설명(최대 500자)" rows="4" autocomplete="off" style="height: 120px; resize: none; overflow-y: auto;" oninput="updateCharacterCount()" title="제품 설명을 입력하세요."></textarea>
+                        <label for="pDescription">제품 설명</label>
                     </div>
                     <small id="charCount" class="text-muted" style="float: right;">0/500</small>
                 </div>
 
-                <!-- BOM 목록 드롭다운 -->
-                <div class="form-group">
-                    <label for="bomId">BOM 선택:</label>
-                    <form:select path="bomId" id="bomId" class="form-control" required="true">
-                        <!-- 빈 옵션 추가 -->
-                        <option value="" selected disabled>-- 선택하세요 --</option>
-                        <c:forEach var="bom" items="${bomList}">
-                            <option value="${bom.bomId}">${bom.bomName}</option>
-                        </c:forEach>
-                    </form:select>
-                </div>
-
-                <!-- 제출 버튼 -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">등록</button>
-            		<a href="/products/list" class="btn btn-primary">목록</a>
+                <!-- 제출 및 초기화 버튼 -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-success me-2" title="필수 입력란을 모두 채운 뒤 등록을 진행하세요."><b><i class="bi bi-check-circle"></i> 등록</b></button>
+                    <button type="reset" class="btn btn-secondary" title="입력란을 모두 초기화합니다."><b><i class="bi bi-arrow-counterclockwise me-1"></i> 초기화</b></button>
                 </div>
             </form:form>
         </div>
     </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
 <script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
@@ -89,6 +78,4 @@
         </c:if>
     };
 </script>
-
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-</html>

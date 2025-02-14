@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="pageTitle" value="창고 등록"/>
+<c:set var="sidebarTitle" value="기준정보관리"/>
 <style>
 .datatable-top > nav:first-child, .datatable-top > div:first-child, .datatable-bottom > nav:first-child, .datatable-bottom > div:first-child {
     float: right;
 }
 </style>
-<c:set var="pageTitle" value="창고 등록"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <div class="container mt-5">

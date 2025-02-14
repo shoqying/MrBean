@@ -1,144 +1,75 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>원자재 등록</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* 폼 컨테이너 */
-        .form-container {
-            max-width: 600px; /* 폼 최대 너비 설정 */
-            margin: 0 auto; /* 중앙 정렬 */
-            padding: 30px; /* 내부 여백 */
-            border: 1px solid #ddd; /* 테두리 추가 */
-            border-radius: 8px; /* 모서리 둥글게 */
-            background-color: #f9f9f9; /* 배경색 */
-        }
-
-        /* 각 입력 필드의 레이블 */
-        .form-group label {
-            font-size: 14px; /* 레이블 글자 크기 축소 */
-        }
-
-        /* 각 입력 필드의 스타일 */
-        .form-group input {
-            font-size: 14px; /* 입력 필드 글자 크기 축소 */
-            padding: 10px; /* 패딩 추가 */
-            border-radius: 4px; /* 입력 필드 둥글게 */
-        }
-
-        /* 버튼 크기 조정 */
-        .btn {
-            font-size: 14px; /* 버튼 글자 크기 축소 */
-            padding: 10px 20px; /* 버튼 내부 여백 */
-        }
-
-        /* 폼 하단 버튼들 정렬 */
-		.form-buttons {
-		    display: flex; /* 버튼들을 플렉스박스로 배치 */
-		    justify-content: space-between; /* 양쪽 끝으로 버튼 배치 */
-		    margin-top: 20px; /* 버튼들 간의 간격 */
-		}
-		
-		/* 대시보드 및 리스트 버튼 */
-		.navigate-buttons {
-		    margin-top: 10px; /* 버튼들 간격 */
-		    display: flex;
-		    justify-content: space-around; /* 중앙으로 배치 */
-		}
-		
-		.navigate-buttons .btn {
-		    font-size: 14px; /* 버튼 글자 크기 */
-		    padding: 6px 12px; /* 버튼 내부 여백 줄이기 */
-		    width: auto; /* 너비를 자동으로 설정 */
-		    max-width: 45%; /* 최대 너비를 45%로 설정 */
-		}
-
-        /* 폼 하단의 버튼을 중앙 정렬하고, 양 끝에 맞추기 위해서 아래 추가 */
-        .navigate-buttons a {
-            width: 48%; /* 버튼들이 양쪽 끝으로 정렬되도록 너비 조정 */
-        }
-    </style>
-</head>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="pageTitle" value="원자재 등록"/>
+<c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="bi bi-pencil-square me-1"></i>원자재 등록
+            </h5>
 
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">원자재 등록</h2>
+            <!-- 원자재 등록 폼 -->
+            <form:form modelAttribute="rawMaterialsVO" method="POST" action="/rawMaterials/register" class="row g-3">
 
-        <!-- 폼 컨테이너 -->
-        <div class="form-container">
-            <form:form modelAttribute="rawMaterialsVO" method="POST" action="/rawMaterials/register">
-                <!-- 원자재 코드 입력 필드 -->
-                <div class="form-group">
-                    <label for="rmCode">원자재 코드:</label>
-                    <form:input path="rmCode" id="rmCode" type="text" class="form-control" required="true" />
-                </div>
-
-                <!-- 원자재명 입력 필드 -->
-                <div class="form-group">
-                    <label for="rmName">원자재명:</label>
-                    <form:input path="rmName" id="rmName" type="text" class="form-control" required="true" />
-                </div>
-
-                <!-- 원산지 입력 필드 -->
-                <div class="form-group">
-                    <label for="rmOrigin">원산지:</label>
-                    <form:input path="rmOrigin" id="rmOrigin" type="text" class="form-control" required="true" />
-                </div>
-
-                <!-- 보관 방법 입력 필드 -->
-                    <div class="form-group">
-                        <label for="wDescription">보관 방법:</label>
+                <!-- 원자재 코드 -->
+                <div class="col-sm-5">
                     <div class="form-floating mb-3">
-                        <textarea
-                            class="form-control"
-                            id="wDescription"
-                            name="wDescription"
-                            placeholder="보관 방법에 대한 설명(최대 500자)"
-                            rows="4"
-                            autocomplete="off"
-                            style="height: 120px; resize: none; overflow-y: auto;"
-                            oninput="updateCharacterCount()"
-                            title="보관 방법에 대해 자세한 정보를 적어주세요."
-                        ></textarea>
+                        <form:input path="rmCode" id="rmCode" type="text" class="form-control" placeholder="예: RM123" required="true" readonly="true" title="자동 생성된 원자재 코드입니다."/>
+                        <label for="rmCode">원자재 코드</label>
+                    </div>
+                    <small id="rmCodeError" class="form-text text-danger" style="display: none;">원자재 코드를 입력해주세요.</small>
+                </div>
+
+                <!-- 원자재명 -->
+                <div class="col-md-7">
+                    <div class="form-floating mb-3">
+                        <form:input path="rmName" id="rmName" type="text" class="form-control" placeholder="예: 원자재명" required="true" title="원자재명을 입력하세요."/>
+                        <label for="rmName">원자재명</label>
+                    </div>
+                    <small id="rmNameError" class="form-text text-danger" style="display: none;">원자재명을 입력해주세요.</small>
+                </div>
+
+                <!-- 원산지 -->
+                <div class="col-sm-5">
+                    <div class="form-floating mb-3">
+                        <form:input path="rmOrigin" id="rmOrigin" type="text" class="form-control" placeholder="예: 대한민국" required="true" title="원산지를 입력하세요."/>
+                        <label for="rmOrigin">원산지</label>
+                    </div>
+                    <small id="rmOriginError" class="form-text text-danger" style="display: none;">원산지를 입력해주세요.</small>
+                </div>
+
+                <!-- 보관 방법 -->
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="wDescription" name="wDescription" placeholder="보관 방법에 대한 설명(최대 500자)" rows="4" autocomplete="off" style="height: 120px; resize: none; overflow-y: auto;" oninput="updateCharacterCount()" title="보관 방법에 대해 자세한 정보를 적어주세요."></textarea>
+                        <label for="wDescription">보관 방법</label>
                     </div>
                     <small id="charCount" class="text-muted" style="float: right;">0/500</small>
                 </div>
 
-                <!-- 폼 하단 버튼들 정렬 -->
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary">등록</button>
-                    <button type="reset" class="btn btn-secondary">초기화</button>
+                <!-- 제출 및 초기화 버튼 -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-success me-2" title="필수 입력란을 모두 채운 뒤 등록을 진행하세요."><b><i class="bi bi-check-circle"></i> 등록</b></button>
+                    <button type="reset" class="btn btn-secondary" title="입력란을 모두 초기화합니다."><b><i class="bi bi-arrow-counterclockwise me-1"></i> 초기화</b></button>
                 </div>
             </form:form>
         </div>
-
-        <!-- 대시보드 및 리스트 페이지로 돌아가는 버튼 -->
-        <div class="navigate-buttons">
-            <a href="${pageContext.request.contextPath}/rawMaterials/list" class="btn btn-primary">리스트 페이지로 돌아가기</a>
-        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
-	<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
-	<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
-	<script>
-	    window.onload = function() {
-	        <c:if test="${not empty message}">
-	            showToast("${message}");
-	        </c:if>
-	    };
-	</script>
-
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/validation.js'/>"></script>
+<script>
+    window.onload = function() {
+        <c:if test="${not empty message}">
+            showToast("${message}");
+        </c:if>
+    };
+</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
-</html>

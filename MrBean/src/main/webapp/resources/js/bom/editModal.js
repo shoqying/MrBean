@@ -116,7 +116,9 @@ function updateBomTable() {
                             <td>${bom.bomDescription}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary" onclick="editBOM('${bom.bomId}')">수정</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteBom('${bom.bomId}')">삭제</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="{ deleteBom('${bom.bomId}'); }">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     `;
