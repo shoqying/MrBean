@@ -161,13 +161,13 @@
 	    });
 	});
 	
-    function updateQualityCheck(fpcBno, fpcQualityCheck) {
+    function updateQualityCheck(fpcBno, fpcQualityCheck, FpcStatus) {
     	
         $.ajax({
             url: '/fpcontrol/updateQualityCheck',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ fpcBno: fpcBno, fpcQualityCheck: fpcQualityCheck }),
+            data: JSON.stringify({ fpcBno: fpcBno, fpcQualityCheck: fpcQualityCheck, FpcStatus: FpcStatus }),
             success: function(response) {
                 alert("품질 검사 상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침

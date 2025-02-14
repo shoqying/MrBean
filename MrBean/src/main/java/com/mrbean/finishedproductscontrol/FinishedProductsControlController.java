@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -27,6 +28,7 @@ import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
 import com.mrbean.warehouse.WarehouseService;
 import com.mrbean.warehouse.WarehouseVO;
+import com.mrbean.workorders.WorkOrdersVO;
 
 
 @Controller
@@ -42,14 +44,15 @@ public class FinishedProductsControlController {
 	
 	
 	
-	@RequestMapping(value = "/main")
-	public void fpControlGET(/*@SessionAttribute("uUserid")*/ String userId, Model model) throws Exception {
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public void fpControlGET(Model model) throws Exception {
 		logger.info("fpControlGET() 호출");
 		
 		List<FinishedProductsControlVO> finishedProductsControlList 
 		= finishedProductsControlService.getFinishedProductsControlList();
 		
 		model.addAttribute("finishedProductsControlList", finishedProductsControlList);
+		
 	}
 	
 	// 완제품 품질 검사 상태 업데이트
@@ -58,8 +61,8 @@ public class FinishedProductsControlController {
     public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
         try {
         	finishedProductsControlService.updateQualityCheck(vo);
-        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
-        		finishedProductsControlService.deleteFinishedProductLot(vo.getFpcBno());
+        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus()) || QualityControlStatus.PENDING.equals(vo.getFpcQualityCheck())) {
+        		finishedProductsControlService.deleteFinishedProductLot(vo);
         	}
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
@@ -70,12 +73,17 @@ public class FinishedProductsControlController {
     // 완제품 상태 업데이트
 	@PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo) {
+    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO vo) {
 		
         try {            
-        	finishedProductsControlService.updateStatus(fvo);
-    		if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
-    			finishedProductsControlService.insertFinishedProductLot();
+        	finishedProductsControlService.updateStatus(vo);
+        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
+        		finishedProductsControlService.deleteFinishedProductLot(vo);
+        	}
+    		if (QualityControlStatus.PASS.equals(vo.getFpcStatus()) || QualityControlStatus.FAIL.equals(vo.getFpcStatus())) {
+    			finishedProductsControlService.deleteFinishedProductLot(vo);
+    		    String WorkOrdersNo = finishedProductsControlService.getWorkOrdersNo();
+    			finishedProductsControlService.insertFinishedProductLot(WorkOrdersNo);
             }
         	
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
@@ -87,7 +95,7 @@ public class FinishedProductsControlController {
     // 완재품 검사 목록 삭제
     @PostMapping("/deleteFinishedProduct")
     @ResponseBody
-    public ResponseEntity<String> deleteFinishedProduct(/*@SessionAttribute("userId")*/ @RequestParam int rqcBno) {
+    public ResponseEntity<String> deleteFinishedProduct(@RequestParam int rqcBno) {
         try {
         	finishedProductsControlService.deleteFinishedProduct(rqcBno);
             return ResponseEntity.ok("상태가 업데이트되었습니다.");

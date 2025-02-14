@@ -101,26 +101,37 @@
     	WHERE fpc_bno = #{fpcBno}
     </delete>
     
+    <!-- 워크 오더 넘버 가져오기 -->
+    <select id="getWorkOrdersNo" resultType="String">
+    	SELECT work_order_no
+    	FROM rawmaterials_quality_control
+    	WHERE work_order_no IS NOT NULL
+    	ORDER BY rqc_bno DESC
+    	LIMIT 1
+    </select>
+    
     <!-- 완제품 LOT 번호 생성 -->
-    <insert id="insertFinishedProductLot" parameterType="map">
+    <insert id="insertFinishedProductLot" parameterType="com.mrbean.workorders.WorkOrdersVO">
         INSERT INTO finished_products_lot (fpl_no, fpl_batch, work_order_no)
 			SELECT 
 			    CONCAT(
 			        'FLOT-',
 			        DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
-			        LPAD(COALESCE(MAX(fpl.fpl_batch), 0) + 1, 3, '0')
+			        LPAD(COALESCE(MAX(fpl.fpl_batch), -1) + 1, 3, '0')
 			    ) AS fpl_no,
-			    COALESCE(MAX(fpl.fpl_batch), 0) + 1 AS fpl_batch,
-			    work.work_order_no
+			    COALESCE(MAX(fpl.fpl_batch), -1) + 1 AS fpl_batch,
+			    #{workOrderNo}
 			FROM 
-			    finished_products_lot fpl
-			JOIN work_orders work ON work.work_order_no = fpl.work_order_no
-			GROUP BY work.work_order_no
+			    work_orders work
+			JOIN 
+			    finished_products_lot fpl ON work.work_order_no = fpl.work_order_no 
+			AND DATE(fpl.fpl_finished_date) = CURDATE()
+			WHERE work.work_order_no = #{workOrderNo}
 			LIMIT 1;
     </insert>
     
     <!-- 완제품 LOT 번호 삭제 -->
-    <update id="deleteFinishedProductLot" parameterType="int">
+    <update id="deleteFinishedProductLot" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
     	UPDATE finished_products_control
     	SET fpl_no = NULL
     	WHERE fpc_bno = #{fpcBno}

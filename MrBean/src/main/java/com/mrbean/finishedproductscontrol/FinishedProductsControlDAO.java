@@ -22,12 +22,15 @@ public interface FinishedProductsControlDAO {
     int deleteFinishedProduct(int rqcBno) throws Exception;
     
     // 완제품 LOT 번호 생성
-    void insertFinishedProductLot() throws Exception;
+    void insertFinishedProductLot(String workOrdersNo) throws Exception;
     
     // 완제품 LOT 번호 삭제
-    void deleteFinishedProductLot(int fpcBno) throws Exception;
+    void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception;
     
     // 완제품 목록 저장
     public void insertFinishedProductControl() throws Exception;
+    
+    // 워크 오더 넘버 가져오기
+    public String getWorkOrdersNo() throws Exception;
 
 }

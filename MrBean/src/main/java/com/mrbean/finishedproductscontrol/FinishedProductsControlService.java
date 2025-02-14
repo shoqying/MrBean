@@ -8,7 +8,7 @@ import com.mrbean.workorders.WorkOrdersVO;
 public interface FinishedProductsControlService {
 	
 	// 완제품 검사 관리 데이터 조회, 저장
-	public void processAndInsertFinishedProducts(RawMaterialsQualityControlVO vo) throws Exception;
+	public void processAndInsertFinishedProducts() throws Exception;
 
 	// 완제품 검사 관리 목록
     public List<FinishedProductsControlVO> getFinishedProductsControlList() throws Exception;
@@ -23,12 +23,15 @@ public interface FinishedProductsControlService {
     public int deleteFinishedProduct(int rqcBno) throws Exception;
 
 	// 완제품 LOT 번호 생성
-	public void insertFinishedProductLot() throws Exception;
+	public void insertFinishedProductLot(String workOrdersNo) throws Exception;
 	
 	// 완제품 LOT 번호 삭제
-	public void deleteFinishedProductLot(int fpcBno) throws Exception;
+	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception;
 	
 	// 완제품 목록 저장
 	public void insertFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception;
+	
+	// 워크 오더 넘버 가져오기
+	public String getWorkOrdersNo() throws Exception;
 	
 }

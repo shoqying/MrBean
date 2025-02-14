@@ -57,15 +57,15 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public void insertFinishedProductLot() throws Exception {
-		logger.info("insertFinishedProductLot1() 호출");		
-		sqlSession.insert(NAMESPACE + "insertFinishedProductLot");
+	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
+		logger.info("insertFinishedProductLot() 호출");		
+		sqlSession.insert(NAMESPACE + "insertFinishedProductLot", workOrdersNo);
 	}
 	
 	@Override
-	public void deleteFinishedProductLot(int fpcBno) throws Exception {
+	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductLot() 호출");
-		sqlSession.update(NAMESPACE + "deleteFinishedProductLot", fpcBno);
+		sqlSession.update(NAMESPACE + "deleteFinishedProductLot", vo);
 		
 	}
 
@@ -74,7 +74,13 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 		logger.info("insertFinishedProductControl() 호출");
 		sqlSession.insert(NAMESPACE + "insertFinishedProductControl");
 	}
-	
+
+	@Override
+	public String getWorkOrdersNo() throws Exception {
+		logger.info("getWorkOrdersNo() 호출");
+		return sqlSession.selectOne(NAMESPACE + "getWorkOrdersNo");
+		
+	}
 	
 	
 

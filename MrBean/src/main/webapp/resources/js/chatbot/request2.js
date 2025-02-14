@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchChatbotResponse(message) {
         try {
-            const response = await fetch('http://localhost:8000/process_query/', {
+            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/process_query/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: message })

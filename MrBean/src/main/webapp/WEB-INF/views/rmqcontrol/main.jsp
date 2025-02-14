@@ -62,7 +62,7 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.rawMaterialsList[0].rmName}">${vo.rawMaterialsList[0].rmName}</c:when>
+                    		<c:when test="${not empty vo.rawMaterialsLotList[0].rmCode}">${vo.rawMaterialsLotList[0].rmCode}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
