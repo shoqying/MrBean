@@ -50,10 +50,10 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public int deleteFinishedProduct(int rqcBno) throws Exception {
+	public int deleteFinishedProduct(int fpcBno) throws Exception {
 		logger.info("deleteFinishedProduct() 호출");
 		
-		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", rqcBno);
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", fpcBno);
 	}
 
 	@Override
@@ -79,6 +79,13 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	public String getWorkOrdersNo() throws Exception {
 		logger.info("getWorkOrdersNo() 호출");
 		return sqlSession.selectOne(NAMESPACE + "getWorkOrdersNo");
+		
+	}
+
+	@Override
+	public int deleteFinishedProductControl(String workOrderNo) throws Exception {
+		logger.info("deleteFinishedProductControl() 호출");
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProductControl", workOrderNo);
 		
 	}
 	

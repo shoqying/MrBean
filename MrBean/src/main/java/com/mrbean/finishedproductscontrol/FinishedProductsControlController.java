@@ -95,9 +95,9 @@ public class FinishedProductsControlController {
     // 완재품 검사 목록 삭제
     @PostMapping("/deleteFinishedProduct")
     @ResponseBody
-    public ResponseEntity<String> deleteFinishedProduct(@RequestParam int rqcBno) {
+    public ResponseEntity<String> deleteFinishedProduct(@RequestParam int fpcBno) {
         try {
-        	finishedProductsControlService.deleteFinishedProduct(rqcBno);
+        	finishedProductsControlService.deleteFinishedProduct(fpcBno);
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
