@@ -55,7 +55,7 @@ public class WarehouseController {
         if (warehouseService.isWarehouseCodeExist(warehouse.getWCode())) {
             logger.error("이미 등록된 창고 코드: {}", warehouse.getWCode());
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "이미 등록된 창고 입니다.");
+            errorResponse.put("message", "이미 등록된 창고 코드입니다.");
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -144,7 +144,7 @@ public class WarehouseController {
             logger.error("이미 등록된 창고 이름: {}", warehouse.getWName());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("창고 이름이 중복입니다.", null));
+                    .body(new ApiResponse("이미 등록된 창고 이름입니다.", null));
         }
 
         try {

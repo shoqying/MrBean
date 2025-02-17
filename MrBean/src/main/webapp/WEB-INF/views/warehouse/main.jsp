@@ -63,40 +63,41 @@
 </section>
 
 <!-- 수정 모달 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">창고 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
-                <form id="updateForm" action="${pageContext.request.contextPath}/warehouse/update" method="post">
-                    <input type="hidden" id="wCode" name="wCode" value="">
-                    <div class="form-group">
-                        <label for="wName">창고 이름:</label>
-                        <input type="text" id="wName" name="wName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="wRoadFullAddr">전체 주소:</label>
-                        <input type="text" id="wRoadFullAddr" name="wRoadFullAddr" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="wAddrDetail">상세 주소:</label>
-                        <input type="text" id="wAddrDetail" name="wAddrDetail" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="wZipNo">우편 번호:</label>
-                        <input type="text" id="wZipNo" name="wZipNo" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="wDescription">창고 설명:</label>
-                        <input type="text" id="wDescription" name="wDescription" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">수정</button>
-                </form>
+                <div class="mb-3">
+                    <label for="editWCode" class="form-label">창고 코드</label>
+                    <input type="text" class="form-control" id="editWCode" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="editWName" class="form-label">창고 이름</label>
+                    <input type="text" class="form-control" id="editWName">
+                </div>
+                <div class="mb-3">
+                    <label for="editWRoadFullAddr" class="form-label">전체 주소</label>
+                    <input type="text" class="form-control" id="editWRoadFullAddr">
+                </div>
+                <div class="mb-3">
+                    <label for="editWAddrDetail" class="form-label">상세 주소</label>
+                    <input type="text" class="form-control" id="editWAddrDetail">
+                </div>
+                <div class="mb-3">
+                    <label for="editWZipNo" class="form-label">우편 번호</label>
+                    <input type="text" class="form-control" id="editWZipNo">
+                </div>
+                <div class="mb-3">
+                    <label for="editWDescription" class="form-label">창고 설명</label>
+                    <textarea class="form-control" id="editWDescription" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="editButton" onclick="submitEditForm()" disabled>수정</button>
             </div>
         </div>
     </div>

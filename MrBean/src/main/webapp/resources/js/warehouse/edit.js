@@ -99,7 +99,7 @@ async function submitEditForm() {
 
     // 데이터 유효성 검사
     if (!warehouseData.wName || !warehouseData.wRoadFullAddr || !warehouseData.wAddrDetail || !warehouseData.wZipNo) {
-        showToast('모든 필드를 올바르게 입력해주세요.', 'error');
+        showToast('모든 필드를 올바르게 입���해주세요.', 'error');
         return;
     }
 
@@ -131,7 +131,15 @@ async function submitEditForm() {
     }
 }
 
+// 모달 닫기 버튼 이벤트 리스너 추가
 document.addEventListener('DOMContentLoaded', function() {
+    const closeButton = document.querySelector('#editModal .btn-secondary');
+    closeButton.addEventListener('click', function() {
+        $('#editModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    });
+
     const editButton = document.getElementById('editButton');
     const formFields = document.querySelectorAll('#editModal input, #editModal textarea');
 
