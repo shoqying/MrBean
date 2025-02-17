@@ -1,143 +1,162 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.mrbean.mappers.workOrdersMapper">
-
     <!-- ResultMap 정의 -->
-	<resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
-	   <!-- 기본키 -->
-	   <id property="workId" column="work_id"/>
-	   
-	   <!-- 기본 필드 -->
-	   <result property="workOrderNo" column="work_order_no"/>
-	   <result property="workPlanNo" column="work_plan_no"/>
-	   <result property="workStartDate" column="work_start_date"/>
-	   <result property="workQuantity" column="work_quantity"/>
-	   <result property="workStatus" column="work_status"/>
-	   <result property="workRemark" column="work_remark"/>
-	   <result property="workCreatedBy" column="work_created_by"/>
-	   <result property="workCreatedAt" column="work_created_at"/>
-	   <result property="workUpdatedAt" column="work_updated_at"/>
-	   
-	   <!-- 추가 필드 -->
-	   <result property="rmlNo" column="rml_no"/>
-	   <result property="planId" column="plan_id"/>
-	   <result property="workStartTime" column="workStartTime"/>
-	   <result property="workEndTime" column="workEndTime"/>
-	   <result property="completedQuantity" column="completedQuantity"/>
-	   <result property="wCode" column="w_code"/>
-	   <result property="wName" column="w_name"/>
-	   <result property="pName" column="p_name"/>
-	   
-	   
-	   <!-- 검색용 파라미터 (테이블에 없는 필드) -->
-	   <result property="searchStartDate" column="search_start_date"/>
-	   <result property="searchEndDate" column="search_end_date"/>
-	   <result property="searchKeyword" column="search_keyword"/>
-	   
-	   <!-- VO 전용 필드 (테이블에 없음) -->
-	   <result property="shouldUpdatePlan" column="should_update_plan"/>
-	</resultMap>    
-	    
+    <resultMap id="workOrdersResultMap" type="com.mrbean.workorders.WorkOrdersVO">
+       <!-- 기본키 -->
+       <id property="workId" column="work_id"/>
+       
+       <!-- 기본 필드 -->
+       <result property="workOrderNo" column="work_order_no"/>
+       <result property="workPlanNo" column="work_plan_no"/>
+       <result property="workStartDate" column="work_start_date"/>
+       <result property="workQuantity" column="work_quantity"/>
+       <result property="workStatus" column="work_status"/>
+       <result property="workRemark" column="work_remark"/>
+       <result property="workCreatedBy" column="work_created_by"/>
+       <result property="workCreatedAt" column="work_created_at"/>
+       <result property="workUpdatedAt" column="work_updated_at"/>
+       <result property="rmlNo" column="rml_no"/>
+       <result property="planId" column="plan_id"/>
+       <result property="workStartTime" column="workStartTime"/>
+       <result property="workEndTime" column="workEndTime"/>
+       <result property="completedQuantity" column="completedQuantity"/>
+       <result property="wCode" column="w_code"/>
+       <result property="wName" column="w_name"/>
+       <result property="pName" column="p_name"/>
+    </resultMap>    
     
-	<select id="getLastNumberForDate" resultType="String">
-	    SELECT work_order_no
-	    FROM work_orders
-	    WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
-	    ORDER BY work_order_no DESC 
-	    LIMIT 1	
-	</select>
-	
-	
-	<select id="selectWO" resultMap="workOrdersResultMap">
-		SELECT *
-		FROM work_orders
-		ORDER BY work_order_no DESC;
-	</select>
+    <!-- 작업지시번호 생성 -->
+    <select id="getLastNumberForDate" resultType="String">
+        SELECT work_order_no
+        FROM work_orders
+        WHERE work_order_no LIKE CONCAT('WO-', #{date}, '-%')
+        ORDER BY work_order_no DESC 
+        LIMIT 1    
+    </select>
     
+    <!-- 작업지시 목록 조회 -->
+    <select id="selectWO" resultMap="workOrdersResultMap">
+        SELECT *
+        FROM work_orders
+        ORDER BY work_order_no DESC
+    </select>
     
-     
- 	<delete id="deleteWO">
- 		DELETE FROM work_orders WHERE work_id = #{workId}
- 		
- 	</delete>
- 	
- 	<!-- 작업지시 등록 -->
-    <insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO">
-        INSERT INTO work_orders (
-            work_order_no,
-            plan_id,
-            work_plan_no,
-            work_start_date,
-            work_quantity,
-            <!-- completed_quantity, -->
-            work_status,
-            work_remark,
-            work_created_by,
-            rml_no,
-            w_code,
-            w_name,
-            p_name
-          
-            
-            
-            
-        ) VALUES (
-            #{workOrderNo},
-            #{planId},
-            #{workPlanNo},
-            #{workStartDate},
-            #{workQuantity},
-            <!-- 0, -->
-            #{workStatus},
-            #{workRemark},
-            #{workCreatedBy},
-            #{rmlNo},
-            #{wCode},
-            #{wName},
-            #{pName}
-            
-        )
-    </insert>
+    <!-- 작업지시 삭제 -->
+    <delete id="deleteWO">
+        DELETE FROM work_orders 
+        WHERE work_id = #{workId}
+    </delete>
+    
+    <!-- 작업지시 등록 -->
+<!-- 작업지시 등록 -->
+<insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO" 
+        useGeneratedKeys="true" keyProperty="workId">
+    INSERT INTO work_orders (
+        work_order_no,
+        plan_id,
+        work_plan_no,
+        work_start_date,
+        work_quantity,
+        work_status,
+        work_remark,
+        work_created_by,
+        rml_no,
+        w_code,
+        w_name,
+        p_name
+    ) VALUES (
+        #{workOrderNo},
+        #{planId},
+        #{workPlanNo},
+        #{workStartDate},
+        #{workQuantity},
+        #{workStatus},
+        #{workRemark},
+        #{workCreatedBy},
+        #{rmlNo},
+        #{wCode},
+        #{wName},
+        #{pName}
+    )
+</insert>
     
     <!-- 작업상태 변경 -->
     <update id="updateWorkStatus">
-	    UPDATE work_orders 
-	    SET work_status = #{workStatus}
-	        <!-- work_updated_at = #{workUpdatedAt}, -->
-	        <!-- work_start_time = #{workStartTime}, -->
-	        <!-- work_end_time = #{workEndTime} -->
-	    WHERE work_id = #{workId}
+        UPDATE work_orders 
+        SET 
+            work_status = #{workStatus},
+            workStartTime = #{workStartTime},
+            workEndTime = #{workEndTime},
+            completedQuantity = #{completedQuantity}
+        WHERE work_id = #{workId}
     </update>
     
-    
-    
+    <!-- 생산계획 ID 조회 -->
     <select id="getPlanIdByWorkId" resultType="integer">
         SELECT plan_id 
         FROM work_orders 
         WHERE work_id = #{workId}
     </select>
     
-    
-    
-        <!-- 추가되는 매퍼 -->
-    <select id="getBomIdByPName" resultType="String">
-        SELECT b.bom_id
-        FROM products p
-        JOIN bill_of_materials b ON p.bom_id = b.bom_id
-        WHERE p.p_name = #{pName}
+    <!-- 제품명으로 BOM ID 조회 -->
+    <select id="getBomIdByPName" resultType="string">
+        SELECT bom_id
+        FROM products
+        WHERE p_name = #{pName}
     </select>
     
-    <select id="getBomInfoById" resultType="java.util.HashMap">
-        SELECT bom_ratio, rm_code
+    <!-- BOM ID로 BOM 정보 조회 -->
+    <select id="getBomInfoById" resultType="map">
+        SELECT bom_id,
+               rm_code,
+               bom_name,
+               bom_ratio,
+               bom_description
         FROM bill_of_materials
         WHERE bom_id = #{bomId}
     </select>
     
-    <update id="updateStockTotal">
-        UPDATE stock_total
-        SET st_total = st_total - #{deductAmount}
-        WHERE rm_code = #{rmCode}
+    <!-- 작업지시의 원자재 코드 조회 -->
+    <select id="getRmCodeFromWorkOrder" resultType="string">
+        SELECT bom.rm_code
+        FROM work_orders wo
+        JOIN products p ON wo.p_name = p.p_name
+        JOIN bill_of_materials bom ON p.bom_id = bom.bom_id
+        WHERE wo.work_id = #{workId}
+    </select>
+    
+    <!-- 원자재별 재고 현황 조회 -->
+    <select id="getStockMaterialsByRmCode" resultType="map">
+        SELECT sm.sm_bno, 
+               sm.sm_total,
+               sm.rml_no,
+               sm.rml_date
+        FROM stock_materials sm
+        WHERE sm.rm_code = #{rmCode}
+        AND sm.sm_total > 0
+        ORDER BY sm.rml_date ASC
+    </select>
+    
+    <!-- 재고 수량 업데이트 -->
+    <update id="updateStockMaterials">
+        UPDATE stock_materials
+        SET sm_total = #{newTotal}
+        WHERE sm_bno = #{smBno}
     </update>
     
+    <!-- LOT 이력 등록 -->
+    <insert id="insertLotHistory">
+        INSERT INTO lot_history (
+            work_id,
+            rml_no,
+            quantity_used,
+            usage_date
+        ) VALUES (
+            #{workId},
+            #{rmlNo},
+            #{quantityUsed},
+            NOW()
+        )
+    </insert>
 </mapper>
