@@ -76,12 +76,12 @@ async function updateWarehouseTable() {
 
 // 창고 수정 모달 열기 함수 정의
 function openEditModal(wCode, wName, wRoadFullAddr, wAddrDetail, wZipNo, wDescription) {
-    $('#editWCode').val(wCode);
-    $('#editWName').val(wName);
-    $('#editWRoadFullAddr').val(wRoadFullAddr);
-    $('#editWAddrDetail').val(wAddrDetail);
-    $('#editWZipNo').val(wZipNo);
-    $('#editWDescription').val(wDescription);
+    document.getElementById("editWCode").value = wCode;
+    document.getElementById("editWName").value = wName;
+    document.getElementById("editWRoadFullAddr").value = wRoadFullAddr;
+    document.getElementById("editWAddrDetail").value = wAddrDetail;
+    document.getElementById("editWZipNo").value = wZipNo;
+    document.getElementById("editWDescription").value = wDescription;
 
     $('#editModal').modal('show');
 }
@@ -89,16 +89,16 @@ function openEditModal(wCode, wName, wRoadFullAddr, wAddrDetail, wZipNo, wDescri
 // 창고 수정 폼 제출 함수 정의
 async function submitEditForm() {
     let warehouseData = {
-        WCode: $('#editWCode').val(),
-        WName: $('#editWName').val(),
-        WRoadFullAddr: $('#editWRoadFullAddr').val(),
-        WAddrDetail: $('#editWAddrDetail').val(),
-        WZipNo: $('#editWZipNo').val(),
-        WDescription: $('#editWDescription').val()
+        wCode: $('#editWCode').val(),
+        wName: $('#editWName').val(),
+        wRoadFullAddr: $('#editWRoadFullAddr').val(),
+        wAddrDetail: $('#editWAddrDetail').val(),
+        wZipNo: $('#editWZipNo').val(),
+        wDescription: $('#editWDescription').val()
     };
 
     // 데이터 유효성 검사
-    if (!warehouseData.WName || !warehouseData.WRoadFullAddr || !warehouseData.WAddrDetail || !warehouseData.WZipNo || !warehouseData.WDescription) {
+    if (!warehouseData.wName || !warehouseData.wRoadFullAddr || !warehouseData.wAddrDetail || !warehouseData.wZipNo) {
         showToast('모든 필드를 올바르게 입력해주세요.', 'error');
         return;
     }
@@ -107,7 +107,7 @@ async function submitEditForm() {
     $('#editModal').modal('hide');
 
     try {
-        const response = await fetch(`${BASE_URL}/${warehouseData.WCode}`, {
+        const response = await fetch(`${BASE_URL}/${warehouseData.wCode}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,6 +124,10 @@ async function submitEditForm() {
         await updateWarehouseTable(); // 테이블 업데이트를 기다림
     } catch (error) {
         showToast(error.message || '수정 중 오류가 발생했습니다.', 'error');
+    } finally {
+        // 모달이 완전히 닫히도록 강제
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
     }
 }
 

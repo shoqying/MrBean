@@ -129,7 +129,7 @@ public class WarehouseController {
      * Example: PUT http://localhost:8080/warehouses/{id}
      */
     @PutMapping("/warehouses/{wCode}")
-    public ResponseEntity<?> updateWarehouse(@PathVariable String wCode, @Validated @RequestBody WarehouseDTO warehouse, BindingResult result) {
+    public ResponseEntity<?> updateWarehouse(@PathVariable String wCode, @Validated @RequestBody WarehouseDTO warehouse, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             List<String> errors = result.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -137,6 +137,14 @@ public class WarehouseController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse("창고 정보 수정 실패", errors));
+        }
+
+        // 창고 이름 중복 체크
+        if (warehouseService.isWarehouseNameExist(warehouse.getWName())) {
+            logger.error("이미 등록된 창고 이름: {}", warehouse.getWName());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse("창고 이름이 중복입니다.", null));
         }
 
         try {
