@@ -50,20 +50,20 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public int deleteFinishedProduct(int rqcBno) throws Exception {
+	public int deleteFinishedProduct(int fpcBno) throws Exception {
 		logger.info("deleteFinishedProduct() 호출");
 		
-		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", rqcBno);
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProduct", fpcBno);
 	}
 
 	@Override
-	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
+	public void insertFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
 		logger.info("insertFinishedProductLot() 호출");		
-		sqlSession.insert(NAMESPACE + "insertFinishedProductLot", workOrdersNo);
+		sqlSession.insert(NAMESPACE + "insertFinishedProductLot", vo);
 	}
 	
 	@Override
-	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
+	public void deleteFinishedProductLot(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductLot() 호출");
 		sqlSession.update(NAMESPACE + "deleteFinishedProductLot", vo);
 		
@@ -76,9 +76,16 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public String getWorkOrdersNo() throws Exception {
+	public FinishedProductsControlVO getWorkOrdersNo() throws Exception {
 		logger.info("getWorkOrdersNo() 호출");
 		return sqlSession.selectOne(NAMESPACE + "getWorkOrdersNo");
+		
+	}
+
+	@Override
+	public int deleteFinishedProductControl(FinishedProductsControlVO vo) throws Exception {
+		logger.info("deleteFinishedProductControl() 호출");
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProductControl", vo);
 		
 	}
 	
