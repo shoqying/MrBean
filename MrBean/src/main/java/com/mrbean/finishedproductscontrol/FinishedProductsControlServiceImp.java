@@ -59,15 +59,16 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	}
 
 	@Override
-	public int deleteFinishedProduct(int rqcBno) throws Exception {
+	public int deleteFinishedProduct(int fpcBno) throws Exception {
 		logger.info("deleteFinishedProduct() 호출");
-		return finishedProductsControlDAO.deleteFinishedProduct(rqcBno);
+		return finishedProductsControlDAO.deleteFinishedProduct(fpcBno);
 	}
 	
 	@Override
 	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
 		logger.info("insertFinishedProductLot() 호출");
-		finishedProductsControlDAO.insertFinishedProductLot(workOrdersNo);
+		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
+		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
 	
 	}
 
@@ -91,6 +92,17 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		return finishedProductsControlDAO.getWorkOrdersNo();
 		
 	}
+
+	@Override
+	public int deleteFinishedProductControl() throws Exception {
+		logger.info("deleteFinishedProductControl");
+		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
+		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
+		return finishedProductsControlDAO.deleteFinishedProductControl(getWorkOrdersNo);
+		
+	}
+	
+	
 	
 	
 	

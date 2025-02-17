@@ -72,7 +72,7 @@ public class WorkOrdersRestController {
 	        
 	        List<WorkOrdersVO> workList = wos.getWorkList(workVO);
 
-	        rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+	        
 
 	        logger.info("workList $$$$$$$$$$$$$$: "+ workList);
 
@@ -161,6 +161,7 @@ public class WorkOrdersRestController {
                         break;
                     case IN_PROGRESS:
                         planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS); 
+                        rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
                         break;
                     case COMPLETED:
                         planVO.setPlStatus(ProductionplanStatus.COMPLETED);
