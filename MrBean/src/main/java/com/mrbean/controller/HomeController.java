@@ -77,7 +77,7 @@ public class HomeController {
 			List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
 			model.addAttribute("warehouseList", warehouseList);
 			addBreadcrumb(model, "창고 목록", "#");
-			return "warehouse/list";
+			return "warehouse/main";
 		} catch (Exception e) {
 			logger.error("창고 목록 조회 중 오류 발생", e);
 			model.addAttribute("errorMessage", "창고 목록 조회 실패: " + e.getMessage());

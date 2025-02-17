@@ -153,27 +153,10 @@ function submitForm(event) {
        // 서버에서 전달된 오류 메시지 또는 일반 오류 메시지 표시
        showToast(error.message || "이미 등록된 창고 코드입니다.", "error");
    });
-   function deleteWarehouse(wCode) {
-       if (!confirm('정말 삭제하시겠습니까?')) {
-           return;
-       }
-
-       $.ajax({
-           url: `${BASE_URL}/warehouses/${wCode}`,
-           method: 'DELETE',
-           success: function(response) {
-               showToast('삭제가 완료되었습니다.', 'success');
-               updateWarehouseTable();
-           },
-           error: function(error) {
-               showToast('삭제 중 오류가 발생했습니다.', 'error');
-           }
-       });
-   }
 
    function updateWarehouseTable() {
        $.ajax({
-           url: `${BASE_URL}/warehouses`,
+           url: `/warehouses/refresh`,
            method: 'GET',
            success: function(response) {
                if (Array.isArray(response)) {
@@ -182,16 +165,16 @@ function submitForm(event) {
                    response.forEach(function(warehouse) {
                        const row = `
                            <tr>
-                               <td>${warehouse.WCode}</td>
-                               <td>${warehouse.WName}</td>
-                               <td>${warehouse.WRoadFullAddr}</td>
-                               <td>${warehouse.WAddrDetail}</td>
-                               <td>${warehouse.WZipNo}</td>
-                               <td>${warehouse.WDescription}</td>
+                               <td>${warehouse.wCode}</td>
+                               <td>${warehouse.wName}</td>
+                               <td>${warehouse.wRoadFullAddr}</td>
+                               <td>${warehouse.wAddrDetail}</td>
+                               <td>${warehouse.wZipNo}</td>
+                               <td>${warehouse.wDescription}</td>
                                <td>
                                    <button class="btn btn-sm btn-primary" onclick="openEditModal('${warehouse.WCode}', '${warehouse.WName}', '${warehouse.WRoadFullAddr}', '${warehouse.WAddrDetail}', '${warehouse.WZipNo}', '${warehouse.WDescription}')">수정</button>
                                    <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('정말 삭제하시겠습니까?')) { deleteWarehouse('${warehouse.WCode}'); }">
-                                       <i class="bi bi-trash"></i> 삭제
+                                       <i class="bi bi-trash"></i>
                                    </button>
                                </td>
                            </tr>

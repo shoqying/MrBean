@@ -54,6 +54,9 @@ public class BillOfMaterialsRestController {
 		}
 
 		try {
+			if (billOfMaterialsService.isBomNameExist(billOfMaterialsDTO.getBomName())) {
+				return new ResponseEntity<>(new MessageResponse("이미 등록된 BOM 이름입니다."), HttpStatus.CONFLICT);
+			}
 			// 서비스에서 BOM 생성 처리
 			billOfMaterialsService.createBillOfMaterials(billOfMaterialsDTO);
 
@@ -63,7 +66,7 @@ public class BillOfMaterialsRestController {
 		} catch (DuplicateKeyException e) {
 			// 중복 키 예외 처리 (예: BOM ID가 이미 존재하는 경우)
 			logger.error("중복된 BOM ID: " + billOfMaterialsDTO.getBomId(), e);
-			return new ResponseEntity<>(new MessageResponse("중복된 BOM ID입니다."), HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new MessageResponse("이미 등록된 BOM ID입니다."), HttpStatus.CONFLICT);
 
 		} catch (ValidationException e) {
 			// 유효성 검사 실패 처리
@@ -81,7 +84,6 @@ public class BillOfMaterialsRestController {
 	public List<BillOfMaterialsDTO> getAllBillOfMaterials() throws Exception {
 		return billOfMaterialsService.getAllBoms();
 	}
-
 
 	@GetMapping("/{Id}")
 	public ResponseEntity<BillOfMaterialsDTO> getBomDetails(@PathVariable String Id) throws Exception {
@@ -105,6 +107,10 @@ public class BillOfMaterialsRestController {
 			// BOM ID에 'BOM' 접두어 추가
 			String bomId = "BOM" + Id;
 			billOfMaterialsDTO.setBomId(bomId);
+
+			if (billOfMaterialsService.isBomNameExist(billOfMaterialsDTO.getBomName())) {
+				return new ResponseEntity<>(new MessageResponse("이미 등록된 BOM 이름입니다."), HttpStatus.CONFLICT);
+			}
 
 			// 서비스에서 BOM 수정 처리
 			billOfMaterialsService.updateBillOfMaterials(billOfMaterialsDTO);

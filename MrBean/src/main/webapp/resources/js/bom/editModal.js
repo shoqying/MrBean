@@ -45,19 +45,16 @@ function submitEditForm() {
         bomDescription: $('#editBomDescription').val()
     };
 
-    // Log the data to check if fields are correctly populated
-    console.log('BOM Data:', bomData);
-
-    // Validate data before sending
-    if (!bomData.bomName || !bomData.rmCode || !bomData.bomRatio || !bomData.bomDescription) {
+    // 데이터 유효성 검사
+    if (!bomData.bomName || !bomData.rmCode || !bomData.bomRatio) {
         showToast('모든 필드를 올바르게 입력해주세요.', 'error');
         return;
     }
 
-    // Extract numeric ID from BOM ID
+    // BOM ID에서 숫자만 추출
     const numericId = bomData.bomId.replace('BOM', '');
 
-    // Close the modal before making the AJAX request
+    // 모달 닫기
     $('#editModal').modal('hide');
 
     $.ajax({
@@ -67,11 +64,15 @@ function submitEditForm() {
         data: JSON.stringify(bomData),
         success: function (response) {
             showToast('수정이 완료되었습니다.', 'success');
-            // Update the table dynamically
+            // 테이블 동적 업데이트
             updateBomTable();
         },
-        error: function (error) {
-            showToast('수정 중 오류가 발생했습니다.', 'error');
+        error: function (xhr) {
+            let errorMessage = '수정 중 오류가 발생했습니다.';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            showToast(errorMessage, 'error');
         }
     });
 }

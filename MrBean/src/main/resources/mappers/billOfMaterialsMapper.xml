@@ -37,6 +37,13 @@
         )
     </insert>
 
+    <!-- BOM 이름 중복 체크 -->
+    <select id="checkBillOfMaterialsNameExists" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM bill_of_materials
+        WHERE bom_name = #{bomName}
+    </select>
+
     <!-- BOM 전체 리스트 조회 -->
     <select id="selectAllBillOfMaterials" resultMap="BillOfMaterialsResultMap">
         SELECT
