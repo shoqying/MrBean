@@ -66,7 +66,7 @@ public class BillOfMaterialsRestController {
 		} catch (DuplicateKeyException e) {
 			// 중복 키 예외 처리 (예: BOM ID가 이미 존재하는 경우)
 			logger.error("중복된 BOM ID: " + billOfMaterialsDTO.getBomId(), e);
-			return new ResponseEntity<>(new MessageResponse("중복된 BOM ID입니다."), HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new MessageResponse("이미 등록된 BOM ID입니다."), HttpStatus.CONFLICT);
 
 		} catch (ValidationException e) {
 			// 유효성 검사 실패 처리
