@@ -21,6 +21,7 @@ public class RawMaterialsQualityControlVO {
 	private QualityControlStatus rqcStatus; // 상태(합격, 불합격)
 	private String workOrderNo; // 작업지시번호
 	private String bomId;
+	private int fpcBno;
 
 
 //	// join 매핑

@@ -13,6 +13,7 @@
 		<result property="fpcStatus" column="fpc_status"/>
 		<result property="fpcYield" column="fpc_yield"/>
 		<result property="fpcQuantity" column="fpc_quantity"/>
+		<result property="workOrderNo" column="work_order_no"/>
 		
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 		<collection property="productionPlanList" resultMap="productionPlanMap"/>
@@ -102,7 +103,7 @@
     </delete>
     
     <!-- 워크 오더 넘버 가져오기 -->
-    <select id="getWorkOrdersNo" resultType="String">
+    <select id="getWorkOrdersNo">
     	SELECT work_order_no
     	FROM rawmaterials_quality_control
     	WHERE work_order_no IS NOT NULL
@@ -130,7 +131,7 @@
     </insert>
     
     <!-- 완제품 LOT 번호 삭제 -->
-    <update id="deleteFinishedProductLot" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    <update id="deleteFinishedProductLot" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
     	UPDATE finished_products_control
     	SET fpl_no = NULL
     	WHERE fpc_bno = #{fpcBno}
@@ -139,7 +140,7 @@
     <!-- 원자재 대기중으로 변경시 완제품 삭제 -->
     <delete id="deleteFinishedProductControl">
     	DELETE FROM finished_products_control
-    	WHERE work_orders_no = #{workOrdersNo}
+    	WHERE work_order_no = #{workOrderNo}
     </delete>
 
     

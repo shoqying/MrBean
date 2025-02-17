@@ -31,8 +31,9 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	@Override
 	public void processAndInsertFinishedProducts() throws Exception {
 		logger.info("processAndInsertFinishedProducts() 호출");
-		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
-		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
+		FinishedProductsControlVO vo = finishedProductsControlDAO.getWorkOrdersNo();
+		logger.info("{}" + vo);
+		finishedProductsControlDAO.insertFinishedProductLot(vo);
 		finishedProductsControlDAO.insertFinishedProductControl();
 		
 	}
@@ -65,15 +66,14 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	}
 	
 	@Override
-	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
+	public void insertFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
 		logger.info("insertFinishedProductLot() 호출");
-		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
-		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
+		finishedProductsControlDAO.insertFinishedProductLot(finishedProductsControlDAO.getWorkOrdersNo());
 	
 	}
 
 	@Override
-	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
+	public void deleteFinishedProductLot(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductLot() 호출");
 		finishedProductsControlDAO.deleteFinishedProductLot(vo);
 		
@@ -87,7 +87,7 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	}
 
 	@Override
-	public String getWorkOrdersNo() throws Exception {
+	public FinishedProductsControlVO getWorkOrdersNo() throws Exception {
 		logger.info("getWorkOrdersNo() 호출");
 		return finishedProductsControlDAO.getWorkOrdersNo();
 		
@@ -96,9 +96,10 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	@Override
 	public int deleteFinishedProductControl() throws Exception {
 		logger.info("deleteFinishedProductControl");
-		String getWorkOrdersNo = finishedProductsControlDAO.getWorkOrdersNo();
-		finishedProductsControlDAO.insertFinishedProductLot(getWorkOrdersNo);
-		return finishedProductsControlDAO.deleteFinishedProductControl(getWorkOrdersNo);
+		FinishedProductsControlVO vo = new FinishedProductsControlVO();
+		vo = finishedProductsControlDAO.getWorkOrdersNo();
+		finishedProductsControlDAO.insertFinishedProductLot(vo);
+		return finishedProductsControlDAO.deleteFinishedProductControl(vo);
 		
 	}
 	
