@@ -105,22 +105,24 @@ public class WarehouseController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
+
     /**
      * 창고 목록 조회 (GET)
-     * Example: GET http://localhost:8080/warehouses
+     * Example: GET http://localhost:8080/warehouses/refresh
      */
-//    @GetMapping("/warehouses")
-//    public ResponseEntity<?> getWarehouseList() {
-//        try {
-//            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
-//            return ResponseEntity.ok(warehouseList);
-//        } catch (Exception e) {
-//            logger.error("창고 목록 조회 중 오류 발생", e);
-//            return ResponseEntity
-//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
-//        }
-//    }
+    @GetMapping("/warehouses/refresh")
+    public ResponseEntity<?> getWarehouseList() {
+        try {
+            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
+            logger.info("창고 목록 조회 성공: {}", warehouseList);
+            return ResponseEntity.ok(warehouseList);
+        } catch (Exception e) {
+            logger.error("창고 목록 조회 중 오류 발생", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
+        }
+    }
 
     /**
      * 창고 정보 수정 (PUT)

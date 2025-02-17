@@ -82,7 +82,6 @@ public class BillOfMaterialsRestController {
 		return billOfMaterialsService.getAllBoms();
 	}
 
-
 	@GetMapping("/{Id}")
 	public ResponseEntity<BillOfMaterialsDTO> getBomDetails(@PathVariable String Id) throws Exception {
 		String bomId = "BOM" + Id; // 숫자만 받아오므로 'BOM' 접두어를 다시 붙임

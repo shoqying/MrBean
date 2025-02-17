@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrbean.enums.QualityControlStatus;
 import com.mrbean.finishedproductscontrol.FinishedProductsControlService;
+import com.mrbean.finishedproductscontrol.FinishedProductsControlVO;
 
 
 @Controller
@@ -55,6 +56,7 @@ public class RawMaterialsQualityControlController {
             rawMaterialsQualityControlService.updateQualityCheck(vo);
             if (QualityControlStatus.PENDING.equals(vo.getRqcQualityCheck())) {
         		rawMaterialsQualityControlService.deleteRawmaterialsDate(vo);
+//        		finishedProductsControlService.deleteFinishedProductControl();
         	}
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
@@ -69,12 +71,13 @@ public class RawMaterialsQualityControlController {
     	
     	try {
     		rawMaterialsQualityControlService.updateStatus(vo);
+//    		if(QualityControlStatus.PENDING.equals(vo.getRqcStatus())) {
+//    			finishedProductsControlService.deleteFinishedProductLot(fvo);
+//    		}
     		if (QualityControlStatus.PASS.equals(vo.getRqcStatus())) {
         		finishedProductsControlService.processAndInsertFinishedProducts();
-        	} else if (QualityControlStatus.PENDING.equals(vo.getRqcStatus())) {
-        		rawMaterialsQualityControlService.deleteRawmaterialsDate(vo);
+        		
         	}
-
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");

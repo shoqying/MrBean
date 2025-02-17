@@ -1,4 +1,5 @@
-</main><!-- End #main -->
+</main>
+<!-- End #main -->
 <footer id="footer" class="footer">
     <div class="copyright">
       &copy; Copyright <strong><span>Mr.bean</span></strong>. All Rights Reserved

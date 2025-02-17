@@ -47,7 +47,7 @@
                                         </button>
                                         <form action="${pageContext.request.contextPath}/warehouse/delete" method="post" style="display:inline;">
                                             <input type="hidden" name="wCode" value="${warehouse.WCode}">
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('정말 삭제하시겠습니까?')) { deleteWarehouse('${warehouse.WCode}'); }">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteWarehouse('${warehouse.WCode}')">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -105,16 +105,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    function openEditModal(wCode, wName, wRoadFullAddr, wAddrDetail, wZipNo, wDescription) {
-        document.getElementById("wCode").value = wCode;
-        document.getElementById("wName").value = wName;
-        document.getElementById("wRoadFullAddr").value = wRoadFullAddr;
-        document.getElementById("wAddrDetail").value = wAddrDetail;
-        document.getElementById("wZipNo").value = wZipNo;
-        document.getElementById("wDescription").value = wDescription;
-    }
-</script>
+<script src="<c:url value='/resources/js/components/toast.js'/>"></script>
+<script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
+<script src="<c:url value='/resources/js/warehouse/edit.js'/>"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>
