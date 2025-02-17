@@ -82,8 +82,9 @@ public class FinishedProductsControlController {
         	}
     		if (QualityControlStatus.PASS.equals(vo.getFpcStatus()) || QualityControlStatus.FAIL.equals(vo.getFpcStatus())) {
     			finishedProductsControlService.deleteFinishedProductLot(vo);
-    		    String WorkOrdersNo = finishedProductsControlService.getWorkOrdersNo();
-    			finishedProductsControlService.insertFinishedProductLot(WorkOrdersNo);
+    			FinishedProductsControlVO fvo = new FinishedProductsControlVO();
+    			fvo = finishedProductsControlService.getWorkOrdersNo();
+    			finishedProductsControlService.insertFinishedProductLot(fvo);
             }
         	
             return ResponseEntity.ok("상태가 업데이트되었습니다.");

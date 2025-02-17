@@ -1,5 +1,6 @@
 package com.mrbean.rawmaterialsqualitycontrol;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -72,11 +73,10 @@ public class RawMaterialsQualityControlController {
     	try {
     		rawMaterialsQualityControlService.updateStatus(vo);
     		if(QualityControlStatus.PENDING.equals(vo.getRqcStatus())) {
-    			finishedProductsControlService.deleteFinishedProductLot(fvo);
+    			finishedProductsControlService.deleteFinishedProductLot(vo);
     		}
-    		if (QualityControlStatus.PASS.equals(vo.getRqcStatus())) {
+    		if (QualityControlStatus.PASS.equals(vo.getRqcStatus()) || QualityControlStatus.FAIL.equals(vo.getRqcStatus())) {
         		finishedProductsControlService.processAndInsertFinishedProducts();
-        		
         	}
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
         } catch (Exception e) {
