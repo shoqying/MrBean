@@ -153,7 +153,7 @@ public class WorkOrdersRestController {
                         break;
                     case IN_PROGRESS:
                         planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS);
-                        rqcs.processAndInsertRawMaterials();
+                        //rqcs.processAndInsertRawMaterials();
                         break;
                     case COMPLETED:
                         planVO.setPlStatus(ProductionplanStatus.COMPLETED);
