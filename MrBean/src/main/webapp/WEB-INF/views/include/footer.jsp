@@ -7,32 +7,34 @@
     <div class="credits">
       Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
-    <!-- Chatbot Button -->
-    <div id="chatbot-button" class="chatbot-button">
+    <!-- Databot Button -->
+    <c:if test="${not empty sessionScope.loggedInUser}">
+    <div id="databot-button" class="databot-button">
         <i class="bi bi-chat-dots"></i>
     </div>
 
-    <!-- Chatbot Window -->
-    <div id="chatbot-window" class="chatbot-window" style="display: none;">
-        <div class="chatbot-header">
+    <!-- Databot Window -->
+    <div id="databot-window" class="databot-window" style="display: none;">
+        <div class="databot-header">
             <h5>Data bot</h5>
-            <button id="close-chatbot" class="close-chatbot">&times;</button>
+            <button id="close-databot" class="close-databot">&times;</button>
         </div>
-        <div class="chatbot-body">
-            <div id="chatbot-messages" class="chatbot-messages"></div>
+        <div class="databot-body">
+            <div id="databot-messages" class="databot-messages"></div>
 
             <!-- Spinner for loading -->
-            <div id="chatbot-spinner" class="spinner-border text-dark" role="status" style="display: none;">
+            <div id="databot-spinner" class="spinner-border text-dark" role="status" style="display: none;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <div id="chatbot-response" class="chatbot-response">
-                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type a message...">
-                <button id="send-chatbot" class="send-chatbot"><i class="bi bi-arrow-return-left"></i></button>
+            <div id="databot-response" class="databot-response">
+                <input type="text" id="databot-input" class="databot-input" placeholder="Type a message...">
+                <button id="send-databot" class="send-databot"><i class="bi bi-arrow-return-left"></i></button>
             </div>
             <!-- Resize handle -->
-            <div id="chatbot-resize-handle"></div>
+            <div id="databot-resize-handle"></div>
         </div>
     </div>
+    </c:if>
 </footer>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

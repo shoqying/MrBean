@@ -56,41 +56,41 @@ public class FinishedProductsControlController {
 	}
 	
 	// 완제품 품질 검사 상태 업데이트
-    @PostMapping("/updateQualityCheck")
-    @ResponseBody
-    public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
-        try {
-        	finishedProductsControlService.updateQualityCheck(vo);
-        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus()) || QualityControlStatus.PENDING.equals(vo.getFpcQualityCheck())) {
-        		finishedProductsControlService.deleteFinishedProductLot(vo);
-        	}
-            return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-        }
-    }
+//    @PostMapping("/updateQualityCheck")
+//    @ResponseBody
+//    public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
+//        try {
+//        	finishedProductsControlService.updateQualityCheck(vo);
+//        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus()) || QualityControlStatus.PENDING.equals(vo.getFpcQualityCheck())) {
+//        		finishedProductsControlService.deleteFinishedProductLot(vo);
+//        	}
+//            return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+//        }
+//    }
     
     // 완제품 상태 업데이트
 	@PostMapping("/updateStatus")
     @ResponseBody
     public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO vo) {
 		
-        try {            
-        	finishedProductsControlService.updateStatus(vo);
-        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
-        		finishedProductsControlService.deleteFinishedProductLot(vo);
-        	}
-    		if (QualityControlStatus.PASS.equals(vo.getFpcStatus()) || QualityControlStatus.FAIL.equals(vo.getFpcStatus())) {
-    			finishedProductsControlService.deleteFinishedProductLot(vo);
-    			FinishedProductsControlVO fvo = new FinishedProductsControlVO();
-    			fvo = finishedProductsControlService.getWorkOrdersNo();
-    			finishedProductsControlService.insertFinishedProductLot(fvo);
-            }
+//        try {
+//        	finishedProductsControlService.updateStatus(vo);
+//        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
+//        		finishedProductsControlService.deleteFinishedProductLot(vo);
+//        	}
+//    		if (QualityControlStatus.PASS.equals(vo.getFpcStatus()) || QualityControlStatus.FAIL.equals(vo.getFpcStatus())) {
+//    			finishedProductsControlService.deleteFinishedProductLot(vo);
+//    			FinishedProductsControlVO fvo = new FinishedProductsControlVO();
+//    			fvo = finishedProductsControlService.getWorkOrdersNo();
+//    			finishedProductsControlService.insertFinishedProductLot(fvo);
+//            }
         	
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+//        }
     }
     
     // 완재품 검사 목록 삭제
@@ -104,7 +104,5 @@ public class FinishedProductsControlController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
         }
     }
-
-
 
 } // class
