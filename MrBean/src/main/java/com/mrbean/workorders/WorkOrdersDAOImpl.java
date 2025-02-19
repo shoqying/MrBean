@@ -107,4 +107,21 @@ public class WorkOrdersDAOImpl implements WorkOrdersDAO {
             throw e;
         }
     }
+
+    @Override
+    public int getWorkIdByWorkOrderNo(String workOrderNo) {
+        try {
+            return sqs.selectOne(NAMESPACE + "getWorkIdByWorkOrderNo", workOrderNo);
+        } catch (Exception e) {
+            logger.error("Error getting workId for workOrderNo: " + workOrderNo, e);
+            throw e;
+        }
+    }
+    
+    @Override
+    public int getWorkQuantityById(int workId) {
+        return sqs.selectOne(NAMESPACE + "getWorkQuantityById", workId);
+    }
+    
+    
 }

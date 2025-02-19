@@ -3,6 +3,7 @@ package com.mrbean.finishedproductscontrol;
 import java.sql.Date;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.enums.WorkOrdersStatus;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.products.ProductsService;
 import com.mrbean.products.ProductsVO;
@@ -31,6 +33,9 @@ import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
 import com.mrbean.user.userVO;
 import com.mrbean.warehouse.WarehouseService;
 import com.mrbean.warehouse.WarehouseVO;
+import com.mrbean.workorders.WorkOrdersController;
+import com.mrbean.workorders.WorkOrdersRestController;
+import com.mrbean.workorders.WorkOrdersService;
 import com.mrbean.workorders.WorkOrdersVO;
 
 
@@ -42,6 +47,13 @@ public class FinishedProductsControlController {
 	
 	@Autowired
 	private FinishedProductsControlService finishedProductsControlService;
+	
+	@Inject
+	private WorkOrdersService ws;
+	
+    @Inject
+    private WorkOrdersRestController WRS;
+	
 	
 	
 	
@@ -95,6 +107,24 @@ public class FinishedProductsControlController {
         	finishedProductsControlService.updateStatus(fvo);
         	if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
     			finishedProductsControlService.insertFinishedProductLot(rvo);
+    			
+    			
+    			int workId = ws.getWorkIdByWorkOrderNo(fvo.getWorkOrderNo());
+    			
+    			
+    			logger.info("fvo" + fvo);
+    			WorkOrdersVO workVO = new WorkOrdersVO();
+    			workVO.setWorkOrderNo(fvo.getWorkOrderNo());
+    			workVO.setWorkId(workId);
+    			workVO.setWorkStatus(WorkOrdersStatus.COMPLETED);
+    			
+    			
+    			
+    			WRS.updateWorkStatus(workId, workVO);
+    			logger.info("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"+workVO);
+    			
+    			//ws.updateWorkStatus(workVO);
+    			
             }
 
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
