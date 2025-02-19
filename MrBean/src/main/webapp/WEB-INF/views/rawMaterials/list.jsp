@@ -65,32 +65,32 @@
 </section>
 
 <!-- 수정 모달 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">원자재 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
-                <form id="updateForm" action="${pageContext.request.contextPath}/rawMaterials/update" method="post">
-                    <input type="hidden" id="rmCode" name="rmCode" value="${rawMaterial.rmCode}">
-                    <div class="form-group">
-                        <label for="rmName">원자재 이름:</label>
-                        <input type="text" id="rmName" name="rmName" class="form-control" value="${rawMaterial.rmName}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="rmOrigin">원산지:</label>
-                        <input type="text" id="rmOrigin" name="rmOrigin" class="form-control" value="${rawMaterial.rmOrigin}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="rmStorageMethod">보관 방법:</label>
-                        <input type="text" id="rmStorageMethod" name="rmStorageMethod" class="form-control" value="${rawMaterial.rmStorageMethod}" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">수정</button>
-                </form>
+                <div class="mb-3">
+                    <label for="rmCode" class="form-label">원자재 코드</label>
+                    <input type="text" class="form-control" id="rmCode" name="rmCode" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="rmName" class="form-label">원자재 이름</label>
+                    <input type="text" class="form-control" id="rmName" name="rmName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="rmOrigin" class="form-label">원산지</label>
+                    <input type="text" class="form-control" id="rmOrigin" name="rmOrigin" required>
+                </div>
+                <div class="mb-3">
+                    <label for="rmStorageMethod" class="form-label">보관 방법</label>
+                    <input type="text" class="form-control" id="rmStorageMethod" name="rmStorageMethod" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editButton" onclick="submitEditForm()">수정</button>
             </div>
         </div>
     </div>
