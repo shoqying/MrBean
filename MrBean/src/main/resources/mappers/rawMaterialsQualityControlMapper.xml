@@ -10,11 +10,17 @@
 		<result property="rqcQualityCheck" column="rqc_quality_check"/>
 		<result property="rqcStatus" column="rqc_status"/>
 		<result property="workOrderNo" column="work_order_no"/>
+		<result property="rmlNo" column="rml_no"/>
 		<result property="bomId" column="bom_id"/>
+		<result property="fpcBno" column="fpc_bno"/>
 			
 		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 		<collection property="rawMaterialsList" resultMap="rawMaterialsMap"/>
+		<collection property="productsList" resultMap="productsMap"/>
+		<collection property="bomList" resultMap="bomMap"/>
+		<collection property="lotHistoryList" resultMap="lotHistoryMap"/>
+		
 	</resultMap>
 		
 	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
@@ -26,50 +32,61 @@
 	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workQuantity" column="work_quantity"/>
+		<result property="workId" column="work_id"/>
 	</resultMap>
 	
 	<resultMap type="com.mrbean.rawmaterials.RawMaterialsVO" id="rawMaterialsMap">
 		<result property="rmName" column="rm_name"/>
 	</resultMap>
+	
+	<resultMap type="com.mrbean.products.ProductsVO" id="productsMap">
+		<result property="pName" column="p_name"/>
+	</resultMap>
 
+	<resultMap type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO" id="bomMap">
+		<result property="bomId" column="bom_id"/>
+		<result property="rmCode" column="rm_code"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.lothistory.LotHistoryVO" id="lotHistoryMap">
+		<result property="workId" column="work_id"/>
+		<result property="rmlNo" column="rml_no"/>		
+	</resultMap>
+	
+	
 
 
 	<!-- 원자재 검사 관리 데이터 조회 -->
     <select id="selectRawMaterialsData" resultType="map">
-	    SELECT rml.rml_no AS rml_no, 
+	    SELECT lh.rml_no AS rml_no,
 	    	   work.work_order_no AS work_order_no
 	    FROM work_orders work
-	    JOIN rawmaterials_lot rml ON rml.rml_no = work.rml_no
-	    ORDER BY work.work_order_no DESC
-	    LIMIT 1
+	    JOIN lot_history lh ON work.work_id = lh.work_id
+        WHERE work.work_id = #{workId};
 	</select>
 
 	<!-- 원자재 검사 관리 목록 저장 -->
 	<insert id="insertRawMaterialsQualityControl" parameterType="map">
 	    INSERT INTO rawmaterials_quality_control (rml_no, work_order_no)
-			SELECT #{rml_no}, #{work_order_no}
-			WHERE NOT EXISTS (
-			    SELECT 1 
-			    FROM rawmaterials_quality_control 
-			    WHERE work_order_no = #{work_order_no}
-			);
+		VALUES (#{rml_no}, #{work_order_no});
 	</insert>
 	
 
 	<!-- 원자재 검사 관리 목록 -->
     <select id="getRawMaterialsQualityControlList" resultMap="RMQCMap">
  		SELECT rqc.rqc_bno, 
-        	   rml.rml_date,
-        	   rml.rml_no,
-        	   rml.rm_code,
+        	   bom.rm_code,
         	   rqc.rqc_date,
         	   rqc.rqc_quality_check,
         	   rqc.rqc_status,
         	   work.work_order_no,
-        	   work.work_quantity
+        	   work.work_quantity,
+        	   lh.rml_no
         	   FROM rawmaterials_quality_control rqc
-        	   LEFT JOIN rawmaterials_lot rml on rqc.rml_no = rml.rml_no
-        	   LEFT JOIN work_orders work on rqc.work_order_no = work.work_order_no;
+        	   LEFT JOIN work_orders work on rqc.work_order_no = work.work_order_no
+        	   JOIN lot_history lh ON lh.work_id = work.work_id
+        	   JOIN products p ON p.p_name = work.p_name
+        	   JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
     </select>
     
     

@@ -27,16 +27,16 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- Chatbot JS Files -->
-  <script src="<c:url value='/resources/js/chatbot/request2.js'/>"></script>
-    <script src="<c:url value='/resources/js/chatbot/spinner.js'/>"></script>
+  <!-- Databot JS Files -->
+  <script src="<c:url value='/resources/js/databot/request.js'/>"></script>
+    <script src="<c:url value='/resources/js/databot/spinner.js'/>"></script>
 
   <!-- ChatGPT API -->
   <script src="<c:url value='/resources/js/components/search.js'/>"></script>
 
-  <!-- Chatbot CSS File -->
-  <link href="<c:url value='/resources/css/chatBotStyle.css'/>" rel="stylesheet">
-  <link href="<c:url value='/resources/css/chatBotWindow.css'/>" rel="stylesheet">
+  <!-- Databot CSS File -->
+  <link href="<c:url value='/resources/css/dataBotStyle.css'/>" rel="stylesheet">
+  <link href="<c:url value='/resources/css/dataBotWindow.css'/>" rel="stylesheet">
 
   <!-- Search CSS File -->
   <link href="<c:url value='/resources/css/search.css'/>" rel="stylesheet">
@@ -285,10 +285,22 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Icons Nav -->
+      </li>
+      <!-- End Icons Nav -->
 
 <!-- "PAGES" 스타일 섹션 -->
 <li class="nav-heading">PAGES</li>
+
+    <li class="nav-item">
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/">
+            <i class="bi bi-info-circle"></i>
+            <span>Chat bot</span>
+          </a>
+        </c:when>
+      </c:choose>
+    </li>
 
 
   <!-- 로그인 상태에 따라 표시되는 메뉴 -->

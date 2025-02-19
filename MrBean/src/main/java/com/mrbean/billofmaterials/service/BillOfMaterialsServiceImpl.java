@@ -42,6 +42,11 @@ public class BillOfMaterialsServiceImpl implements BillOfMaterialsService {
         billOfMaterialsRepository.insertBillOfMaterials(billOfMaterialsVO);
     }
 
+    @Override
+    public boolean isBomNameExist(String bomName) throws Exception {
+        return billOfMaterialsRepository.checkBillOfMaterialsNameExists(bomName);
+    }
+
     /**
      * 마지막 BOM ID를 조회한 뒤 숫자 부분을 추출해 +1
      */

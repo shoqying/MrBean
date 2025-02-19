@@ -57,37 +57,54 @@ public class FinishedProductsControlDAOImp implements FinishedProductsControlDAO
 	}
 
 	@Override
-	public void insertFinishedProductLot(String workOrdersNo) throws Exception {
+	public void insertFinishedProductLot(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("insertFinishedProductLot() 호출");		
-		sqlSession.insert(NAMESPACE + "insertFinishedProductLot", workOrdersNo);
+		sqlSession.insert(NAMESPACE + "insertFinishedProductLot", vo);
 	}
 	
 	@Override
-	public void deleteFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
+	public void deleteFinishedProductLot(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductLot() 호출");
 		sqlSession.update(NAMESPACE + "deleteFinishedProductLot", vo);
 		
 	}
 
 	@Override
-	public void insertFinishedProductControl() throws Exception {
+	public void insertFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("insertFinishedProductControl() 호출");
-		sqlSession.insert(NAMESPACE + "insertFinishedProductControl");
+		sqlSession.insert(NAMESPACE + "insertFinishedProductControl", vo);
 	}
 
 	@Override
-	public String getWorkOrdersNo() throws Exception {
+	public RawMaterialsQualityControlVO getWorkOrdersNo(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("getWorkOrdersNo() 호출");
-		return sqlSession.selectOne(NAMESPACE + "getWorkOrdersNo");
+		return sqlSession.selectOne(NAMESPACE + "getWorkOrdersNo", vo);
 		
 	}
 
 	@Override
-	public int deleteFinishedProductControl(String workOrderNo) throws Exception {
+	public int deleteFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductControl() 호출");
-		return sqlSession.delete(NAMESPACE + "deleteFinishedProductControl", workOrderNo);
+		return sqlSession.delete(NAMESPACE + "deleteFinishedProductControl", vo);
 		
 	}
+
+	// 검사 시간 완료 업데이트
+	@Override
+	public int updateCheckDate(FinishedProductsControlVO vo) throws Exception {
+		logger.info("updateCheckDate() 호출");
+		return sqlSession.update(NAMESPACE + "updateCheckDate", vo);
+	}
+
+	// 검사 시간 삭제
+	@Override
+	public int deleteCheckDate(FinishedProductsControlVO vo) throws Exception {
+		logger.info("deleteCheckDate() 호출");
+		return sqlSession.update(NAMESPACE + "deleteCheckDate", vo);
+	}
+	
+	
+	
 	
 	
 

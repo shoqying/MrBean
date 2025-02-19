@@ -2,10 +2,13 @@ package com.mrbean.rawmaterialsqualitycontrol;
 
 import java.util.List;
 
+import com.mrbean.lothistory.LotHistoryVO;
+import com.mrbean.workorders.WorkOrdersVO;
+
 public interface RawMaterialsQualityControlService {
 	
 	// 원자재 검사 관리 데이터 조회, 저장
-	public void processAndInsertRawMaterials() throws Exception;
+	public void processAndInsertRawMaterials(WorkOrdersVO vo) throws Exception;
 	
 	// 원자재 검사 관리 목록
     public List<RawMaterialsQualityControlVO> getRawMaterialsQualityControlList() throws Exception;
