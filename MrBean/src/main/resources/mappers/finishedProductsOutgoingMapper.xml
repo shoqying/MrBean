@@ -1,90 +1,86 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.Mapper.FinishedProductsOutgoingMapper">
 
-<mapper namespace="com.mrbean.mappers.finishedProductsOutgoingMapper">
-
-    <!-- 완제품 출고 정보 매핑 -->
-    <resultMap id="FinishedProductsOutgoingResultMap" type="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
-        <id property="foNo" column="fo_no"/>
-        <result property="fpcLotbno" column="fpc_lotbno"/>
-        <result property="fplNo" column="fpl_no"/>
-        <result property="pCode" column="p_code"/>
-        <result property="foQuantity" column="fo_quantity"/>
-        <result property="foUnit" column="fo_unit"/>
-        <result property="wCode" column="w_code"/>
-        <result property="foDate" column="fo_date"/>
-        <result property="foShippingLocationName" column="fo_shipping_location_name"/>
-        <result property="foShippingLocation" column="fo_shipping_location"/>
-        <result property="foBno" column="fo_bno"/>
-    </resultMap>
-
-    <!-- 완제품 출고 번호 생성 -->
-    <select id="createFinishedProductNo" resultType="String">
-        SELECT 'FP' || LPAD(SEQ_FINISHED_PRODUCTS_OUTGOING.NEXTVAL, 5, '0') FROM DUAL;
+    <!-- 출고 목록 조회 SQL -->
+    <select id="getAllFinishedProducts" resultType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        SELECT
+            fo_no AS foNo,
+            fpl_no AS fplNo,
+            p_code AS pCode,
+            fo_quantity AS foQuantity,
+            fo_unit AS foUnit,
+            w_code AS wCode,
+            fo_date AS foDate,
+            fo_shippinglocationame AS foShippingLocationName,  <!-- 출고 위치명 -->
+            fo_shippinglocation AS foShippingLocation  <!-- 출고지 -->
+        FROM finishedproducts_outgoing
     </select>
 
-    <!-- 완제품 출고 등록 -->
+    <!-- 출고 번호로 출고 정보 조회 SQL -->
+    <select id="getFinishedProductByFoNo" parameterType="String" resultType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        SELECT
+            fo_no AS foNo,
+            fpl_no AS fplNo,
+            p_code AS pCode,
+            fo_quantity AS foQuantity,
+            fo_unit AS foUnit,
+            w_code AS wCode,
+            fo_date AS foDate,
+            fo_shippinglocationame AS foShippingLocationName,  <!-- 출고 위치명 -->
+            fo_shippinglocation AS foShippingLocation  <!-- 출고지 -->
+        FROM finishedproducts_outgoing
+        WHERE fo_no = #{foNo}
+    </select>
+
+    <!-- 출고 정보 등록 SQL -->
     <insert id="registerFinishedProduct" parameterType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
-        INSERT INTO finished_products_outgoing
-        (
-            fo_no,                
-            fpc_lotbno,           
-            fpl_no,               
-            p_code,               
-            fo_quantity,          
-            fo_unit,              
-            w_code,               
-            fo_date,              
-            fo_shipping_location_name,  
-            fo_shipping_location,      
-            fo_bno                
-        )
+        INSERT INTO finishedproducts_outgoing
+        (fo_no, fpl_no, p_code, fo_quantity, fo_unit, w_code, fo_date, fo_shippinglocationame, fo_shippinglocation)
         VALUES
-        (
-            #{foNo},              
-            #{fpcLotbno},         
-            #{fplNo},             
-            #{pCode},             
-            #{foQuantity},        
-            #{foUnit},            
-            #{wCode},             
-            #{foDate},            
-            #{foShippingLocationName},  
-            #{foShippingLocation},    
-            #{foBno}              
-        )
+        (#{foNo}, #{fplNo}, #{pCode}, #{foQuantity}, #{foUnit}, #{wCode}, #{foDate}, #{foShippingLocationName}, #{foShippingLocation})
     </insert>
 
-    <!-- 완제품 출고 정보 수정 -->
-    <update id="updateFinishedProductsOutgoing" parameterType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
-        UPDATE finished_products_outgoing
-        SET 
-            fpc_lotbno = #{fpcLotbno},
+    <!-- 출고 정보 수정 SQL -->
+    <update id="updateFinishedProduct" parameterType="com.mrbean.finishedproductsoutgoing.FinishedProductsOutgoingVO">
+        UPDATE finishedproducts_outgoing
+        SET
             fpl_no = #{fplNo},
             p_code = #{pCode},
             fo_quantity = #{foQuantity},
             fo_unit = #{foUnit},
             w_code = #{wCode},
             fo_date = #{foDate},
-            fo_shipping_location_name = #{foShippingLocationName},
-            fo_shipping_location = #{foShippingLocation},
-            fo_bno = #{foBno}
+            fo_shippinglocationame = #{foShippingLocationName},  <!-- 출고 위치명 -->
+            fo_shippinglocation = #{foShippingLocation}  <!-- 출고지 -->
         WHERE fo_no = #{foNo}
     </update>
 
-    <!-- 완제품 출고 정보 삭제 -->
+    <!-- 출고 정보 삭제 SQL -->
     <delete id="deleteFinishedProduct" parameterType="String">
-        DELETE FROM finished_products_outgoing WHERE fo_no = #{foNo}
+        DELETE FROM finishedproducts_outgoing
+        WHERE fo_no = #{foNo}
     </delete>
 
-    <!-- 모든 완제품 출고 정보 조회 -->
-    <select id="getAllFinishedProducts" resultMap="FinishedProductsOutgoingResultMap">
-        SELECT * FROM finished_products_outgoing
+    <!-- 완제품 로트번호 목록 조회 SQL -->
+    <select id="getLotNumbers" resultType="String">
+        SELECT DISTINCT fpl_no
+        FROM finishedproducts_outgoing
+        ORDER BY fpl_no
     </select>
 
-    <!-- 특정 완제품 출고 정보 조회 (foNo 기반) -->
-    <select id="getFinishedProductByFoNo" parameterType="String" resultMap="FinishedProductsOutgoingResultMap">
-        SELECT * FROM finished_products_outgoing WHERE fo_no = #{foNo}
+    <!-- 제품 코드 목록 조회 SQL -->
+    <select id="getProductCodes" resultType="String">
+        SELECT DISTINCT p_code
+        FROM finishedproducts_outgoing
+        ORDER BY p_code
+    </select>
+
+    <!-- 창고 코드 목록 조회 SQL -->
+    <select id="getWarehouseCodes" resultType="String">
+        SELECT DISTINCT w_code
+        FROM finishedproducts_outgoing
+        ORDER BY w_code
     </select>
 
 </mapper>
