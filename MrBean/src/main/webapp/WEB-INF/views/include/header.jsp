@@ -74,7 +74,7 @@
   <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="${pageContext.request.contextPath}/user/main" class="logo d-flex align-items-center">
+        <a href="${pageContext.request.contextPath}/" class="logo d-flex align-items-center">
             <img src="${pageContext.request.contextPath}/resources/assets/img/coffee.png" alt="" style="width: 35px; height: auto;">
             <span class="d-none d-lg-block">Mr.BEAN</span>
         </a>
@@ -400,7 +400,7 @@
   </div>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/user/main"><i class="bi bi-house-door"></i>Home</a></li>
+            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/"><i class="bi bi-house-door"></i>Home</a></li>
             <c:forEach var="crumb" items="${breadcrumbList}">
               <c:choose>
                 <c:when test="${crumb.active}">

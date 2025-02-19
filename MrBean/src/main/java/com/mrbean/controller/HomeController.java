@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
 import com.mrbean.billofmaterials.service.BillOfMaterialsService;
+import com.mrbean.common.annotation.NoLoginCheck;
 import com.mrbean.domain.BreadcrumbItem;
 import com.mrbean.rawmaterials.RawMaterialsService;
 import com.mrbean.warehouse.WarehouseService;
@@ -35,6 +36,7 @@ public class HomeController {
 		this.warehouseService = warehouseService;
 	}
 
+	@NoLoginCheck
 	@GetMapping("/")
 	public String home(Model model) {
 		return "user/main";
