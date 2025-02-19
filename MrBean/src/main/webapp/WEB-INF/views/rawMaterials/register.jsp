@@ -17,7 +17,7 @@
                 <!-- 원자재 코드 -->
                 <div class="col-sm-5">
                     <div class="form-floating mb-3">
-                        <form:input path="rmCode" id="rmCode" type="text" class="form-control" placeholder="예: RM123" required="true" readonly="true" title="자동 생성된 원자재 코드입니다."/>
+                        <form:input path="rmCode" id="rmCode" type="text" class="form-control" placeholder="예: REB "/>
                         <label for="rmCode">원자재 코드</label>
                     </div>
                     <small id="rmCodeError" class="form-text text-danger" style="display: none;">원자재 코드를 입력해주세요.</small>
@@ -44,8 +44,8 @@
                 <!-- 보관 방법 -->
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="wDescription" name="wDescription" placeholder="보관 방법에 대한 설명(최대 500자)" rows="4" autocomplete="off" style="height: 120px; resize: none; overflow-y: auto;" oninput="updateCharacterCount()" title="보관 방법에 대해 자세한 정보를 적어주세요."></textarea>
-                        <label for="wDescription">보관 방법</label>
+                        <textarea class="form-control" id="rmStorageMethod" name="rmStorageMethod" placeholder="보관 방법에 대한 설명(최대 500자)" rows="4" autocomplete="off" style="height: 120px; resize: none; overflow-y: auto;" oninput="updateCharacterCount()" title="보관 방법에 대해 자세한 정보를 적어주세요."></textarea>
+                        <label for="rmStorageMethod">보관 방법</label>
                     </div>
                     <small id="charCount" class="text-muted" style="float: right;">0/500</small>
                 </div>

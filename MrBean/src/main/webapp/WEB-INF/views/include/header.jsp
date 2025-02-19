@@ -29,7 +29,7 @@
 
   <!-- Databot JS Files -->
   <script src="<c:url value='/resources/js/databot/request.js'/>"></script>
-    <script src="<c:url value='/resources/js/databot/spinner.js'/>"></script>
+  <script src="<c:url value='/resources/js/databot/spinner.js'/>"></script>
 
   <!-- ChatGPT API -->
   <script src="<c:url value='/resources/js/components/search.js'/>"></script>
@@ -294,7 +294,7 @@
     <li class="nav-item">
       <c:choose>
         <c:when test="${not empty sessionScope.loggedInUser}">
-          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/">
+          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/openai">
             <i class="bi bi-info-circle"></i>
             <span>Chat bot</span>
           </a>
