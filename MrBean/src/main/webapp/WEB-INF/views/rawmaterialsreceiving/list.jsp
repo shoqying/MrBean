@@ -18,37 +18,33 @@
                 </a>
             </div>
             <div class="card-body">
-                <!-- 검색 영역 (필요시 추가) -->
-                <form class="form-inline mb-3" action="${pageContext.request.contextPath}/rawmaterialsreceiving/list" method="get">
-                    <input type="text" name="searchKeyword" class="form-control mr-2" placeholder="원자재 코드 검색" value="${param.searchKeyword}">
-                    <button type="submit" class="btn btn-primary">검색</button>
-                </form>
+<!--                 검색 영역 (필요시 추가) -->
+<%--                 <form class="form-inline mb-3" action="${pageContext.request.contextPath}/rawmaterialsreceiving/list" method="get"> --%>
+<%--                     <input type="text" name="searchKeyword" class="form-control mr-2" placeholder="원자재 코드 검색" value="${param.searchKeyword}"> --%>
+<!--                     <button type="submit" class="btn btn-primary">검색</button> -->
+<!--                 </form> -->
                 <!-- 테이블 (정렬 링크 포함) -->
-                <table class="table table-hover">
+                <table class="table datatable table-hover">
                     <thead>
                         <tr>
                             <th>
-                                <a href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?sortColumn=rmCode&sortOrder=${param.sortOrder eq 'asc' ? 'desc' : 'asc'}">
                                     원자재 코드
-                                </a>
                             </th>
                             <th>
-                                <a href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?sortColumn=rrQuantity&sortOrder=${param.sortOrder eq 'asc' ? 'desc' : 'asc'}">
                                     수량
-                                </a>
                             </th>
-                            <th>단위</th>
                             <th>
-                                <a href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?sortColumn=rmlNo&sortOrder=${param.sortOrder eq 'asc' ? 'desc' : 'asc'}">
+                            		단위
+                            </th>
+                            <th>
                                     LOT 번호
-                                </a>
                             </th>
                             <th>
-                                <a href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?sortColumn=rrExpirydate&sortOrder=${param.sortOrder eq 'asc' ? 'desc' : 'asc'}">
                                     유효기간
-                                </a>
                             </th>
-                            <th>기능</th>
+                            <th>
+                            		기능
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,26 +80,26 @@
                         </c:forEach>
                     </tbody>
                 </table>
-                <!-- 페이징 영역 (컨트롤러에서 currentPage, startPage, endPage, totalPages 전달 필요) -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <c:if test="${currentPage > 1}">
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${currentPage - 1}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">이전</a>
-                            </li>
-                        </c:if>
-                        <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                            <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${i}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">${i}</a>
-                            </li>
-                        </c:forEach>
-                        <c:if test="${currentPage < totalPages}">
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${currentPage + 1}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">다음</a>
-                            </li>
-                        </c:if>
-                    </ul>
-                </nav>
+<!--                 페이징 영역 (컨트롤러에서 currentPage, startPage, endPage, totalPages 전달 필요) -->
+<!--                 <nav aria-label="Page navigation"> -->
+<!--                     <ul class="pagination"> -->
+<%--                         <c:if test="${currentPage > 1}"> --%>
+<!--                             <li class="page-item"> -->
+<%--                                 <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${currentPage - 1}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">이전</a> --%>
+<!--                             </li> -->
+<%--                         </c:if> --%>
+<%--                         <c:forEach var="i" begin="${startPage}" end="${endPage}"> --%>
+<%--                             <li class="page-item ${i == currentPage ? 'active' : ''}"> --%>
+<%--                                 <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${i}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">${i}</a> --%>
+<!--                             </li> -->
+<%--                         </c:forEach> --%>
+<%--                         <c:if test="${currentPage < totalPages}"> --%>
+<!--                             <li class="page-item"> -->
+<%--                                 <a class="page-link" href="${pageContext.request.contextPath}/rawmaterialsreceiving/list?page=${currentPage + 1}&sortColumn=${param.sortColumn}&sortOrder=${param.sortOrder}&searchKeyword=${param.searchKeyword}">다음</a> --%>
+<!--                             </li> -->
+<%--                         </c:if> --%>
+<!--                     </ul> -->
+<!--                 </nav> -->
             </div>
         </div>
     </div>
