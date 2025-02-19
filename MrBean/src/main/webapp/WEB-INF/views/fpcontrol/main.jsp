@@ -18,9 +18,7 @@
                   <tr>
 					<th>순번</th>
 					<th>작업 지시 번호</th>					
-		            <th>제조일</th>
 		            <th>완제품 LOT 번호</th>
-		            <th>BOM</th>
 		            <th>완제품명</th>
 		            <th>유통기한</th>
 		            <th>검사일자</th>
@@ -54,25 +52,13 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.fpcDate}"><fmt:formatDate value="${vo.fpcDate}" pattern="yyyy-MM-dd" /></c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
                     		<c:when test="${not empty vo.fplNo}">${vo.fplNo}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.productsList[0].bomId}">${vo.productsList[0].bomId}</c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.productsList[0].PName}">${vo.productsList[0].PName}</c:when>
+                    		<c:when test="${not empty vo.workOrdersList[0].PName}">${vo.workOrdersList[0].PName}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
@@ -113,7 +99,7 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.productionPlanList[0].planQuantity}">${vo.productionPlanList[0].planQuantity}</c:when>
+                    		<c:when test="${not empty vo.workOrdersList[0].workQuantity}">${vo.workOrdersList[0].workQuantity}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
@@ -125,7 +111,7 @@
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.fpcQuantity}">${vo.fpcQuantity}</c:when>
+                    		<c:when test="${not empty vo.fpcQuantity}"><fmt:formatNumber value="${vo.fpcQuantity}" type="number" maxFractionDigits="0" /></c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>

@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.mrbean.lothistory.LotHistoryVO;
+import com.mrbean.workorders.WorkOrdersVO;
+
 @Repository
 public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityControlDAO {
 
@@ -26,9 +29,9 @@ public class RawMaterialsQualityControlDAOImp implements RawMaterialsQualityCont
 	
 
 	@Override
-	public Map<String, Object> selectRawMaterialsData() throws Exception {
+	public Map<String, Object> selectRawMaterialsData(WorkOrdersVO vo) throws Exception {
 		logger.info("selectRawMaterialsData() 호출");
-		return sqlSession.selectOne(NAMESPACE + "selectRawMaterialsData");
+		return sqlSession.selectOne(NAMESPACE + "selectRawMaterialsData", vo);
 	}
 
 	@Override

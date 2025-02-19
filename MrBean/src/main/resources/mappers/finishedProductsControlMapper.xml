@@ -47,17 +47,28 @@
 	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
 		<result property="workQuantity" column="work_quantity"/>
 		<result property="workOrderNo" column="work_order_no"/>
+		<result property="pName" column="p_name"/>
 	</resultMap>
 
 
 	<!-- 완재품 검사 관리 목록 저장 -->
-	<insert id="insertFinishedProductControl">
-	    INSERT INTO finished_products_control(fpl_no, work_order_no, work_quantity)
+	<insert id="insertFinishedProductControl" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity)
 	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity
+	    FROM finished_products_lot fpl
+	    JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+	    WHERE work.work_order_no = #{workOrderNo}
+		<!-- VALUES(#{fplNO}, #{workOrderNo}, #{workQuantity}) -->
+		<!-- SELECT fpl.fpl_no, work.work_order_no, work.work_quantity
 		FROM finished_products_lot fpl
 		LEFT JOIN work_orders work ON work.work_order_no = fpl.work_order_no
-		ORDER BY work.work_id desc
-		LIMIT 1
+		WHERE NOT EXISTS (
+		    SELECT 1 
+		    FROM finished_products_control fpc 
+		    WHERE fpc.fpl_no = fpl.fpl_no
+		)
+		ORDER BY work.work_id DESC
+		LIMIT 1; -->
 	</insert>
 
 
@@ -66,8 +77,7 @@
         SELECT fpc.fpc_bno, 
         	   fpc.fpc_date,
         	   fpc.fpl_no,
-        	   p.bom_id,
-        	   p.p_name,
+        	   work.p_name,
         	   fpc.fpc_expirydate,
         	   fpc.fpc_checkdate,
         	   fpc.fpc_quality_check,
@@ -77,8 +87,7 @@
         	   work.work_quantity,
         	   fpc.fpc_quantity
 		FROM finished_products_control fpc
-   	    LEFT JOIN products p on p.p_code = fpc.p_code
-   	    LEFT JOIN work_orders work on work.work_order_no = fpc.work_order_no
+   	    JOIN work_orders work on work.work_order_no = fpc.work_order_no
     </select>
     
     
@@ -96,6 +105,14 @@
         WHERE fpc_bno = #{fpcBno}
     </update>
     
+    <!-- 검사 완료 시간 업데이트 -->
+    <update id="updateCheckDate" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	UPDATE finished_products_control
+    	SET fpc_checkdate = now(),
+    	fpc_expirydate = DATE_ADD(NOW(), INTERVAL 6 MONTH)
+    	WHERE fpc_bno = #{fpcBno}
+    </update>
+    
     <!-- 원자재 검사 목록 삭제 -->
     <delete id="deleteFinishedProduct">
     	DELETE FROM finished_products_control
@@ -103,16 +120,14 @@
     </delete>
     
     <!-- 워크 오더 넘버 가져오기 -->
-    <select id="getWorkOrdersNo">
+    <select id="getWorkOrdersNo" resultMap="FPCMap">
     	SELECT work_order_no
     	FROM rawmaterials_quality_control
-    	WHERE work_order_no IS NOT NULL
-    	ORDER BY rqc_bno DESC
-    	LIMIT 1
+    	WHERE work_order_no = #{workOrderNo}
     </select>
     
     <!-- 완제품 LOT 번호 생성 -->
-    <insert id="insertFinishedProductLot" parameterType="com.mrbean.workorders.WorkOrdersVO">
+    <insert id="insertFinishedProductLot" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
         INSERT INTO finished_products_lot (fpl_no, fpl_batch, work_order_no)
 			SELECT 
 			    CONCAT(
@@ -127,6 +142,7 @@
 			JOIN 
 			    finished_products_lot fpl ON work.work_order_no = fpl.work_order_no 
 			AND DATE(fpl.fpl_finished_date) = CURDATE()
+			ORDER BY fpl_no DESC
 			LIMIT 1;
     </insert>
     
@@ -142,6 +158,14 @@
     	DELETE FROM finished_products_control
     	WHERE work_order_no = #{workOrderNo}
     </delete>
+    
+    <!-- 검사 시간 삭제 -->
+    <update id="deleteCheckDate" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	UPDATE finished_products_control
+    	SET fpc_checkdate = NULL,
+    	fpc_expirydate = NULL
+    	WHERE fpc_bno = #{fpcBno}
+    </update>
 
     
     
