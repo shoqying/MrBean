@@ -71,7 +71,8 @@
        FROM
            stock_materials sm
        LEFT JOIN (
-           SELECT rm_code, SUM(rr_quantity) AS sm_total
+           SELECT rm_code, 
+           		  SUM(rr_quantity) AS sm_total
            FROM stock_materials
            GROUP BY rm_code
        ) total_stock 

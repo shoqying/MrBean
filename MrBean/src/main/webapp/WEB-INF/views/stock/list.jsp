@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +91,7 @@
                    <td>${raw.rmCode}</td>
                    <td>${raw.rrQuantity}</td>
                    <td>${raw.rrUnit}</td>
-                   <td>${raw.rrExpirydate}</td>
+                   <td><fmt:formatDate value="${raw.rrExpirydate}" pattern="yyyy-MM-dd" /></td>
                    <td>
                        <c:choose>
                            <c:when test="${raw.isRegistered == 0}">
@@ -158,7 +159,7 @@
                    <td>${stockList.rrUnit}</td>
                    <td>${stockList.rmlNo}</td>
                    <td>${stockList.rmCode}</td>
-                   <td>${stockList.rrExpirydate}</td>
+                   <td><fmt:formatDate value="${stockList.rrExpirydate}" pattern="yyyy-MM-dd" /></td>
                    <td>${stockList.smTotal}</td>
                </tr>
            </c:forEach>
