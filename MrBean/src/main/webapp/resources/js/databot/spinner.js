@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchDatabotResponse(message) {
         try {
-            const response = await fetch('http://localhost:8000/databot/', {
+            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/databot/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: message })
