@@ -2,27 +2,28 @@ package com.mrbean.stockmaterials;
 
 import java.util.List;
 
+import com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO;
+
+// 재고 관리 서비스 인터페이스
 public interface StockMaterialsService {
-
-    /**
-     * 원자재 목록을 정렬 및 페이징하여 조회합니다.
-     * 
-     * @param sortColumn 정렬 기준 컬럼
-     * @param sortDirection 정렬 방향 (ASC/DESC)
-     * @param pageNum 페이지 번호
-     * @param offset 조회 시작 위치
-     * @return 정렬 및 페이징된 원자재 목록
-     */
-    List<StockMaterialsVO> getStockMaterials(String sortColumn, String sortDirection, int pageNum, int offset);
-
-    /**
-     * 원자재 테이블의 전체 개수를 조회합니다.
-     * 
-     * @return 원자재 총 개수
-     */
+    // 재고 목록 조회 (정렬, 페이징 포함)
+    List<StockMaterialsVO> getStockMaterials(String sortColumn, String sortDirection, int pageSize, int offset);
+    
+    // 전체 재고 수량 조회
     int getTotalCount();
     
-    // 원자재 등록
-    // void insertStockMaterials(StockMaterialsVO stockMaterialsVO);
-
+    // 원자재 입고 목록 페이징 조회
+    List<RawMaterialsReceivingVO> getRawMaterialsWithPaging(int pageSize, int offset);
+    
+    // 전체 원자재 입고 수량 조회
+    int getTotalRawCount();
+    
+    // 특정 원자재 입고 정보 조회
+    RawMaterialsReceivingVO getRawMaterialsReceiving(int rrNo);
+    
+    // 재고 등록
+    void insertStockMaterials(StockMaterialsVO stockVO);
+    
+    // 재고 중복 체크
+    boolean isDuplicateStock(String rrNo);
 }

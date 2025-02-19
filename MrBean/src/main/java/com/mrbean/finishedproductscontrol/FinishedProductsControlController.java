@@ -68,6 +68,7 @@ public class FinishedProductsControlController {
 	}
 	
 	// 완제품 품질 검사 상태 업데이트
+
     @PostMapping("/updateQualityCheck")
     @ResponseBody
     public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
@@ -88,17 +89,18 @@ public class FinishedProductsControlController {
     // 완제품 상태 업데이트
 	@PostMapping("/updateStatus")
     @ResponseBody
+
     public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo, RawMaterialsQualityControlVO rvo) {
         try {            
         	finishedProductsControlService.updateStatus(fvo);
         	if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
     			finishedProductsControlService.insertFinishedProductLot(rvo);
             }
-        	
+
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+//        }
     }
     
     // 완재품 검사 목록 삭제
@@ -112,7 +114,5 @@ public class FinishedProductsControlController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
         }
     }
-
-
 
 } // class
