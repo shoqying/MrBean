@@ -7,42 +7,64 @@
     <resultMap id="RawMaterialsReceivingResultMap" type="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
         <id property="rrNo" column="rr_no"/>
         <result property="rmlNo" column="rml_no"/>
-        <result property="rmlBno" column="rml_bno"/>
         <result property="rmCode" column="rm_code"/>
         <result property="rrQuantity" column="rr_quantity"/>
         <result property="rrUnit" column="rr_unit"/>
         <result property="rrExpirydate" column="rr_expirydate"/>
+        <result property="isRegistered" column="is_registered"/>
     </resultMap>
 
     <!-- 원자재 입고 정보 등록 -->
     <insert id="createRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
-	    INSERT INTO rawmaterials_receiving 
-	    (rr_no, rml_no, rml_bno, rm_code, rr_quantity, rr_unit, rr_expirydate, available_stock)
-	    VALUES 
-	    (#{rrNo}, #{rmlNo}, #{rmlBno}, #{rmCode}, #{rrQuantity}, #{rrUnit}, 
-	     DATE_ADD(NOW(), INTERVAL 6 MONTH), 
-	     #{rrQuantity} - COALESCE(#{reservedQuantity}, 0))
-	</insert>
+        INSERT INTO rawmaterials_receiving 
+        (rml_no, rm_code, rr_quantity, rr_unit, rr_expirydate)
+        VALUES 
+        (#{rmlNo}, #{rmCode}, #{rrQuantity}, #{rrUnit}, DATE_ADD(NOW(), INTERVAL 6 MONTH))
+    </insert>
 
-    <!-- 원자재 입고 정보 수정 -->
-    <update id="updateRawMaterial" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+    <!-- 로트 번호 중복 체크 쿼리 -->
+    <select id="checkDuplicateLotNumber" resultType="String">
+        SELECT COUNT(*) 
+        FROM rawmaterials_lot 
+        WHERE rml_no LIKE #{lotNoPrefix}
+    </select>
+
+    <!-- 로트 번호 자동 생성 쿼리 -->
+    <select id="selectNextLotNumber" resultType="String">
+        SELECT CONCAT('LOT-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(COUNT(*) + 1, 3, '0')) 
+        FROM rawmaterials_lot
+        WHERE rml_no LIKE CONCAT('LOT-', DATE_FORMAT(NOW(), '%Y%m%d'), '-%')
+    </select>
+
+    <!-- 로트 번호 저장 -->
+    <insert id="insertLotNumber" parameterType="java.lang.String">
+        INSERT INTO rawmaterials_lot (rml_no, rml_date)
+        VALUES (#{lotNo}, NOW())
+    </insert>
+
+    <!-- 원자재 입고 리스트 조회 -->
+    <select id="selectRawMaterialsReceivingList" resultMap="RawMaterialsReceivingResultMap">
+        SELECT rr_no, rml_no, rm_code, rr_quantity, rr_unit, rr_expirydate, is_registered
+        FROM rawmaterials_receiving
+        ORDER BY rr_no
+    </select>
+
+    <!-- 원자재 입고 수정 -->
+    <update id="updateRawMaterialReceiving" parameterType="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
         UPDATE rawmaterials_receiving
-        SET rml_no = #{rmlNo}, rml_bno = #{rmlBno}, rm_code = #{rmCode}, 
-            rr_quantity = #{rrQuantity}, rr_unit = #{rrUnit}, rr_expirydate = #{rrExpirydate}
+        SET 
+            rml_no = #{rmlNo},
+            rm_code = #{rmCode},
+            rr_quantity = #{rrQuantity},
+            rr_unit = #{rrUnit},
+            rr_expirydate = #{rrExpirydate},
+            is_registered = #{isRegistered}
         WHERE rr_no = #{rrNo}
     </update>
 
-    <!-- 원자재 입고 정보 삭제 -->
-    <delete id="deleteRawMaterial" parameterType="java.lang.String">
+    <!-- 원자재 입고 삭제 -->
+    <delete id="deleteRawMaterialReceiving" parameterType="int">
         DELETE FROM rawmaterials_receiving
         WHERE rr_no = #{rrNo}
     </delete>
-
-    <!-- 원자재 입고 목록 조회 -->
-    <select id="getAllRawMaterials" resultMap="RawMaterialsReceivingResultMap">
-        SELECT rr_no, rml_no, rml_bno, rm_code, rr_quantity, rr_unit, rr_expirydate
-        FROM rawmaterials_receiving
-        ORDER BY rr_expirydate DESC
-    </select>
-
 </mapper>
