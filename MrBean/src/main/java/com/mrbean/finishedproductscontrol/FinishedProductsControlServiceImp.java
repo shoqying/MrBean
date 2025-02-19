@@ -29,12 +29,10 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	
 	
 	@Override
-	public void processAndInsertFinishedProducts() throws Exception {
+	public void processAndInsertFinishedProducts(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("processAndInsertFinishedProducts() 호출");
-		FinishedProductsControlVO vo = finishedProductsControlDAO.getWorkOrdersNo();
-		logger.info("{}" + vo);
 		finishedProductsControlDAO.insertFinishedProductLot(vo);
-		finishedProductsControlDAO.insertFinishedProductControl();
+		finishedProductsControlDAO.insertFinishedProductControl(vo);
 		
 	}
 
@@ -65,11 +63,13 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 		return finishedProductsControlDAO.deleteFinishedProduct(fpcBno);
 	}
 	
-	@Override
-	public void insertFinishedProductLot(FinishedProductsControlVO vo) throws Exception {
-		logger.info("insertFinishedProductLot() 호출");
-		finishedProductsControlDAO.insertFinishedProductLot(finishedProductsControlDAO.getWorkOrdersNo());
 	
+
+	@Override
+	public void insertFinishedProductLot(RawMaterialsQualityControlVO vo) throws Exception {
+		logger.info("insertFinishedProductLot() 호출");
+		finishedProductsControlDAO.insertFinishedProductLot(vo);
+		
 	}
 
 	@Override
@@ -82,26 +82,40 @@ public class FinishedProductsControlServiceImp implements FinishedProductsContro
 	@Override
 	public void insertFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("insertFinishedProductControl() 호출");
-		finishedProductsControlDAO.insertFinishedProductControl();
+		finishedProductsControlDAO.insertFinishedProductControl(vo);
 		
 	}
 
 	@Override
-	public FinishedProductsControlVO getWorkOrdersNo() throws Exception {
+	public RawMaterialsQualityControlVO getWorkOrdersNo(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("getWorkOrdersNo() 호출");
-		return finishedProductsControlDAO.getWorkOrdersNo();
+		return finishedProductsControlDAO.getWorkOrdersNo(vo);
 		
 	}
 
 	@Override
-	public int deleteFinishedProductControl() throws Exception {
+	public int deleteFinishedProductControl(RawMaterialsQualityControlVO vo) throws Exception {
 		logger.info("deleteFinishedProductControl");
-		FinishedProductsControlVO vo = new FinishedProductsControlVO();
-		vo = finishedProductsControlDAO.getWorkOrdersNo();
-		finishedProductsControlDAO.insertFinishedProductLot(vo);
 		return finishedProductsControlDAO.deleteFinishedProductControl(vo);
 		
 	}
+
+	// 검사 시간 완료 업데이트
+	@Override
+	public int updateCheckDate(FinishedProductsControlVO vo) throws Exception {
+		logger.info("updateCheckDate() 호출");
+		return finishedProductsControlDAO.updateCheckDate(vo);
+	}
+
+	// 검사 시간 삭제
+	@Override
+	public int deleteCheckDate(FinishedProductsControlVO vo) throws Exception {
+		logger.info("deleteCheckDate() 호출");
+		return finishedProductsControlDAO.deleteCheckDate(vo);
+	}
+	
+	
+	
 	
 	
 	

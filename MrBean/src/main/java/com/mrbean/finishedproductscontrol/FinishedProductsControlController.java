@@ -3,6 +3,8 @@ package com.mrbean.finishedproductscontrol;
 import java.sql.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import com.mrbean.products.ProductsService;
 import com.mrbean.products.ProductsVO;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.user.userVO;
 import com.mrbean.warehouse.WarehouseService;
 import com.mrbean.warehouse.WarehouseVO;
 import com.mrbean.workorders.WorkOrdersVO;
@@ -45,13 +48,22 @@ public class FinishedProductsControlController {
 	
 	
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void fpControlGET(Model model) throws Exception {
+	public String fpControlGET(HttpSession session, Model model) throws Exception {
 		logger.info("fpControlGET() 호출");
 		
+		userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            // 로그인되지 않았을 경우 로그인 페이지로 리다이렉트
+            return "redirect:/user/login";
+        }
+        
 		List<FinishedProductsControlVO> finishedProductsControlList 
 		= finishedProductsControlService.getFinishedProductsControlList();
+		logger.info("{}" + finishedProductsControlList);
 		
 		model.addAttribute("finishedProductsControlList", finishedProductsControlList);
+		
+		return "/fpcontrol/main";
 		
 	}
 	
@@ -61,8 +73,11 @@ public class FinishedProductsControlController {
     public ResponseEntity<String> updateQualityCheck(@RequestBody FinishedProductsControlVO vo) {
         try {
         	finishedProductsControlService.updateQualityCheck(vo);
-        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus()) || QualityControlStatus.PENDING.equals(vo.getFpcQualityCheck())) {
-        		finishedProductsControlService.deleteFinishedProductLot(vo);
+        	if (QualityControlStatus.COMPLETED.equals(vo.getFpcQualityCheck())) {
+        		finishedProductsControlService.updateCheckDate(vo);
+        	}
+        	if (QualityControlStatus.PENDING.equals(vo.getFpcQualityCheck())) {
+        		finishedProductsControlService.deleteCheckDate(vo);
         	}
             return ResponseEntity.ok("품질 검사 상태가 업데이트되었습니다.");
         } catch (Exception e) {
@@ -73,18 +88,11 @@ public class FinishedProductsControlController {
     // 완제품 상태 업데이트
 	@PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO vo) {
-		
+    public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo, RawMaterialsQualityControlVO rvo) {
         try {            
-        	finishedProductsControlService.updateStatus(vo);
-        	if (QualityControlStatus.PENDING.equals(vo.getFpcStatus())) {
-        		finishedProductsControlService.deleteFinishedProductLot(vo);
-        	}
-    		if (QualityControlStatus.PASS.equals(vo.getFpcStatus()) || QualityControlStatus.FAIL.equals(vo.getFpcStatus())) {
-    			finishedProductsControlService.deleteFinishedProductLot(vo);
-    			FinishedProductsControlVO fvo = new FinishedProductsControlVO();
-    			fvo = finishedProductsControlService.getWorkOrdersNo();
-    			finishedProductsControlService.insertFinishedProductLot(fvo);
+        	finishedProductsControlService.updateStatus(fvo);
+        	if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
+    			finishedProductsControlService.insertFinishedProductLot(rvo);
             }
         	
             return ResponseEntity.ok("상태가 업데이트되었습니다.");

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.enums.ProductionplanStatus;
 import com.mrbean.enums.WorkOrdersStatus;
+import com.mrbean.lothistory.LotHistoryVO;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
@@ -153,7 +154,7 @@ public class WorkOrdersRestController {
                         break;
                     case IN_PROGRESS:
                         planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS);
-                        rqcs.processAndInsertRawMaterials();
+                        rqcs.processAndInsertRawMaterials(workVO);
                         break;
                     case COMPLETED:
                         planVO.setPlStatus(ProductionplanStatus.COMPLETED);

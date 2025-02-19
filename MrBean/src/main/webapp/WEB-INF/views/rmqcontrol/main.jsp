@@ -18,8 +18,7 @@
                   <tr>
 					<th>순번</th>
 					<th>작업지시번호</th>
-		            <th>입고일</th>
-		            <th>원자재 LOT 번호</th>
+					<th>원자재 LOT</th>					
 		            <th>원자재 코드</th>
 		            <th>검사일자</th>
 		            <th>품질 검사</th>
@@ -43,26 +42,17 @@
                     	</c:choose>
                     </td>
                     <td>
+					    <span id="workOrderNo_${vo.rqcBno}">${vo.workOrdersList[0].workOrderNo != null ? vo.workOrdersList[0].workOrderNo : '-'}</span>
+					</td>
+                  	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.workOrdersList[0].workOrderNo}">${vo.workOrdersList[0].workOrderNo}</c:when>
+                    		<c:when test="${not empty vo.lotHistoryList[0].rmlNo}">${vo.lotHistoryList[0].rmlNo}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
                   	<td>
                     	<c:choose>
-                    		<c:when test="${not empty vo.rawMaterialsLotList[0].rmlDate}"><fmt:formatDate value="${vo.rawMaterialsLotList[0].rmlDate}" pattern="yyyy-MM-dd" /></c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.rawMaterialsLotList[0].rmlNo}">${vo.rawMaterialsLotList[0].rmlNo}</c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
-                    </td>
-                  	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.rawMaterialsLotList[0].rmCode}">${vo.rawMaterialsLotList[0].rmCode}</c:when>
+                    		<c:when test="${not empty vo.bomList[0].rmCode}">${vo.bomList[0].rmCode}</c:when>
                     		<c:otherwise>-</c:otherwise>
                     	</c:choose>
                     </td>
@@ -166,18 +156,21 @@
 	    });
 	});
 
-    function updateStatus(rqcBno, rqcStatus) {
+   	function updateStatus(rqcBno, rqcStatus) {
+   	    // rqcBno를 기준으로 workOrderNo 값을 가져옴
+   	    var workOrderNo = document.getElementById('workOrderNo_' + rqcBno).textContent;
+    	
         $.ajax({
             url: '/rmqcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ rqcBno: rqcBno, rqcStatus: rqcStatus}),
+            data: JSON.stringify({ rqcBno: rqcBno, rqcStatus: rqcStatus, workOrderNo: workOrderNo}),
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침
             },
             error: function() {
-            	alert("업데이트 실패\n이전에 합격 처리한 작업입니다");
+            	alert("업데이트 실패\n이전에 합격 또는 불합격 처리한 작업입니다");
                 location.reload();  // 페이지 새로고침
             }
         });
