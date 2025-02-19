@@ -67,8 +67,8 @@
 
 	<!-- 원자재 검사 관리 목록 저장 -->
 	<insert id="insertRawMaterialsQualityControl" parameterType="map">
-	    INSERT INTO rawmaterials_quality_control (rml_no, work_order_no)
-		VALUES (#{rml_no}, #{work_order_no});
+	    INSERT IGNORE INTO rawmaterials_quality_control (rml_no, work_order_no)
+		VALUES (#{rml_no}, #{work_order_no})
 	</insert>
 	
 
