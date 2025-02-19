@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                 	<c:forEach var="vo" items="${finishedProductsControlList}">
-                  <tr id="row_${vo.fpcBno}">
+                  <tr id="row_${vo.fpcBno}" data-work-id="${vo.workId}">
                   	<td>
                     	<c:choose>
                     		<c:when test="${not empty vo.fpcBno}">${vo.fpcBno}</c:when>
@@ -178,12 +178,13 @@
     function updateStatus(fpcBno, fpcStatus) {
     	
     	var workOrderNo = document.getElementById('workOrderNo_' + fpcBno).textContent;
+    	var workId = document.getElementById('row_' + fpcBno).getAttribute('data-work-id'); // work_id 가져오기
     	
         $.ajax({
             url: '/fpcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus, workOrderNo: workOrderNo }),
+            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus, workOrderNo: workOrderNo, workId: workId }),
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침

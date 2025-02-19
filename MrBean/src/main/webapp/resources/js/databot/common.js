@@ -67,10 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const formattedResponse = formatResponse(data.data);
                 addMessage('Databot', formattedResponse);
             } else {
-                addMessage('Databot', 'Error: Unable to fetch response.');
+                addMessage('Databot', 'Unable to fetch response.');
             }
         } catch (error) {
-            addMessage('Databot', 'Error: Unable to connect to server.');
+            addMessage('Databot', 'Unable to connect to server.');
         }
     }
 
@@ -88,9 +88,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return JSON.stringify(responseData, null, 2);
     }
-
-    databotButton.addEventListener('click', () => {
-        isDatabotOpen = !isDatabotOpen;
-        databotWindow.classList.toggle('show', isDatabotOpen);
-    });
 });

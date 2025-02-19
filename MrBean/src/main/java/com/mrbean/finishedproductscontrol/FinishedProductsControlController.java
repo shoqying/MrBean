@@ -103,7 +103,7 @@ public class FinishedProductsControlController {
     @ResponseBody
 
     public ResponseEntity<String> updateStatus(@RequestBody FinishedProductsControlVO fvo, RawMaterialsQualityControlVO rvo) {
-        try {            
+        try {
         	finishedProductsControlService.updateStatus(fvo);
         	if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
     			finishedProductsControlService.insertFinishedProductLot(rvo);
@@ -125,12 +125,14 @@ public class FinishedProductsControlController {
     			
     			//ws.updateWorkStatus(workVO);
     			
+
             }
 
-            return ResponseEntity.ok("상태가 업데이트되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-        }
+        		return ResponseEntity.ok("상태가 업데이트되었습니다.");
+	        } catch (Exception e) {
+	        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+	        }
+
     }
     
     // 완재품 검사 목록 삭제

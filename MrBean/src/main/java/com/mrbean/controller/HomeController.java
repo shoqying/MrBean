@@ -37,8 +37,13 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String home(Model model) {
+		return "user/main";
+	}
+
+	@GetMapping("/openai")
+	public String openai(Model model) {
 		addBreadcrumb(model, "Chat room", "#");
-		return "home";
+		return "openai";
 	}
 
 	@GetMapping("/warehouses/create")
