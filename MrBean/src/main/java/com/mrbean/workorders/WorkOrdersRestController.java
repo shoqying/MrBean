@@ -1,6 +1,7 @@
 package com.mrbean.workorders;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -16,90 +17,90 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrbean.common.NumberGenerationService;
 import com.mrbean.enums.ProductionplanStatus;
+import com.mrbean.enums.WorkOrdersStatus;
+import com.mrbean.lothistory.LotHistoryVO;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.productionplan.ProductionplanService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 
-
+/**
+ * 작업지시 REST 컨트롤러
+ */
 @RestController
 @RequestMapping(value="/workorders/api")
 public class WorkOrdersRestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WorkOrdersRestController.class);
-	
-	@Inject
-	private NumberGenerationService ngs;
-	@Inject
-	private WorkOrdersService wos;
-	@Inject
-	private ProductionplanService pps;
-	@Inject
-	private RawMaterialsQualityControlService rqcs;
-	
-	
-	
+    private static final Logger logger = LoggerFactory.getLogger(WorkOrdersRestController.class);
+    
+    @Inject
+    private NumberGenerationService ngs;
+    @Inject
+    private WorkOrdersService wos;
+    @Inject
+    private ProductionplanService pps;
+    @Inject
+    private RawMaterialsQualityControlService rqcs;
+    
     /**
      * 작업지시 등록
-     * http://localhost:8088/workorders/api/work
+     * POST http://localhost:8088/workorders/api/work
      */
-
-	@RequestMapping(value = "/work",method = RequestMethod.POST)
-	public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
-	    logger.info("workordersPOST");
-	    logger.info("전체 요청 데이터: {}", workVO);
-	    logger.info("wName 값: {}", workVO.getWName());
-	    logger.info("wName 타입: {}", (workVO.getWName() != null ? workVO.getWName().getClass().getName() : "null"));
-	    try {
-	    	
-	        // Jackson이 어떻게 데이터를 파싱하는지 확인
-	        ObjectMapper mapper = new ObjectMapper();
-	        String jsonStr = mapper.writeValueAsString(workVO);
-	        logger.info("JSON 형태로 변환된 데이터: {}", jsonStr);
-	    	
-	    	
-	    	
-	    	
-	    	
-	        // 작업지시 등록
-	        wos.insertWorkOrders(workVO);
-	        
-	        
-	        // 연관된 plan의 상태를 WAITING으로 업데이트
-	        ProductionPlanVO planVO = new ProductionPlanVO();
-	        planVO.setPlanId(workVO.getPlanId());
-	        planVO.setPlStatus(ProductionplanStatus.WAITING);
-	        pps.updatePlanStatus(planVO);
-	        
-	        List<WorkOrdersVO> workList = wos.getWorkList(workVO);
-
-	        
-
-	        logger.info("workList $$$$$$$$$$$$$$: "+ workList);
-
-	        logger.info("등록완료");
-	        return ResponseEntity.ok(workList);
-	    } catch (Exception e) {
-	        logger.error("생산계획 등록 실패", e);
-	        return ResponseEntity.status(500).body("계획 등록에 실패했습니다.");
-	    }
-	}
-	
+    @RequestMapping(value = "/work", method = RequestMethod.POST)
+    public ResponseEntity<?> workordersRegisterPOST(@RequestBody WorkOrdersVO workVO) {
+        logger.info("작업지시 등록 요청");
+        logger.info("전체 요청 데이터: {}", workVO);
+        
+        try {
+            // 데이터 로깅
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonStr = mapper.writeValueAsString(workVO);
+            logger.info("JSON 데이터: {}", jsonStr);
+            
+            // 재고 확인
+            if (!wos.checkStockAvailability(workVO)) {
+                return ResponseEntity.badRequest().body("필요한 재고가 부족합니다.");
+            }
+            
+            // 작업지시 등록
+            wos.insertWorkOrders(workVO);
+            
+            // 생산계획 상태 WAITING으로 업데이트
+            ProductionPlanVO planVO = new ProductionPlanVO();
+            planVO.setPlanId(workVO.getPlanId());
+            planVO.setPlStatus(ProductionplanStatus.WAITING);
+            pps.updatePlanStatus(planVO);
+            
+            // 작업지시 목록 조회
+            List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+            logger.info("작업지시 등록 완료");
+            
+            return ResponseEntity.ok(workList);
+            
+        } catch (Exception e) {
+            logger.error("작업지시 등록 실패", e);
+            return ResponseEntity.status(500).body("작업지시 등록에 실패했습니다: " + e.getMessage());
+        }
+    }
     
     /**
-     * 작업지시계획 번호 생성
-     * http://localhost:8088/WorkOrders/api/generateWorkNumber
+     * 작업지시 번호 생성
+     * GET http://localhost:8088/workorders/api/generateWorkNumber
      */
     @RequestMapping(value = "/generateWorkNumber", method = RequestMethod.GET)
-    public String generatePlanNumber() {
-        return ngs.generateNumber("workorders");
+    public ResponseEntity<?> generateWorkNumber() {
+        try {
+            String workNumber = ngs.generateNumber("workorders");
+            return ResponseEntity.ok(workNumber);
+        } catch (Exception e) {
+            logger.error("작업지시 번호 생성 실패", e);
+            return ResponseEntity.status(500).body("번호 생성에 실패했습니다.");
+        }
     }
-	
-    /**
-     * 
-     * 생산계획 목록 조회 API
-     * 
-     */
     
+    /**
+     * 생산계획 목록 조회
+     * GET http://localhost:8088/workorders/api/plans
+     */
     @RequestMapping(value = "/plans", method = RequestMethod.GET)
     public ResponseEntity<List<ProductionPlanVO>> getPlanList(ProductionPlanVO planVO) {
         try {
@@ -110,10 +111,10 @@ public class WorkOrdersRestController {
             return ResponseEntity.status(500).build();
         }
     }
-
+    
     /**
-     * 작업지시계획 삭제
-     * http://localhost:8088/productionplan/api/work/{workId}
+     * 작업지시 삭제
+     * DELETE http://localhost:8088/workorders/api/work/{workId}
      */
     @RequestMapping(value = "/work/{workId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteWork(@PathVariable int workId) {
@@ -122,46 +123,38 @@ public class WorkOrdersRestController {
             List<WorkOrdersVO> workList = wos.getWorkList(new WorkOrdersVO());
             return ResponseEntity.ok(workList);
         } catch (Exception e) {
-            logger.error("작업지시계획 삭제 실패", e);
-            return ResponseEntity.status(500).body("삭제에 실패했습니다.");
+            logger.error("작업지시 삭제 실패", e);
+            return ResponseEntity.status(500).body("삭제에 실패했습니다: " + e.getMessage());
         }
     }
     
     /**
-     * 상태값 변경 api
-     * 
-     * 
+     * 작업상태 변경
+     * PATCH http://localhost:8088/workorders/api/work/{workId}/status
      */
-    @RequestMapping(value = "/work/{workId}/status",method = RequestMethod.PATCH)
+    @RequestMapping(value = "/work/{workId}/status", method = RequestMethod.PATCH)
     public ResponseEntity<?> updateWorkStatus(@PathVariable int workId, @RequestBody WorkOrdersVO workVO) {
-        	
         try {
             workVO.setWorkId(workId);
             
-            // 1. 먼저 workPlanNo로 planId를 조회 (이 부분을 원래대로 유지)
+            // planId 조회
             Integer planId = wos.getPlanIdByWorkId(workId);
-            logger.info("상태변경 호출");
-            logger.info("planId: {}", planId);
-            logger.info("workVO: {}", workVO);
+            logger.info("상태변경 요청 - planId: {}, workVO: {}", planId, workVO);
             
-            // planId를 workVO에도 설정
             workVO.setPlanId(planId);
             
-            // 작업 상태 업데이트
+            // 생산계획 상태 연동
             if (workVO.isShouldUpdatePlan() && planId != null) {
-                
-                // 2. 연관된 plan의 상태도 함께 업데이트  
                 ProductionPlanVO planVO = new ProductionPlanVO();
-                planVO.setPlanId(planId);  // 조회한 planId 사용
+                planVO.setPlanId(planId);
                 
-                // Work 상태에 따라 Plan 상태 설정
                 switch(workVO.getWorkStatus()) {
                     case WAITING:
                         planVO.setPlStatus(ProductionplanStatus.WAITING);
                         break;
                     case IN_PROGRESS:
-                        planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS); 
-                        rqcs.processAndInsertRawMaterials(); // 원자재 검사 관리
+                        planVO.setPlStatus(ProductionplanStatus.IN_PROGRESS);
+                        rqcs.processAndInsertRawMaterials(workVO);
                         break;
                     case COMPLETED:
                         planVO.setPlStatus(ProductionplanStatus.COMPLETED);
@@ -171,22 +164,40 @@ public class WorkOrdersRestController {
                         break;
                 }
                 
-                // plan 상태 업데이트
                 pps.updatePlanStatus(planVO);
             }
             
-            // work 상태 업데이트
+            // 작업상태 업데이트
             wos.updateWorkStatus(workVO);
-            List<WorkOrdersVO> workList = wos.getWorkList(workVO);
             
-            logger.info("상태변경 실행");
+            // 작업 완료 시 추가 처리
+            if (workVO.getWorkStatus() == WorkOrdersStatus.COMPLETED) {
+                wos.completeWork(workVO);
+            }
+            
+            List<WorkOrdersVO> workList = wos.getWorkList(workVO);
+            logger.info("상태변경 완료");
+            
             return ResponseEntity.ok(workList);
-        } catch(Exception e) {
-            logger.error("작업상태변경 실패", e);
-            return ResponseEntity.status(500).body("작업상태변경 실패");    
+            
+        } catch (Exception e) {
+            logger.error("작업상태 변경 실패", e);
+            return ResponseEntity.status(500).body("상태변경에 실패했습니다: " + e.getMessage());
         }
     }
     
-    
-	
-}//WorkOrdersRestController
+    /**
+     * LOT 이력 조회
+     * GET http://localhost:8088/workorders/api/work/{workId}/lot-history
+     */
+//    @RequestMapping(value = "/work/{workId}/lot-history", method = RequestMethod.GET)
+//    public ResponseEntity<?> getLotHistory(@PathVariable int workId) {
+//        try {
+//            List<Map<String, Object>> history = wos.getLotHistory(workId);
+//            return ResponseEntity.ok(history);
+//        } catch (Exception e) {
+//            logger.error("LOT 이력 조회 실패", e);
+//            return ResponseEntity.status(500).body("이력 조회에 실패했습니다: " + e.getMessage());
+//        }
+//    }
+}

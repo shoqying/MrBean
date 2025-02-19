@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.mrbean.billofmaterials.domain.BillOfMaterialsVO;
 import com.mrbean.enums.QualityControlStatus;
 import com.mrbean.finishedproductslot.FinishedProductsLotVO;
+import com.mrbean.lothistory.LotHistoryVO;
 import com.mrbean.productionplan.ProductionPlanVO;
 import com.mrbean.products.ProductsVO;
 import com.mrbean.warehouse.WarehouseDTO;
@@ -26,6 +28,7 @@ public class FinishedProductsControlVO {
 	private double fpcYield; // 수율
 	private double fpcQuantity; // 검사량
 	private int planQuantity; // 검사량
+	private String workOrderNo;
 	
 	// join 매핑
 //	private String pName; // 제품 명
@@ -37,6 +40,7 @@ public class FinishedProductsControlVO {
 	private List<WarehouseDTO> warehouseList;
 	private List<FinishedProductsLotVO> finishedProductsLotList;
 	private List<WorkOrdersVO> workOrdersList;
+	
 	
 
 

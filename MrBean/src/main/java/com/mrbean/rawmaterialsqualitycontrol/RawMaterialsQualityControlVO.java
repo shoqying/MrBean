@@ -3,7 +3,10 @@ package com.mrbean.rawmaterialsqualitycontrol;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.mrbean.billofmaterials.domain.BillOfMaterialsDTO;
+import com.mrbean.billofmaterials.domain.BillOfMaterialsVO;
 import com.mrbean.enums.QualityControlStatus;
+import com.mrbean.lothistory.LotHistoryVO;
 import com.mrbean.products.ProductsVO;
 import com.mrbean.rawmaterials.RawMaterialsVO;
 import com.mrbean.rawmaterialslot.RawMaterialsLotVO;
@@ -21,6 +24,8 @@ public class RawMaterialsQualityControlVO {
 	private QualityControlStatus rqcStatus; // 상태(합격, 불합격)
 	private String workOrderNo; // 작업지시번호
 	private String bomId;
+	private int fpcBno;
+	private String rmlNo;
 
 
 //	// join 매핑
@@ -33,6 +38,9 @@ public class RawMaterialsQualityControlVO {
 	private List<RawMaterialsLotVO> rawMaterialsLotList;
 	private List<WorkOrdersVO> workOrdersList;
 	private List<RawMaterialsVO> rawMaterialsList;
+	private List<BillOfMaterialsDTO> bomList;
+	private List<ProductsVO> productsList;
+	private List<LotHistoryVO> lotHistoryList;
 	
 
 }

@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.mrbean.lothistory.LotHistoryVO;
+import com.mrbean.workorders.WorkOrdersVO;
+
 @Service
 public class RawMaterialsQualityControlServiceImp implements RawMaterialsQualityControlService {
 	
@@ -20,10 +23,11 @@ public class RawMaterialsQualityControlServiceImp implements RawMaterialsQuality
 	
 
 	@Override
-	public void processAndInsertRawMaterials() throws Exception {
+	public void processAndInsertRawMaterials(WorkOrdersVO vo) throws Exception {
 		logger.info("processAndInsertRawMaterials() 호출");
-		Map<String, Object> params = rawMaterialsQualityControlDAO.selectRawMaterialsData();
-		
+		logger.info("{}" + vo);
+		Map<String, Object> params = rawMaterialsQualityControlDAO.selectRawMaterialsData(vo);
+		logger.info("[]" + params);
 		rawMaterialsQualityControlDAO.insertRawMaterialsQualityControl(params);
         
 		

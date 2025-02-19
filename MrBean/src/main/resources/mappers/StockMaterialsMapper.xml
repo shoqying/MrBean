@@ -1,71 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.mrbean.mappers.StockMaterialsMapper">
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.mrbean.mappers.StockMaterialsMapper">
 
-    <!-- resultMap 정의 -->
-  <resultMap id="StockMaterialsResultMap" type="com.mrbean.stockmaterials.StockMaterialsVO">
-    <id property="smBno" column="sm_bno" /> <!-- 순번 -->
-    <result property="rrQuantity" column="rr_quantity" /> <!-- 수량 -->
-    <result property="rrUnit" column="rr_unit" /> <!-- 단위 -->
-     <result property="wCode" column="w_code" /> <!-- 창고 코드 -->
-    <result property="rmlDate" column="rml_date" /> <!-- 입고일 -->
-    <result property="rmlNo" column="rml_no" /> <!-- LOT번호(원자재 입고) -->
-    <result property="rmCode" column="rm_code" /> <!-- 원자재 코드 -->
-    <result property="rrExpirydate" column="rr_expirydate" /> <!-- 유통기한 -->
-    <result property="rrNo" column="rr_no" /> <!-- 원자재 입고 번호 -->
-    <result property="smTotal" column="sm_total" /> <!-- 총 재고량 -->
-   
-</resultMap>
+   <!-- RawMaterialsReceiving resultMap -->
+   <resultMap id="RawMaterialsReceivingResultMap" type="com.mrbean.rawmaterialsreceiving.RawMaterialsReceivingVO">
+       <id property="rrNo" column="rr_no" />
+       <result property="rmlNo" column="rml_no" />
+       <result property="rmlBno" column="rml_bno" />
+       <result property="rmCode" column="rm_code" />
+       <result property="rrQuantity" column="rr_quantity" />
+       <result property="rrUnit" column="rr_unit" />
+       <result property="rrExpirydate" column="rr_expirydate" />
+       <result property="isRegistered" column="is_registered" />
+   </resultMap>
 
-	<!-- 원자재 목록 조회 -->
-    <select id="getStockMaterials" resultMap="StockMaterialsResultMap">
-	    SELECT
-	    sm.sm_bno,
-	    rr.rr_quantity,
-	    rr.rr_unit,
-	    rml.rml_date,
-	    w.w_code,
-	    rml.rml_no,
-	    rm.rm_code,
-	    rr.rr_expirydate,
-	    rr.rr_no,
-	    COALESCE(total_stock.sm_total, 0) AS sm_total
-	FROM
-	    stock_materials sm
-	JOIN rawmaterials_receiving rr ON sm.rr_no = rr.rr_no
-	JOIN raw_materials rm ON sm.rm_code = rm.rm_code
-	JOIN rawmaterials_lot rml ON sm.rml_no = rml.rml_no
-	JOIN warehouses w ON sm.w_code = w.w_code
-	LEFT JOIN (  <!-- 원자재 코드별 총 재고량을 구하는 서브쿼리 -->
-	    SELECT rm_code, SUM(rr_quantity) AS sm_total
-	    FROM stock_materials
-	    GROUP BY rm_code
-	) total_stock 
-	ON sm.rm_code = total_stock.rm_code
-<choose>
-    <when test="sortColumn == 'rml_date'">ORDER BY sm.rml_date ${sortDirection}</when>
-    <when test="sortColumn == 'rr_quantity'">ORDER BY sm.rr_quantity ${sortDirection}</when>
-    <otherwise>ORDER BY sm.sm_bno ${sortDirection}</otherwise>
-</choose>
-LIMIT #{limit} OFFSET #{offset}
+   <!-- StockMaterials resultMap -->
+   <resultMap id="StockMaterialsResultMap" type="com.mrbean.stockmaterials.StockMaterialsVO">
+       <id property="smBno" column="sm_bno" />
+       <result property="rrQuantity" column="rr_quantity" />
+       <result property="rrUnit" column="rr_unit" />
+       <result property="rmlDate" column="rml_date" />
+       <result property="rmlNo" column="rml_no" />
+       <result property="rmCode" column="rm_code" />
+       <result property="rrExpirydate" column="rr_expirydate" />
+       <result property="rrNo" column="rr_no" />
+       <result property="smTotal" column="sm_total" />
+   </resultMap>
 
-</select>
+   <!-- 원자재 입고 전체 목록 조회 -->
+   <select id="selectAllRawMaterialsReceiving" resultMap="RawMaterialsReceivingResultMap">
+       SELECT * FROM rawmaterials_receiving
+   </select>
 
+   <!-- 원자재 입고 목록 페이징 조회 -->
+   <select id="getRawMaterialsWithPaging" resultMap="RawMaterialsReceivingResultMap">
+       SELECT * 
+       FROM rawmaterials_receiving
+       ORDER BY rr_no DESC
+       LIMIT #{pageSize} OFFSET #{offset}
+   </select>
 
-    <!-- 원자재 총 항목 수 조회 -->
-    <select id="getTotalCount" resultType="int">
-        SELECT COUNT(*) 
-        FROM stock_materials sm
-        
-        JOIN rawmaterials_receiving rr ON sm.rr_no = rr.rr_no
-    	JOIN raw_materials rm ON sm.rm_code = rm.rm_code
-    	JOIN rawmaterials_lot rml ON sm.rml_no = rml.rml_no
-    	JOIN warehouses w ON sm.w_code = w.w_code
-    
-    </select>
-    
+   <!-- 전체 원자재 입고 수량 조회 -->
+   <select id="getTotalRawCount" resultType="int">
+       SELECT COUNT(*) 
+       FROM rawmaterials_receiving
+   </select>
+
+   <!-- 특정 원자재 입고 조회 -->
+   <select id="selectRawMaterialsReceiving" resultMap="RawMaterialsReceivingResultMap">
+       SELECT * 
+       FROM rawmaterials_receiving 
+       WHERE rr_no = #{rrNo}
+   </select>
+
+   <!-- 재고 목록 조회 (페이징) -->
+   <select id="getStockMaterials" resultMap="StockMaterialsResultMap">
+       SELECT
+           sm.sm_bno,
+           sm.rr_quantity,
+           sm.rr_unit,
+           sm.rml_date,
+           sm.rml_no,
+           sm.rm_code,
+           sm.rr_expirydate,
+           sm.rr_no,
+           COALESCE(total_stock.sm_total, 0) AS sm_total
+       FROM
+           stock_materials sm
+       LEFT JOIN (
+           SELECT rm_code, SUM(rr_quantity) AS sm_total
+           FROM stock_materials
+           GROUP BY rm_code
+       ) total_stock 
+       ON sm.rm_code = total_stock.rm_code
+       ORDER BY 
+       <choose>
+           <when test="sortColumn == 'rml_date'">sm.rml_date ${sortDirection}</when>
+           <when test="sortColumn == 'rr_quantity'">sm.rr_quantity ${sortDirection}</when>
+           <otherwise>sm.sm_bno ${sortDirection}</otherwise>
+       </choose>
+       LIMIT #{pageSize} OFFSET #{offset}
+   </select>
+
+   <!-- 재고 총 항목 수 조회 -->
+   <select id="getTotalCount" resultType="int">
+       SELECT COUNT(*) 
+       FROM stock_materials
+   </select>
+
+   <!-- 재고 중복 체크 -->
+   <select id="checkDuplicateStock" resultType="int">
+       SELECT COUNT(*) 
+       FROM stock_materials 
+       WHERE rr_no = #{rrNo}
+   </select>
+
+   <!-- 재고 등록 상태 업데이트 -->
+   <update id="updateRegistrationStatus">
+       UPDATE rawmaterials_receiving 
+       SET is_registered = 1 
+       WHERE rr_no = #{rrNo}
+   </update>
+
+   <!-- 재고 등록 -->
+   <insert id="insertList" parameterType="com.mrbean.stockmaterials.StockMaterialsVO" 
+       useGeneratedKeys="true" keyProperty="smBno">
+       INSERT INTO stock_materials (
+           rr_quantity,
+           rr_unit,
+           rml_date,
+           rml_no,
+           rm_code,
+           rr_expirydate,
+           rr_no,
+           sm_total
+       ) VALUES (
+           #{rrQuantity},
+           #{rrUnit},
+           #{rmlDate},
+           #{rmlNo},
+           #{rmCode},
+           #{rrExpirydate},
+           #{rrNo},
+           #{rrQuantity}
+       )
+   </insert>
 
 </mapper>

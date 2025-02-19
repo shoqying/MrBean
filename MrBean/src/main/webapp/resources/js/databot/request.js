@@ -1,80 +1,80 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const chatbotButton = document.getElementById('chatbot-button');
-    const chatbotWindow = document.getElementById('chatbot-window');
-    const closeChatbot = document.getElementById('close-chatbot');
-    const sendChatbot = document.getElementById('send-chatbot');
-    const chatbotInput = document.getElementById('chatbot-input');
-    const chatbotMessages = document.getElementById('chatbot-messages');
-    const chatbotHeader = document.querySelector('.chatbot-header');
+    const databotButton = document.getElementById('databot-button');
+    const databotWindow = document.getElementById('databot-window');
+    const closeDatabot = document.getElementById('close-databot');
+    const sendDatabot = document.getElementById('send-databot');
+    const databotInput = document.getElementById('databot-input');
+    const databotMessages = document.getElementById('databot-messages');
+    const databotHeader = document.querySelector('.databot-header');
 
-    let isChatbotOpen = false;
+    let isDatabotOpen = false;
     let isDragging = false;
     let offsetX, offsetY;
     let isResizing = false;
     let initialWidth, initialHeight, initialX, initialY;
 
     // 대화창 초기 위치 및 크기 설정
-    chatbotWindow.style.position = 'fixed';
-    chatbotWindow.style.left = '80px';
-    chatbotWindow.style.bottom = '0px';
-    chatbotWindow.style.width = '400px';
-    chatbotWindow.style.height = '500px';
+    databotWindow.style.position = 'fixed';
+    databotWindow.style.left = '80px';
+    databotWindow.style.bottom = '0px';
+    databotWindow.style.width = '400px';
+    databotWindow.style.height = '500px';
 
     // 채팅창 열기/닫기
-    chatbotButton.addEventListener('click', () => {
-        isChatbotOpen = !isChatbotOpen;
-        chatbotWindow.style.display = isChatbotOpen ? 'flex' : 'none';
+    databotButton.addEventListener('click', () => {
+        isDatabotOpen = !isDatabotOpen;
+        databotWindow.style.display = isDatabotOpen ? 'flex' : 'none';
     });
 
-    closeChatbot.addEventListener('click', () => {
-        isChatbotOpen = false;
-        chatbotWindow.style.display = 'none';
+    closeDatabot.addEventListener('click', () => {
+        isDatabotOpen = false;
+        databotWindow.style.display = 'none';
     });
 
     // 메시지 전송
-    sendChatbot.addEventListener('click', sendMessage);
-    chatbotInput.addEventListener('keypress', function(e) {
+    sendDatabot.addEventListener('click', sendMessage);
+    databotInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') sendMessage();
     });
 
     async function sendMessage() {
-        const message = chatbotInput.value.trim();
+        const message = databotInput.value.trim();
         if (!message) return;
 
         addMessage('You', message);
-        chatbotInput.value = '';
-        sendChatbot.disabled = true;
-        sendChatbot.style.width = '14%';
-        sendChatbot.innerHTML = `
+        databotInput.value = '';
+        sendDatabot.disabled = true;
+        sendDatabot.style.width = '14%';
+        sendDatabot.innerHTML = `
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span class="visually-hidden">Loading...</span>
         `;
 
-        await fetchChatbotResponse(message);
+        await fetchDatabotResponse(message);
 
-        sendChatbot.disabled = false;
-        sendChatbot.innerHTML = '<i class="bi bi-arrow-return-left"></i>';
+        sendDatabot.disabled = false;
+        sendDatabot.innerHTML = '<i class="bi bi-arrow-return-left"></i>';
     }
 
     function addMessage(sender, message) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender === 'You' ? 'user' : 'bot');
         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-        chatbotMessages.appendChild(messageElement);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        databotMessages.appendChild(messageElement);
+        databotMessages.scrollTop = databotMessages.scrollHeight;
     }
 
-    async function fetchChatbotResponse(message) {
+    async function fetchDatabotResponse(message) {
         try {
-            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chats/', {
+            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/databot/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: message })
             });
             const data = await response.json();
-            addMessage('Chatbot', data?.data ? formatResponse(data.data) : 'Invalid response format.');
+            addMessage('Databot', data?.data ? formatResponse(data.data) : 'Invalid response format.');
         } catch (error) {
-            addMessage('Chatbot', 'Unable to connect to server.');
+            addMessage('Databot', 'Unable to connect to server.');
         }
     }
 
@@ -93,16 +93,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 입력 텍스트에 따라 채팅창 크기 조정
-    chatbotInput.addEventListener('input', function() {
+    databotInput.addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
     });
 
     // 대화창 드래그
-    chatbotHeader.addEventListener('mousedown', function(e) {
+    databotHeader.addEventListener('mousedown', function(e) {
         isDragging = true;
-        offsetX = e.clientX - parseInt(chatbotWindow.style.left, 10);
-        offsetY = e.clientY - parseInt(chatbotWindow.style.top, 10);
+        offsetX = e.clientX - parseInt(databotWindow.style.left, 10);
+        offsetY = e.clientY - parseInt(databotWindow.style.top, 10);
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     });
@@ -110,8 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function onMouseMove(e) {
         if (isDragging) {
             e.preventDefault();
-            chatbotWindow.style.left = `${e.clientX - offsetX}px`;
-            chatbotWindow.style.top = `${e.clientY - offsetY}px`;
+            databotWindow.style.left = `${e.clientX - offsetX}px`;
+            databotWindow.style.top = `${e.clientY - offsetY}px`;
         }
     }
 
@@ -122,10 +122,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 크기 조정
-    document.getElementById('chatbot-resize-handle').addEventListener('mousedown', function(e) {
+    document.getElementById('databot-resize-handle').addEventListener('mousedown', function(e) {
         isResizing = true;
-        initialWidth = parseInt(chatbotWindow.style.width, 10);
-        initialHeight = parseInt(chatbotWindow.style.height, 10);
+        initialWidth = parseInt(databotWindow.style.width, 10);
+        initialHeight = parseInt(databotWindow.style.height, 10);
         initialX = e.clientX;
         initialY = e.clientY;
         document.addEventListener('mousemove', onResize);
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isResizing) {
             const dx = e.clientX - initialX;
             const dy = e.clientY - initialY;
-            chatbotWindow.style.width = initialWidth + dx + 'px';
-            chatbotWindow.style.height = initialHeight + dy + 'px';
+            databotWindow.style.width = initialWidth + dx + 'px';
+            databotWindow.style.height = initialHeight + dy + 'px';
         }
     }
 

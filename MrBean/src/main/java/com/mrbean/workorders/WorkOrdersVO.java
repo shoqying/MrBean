@@ -40,6 +40,9 @@ public class WorkOrdersVO {
     
     @JsonProperty("pCode")
     private String pCode;
+    
+    @JsonProperty("bomId")
+    private String bomId;  // BOM ID
 
     
     

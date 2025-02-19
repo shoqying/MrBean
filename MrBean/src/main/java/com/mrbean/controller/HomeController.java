@@ -27,26 +27,23 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	private final BillOfMaterialsService billOfMaterialsService;
-	private final RawMaterialsService rawMaterialService;
 	private final WarehouseService warehouseService;
 
 	@Autowired
 	public HomeController(BillOfMaterialsService billOfMaterialsService, RawMaterialsService rawMaterialService, WarehouseService warehouseService) {
 		this.billOfMaterialsService = billOfMaterialsService;
-		this.rawMaterialService = rawMaterialService;
 		this.warehouseService = warehouseService;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	@GetMapping("/")
+	public String home(Model model) {
+		return "user/main";
+	}
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		String formattedDate = dateFormat.format(date);
-
-		model.addAttribute("serverTime", formattedDate);
-		return "home";
+	@GetMapping("/openai")
+	public String openai(Model model) {
+		addBreadcrumb(model, "Chat room", "#");
+		return "openai";
 	}
 
 	@GetMapping("/warehouses/create")
@@ -77,7 +74,7 @@ public class HomeController {
 			List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
 			model.addAttribute("warehouseList", warehouseList);
 			addBreadcrumb(model, "창고 목록", "#");
-			return "warehouse/list";
+			return "warehouse/main";
 		} catch (Exception e) {
 			logger.error("창고 목록 조회 중 오류 발생", e);
 			model.addAttribute("errorMessage", "창고 목록 조회 실패: " + e.getMessage());

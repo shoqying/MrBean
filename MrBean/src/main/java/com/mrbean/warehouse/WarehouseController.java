@@ -55,7 +55,7 @@ public class WarehouseController {
         if (warehouseService.isWarehouseCodeExist(warehouse.getWCode())) {
             logger.error("이미 등록된 창고 코드: {}", warehouse.getWCode());
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "이미 등록된 창고 입니다.");
+            errorResponse.put("message", "이미 등록된 창고 코드입니다.");
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -105,29 +105,31 @@ public class WarehouseController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
+
     /**
      * 창고 목록 조회 (GET)
-     * Example: GET http://localhost:8080/warehouses
+     * Example: GET http://localhost:8080/warehouses/refresh
      */
-//    @GetMapping("/warehouses")
-//    public ResponseEntity<?> getWarehouseList() {
-//        try {
-//            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
-//            return ResponseEntity.ok(warehouseList);
-//        } catch (Exception e) {
-//            logger.error("창고 목록 조회 중 오류 발생", e);
-//            return ResponseEntity
-//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
-//        }
-//    }
+    @GetMapping("/warehouses/refresh")
+    public ResponseEntity<?> getWarehouseList() {
+        try {
+            List<WarehouseVO> warehouseList = warehouseService.getWarehouseList();
+            logger.info("창고 목록 조회 성공: {}", warehouseList);
+            return ResponseEntity.ok(warehouseList);
+        } catch (Exception e) {
+            logger.error("창고 목록 조회 중 오류 발생", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("창고 목록 조회 실패", List.of(e.getMessage())));
+        }
+    }
 
     /**
      * 창고 정보 수정 (PUT)
      * Example: PUT http://localhost:8080/warehouses/{id}
      */
     @PutMapping("/warehouses/{wCode}")
-    public ResponseEntity<?> updateWarehouse(@PathVariable String wCode, @Validated @RequestBody WarehouseDTO warehouse, BindingResult result) {
+    public ResponseEntity<?> updateWarehouse(@PathVariable String wCode, @Validated @RequestBody WarehouseDTO warehouse, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             List<String> errors = result.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -135,6 +137,14 @@ public class WarehouseController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse("창고 정보 수정 실패", errors));
+        }
+
+        // 창고 이름 중복 체크
+        if (warehouseService.isWarehouseNameExist(warehouse.getWName())) {
+            logger.error("이미 등록된 창고 이름: {}", warehouse.getWName());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse("이미 등록된 창고 이름입니다.", null));
         }
 
         try {

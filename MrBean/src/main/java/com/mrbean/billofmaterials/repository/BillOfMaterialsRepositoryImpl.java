@@ -38,6 +38,11 @@ public class BillOfMaterialsRepositoryImpl implements BillOfMaterialsRepository 
     }
 
     @Override
+    public boolean checkBillOfMaterialsNameExists(String bomName) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "checkBillOfMaterialsNameExists", bomName);
+    }
+
+    @Override
     public BillOfMaterialsDTO selectBomDetails(String bomId) throws Exception{
 
         return sqlSession.selectOne(NAMESPACE + "selectBomDetails", bomId);
