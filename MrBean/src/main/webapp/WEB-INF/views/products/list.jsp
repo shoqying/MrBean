@@ -3,7 +3,6 @@
 <c:set var="pageTitle" value="완제품 목록"/>
 <c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
@@ -61,77 +60,78 @@
 </section>
 
 <!-- 수정 모달 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">완제품 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
-                <form id="updateForm" action="${pageContext.request.contextPath}/products/update" method="post">
-                    <input type="hidden" id="pCode" name="pCode" value="">
-                    <div class="form-group">
-                        <label for="pName">완제품 이름:</label>
-                        <input type="text" id="pName" name="pName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pDescription">상세 설명:</label>
-                        <input type="text" id="pDescription" name="pDescription" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bomId">BOM ID:</label>
-                        <select id="bomId" name="bomId" class="form-control" required>
-                            <c:forEach var="bom" items="${bomList}">
-                                <option value="${bom.bomId}">${bom.bomId}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-success">수정</button>
-                </form>
+                <div class="mb-3">
+                    <label for="pCode" class="form-label">완제품 코드</label>
+                    <input type="text" class="form-control" id="pCode" name="pCode" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="pName" class="form-label">완제품 이름</label>
+                    <input type="text" class="form-control" id="pName" name="pName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bomId" class="form-label">BOM ID</label>
+                    <select id="bomId" name="bomId" class="form-control" readonly>
+                        <c:forEach var="bom" items="${bomList}">
+                            <option value="${bom.bomId}">${bom.bomId}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="pDescription" class="form-label">상세 설명</label>
+                    <input type="text" class="form-control" id="pDescription" name="pDescription" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editButton" onclick="submitEditForm()">수정</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- BOM 정보 모달 -->
-<div class="modal fade" id="editBomModal" tabindex="-1" role="dialog" aria-labelledby="editBomModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editBomModalLabel">BOM 정보</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="modal fade" id="editBomModal" tabindex="-1" aria-labelledby="editBomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg border-0 rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title fw-bold" id="editBomModalLabel">BOM 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="bomInfoForm">
-                    <div class="form-group">
-                        <label for="bomName">BOM 이름:</label>
-                        <input type="text" id="bomName" class="form-control" readonly>
+                    <div class="mb-3">
+                        <label for="bomName" class="form-label fw-semibold">BOM 이름</label>
+                        <input type="text" id="bomName" class="form-control bg-light border-0 rounded-3" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="rmCode">원자재 코드:</label>
-                        <input type="text" id="rmCode" class="form-control" readonly>
+                    <div class="mb-3">
+                        <label for="rmCode" class="form-label fw-semibold">원자재 코드</label>
+                        <input type="text" id="rmCode" class="form-control bg-light border-0 rounded-3" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="bomRatio">비율:</label>
-                        <input type="text" id="bomRatio" class="form-control" readonly>
+                    <div class="mb-3">
+                        <label for="bomRatio" class="form-label fw-semibold">비율</label>
+                        <input type="text" id="bomRatio" class="form-control bg-light border-0 rounded-3" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="bomDescription">설명:</label>
-                        <input type="text" id="bomDescription" class="form-control" readonly>
+                    <div class="mb-3">
+                        <label for="bomDescription" class="form-label fw-semibold">설명</label>
+                        <input type="text" id="bomDescription" class="form-control bg-light border-0 rounded-3" readonly>
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer border-0 pb-4">
+                <button type="button" class="btn btn-outline-secondary rounded-3 px-4" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script src="<c:url value='/resources/js/bom/infoModal.js'/>"></script>
 <script src="<c:url value='/resources/js/components/toast.js'/>"></script>
 <script src="<c:url value='/resources/js/components/resetToast.js'/>"></script>
@@ -141,6 +141,18 @@
             showToast("${message}");
         </c:if>
     };
+
+    function openEditModal(pCode, pName, pDescription, bomId) {
+        document.getElementById('pCode').value = pCode;
+        document.getElementById('pName').value = pName;
+        document.getElementById('pDescription').value = pDescription;
+        document.getElementById('bomId').value = bomId;
+        $('#editModal').modal('show');
+    }
+
+    function closeEditModal() {
+        $('#editModal').modal('hide');
+    }
 </script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </html>

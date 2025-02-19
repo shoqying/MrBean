@@ -58,60 +58,34 @@
 }
 
 /* Input field */
-.chat-input {
-    width: 100%;
-    padding: 12px;
+.chatbot-input {
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 14px;
-    box-sizing: border-box;
+    width: 89%;
 }
 
 /* Send button */
-.chat-send-btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4caf50;
+.send-chatbot {
+    padding: 10px;
+    opacity: 0.7;
+    background: #4154f1;
     color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    transition: background 0.3s;
+    width: 10%;
+    float: right;
 }
 
-/* Disabled send button */
-.chat-send-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Spinner inside the button (circular) */
-.chat-send-btn .spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #fff;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    position: absolute;
-    visibility: hidden;  /* Initially hidden */
-}
-
-/* Show spinner when button is loading */
-.chat-send-btn.loading .spinner {
-    visibility: visible;
+.send-chatbot:hover {
+    background: #0056b3;
 }
 
 .chat-send-btn.loading span {
     visibility: hidden;  /* Hide button text when loading */
-}
-
-/* Spinner animation (circular) */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 /* Smaller timestamp */

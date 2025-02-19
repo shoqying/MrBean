@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import com.mrbean.common.annotation.NoLoginCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +114,8 @@ public class userController {
             return "기존 비밀번호 암호화가 완료되었습니다.";
         }
     }
-    
+
+    @NoLoginCheck
     @GetMapping("/login")
     public String loginPage() {
         return "user/login"; // 로그인 JSP 경로 반환
