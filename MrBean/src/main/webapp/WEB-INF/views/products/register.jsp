@@ -4,7 +4,7 @@
 <c:set var="pageTitle" value="완제품 등록"/>
 <c:set var="sidebarTitle" value="기준정보관리"/>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
