@@ -69,4 +69,17 @@ public interface WorkOrdersDAO {
      * LOT 이력 등록
      */
     public void insertLotHistory(Map<String, Object> params);
+    /**
+     * workno로 id 찾기..ㅠㅠ
+     */
+    public int getWorkIdByWorkOrderNo(String workOrderNo);
+    
+    /**
+     * 아이디에 해당하는 db 조회
+     * 
+     */
+    /**
+     * workId에 해당하는 작업수량 조회
+     */
+    public int getWorkQuantityById(int workId);
 }

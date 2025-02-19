@@ -79,4 +79,13 @@ public interface WorkOrdersService {
      * @return LOT 이력 목록
      */
     //public List<Map<String, Object>> getLotHistory(int workId);
+    
+    
+    
+    
+    public int getWorkIdByWorkOrderNo(String workOrderNo);
+    
+    
+    
+    
 }

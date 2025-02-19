@@ -142,12 +142,12 @@
            <tr>
                <th>순번</th>
                <th>입고일</th>
-               <th>수량</th>
                <th>단위</th>
                <th>LOT번호</th>
                <th>원자재 코드</th>
                <th>유통기한</th>
-               <th>총 재고량</th>
+               <th>입고수량</th>
+               <th>실제수량</th>
            </tr>
        </thead>
        <tbody>
@@ -155,11 +155,11 @@
                <tr>
                    <td>${stockList.smBno}</td>
                    <td>${stockList.rmlDate}</td>
-                   <td>${stockList.rrQuantity}</td>
                    <td>${stockList.rrUnit}</td>
                    <td>${stockList.rmlNo}</td>
                    <td>${stockList.rmCode}</td>
                    <td><fmt:formatDate value="${stockList.rrExpirydate}" pattern="yyyy-MM-dd" /></td>
+                   <td>${stockList.rrQuantity}</td>
                    <td>${stockList.smTotal}</td>
                </tr>
            </c:forEach>

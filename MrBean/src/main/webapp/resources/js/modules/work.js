@@ -28,7 +28,7 @@ export const workModule = {
     getButtonStates: function(status) {
         return {
             start: [STATUS.WORK.WAITING, STATUS.WORK.STOPPED].includes(status),
-            complete: status === STATUS.WORK.IN_PROGRESS,
+            complete:false /*status === STATUS.WORK.IN_PROGRESS*/,
             stop: status === STATUS.WORK.IN_PROGRESS
         };
     },

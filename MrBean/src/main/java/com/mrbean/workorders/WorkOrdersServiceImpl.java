@@ -82,6 +82,8 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
     @Override
     @Transactional
     public void updateWorkStatus(WorkOrdersVO workVO) {
+    	logger.info("&&***********************************************");
+    	logger.info("workVO의 값!!!!!!!!!!!!!!!!!!" + workVO);
         try {
             if(workVO.getWorkStatus() == WorkOrdersStatus.IN_PROGRESS) {
                 workVO.setWorkStartTime(new Timestamp(System.currentTimeMillis()));
@@ -230,12 +232,15 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
     @Transactional
     public void completeWork(WorkOrdersVO workVO) {
         try {
+            // DB에서 작업수량 조회
+            int workQuantity = wdao.getWorkQuantityById(workVO.getWorkId());
+            
             workVO.setWorkStatus(WorkOrdersStatus.COMPLETED);
             workVO.setWorkEndTime(new Timestamp(System.currentTimeMillis()));
-            workVO.setCompletedQuantity(workVO.getWorkQuantity());
+            workVO.setCompletedQuantity(workQuantity);  // 조회한 작업수량으로 설정
             wdao.updateWorkStatus(workVO);
             
-            logger.info("작업 완료 처리 완료. workId: {}", workVO.getWorkId());
+            logger.info("작업 완료 처리 완료. workId: {}, completedQuantity: {}", workVO.getWorkId(), workQuantity);
             
         } catch (Exception e) {
             logger.error("작업 완료 처리 중 오류 발생", e);
@@ -255,4 +260,19 @@ public class WorkOrdersServiceImpl implements WorkOrdersService {
 //            throw new RuntimeException("LOT 이력 조회 실패", e);
 //        }
 //    }
+    
+    
+    
+    @Override
+    public int getWorkIdByWorkOrderNo(String workOrderNo) {
+        try {
+            return wdao.getWorkIdByWorkOrderNo(workOrderNo);
+        } catch (Exception e) {
+            logger.error("작업 ID 조회 중 오류 발생. workOrderNo: " + workOrderNo, e);
+            throw new RuntimeException("작업 ID 조회 실패", e);
+        }
+    }
+    
+    
+    
 }

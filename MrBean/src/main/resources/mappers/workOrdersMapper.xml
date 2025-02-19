@@ -49,37 +49,36 @@
     </delete>
     
     <!-- 작업지시 등록 -->
-<!-- 작업지시 등록 -->
-<insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO" 
-        useGeneratedKeys="true" keyProperty="workId">
-    INSERT INTO work_orders (
-        work_order_no,
-        plan_id,
-        work_plan_no,
-        work_start_date,
-        work_quantity,
-        work_status,
-        work_remark,
-        work_created_by,
-        rml_no,
-        w_code,
-        w_name,
-        p_name
-    ) VALUES (
-        #{workOrderNo},
-        #{planId},
-        #{workPlanNo},
-        #{workStartDate},
-        #{workQuantity},
-        #{workStatus},
-        #{workRemark},
-        #{workCreatedBy},
-        #{rmlNo},
-        #{wCode},
-        #{wName},
-        #{pName}
-    )
-</insert>
+	<insert id="insertWO" parameterType="com.mrbean.workorders.WorkOrdersVO" 
+	        useGeneratedKeys="true" keyProperty="workId">
+	    INSERT INTO work_orders (
+	        work_order_no,
+	        plan_id,
+	        work_plan_no,
+	        work_start_date,
+	        work_quantity,
+	        work_status,
+	        work_remark,
+	        work_created_by,
+	        rml_no,
+	        w_code,
+	        w_name,
+	        p_name
+	    ) VALUES (
+	        #{workOrderNo},
+	        #{planId},
+	        #{workPlanNo},
+	        #{workStartDate},
+	        #{workQuantity},
+	        #{workStatus},
+	        #{workRemark},
+	        #{workCreatedBy},
+	        #{rmlNo},
+	        #{wCode},
+	        #{wName},
+	        #{pName}
+	    )
+	</insert>
     
     <!-- 작업상태 변경 -->
     <update id="updateWorkStatus">
@@ -89,7 +88,7 @@
             workStartTime = #{workStartTime},
             workEndTime = #{workEndTime},
             completedQuantity = #{completedQuantity}
-        WHERE work_id = #{workId}
+        WHERE work_id = #{workId} OR work_order_no = #{workOrderNo}
     </update>
     
     <!-- 생산계획 ID 조회 -->
@@ -159,4 +158,21 @@
             NOW()
         )
     </insert>
+    
+    
+	    
+	<select id="getWorkIdByWorkOrderNo" resultType="int">
+	    SELECT work_id 
+	    FROM work_orders 
+	    WHERE work_order_no = #{workOrderNo}
+	</select>
+    
+    <!-- 해당id에 해당하는 모든값들조회  -->
+	<select id="getWorkQuantityById" resultType="int">
+	    SELECT work_quantity
+	    FROM work_orders
+	    WHERE work_id = #{workId}
+	</select>
+	    
+    
 </mapper>

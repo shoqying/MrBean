@@ -57,34 +57,27 @@
    </select>
 
    <!-- 재고 목록 조회 (페이징) -->
-   <select id="getStockMaterials" resultMap="StockMaterialsResultMap">
-       SELECT
-           sm.sm_bno,
-           sm.rr_quantity,
-           sm.rr_unit,
-           sm.rml_date,
-           sm.rml_no,
-           sm.rm_code,
-           sm.rr_expirydate,
-           sm.rr_no,
-           COALESCE(total_stock.sm_total, 0) AS sm_total
-       FROM
-           stock_materials sm
-       LEFT JOIN (
-           SELECT rm_code, 
-           		  SUM(rr_quantity) AS sm_total
-           FROM stock_materials
-           GROUP BY rm_code
-       ) total_stock 
-       ON sm.rm_code = total_stock.rm_code
-       ORDER BY 
-       <choose>
-           <when test="sortColumn == 'rml_date'">sm.rml_date ${sortDirection}</when>
-           <when test="sortColumn == 'rr_quantity'">sm.rr_quantity ${sortDirection}</when>
-           <otherwise>sm.sm_bno ${sortDirection}</otherwise>
-       </choose>
-       LIMIT #{pageSize} OFFSET #{offset}
-   </select>
+	<select id="getStockMaterials" resultMap="StockMaterialsResultMap">
+	    SELECT
+	        sm.sm_bno,
+	        sm.rr_quantity,
+	        sm.rr_unit,
+	        sm.rml_date,
+	        sm.rml_no,
+	        sm.rm_code,
+	        sm.rr_expirydate,
+	        sm.rr_no,
+	        sm.sm_total  <!-- 단순히 sm_total 컬럼을 선택 -->
+	    FROM
+	        stock_materials sm
+	    ORDER BY 
+	    <choose>
+	        <when test="sortColumn == 'rml_date'">sm.rml_date ${sortDirection}</when>
+	        <when test="sortColumn == 'rr_quantity'">sm.rr_quantity ${sortDirection}</when>
+	        <otherwise>sm.sm_bno ${sortDirection}</otherwise>
+	    </choose>
+	</select>
+
 
    <!-- 재고 총 항목 수 조회 -->
    <select id="getTotalCount" resultType="int">
