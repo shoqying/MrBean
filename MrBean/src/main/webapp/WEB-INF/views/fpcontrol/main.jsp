@@ -45,10 +45,7 @@
                     	</c:choose>
                     </td>
                     <td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.workOrdersList[0].workOrderNo}">${vo.workOrdersList[0].workOrderNo}</c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
+                    	<span id="workOrderNo_${vo.fpcBno}">${vo.workOrdersList[0].workOrderNo != null ? vo.workOrdersList[0].workOrderNo : '-'}</span>
                     </td>
                   	<td>
                     	<c:choose>
@@ -179,11 +176,14 @@
 	});
 
     function updateStatus(fpcBno, fpcStatus) {
+    	
+    	var workOrderNo = document.getElementById('workOrderNo_' + fpcBno).textContent;
+    	
         $.ajax({
             url: '/fpcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus }),
+            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus, workOrderNo: workOrderNo }),
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침

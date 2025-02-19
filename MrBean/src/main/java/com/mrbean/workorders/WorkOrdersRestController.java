@@ -40,6 +40,8 @@ public class WorkOrdersRestController {
     private ProductionplanService pps;
     @Inject
     private RawMaterialsQualityControlService rqcs;
+
+
     
     /**
      * 작업지시 등록
@@ -144,7 +146,7 @@ public class WorkOrdersRestController {
             workVO.setPlanId(planId);
             
             // 생산계획 상태 연동
-            if (workVO.isShouldUpdatePlan() && planId != null) {
+            //if (workVO.isShouldUpdatePlan() && planId != null) {
                 ProductionPlanVO planVO = new ProductionPlanVO();
                 planVO.setPlanId(planId);
                 
@@ -165,7 +167,7 @@ public class WorkOrdersRestController {
                 }
                 
                 pps.updatePlanStatus(planVO);
-            }
+            //}
             
             // 작업상태 업데이트
             wos.updateWorkStatus(workVO);
