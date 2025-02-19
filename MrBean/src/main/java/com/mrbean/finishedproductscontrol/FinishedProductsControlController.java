@@ -95,6 +95,7 @@ public class FinishedProductsControlController {
         	finishedProductsControlService.updateStatus(fvo);
         	if (QualityControlStatus.PASS.equals(fvo.getFpcStatus()) || QualityControlStatus.FAIL.equals(fvo.getFpcStatus())) {
         		finishedProductsControlService.insertFinishedProductLot(rvo);
+        		logger.info("fvo" + fvo);
             }
 
         		return ResponseEntity.ok("상태가 업데이트되었습니다.");

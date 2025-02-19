@@ -29,6 +29,7 @@ public class FinishedProductsControlVO {
 	private double fpcQuantity; // 검사량
 	private int planQuantity; // 검사량
 	private String workOrderNo;
+	private int workId;
 	
 	// join 매핑
 //	private String pName; // 제품 명

@@ -59,7 +59,8 @@
 	<!-- 원자재 검사 관리 데이터 조회 -->
     <select id="selectRawMaterialsData" resultType="map">
 	    SELECT lh.rml_no AS rml_no,
-	    	   work.work_order_no AS work_order_no
+	    	   work.work_order_no AS work_order_no,
+	    	   work.work_id AS work_id
 	    FROM work_orders work
 	    JOIN lot_history lh ON work.work_id = lh.work_id
         WHERE work.work_id = #{workId};
@@ -67,8 +68,8 @@
 
 	<!-- 원자재 검사 관리 목록 저장 -->
 	<insert id="insertRawMaterialsQualityControl" parameterType="map">
-	    INSERT IGNORE INTO rawmaterials_quality_control (rml_no, work_order_no)
-		VALUES (#{rml_no}, #{work_order_no})
+	    INSERT IGNORE INTO rawmaterials_quality_control (rml_no, work_order_no, work_id)
+		VALUES (#{rml_no}, #{work_order_no}, #{work_id})
 	</insert>
 	
 
