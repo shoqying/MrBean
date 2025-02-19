@@ -98,9 +98,9 @@ public class FinishedProductsControlController {
             }
 
             return ResponseEntity.ok("상태가 업데이트되었습니다.");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-//        }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+        }
     }
     
     // 완재품 검사 목록 삭제
