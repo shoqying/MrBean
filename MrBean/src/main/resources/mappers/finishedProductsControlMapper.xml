@@ -15,6 +15,7 @@
 		<result property="fpcQuantity" column="fpc_quantity"/>
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workId" column="work_id"/>
+		<result property="wCode" column="w_code"/>
 		
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 		<collection property="productionPlanList" resultMap="productionPlanMap"/>
@@ -55,8 +56,8 @@
 
 	<!-- 완재품 검사 관리 목록 저장 -->
 	<insert id="insertFinishedProductControl" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
-	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity, work_id)
-	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity, work.work_id
+	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity, work_id, p_code, w_code)
+	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity, work.work_id, work.p_name, work.w_code
 	    FROM finished_products_lot fpl
 	    JOIN work_orders work ON work.work_order_no = fpl.work_order_no
 	    WHERE work.work_order_no = #{workOrderNo}
@@ -169,6 +170,8 @@
     	fpc_expirydate = NULL
     	WHERE fpc_bno = #{fpcBno}
     </update>
+    
+    <!--  -->
 
     
     
