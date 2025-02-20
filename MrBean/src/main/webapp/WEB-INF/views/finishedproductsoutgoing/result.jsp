@@ -8,7 +8,7 @@
 <html lang="ko">
 </head>
 <body>
-    <h1>출고 등록 결과</h1>
+    <h1>출고 등록 성공</h1>
 
     <c:choose>
         <c:when test="${not empty successMessage}">
