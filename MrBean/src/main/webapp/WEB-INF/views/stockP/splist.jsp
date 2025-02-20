@@ -76,7 +76,7 @@ form {
             <th>입고일</th>
             <th>창고 코드</th>
             <th>LOT번호</th>
-            <th>제품 코드</th>
+            <th>제품 이름</th>
             <th>유통기한</th>
             <th>총 재고량</th>
      
@@ -86,7 +86,7 @@ form {
         <c:forEach var="stockProducts" items="${stockProducts}">
             <tr>
                 <td>${stockProducts.spBno}</td>
-                <td>${stockProducts.planQuantity}</td>
+                <td>${stockProducts.fpcQuantity}</td>
                 <td>${stockProducts.spUnit}</td>
                 <td>${stockProducts.spDate}</td>           
                 <td>${stockProducts.WCode}</td>

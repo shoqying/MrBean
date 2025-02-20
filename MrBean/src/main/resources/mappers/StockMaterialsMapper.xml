@@ -29,10 +29,23 @@
        <result property="rrNo" column="rr_no" />
        <result property="smTotal" column="sm_total" />
    </resultMap>
+   
+   <!-- StockTotal -->
+   <resultMap id="StockTotalResultMap" type="com.mrbean.stockmaterials.StockTotalVO">
+       <id property="stBno" column="st_bno" />
+       <result property="rmCode" column="rm_code" />
+       <result property="stTotal" column="st_total" />
+      
+   </resultMap>
 
    <!-- 원자재 입고 전체 목록 조회 -->
    <select id="selectAllRawMaterialsReceiving" resultMap="RawMaterialsReceivingResultMap">
        SELECT * FROM rawmaterials_receiving
+   </select>
+
+   <!-- 원자재 입고 전체 목록 조회 -->
+   <select id="selectAllStockTotal" resultMap="StockTotalResultMap">
+       SELECT * FROM stock_total
    </select>
 
    <!-- 원자재 입고 목록 페이징 조회 -->

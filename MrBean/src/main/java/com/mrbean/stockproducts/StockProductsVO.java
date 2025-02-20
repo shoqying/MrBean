@@ -9,7 +9,7 @@ import lombok.Data;
 public class StockProductsVO {
 	
     private int spBno; // 순번
-    private int planQuantity; // 수량
+    private int fpcQuantity; // 수량
     private String spUnit; // 단위
     private Timestamp spDate; // 입고 일자
     private String wCode; // 창고 코드 (String으로 유지)

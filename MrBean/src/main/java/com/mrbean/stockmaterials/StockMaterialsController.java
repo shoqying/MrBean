@@ -69,6 +69,9 @@ public class StockMaterialsController {
         int totalRawCount = stockMaterialsService.getTotalRawCount();
         int totalRawPages = (int) Math.ceil((double) totalRawCount / pageSize);
         
+        // 재고 총 수량
+        List<StockTotalVO> total = stockMaterialsService.selectAllStockTotal();
+        
         // 모델에 데이터 추가
         model.addAttribute("stockList", stockList);
         model.addAttribute("rawList", rawList);
@@ -77,6 +80,7 @@ public class StockMaterialsController {
         model.addAttribute("totalRawPages", totalRawPages);
         model.addAttribute("totalStockPages", totalStockPages);
         model.addAttribute("pageSize", pageSize);
+        model.addAttribute("total",total);
         
         return "stock/list";
     }

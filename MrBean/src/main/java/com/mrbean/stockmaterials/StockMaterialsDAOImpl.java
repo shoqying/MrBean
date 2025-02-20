@@ -72,4 +72,11 @@ public class StockMaterialsDAOImpl implements StockMaterialsDAO {
     public void updateRegistrationStatus(String rrNo) {
         sqlSession.update("com.mrbean.mappers.StockMaterialsMapper.updateRegistrationStatus", rrNo);
     }
+
+	@Override
+	public List<StockTotalVO> selectAllStockTotal() {
+		return sqlSession.selectList("com.mrbean.mappers.StockMaterialsMapper.selectAllStockTotal");
+	}
+    
+    
 }
