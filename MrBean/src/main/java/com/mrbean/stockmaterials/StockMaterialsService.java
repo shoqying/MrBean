@@ -26,4 +26,7 @@ public interface StockMaterialsService {
     
     // 재고 중복 체크
     boolean isDuplicateStock(String rrNo);
+    
+    // 원자재 total
+    List<StockTotalVO> selectAllStockTotal();
 }

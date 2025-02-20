@@ -68,14 +68,38 @@
    <button type="submit" class="btn btn-secondary">정렬</button>
 </form>
 
+<!-- 재고 목록 -->
+<div class="stock-total-list">
+   <h3>총 재고량</h3>
+   <table class="table datatable">
+       <thead>
+           <tr>
+               <th>순번</th>
+               <th>원자재코드</th>
+               <th>총 재고량</th>
+ 
+           </tr>
+       </thead>
+       <tbody>
+           <c:forEach var="total" items="${total}">
+               <tr>
+                   <td>${total.stBno}</td>
+                   <td>${total.rmCode}</td>
+                   <td>${total.stTotal}</td>
+               </tr>
+           </c:forEach>
+       </tbody>
+   </table>
+   </div>
+
 <!-- 원자재 입고 목록 -->
 <div class="raw-materials-list">
    <h3>원자재 입고 목록</h3>
-   <table class="table">
+   <table class="table datatable">
        <thead>
            <tr>
                <th>입고번호</th>
-               <th>로트번호</th>
+               <th>LOT번호</th>
                <th>원자재코드</th>
                <th>수량</th>
                <th>단위</th>
@@ -297,5 +321,6 @@ function updateRawTable(data) {
 </script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </body>
 </html>

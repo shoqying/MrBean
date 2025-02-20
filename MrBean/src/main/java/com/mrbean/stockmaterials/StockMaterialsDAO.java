@@ -28,4 +28,7 @@ public interface StockMaterialsDAO {
     
     // 재고 등록 상태 업데이트
     void updateRegistrationStatus(String rrNo);
+    
+    // 재고 total
+    List<StockTotalVO> selectAllStockTotal();
 }

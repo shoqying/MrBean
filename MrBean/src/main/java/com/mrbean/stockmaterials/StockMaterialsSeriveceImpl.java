@@ -63,4 +63,11 @@ public class StockMaterialsSeriveceImpl implements StockMaterialsService {
     public boolean isDuplicateStock(String rrNo) {
         return stockMaterialsDAO.checkDuplicateStock(rrNo) > 0;
     }
+
+	@Override
+	public List<StockTotalVO> selectAllStockTotal() {
+		return stockMaterialsDAO.selectAllStockTotal();
+	}
+    
+    
 }

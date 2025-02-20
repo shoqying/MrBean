@@ -4,6 +4,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mrbean.finishedproductscontrol.FinishedProductsControlVO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,4 +34,12 @@ public class StockProductsDAOImpl implements StockProductsDAO {
     public int getTotalCount() {
         return sqlSession.selectOne(NAMESPACE + ".getTotalCount");
     }
+
+	@Override
+	public void insertStockProducts(FinishedProductsControlVO vo) {
+		sqlSession.insert(NAMESPACE + ".insertStockProducts", vo);
+		
+	}
+    
+    
 }

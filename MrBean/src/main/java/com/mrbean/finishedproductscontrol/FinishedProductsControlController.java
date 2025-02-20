@@ -30,6 +30,7 @@ import com.mrbean.products.ProductsService;
 import com.mrbean.products.ProductsVO;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlService;
 import com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO;
+import com.mrbean.stockproducts.StockProductsService;
 import com.mrbean.user.userVO;
 import com.mrbean.warehouse.WarehouseService;
 import com.mrbean.warehouse.WarehouseVO;
@@ -53,6 +54,9 @@ public class FinishedProductsControlController {
 	
     @Inject
     private WorkOrdersRestController WRS;
+    
+    @Inject
+    private StockProductsService sps;
 	
 	
 	
@@ -121,9 +125,13 @@ public class FinishedProductsControlController {
     			
     			
     			WRS.updateWorkStatus(workId, workVO);
-    			logger.info("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"+workVO);
     			
     			//ws.updateWorkStatus(workVO);
+    			if (QualityControlStatus.PASS.equals(fvo.getFpcStatus())) {
+    				logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+fvo);
+    				sps.insertStockProducts(fvo);
+    				logger.info("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"+fvo);
+    			}
     			
 
             }
