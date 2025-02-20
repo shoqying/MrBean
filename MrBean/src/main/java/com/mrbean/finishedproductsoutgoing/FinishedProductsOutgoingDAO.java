@@ -27,4 +27,8 @@ public interface FinishedProductsOutgoingDAO {
 
     // 창고 코드 목록 조회
     List<String> getWarehouseCodes();
+    
+ // COMPLETED 상태의 작업지시 번호 목록 조회
+    List<String> getCompletedWorkOrderNumbers();
+
 }
