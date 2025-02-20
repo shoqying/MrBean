@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -20,7 +19,7 @@ public class BillOfMaterialsDTO {
 
     @JsonProperty("bomName")
     @NotNull(message = "BOM 이름은 필수입니다.")
-    @Size(max = 100, message = "BOM 이름은 100자 이하로 입력해야 합니다.")
+    @Size(max = 25, message = "BOM 이름은 25자 이하로 입력해야 합니다.")
     private String bomName;
 
     // 원자재 코드 (필수, 알파벳과 숫자로 이루어져야 함)
