@@ -4,11 +4,13 @@ $(document).ready(function() {
     const chatMessages = $('#chatMessages');
     const chatbotSpinner = $('#chatbot-spinner');
 
-    function addMessage(message, isUser) {
+    function addMessage(message, isUser, timestamp = null) {
+        const messageTime = timestamp ? new Date(timestamp).toLocaleTimeString()
+                                    : new Date().toLocaleTimeString();
         const messageHtml = `
             <div class="message ${isUser ? 'user-message' : 'bot-message'}">
                 <div class="message-content">${message}</div>
-                <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                <div class="message-time">${messageTime}</div>
             </div>`;
         chatMessages.append(messageHtml);
         chatMessages.scrollTop(chatMessages[0].scrollHeight);
@@ -20,7 +22,7 @@ $(document).ready(function() {
             const data = await response.json();
             if (data.messages && Array.isArray(data.messages)) {
                 data.messages.forEach(msg => {
-                    addMessage(msg.message, msg.is_user);
+                    addMessage(msg.message, msg.is_user, msg.timestamp);
                 });
             }
         } catch (error) {
@@ -30,86 +32,98 @@ $(document).ready(function() {
 
     async function saveChatMessage(message, isUser) {
         try {
-            await fetch('http://localhost:8000/chatbot/save', {
+            const response = await fetch('http://localhost:8000/chatbot/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: message,
-                    is_user: isUser
+                    is_user: isUser,
+                    timestamp: new Date().toISOString()
                 })
             });
+            return await response.json();
         } catch (error) {
             console.error('메시지 저장 실패:', error);
+            return null;
         }
     }
 
-    async function sendMessage() {
-        const message = userInput.val().trim();
-        if (!message) return;
+async function sendMessage() {
+    const message = userInput.val().trim();
+    if (!message) return;
 
-        addMessage(message, true);
-        await saveChatMessage(message, true);
+    const savedMessage = await saveChatMessage(message, true);
+    addMessage(message, true, savedMessage.timestamp);
 
-        userInput.val('');
-        chatSendBtn.prop('disabled', true);
-        chatbotSpinner.show(); // Show spinner
-        chatSendBtn.find('i').hide(); // Hide send icon
+    userInput.val('');
+    chatSendBtn.prop('disabled', true);
+    chatbotSpinner.show();
+    chatSendBtn.find('i').hide();
 
-        let botResponse = '';
+    let botResponse = '';
 
-        try {
-            const response = await fetch('http://localhost:8000/chatbot/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: message })
-            });
+    try {
+        const response = await fetch('http://localhost:8000/chatbot/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: message })
+        });
 
-            if (!response.ok) throw new Error('서버 응답 오류');
+        if (!response.ok) throw new Error('서버 응답 오류');
 
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-            let isFirstChunk = true;
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
+        let isFirstChunk = true;
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
 
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n');
+          const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
 
-                for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        try {
-                            const data = JSON.parse(line.slice(6));
-                            if (data.status === 'streaming' && data.content) {
-                                if (isFirstChunk) {
-                                    addMessage('', false);
-                                    isFirstChunk = false;
-                                }
-                                botResponse += data.content;
-                                $('.bot-message:last .message-content').text(botResponse);
-                                chatMessages.scrollTop(chatMessages[0].scrollHeight);
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        if (data.status === 'streaming' && data.content) {
+                            if (isFirstChunk) {
+                                addMessage('', false);
+                                isFirstChunk = false;
                             }
-                        } catch (e) {
-                            console.error('스트리밍 데이터 파싱 오류:', e);
+                            botResponse += data.content;
+                            $('.bot-message:last .message-content').text(botResponse);
+                            chatMessages.scrollTop(chatMessages[0].scrollHeight);
                         }
+                    } catch (e) {
+                        console.error('스트리밍 데이터 파싱 오류:', e);
                     }
                 }
             }
-
-            if (botResponse) {
-                await saveChatMessage(botResponse, false);
-            }
-
-        } catch (error) {
-            console.error('채팅 오류:', error);
-            addMessage('서버와의 연결에 실패했습니다.', false);
-        } finally {
-            chatbotSpinner.hide(); // Hide spinner
-            chatSendBtn.find('i').show(); // Show send icon
-            chatSendBtn.prop('disabled', false);
         }
+
+        if (botResponse) {
+            const savedBotMessage = await saveChatMessage(botResponse, false);
+            if (savedBotMessage && savedBotMessage.timestamp) {
+                $('.bot-message:last .message-time').text(
+                    new Date(savedBotMessage.timestamp).toLocaleTimeString()
+                );
+            } else {
+                $('.bot-message:last .message-time').text(
+                    new Date().toLocaleTimeString()
+                );
+            }
+        }
+
+    } catch (error) {
+        console.error('채팅 오류:', error);
+        addMessage('서버와의 연결에 실패했습니다.', false);
+    } finally {
+        chatbotSpinner.hide();
+        chatSendBtn.find('i').show();
+        chatSendBtn.prop('disabled', false);
     }
+}
 
     chatSendBtn.on('click', sendMessage);
     userInput.on('keypress', function(e) {

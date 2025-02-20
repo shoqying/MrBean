@@ -36,17 +36,14 @@ public class LoginCheckAspect {
         HttpServletResponse response = getHttpServletResponse();
         HttpSession session = request.getSession(false);
 
-        logger.info("Login check for URL: {}", request.getRequestURI());
-
         if (session == null || session.getAttribute("loggedInUser") == null) {
-            logger.warn("User not logged in. Redirecting to login page.");
             if (!response.isCommitted()) {
                 throw new LoginRequiredException();
             } else {
                 logger.error("Response already committed, cannot redirect.");
             }
         } else {
-            logger.info("User is logged in.");
+            logger.info("User is logged at URL: {}", request.getRequestURI());
         }
     }
 
