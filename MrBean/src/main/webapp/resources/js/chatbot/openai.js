@@ -18,10 +18,38 @@ $(document).ready(function() {
 
     async function loadChatHistory() {
         try {
+            $('#chatMessages').empty();
+
             const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot/history');
             const data = await response.json();
+
             if (data.messages && Array.isArray(data.messages)) {
-                data.messages.forEach(msg => {
+                // 타임스탬프 기준으로 정확하게 정렬
+                const sortedMessages = data.messages.sort((a, b) => {
+                    const timeA = new Date(a.timestamp).getTime();
+                    const timeB = new Date(b.timestamp).getTime();
+                    return timeA - timeB;
+                });
+
+                // 이전 메시지와 1초 이내의 중복 메시지 필터링
+                const filteredMessages = sortedMessages.filter((msg, index) => {
+                    if (index === 0) return true;
+
+                    const prevMsg = sortedMessages[index - 1];
+                    const timeDiff = Math.abs(
+                        new Date(msg.timestamp).getTime() -
+                        new Date(prevMsg.timestamp).getTime()
+                    );
+
+                    return !(
+                        msg.message === prevMsg.message &&
+                        msg.is_user === prevMsg.is_user &&
+                        timeDiff < 1000  // 1초 이내 중복 제거
+                    );
+                });
+
+                // 메시지 표시
+                filteredMessages.forEach(msg => {
                     addMessage(msg.message, msg.is_user, msg.timestamp);
                 });
             }
@@ -34,17 +62,26 @@ $(document).ready(function() {
         try {
             const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot/save', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify({
                     message: message,
-                    is_user: isUser,
-                    timestamp: new Date().toISOString()
+                    is_user: isUser
                 })
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('서버 응답 오류:', errorData);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             return await response.json();
         } catch (error) {
             console.error('메시지 저장 실패:', error);
-            return null;
+            throw error;
         }
     }
 
@@ -63,7 +100,7 @@ async function sendMessage() {
     let botResponse = '';
 
     try {
-        const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot', {
+        const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: message })
