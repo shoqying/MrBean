@@ -56,7 +56,6 @@
 
 
     <!-- 총 항목 수 -->
-  <!-- 총 항목 수 -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM stock_products sp
@@ -67,6 +66,13 @@
         JOIN production_plan plan ON sp.plan_id = plan.plan_id
         JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
     </select>
+    
+    
+    <!-- 완제품 재고 목록 주입 -->
+    <insert id="insertStockProducts" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	INSERT INTO stock_products (plan_quantity, fpl_no, p_code, fpc_expirydate, fpc_bno, w_code)
+    	VALUES (#{planQuantity}, #{fplNo}, #{pCode}, #{fpcExpirydate}, #{fpcBno}, #{wCode} )
+    </insert>
 
 
 </mapper>

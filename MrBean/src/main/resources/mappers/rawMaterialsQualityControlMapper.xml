@@ -46,6 +46,7 @@
 	<resultMap type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO" id="bomMap">
 		<result property="bomId" column="bom_id"/>
 		<result property="rmCode" column="rm_code"/>
+		<result property="bomRatio" column="bom_ratio"/>
 	</resultMap>
 	
 	<resultMap type="com.mrbean.lothistory.LotHistoryVO" id="lotHistoryMap">
@@ -81,7 +82,7 @@
         	   rqc.rqc_quality_check,
         	   rqc.rqc_status,
         	   work.work_order_no,
-        	   work.work_quantity,
+        	   work.work_quantity * bom.bom_ratio as work_quantity,
         	   lh.rml_no
         	   FROM rawmaterials_quality_control rqc
         	   LEFT JOIN work_orders work on rqc.work_order_no = work.work_order_no

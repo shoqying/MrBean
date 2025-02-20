@@ -24,9 +24,9 @@
 		            <th>검사일자</th>
 		            <th>품질 검사</th>
 		            <th>상태</th>
-		            <th>수량</th>
-		            <th>수율</th>
 		            <th>검사량 (g)</th>
+		            <th>수율</th>
+		            <th>완료량 (g)</th>
 		            <th>삭제</th>
                   </tr>
 	                <c:if test="${empty finishedProductsControlList}">
