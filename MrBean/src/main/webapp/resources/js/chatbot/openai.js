@@ -18,7 +18,7 @@ $(document).ready(function() {
 
     async function loadChatHistory() {
         try {
-            const response = await fetch('http://localhost:8000/chatbot/history');
+            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot/history');
             const data = await response.json();
             if (data.messages && Array.isArray(data.messages)) {
                 data.messages.forEach(msg => {
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     async function saveChatMessage(message, isUser) {
         try {
-            const response = await fetch('http://localhost:8000/chatbot/save', {
+            const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -63,7 +63,7 @@ async function sendMessage() {
     let botResponse = '';
 
     try {
-        const response = await fetch('http://localhost:8000/chatbot/', {
+        const response = await fetch('https://app.c7d2408t2p2.itwillbs.com/chatbot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: message })
