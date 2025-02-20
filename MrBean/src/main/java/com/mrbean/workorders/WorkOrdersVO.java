@@ -44,9 +44,6 @@ public class WorkOrdersVO {
     @JsonProperty("bomId")
     private String bomId;  // BOM ID
 
-    
-    
-    
     private int planId; // 생산계획 ID
     private String rmlNo; // 원자재 로트 번호
     

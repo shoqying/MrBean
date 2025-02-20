@@ -51,18 +51,18 @@
                             placeholder="예: 제품 제작용 BOM"
                             required
                             autocomplete="off"
+                            maxlength="25"
                             oninput="validateInput('bomName')"
                             title="BOM의 이름 또는 용도를 입력하세요."
                         />
                         <label for="bomName">BOM 이름</label>
                     </div>
-                    <small id="bomIdWarning" class="text-danger" style="display:none;">BOM ID는 변경할 수 없습니다.</small>
                     <small
                         id="bomNameError"
                         class="form-text text-danger"
                         style="display: none;"
                     >
-                        BOM 이름을 입력해주세요. (최대 100자)
+                        BOM 이름을 입력해주세요. (최대 25자)
                     </small>
                 </div>
 
@@ -146,6 +146,7 @@
                             autocomplete="off"
                             style="height: 120px; resize: none; overflow-y: auto;"
                             oninput="updateCharacterCount()"
+                            maxlength="500"
                             title="BOM에 대해 자세한 정보를 적어주세요."
                         ></textarea>
                         <label for="bomDescription">BOM 설명</label>

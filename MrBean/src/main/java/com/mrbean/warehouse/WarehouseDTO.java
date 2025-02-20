@@ -15,12 +15,12 @@ public class WarehouseDTO {
 
     @JsonProperty("wCode")
     @NotBlank(message = "창고 코드는 필수 입력 사항입니다.\n")
-    @Size(max = 50, message = "창고 코드는 50자를 넘을 수 없습니다.")
+    @Size(max = 10, message = "창고 코드는 10자를 넘을 수 없습니다.")
     private String wCode;
 
     @JsonProperty("wName")
     @NotBlank(message = "창고 이름은 필수 입력 사항입니다.\n")
-    @Size(max = 100, message = "창고 이름은 100자를 넘을 수 없습니다.")
+    @Size(max = 25, message = "창고 이름은 25자를 넘을 수 없습니다.")
     private String wName;
 
     @JsonProperty("wRoadFullAddr")
