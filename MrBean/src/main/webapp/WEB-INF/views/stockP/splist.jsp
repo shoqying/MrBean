@@ -30,9 +30,9 @@ form {
 
 
 #form_f{
-	position: absolute;
-    right: 9.7%;
-    top: 260px
+	    position: absolute;
+    right: 7.7%;
+    top: 361px;
 }
 
 #bbtn {
@@ -45,8 +45,6 @@ form {
 
 
 
-
-
 </style>
 
 </head>
@@ -56,13 +54,36 @@ form {
 
 
 <!-- 정렬 옵션 -->
-<form action="/stockP/splist" method="get" id="form_f">
+<%-- <form action="/stockP/splist" method="get" id="form_f">
     <select name="sortOption" id="sortOption" class="form-select">
         <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
         <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
     </select>
     <button type="submit" class="btn btn-secondary">정렬</button>
-</form>
+</form> --%>
+<!-- 총 재고량 -->
+<table class="table datatable">
+    <thead>
+        <tr>
+            <th>순번</th>
+            <th>제품 이름</th>
+            <th>총 재고량</th>
+   
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="stockProducts" items="${totalp}">
+            <tr>
+                <td>${stockProducts.sptBno}</td>
+                <td>${stockProducts.PName}</td>
+                <td>${stockProducts.sptTotal}</td>
+    
+            
+            </tr>
+        </c:forEach>
+		
+    </tbody>
+</table>
 
 
 
@@ -78,7 +99,6 @@ form {
             <th>LOT번호</th>
             <th>제품 이름</th>
             <th>유통기한</th>
-            <th>총 재고량</th>
      
         </tr>
     </thead>
@@ -93,7 +113,7 @@ form {
                 <td>${stockProducts.fplNo}</td>
                 <td>${stockProducts.PCode}</td>
                 <td>${stockProducts.fpcExpirydate}</td>
-                <td>${stockProducts.spTotal}</td>
+            
             </tr>
         </c:forEach>
 		

@@ -21,9 +21,9 @@
    width: 17%;
 }
 #form_f {
-   position: absolute;
-   right: 9.7%;
-   top: 260px;
+     position: absolute;
+    right: 7.7%;
+    top: 361px;
 }
 .raw-materials-list {
    margin-bottom: 40px;
@@ -60,13 +60,13 @@
 </c:if>
 
 <!-- 정렬 옵션 -->
-<form action="/stock/list" method="get" id="form_f" class="sort-form">
+<%-- <form action="/stock/list" method="get" id="form_f" class="sort-form">
    <select name="sortOption" id="sortOption" class="form-select">
        <option value="latest" ${sortOption == 'latest' ? 'selected="selected"' : ''}>최신순</option>
        <option value="oldest" ${sortOption == 'oldest' ? 'selected="selected"' : ''}>오래된순</option>
    </select>
    <button type="submit" class="btn btn-secondary">정렬</button>
-</form>
+</form> --%>
 
 <!-- 재고 목록 -->
 <div class="stock-total-list">

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mrbean.finishedproductscontrol.FinishedProductsControlVO;
+import com.mrbean.stockmaterials.StockTotalVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,5 +42,17 @@ public class StockProductsDAOImpl implements StockProductsDAO {
 		
 	}
     
+	@Override
+	public List<StockpTotalVO> selectAllStockpTotal() {
+		return sqlSession.selectList("com.mrbean.mapper.StockProductsMapper.selectAllStockpTotal");
+	}
+
+	@Override
+	public void updateStockpTotal(FinishedProductsControlVO vo) {
+		sqlSession.update(NAMESPACE + "updateStockpTotal", vo);
+		
+	}
+	
+	
     
 }

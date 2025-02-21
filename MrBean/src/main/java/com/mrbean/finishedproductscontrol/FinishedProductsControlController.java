@@ -130,7 +130,9 @@ public class FinishedProductsControlController {
     			if (QualityControlStatus.PASS.equals(fvo.getFpcStatus())) {
     				logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+fvo);
     				sps.insertStockProducts(fvo);
+    				sps.updateStockpTotal(fvo);
     				logger.info("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"+fvo);
+    				
     			}
     			
 
