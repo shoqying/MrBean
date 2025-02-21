@@ -32,6 +32,7 @@
                             autocomplete="off"
                             autofocus
                             oninput="validateInput('wCode')"
+                            maxlength="3"
                             title="창고 코드를 입력하세요."
                         />
                         <label for="wCode">창고 코드</label>
@@ -53,12 +54,13 @@
                             required
                             autocomplete="off"
                             oninput="validateInput('wName')"
+                            maxlength="25"
                             title="창고 이름을 입력하세요."
                         />
                         <label for="wName">창고 이름</label>
                     </div>
                     <small id="wNameError" class="form-text text-danger" style="display: none;">
-                        창고 이름을 입력해주세요.
+                        창고 이름을 입력해주세요. (최대 25자)
                     </small>
                 </div>
 
@@ -106,7 +108,7 @@
                             class="form-control"
                             id="wAddrDetail"
                             name="wAddrDetail"
-                            placeholder="예: 101호"
+                            placeholder="상세주소"
                             required
                             autocomplete="off"
                             oninput="validateInput('wAddrDetail')"
@@ -153,6 +155,7 @@
                             autocomplete="off"
                             style="height: 120px; resize: none; overflow-y: auto;"
                             oninput="updateCharacterCount()"
+                            maxlength="500"
                             title="창고에 대해 자세한 정보를 적어주세요."
                         ></textarea>
                         <label for="wDescription">창고 설명</label>

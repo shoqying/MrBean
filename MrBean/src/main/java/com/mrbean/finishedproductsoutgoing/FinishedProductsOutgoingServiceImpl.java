@@ -58,4 +58,10 @@ public class FinishedProductsOutgoingServiceImpl implements FinishedProductsOutg
     public List<String> getWarehouseCodes() {
         return finishedProductsOutgoingDAO.getWarehouseCodes();
     }
+    
+    @Override
+    public List<String> getCompletedWorkOrderNumbers() {
+        return finishedProductsOutgoingDAO.getCompletedWorkOrderNumbers();
+    }
+
 }

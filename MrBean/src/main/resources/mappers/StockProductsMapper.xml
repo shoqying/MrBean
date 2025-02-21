@@ -93,7 +93,6 @@
 
 
     <!-- 총 항목 수 -->
-  <!-- 총 항목 수 -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM stock_products sp
@@ -104,6 +103,5 @@
         JOIN production_plan plan ON sp.plan_id = plan.plan_id
         JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
     </select>
-
 
 </mapper>

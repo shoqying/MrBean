@@ -31,6 +31,7 @@ public class FinishedProductsControlVO {
 	private String workOrderNo;
 	private int workId;
 	private String pName;
+	private String wCode;
 	
 	// join 매핑
 //	private String pName; // 제품 명

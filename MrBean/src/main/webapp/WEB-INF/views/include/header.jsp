@@ -81,6 +81,7 @@
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
+    <!-- 검색 바 -->
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" id="searchForm">
             <input type="text" name="query" placeholder="Search" title="Enter search keyword">
@@ -89,88 +90,90 @@
         <div id="searchResultsContainer" class="search-results-popup"></div>
     </div>
 
-    <nav class="header-nav ms-auto">
-        <ul class="d-flex align-items-center">
-            <li class="nav-item dropdown pe-3" style="margin-right: 50px;"> <!-- 추가 여백 -->
+    <!-- 네비게이션 바: 우측 정렬 -->
+    <nav class="header-nav ms-auto d-flex align-items-center">
+        <ul class="navbar-nav d-flex flex-row align-items-center">
+            <!-- 로그인 상태 체크 -->
+            <c:choose>
+                <c:when test="${empty sessionScope.loggedInUser}">
+                    <!-- 로그인 버튼 (로그인 안 된 상태) -->
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary me-2" href="${pageContext.request.contextPath}/user/login">
+                            <i class="bi bi-box-arrow-in-right"></i> 로그인
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <!-- 로그아웃 버튼 (로그인된 상태) -->
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger me-2" href="${pageContext.request.contextPath}/user/logout">
+                            <i class="bi bi-box-arrow-right"></i> 로그아웃
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+
+            <!-- 사용자 프로필 이미지 및 드롭다운 -->
+            <li class="nav-item dropdown pe-3">
                 <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                    <!-- 사용자 프로필 이미지 -->
                     <c:choose>
                         <c:when test="${sessionScope.loggedInUser.URoleenum == 'ADMIN'}">
                             <img src="${pageContext.request.contextPath}/resources/assets/img/admin.png" alt="Admin"
-                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                                 class="rounded-circle" style="width: 40px; height: 40px;">
                         </c:when>
                         <c:when test="${sessionScope.loggedInUser.URoleenum == 'MANAGER'}">
                             <img src="${pageContext.request.contextPath}/resources/assets/img/manager.png" alt="Manager"
-                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                                 class="rounded-circle" style="width: 40px; height: 40px;">
                         </c:when>
                         <c:when test="${sessionScope.loggedInUser.URoleenum == 'MEMBER'}">
                             <img src="${pageContext.request.contextPath}/resources/assets/img/member.png" alt="Member"
-                                 class="rounded-circle" style="width: 80px; height: 80px; margin-right: 15px;">
+                                 class="rounded-circle" style="width: 40px; height: 40px;">
                         </c:when>
-
-
                         <c:otherwise>
-    						<img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
-        						 class="rounded-circle" style="width: 40px; height: 40px; margin-right: 15px;">
-						</c:otherwise>
-
-
-
-
-                   		 </c:choose>
-
-          <!-- 사용자 이름 -->
-    <span class="d-block" style="font-size: 20px; font-weight: bold;">
-        <c:choose>
-            <c:when test="${not empty sessionScope.loggedInUser}">
-                ${sessionScope.loggedInUser.UUsername}
-            </c:when>
-            <c:otherwise>
-                	Guest
-            </c:otherwise>
-        </c:choose>
-    </span>
-
-
-
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/young.png" alt="Default"
+                                 class="rounded-circle" style="width: 40px; height: 40px;">
+                        </c:otherwise>
+                    </c:choose>
+                    <span class="ms-2 fw-bold">
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.loggedInUser}">
+                                ${sessionScope.loggedInUser.UUsername}
+                            </c:when>
+                            <c:otherwise>
+                                Guest
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
                 </a>
-   <!-- 드롭다운 메뉴 -->
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-        <li class="dropdown-header text-center">
-            <h6>${sessionScope.loggedInUser.UUsername}</h6>
-            <span>${sessionScope.loggedInUser.URoleenum}</span>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/info">
-                <i class="bi bi-person"></i>
-                <span>내 정보</span>
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/changePassword">
-                <i class="bi bi-key"></i>
-                <span>비밀번호 변경</span>
-            </a>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>로그아웃</span>
-            </a>
-       	 </li>
-   		 </ul>
-		</li>
-	 </ul>
-   </nav>
 
+                <!-- 드롭다운 메뉴 -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header text-center">
+                        <h6>${sessionScope.loggedInUser.UUsername}</h6>
+                        <span>${sessionScope.loggedInUser.URoleenum}</span>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/info">
+                            <i class="bi bi-person"></i> <span>내 정보</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/changePassword">
+                            <i class="bi bi-key"></i> <span>비밀번호 변경</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/user/logout">
+                            <i class="bi bi-box-arrow-right"></i> <span>로그아웃</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 </header>
-
 
   <!-- ======= Sidebar ======= -->
   <!-- "PAGES" 스타일 섹션 -->
@@ -278,12 +281,7 @@
             <a href="/finishedproductsoutgoing/list">
               <i class="bi bi-circle"></i><span>완제품 출고</span>
             </a>
-          </li>
-          <li>
-            <a href="icons-boxicons.html">
-              <i class="bi bi-circle"></i><span>Boxicons</span>
-            </a>
-          </li>
+          </li>    
         </ul>
       </li>
       <!-- End Icons Nav -->
@@ -338,48 +336,27 @@
       </c:choose>
     </li>
 
-    <!-- 로그인 버튼: 로그인 상태가 아닐 때만 표시 -->
-    <li class="nav-item">
-      <c:choose>
-        <c:when test="${empty sessionScope.loggedInUser}">
-          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/login">
-            <i class="bi bi-box-arrow-in-right"></i>
-            <span>로그인</span>
-          </a>
-        </c:when>
-      </c:choose>
-    </li>
-
-	<!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
-	<c:if test="${not empty sessionScope.loggedInUser}">
-    	<li class="nav-item">
-        	<a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
-           	 <i class="bi bi-key"></i>
+   <!-- 비밀번호 변경 메뉴: 로그인 상태에서만 표시 -->
+   <c:if test="${not empty sessionScope.loggedInUser}">
+       <li class="nav-item">
+           <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/changePassword">
+               <i class="bi bi-key"></i>
             <span>비밀번호 변경</span>
         </a>
     </li>
 </c:if>
 
-  <!-- 로그인 상태에서만 보이는 섹션 -->
-        <c:if test="${not empty sessionScope.loggedInUser}">
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/list">
-                    <i class="bi bi-person-lines-fill"></i>
-                    <span>회원 목록</span>
-                </a>
-            </li>
-        </c:if>
-    <!-- 로그아웃 버튼: 로그인 상태일 때만 표시 -->
-    <li class="nav-item">
-      <c:choose>
-        <c:when test="${not empty sessionScope.loggedInUser}">
-          <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/logout">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>로그아웃</span>
-          </a>
-        </c:when>
-      </c:choose>
-    </li>
+ <!-- 로그인 상태에서만 보이는 섹션 -->
+<c:if test="${not empty sessionScope.loggedInUser}">
+    <c:if test="${sessionScope.loggedInUser.URoleenum ne 'MEMBER'}">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="${pageContext.request.contextPath}/user/list">
+                <i class="bi bi-person-lines-fill"></i>
+                <span>회원 목록</span>
+            </a>
+        </li>
+    </c:if>
+</c:if>
   </ul>
 </aside>
   <main id="main" class="main">

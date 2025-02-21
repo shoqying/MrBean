@@ -9,29 +9,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>생산 계획 상태별 진행도</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        /* 전체 컨테이너 스타일 */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: transparent; /* 배경색 투명 처리 */
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: none; /* 불필요한 테두리 제거 */
         }
-        h1 {
+
+        /* 카드 스타일 */
+        .chart-card {
+            background: white;
+            border: none; /* 불필요한 테두리 제거 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        /* 제목 스타일 */
+        .chart-title {
             text-align: center;
-            margin-bottom: 20px;
             font-size: 1.8rem;
-        }
-        canvas {
-            margin: 20px auto;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
     </style>
 </head>
+
 <body>
 <div class="container">
-    <h1>생산 계획 상태별 진행도</h1>
-    <canvas id="statusChart" width="800" height="400"></canvas>
+    <!-- 카드 디자인 적용 -->
+    <div class="chart-card">
+        <h3 class="chart-title">생산 계획 상태별 진행도</h3>
+        <canvas id="statusChart" width="800" height="400"></canvas>
+    </div>
 </div>
 
 <script>

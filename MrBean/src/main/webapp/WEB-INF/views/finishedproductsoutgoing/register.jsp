@@ -1,70 +1,104 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>완제품 출고 등록</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/styles.css'/>">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>완제품 출고 등록</h1>
+
+<div class="container mt-5">
+    <h2>완제품 출고 등록</h2>
+
+    <!-- 오류 메시지 출력 -->
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger">
+            ${errorMessage}
+        </div>
+    </c:if>
 
     <!-- 출고 등록 폼 -->
     <form action="<c:url value='/finishedproductsoutgoing/register'/>" method="post">
         
-        <!-- 출고번호 (자동 생성되므로 사용자가 입력하지 않음) -->
-        <label for="foNo">출고번호:</label>
-        <input type="text" id="foNo" name="foNo" readonly="readonly" value="자동 생성됨"><br><br>
+        <!-- 출고번호 (자동 생성) -->
+        <div class="form-group">
+            <label for="foNo">출고번호:</label>
+            <input type="text" id="foNo" name="foNo" class="form-control" readonly="readonly" placeholder="자동 생성됨">
+        </div>
 
-        <!-- 완제품 로트번호 (드롭다운) -->
-        <label for="fplNo">완제품 로트번호:</label>
-        <select id="fplNo" name="fplNo" required>
-            <c:forEach var="lot" items="${lotNumbers}">
-                <option value="${lot}">${lot}</option>
-            </c:forEach>
-        </select><br><br>
+        <!-- 작업지시 번호 (COMPLETED 상태만) -->
+        <div class="form-group">
+            <label for="workOrderNo">작업지시 번호:</label>
+            <select id="workOrderNo" name="workOrderNo" class="form-control" required>
+                <option value="">작업지시 번호 선택</option>
+                <c:forEach var="workOrderNo" items="${workOrderNumbers}">
+                    <option value="${workOrderNo}">${workOrderNo}</option>
+                </c:forEach>
+            </select>
+        </div>
 
-        <!-- 제품 코드 (드롭다운) -->
-        <label for="pCode">완제품 코드:</label>
-        <select id="pCode" name="pCode" required>
-            <c:forEach var="code" items="${productCodes}">
-                <option value="${code}">${code}</option>
-            </c:forEach>
-        </select><br><br>
+       
+
+     
 
         <!-- 출고 수량 -->
-        <label for="foQuantity">출고 수량:</label>
-        <input type="number" id="foQuantity" name="foQuantity" required min="1"><br><br>
+        <div class="form-group">
+            <label for="foQuantity">출고 수량:</label>
+            <input type="number" id="foQuantity" name="foQuantity" class="form-control" required min="1">
+        </div>
 
-        <!-- 출고 단위 (기본값 '개'로 설정됨) -->
-        <label for="foUnit">출고 단위:</label>
-        <input type="text" id="foUnit" name="foUnit" value="개" readonly="readonly"><br><br>
+        <!-- 출고 단위 -->
+        <div class="form-group">
+            <label for="foUnit">출고 단위:</label>
+            <input type="text" id="foUnit" name="foUnit" class="form-control" value="개" required>
+        </div>
 
-        <!-- 창고 코드 (드롭다운) -->
-        <label for="wCode">창고 코드:</label>
-        <select id="wCode" name="wCode" required>
-            <c:forEach var="warehouse" items="${warehouseCodes}">
-                <option value="${warehouse}">${warehouse}</option>
-            </c:forEach>
-        </select><br><br>
+   <!-- 창고 코드 (wCode) 드롭다운 추가 -->
+<div class="form-group">
+    <label for="wCode">창고 코드:</label>
+    <select id="wCode" name="wCode" class="form-control" required>
+        <option value="">창고 코드 선택</option>
+        <c:forEach var="warehouseCode" items="${warehouseCodes}">
+            <option value="${warehouseCode}">${warehouseCode}</option>
+        </c:forEach>
+    </select>
+</div>
 
-        <!-- 출고일 (자동으로 현재 날짜로 설정됨) -->
-        <label for="foDate">출고일:</label>
-        <input type="date" id="foDate" name="foDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required><br><br>
+      
 
         <!-- 출고 위치명 -->
-        <label for="foShippingLocationName">출고 위치명:</label>
-        <input type="text" id="foShippingLocationName" name="foShippingLocationName" required><br><br>
+        <div class="form-group">
+            <label for="foShippingLocationName">출고 위치명:</label>
+            <input type="text" id="foShippingLocationName" name="foShippingLocationName" class="form-control" required>
+        </div>
 
         <!-- 출고 위치 -->
-        <label for="foShippingLocation">출고 위치:</label>
-        <input type="text" id="foShippingLocation" name="foShippingLocation" required><br><br>
+        <div class="form-group">
+            <label for="foShippingLocation">출고 위치:</label>
+            <input type="text" id="foShippingLocation" name="foShippingLocation" class="form-control" required>
+        </div>
+
+        <!-- 출고일 -->
+        <div class="form-group">
+            <label for="foDate">출고일:</label>
+            <input type="date" id="foDate" name="foDate" class="form-control" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required>
+        </div>
 
         <!-- 제출 버튼 -->
-        <button type="submit">등록</button>
-        <a href="<c:url value='/finishedproductsoutgoing/list'/>">목록으로</a>
+        <button type="submit" class="btn btn-primary">출고 등록</button>
+        <a href="<c:url value='/finishedproductsoutgoing/list'/>" class="btn btn-secondary">목록으로</a>
     </form>
+</div>
+
 </body>
 </html>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

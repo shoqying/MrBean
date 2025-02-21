@@ -66,14 +66,25 @@ public class RawMaterialsReceivingController {
     
     // http://localhost:8088/rawmaterialsreceiving/list
     // 원자재 입고 리스트 페이지
+ // http://localhost:8088/rawmaterialsreceiving/list
+    // 원자재 입고 리스트 페이지
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String listRawMaterialsReceiving(Model model, HttpServletRequest request) throws Exception {
+    public String listRawMaterialsReceiving(HttpSession session, Model model, HttpServletRequest request) throws Exception {
         logger.info("원자재 입고 리스트 조회 요청");
 
-        // 검색, 정렬, 페이징 파라미터 받아오기
+        // ✅ 세션에서 로그인된 사용자 확인
+        userVO loggedInUser = (userVO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            // ❌ 로그인되지 않았다면 로그인 페이지로 이동
+            logger.warn("로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트");
+            return "redirect:/user/login";
+        }
+
+        // ✅ 검색, 정렬, 페이징 파라미터 받아오기
         String searchKeyword = request.getParameter("searchKeyword");
         String sortColumn = request.getParameter("sortColumn");
         String sortOrder = request.getParameter("sortOrder");
+        
         int page = 1;
         if (request.getParameter("page") != null) {
             try {
@@ -83,19 +94,17 @@ public class RawMaterialsReceivingController {
             }
         }
 
-        // 서비스 단에서 해당 조건에 맞는 리스트와 페이징 정보를 조회
-        // (서비스 메서드에서 리스트, 총페이지 수, 시작/끝 페이지 등을 계산하여 DTO나 Map 형태로 반환하는 방식으로 구현할 수 있음)
-        // 여기서는 예제로 단순 리스트만 반환한다고 가정
+        // ✅ 서비스 단에서 리스트 조회
         List<RawMaterialsReceivingVO> list = rawMaterialsReceivingService.getRawMaterialsReceivingList(page, sortColumn, sortOrder, searchKeyword);
         model.addAttribute("rawMaterialsReceivingList", list);
 
-        // 페이징 관련 dummy data (실제 구현 시 서비스에서 계산하여 전달)
+        // ✅ 페이징 관련 데이터 추가 (실제 구현 시 계산해서 적용)
         model.addAttribute("currentPage", page);
         model.addAttribute("startPage", 1);
         model.addAttribute("endPage", 10);
         model.addAttribute("totalPages", 5);
 
-        // Breadcrumb (필요 시)
+        // ✅ Breadcrumb 추가
         addBreadcrumb(model, "원자재 입고 목록", "/rawmaterialsreceiving/list");
 
         return "rawmaterialsreceiving/list";

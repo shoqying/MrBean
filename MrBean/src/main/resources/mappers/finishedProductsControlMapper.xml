@@ -16,6 +16,8 @@
 		<result property="workOrderNo" column="work_order_no"/>
 		<result property="workId" column="work_id"/>
 		<result property="pName" column="p_name"/>
+		<result property="wCode" column="w_code"/>
+
 		
 		<collection property="workOrdersList" resultMap="workOrdersMap"/>
 		<collection property="productionPlanList" resultMap="productionPlanMap"/>
@@ -56,10 +58,13 @@
 
 	<!-- 완재품 검사 관리 목록 저장 -->
 	<insert id="insertFinishedProductControl" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
-	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity, work_id)
-	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity, work.work_id
+	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity, work_id, p_code, w_code)
+	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity * bom.bom_ratio as work_quantity, work.work_id, work.p_name, work.w_code
 	    FROM finished_products_lot fpl
 	    JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+	    JOIN lot_history lh ON lh.work_id = work.work_id
+        JOIN products p ON p.p_name = work.p_name
+        JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
 	    WHERE work.work_order_no = #{workOrderNo}
 		<!-- VALUES(#{fplNO}, #{workOrderNo}, #{workQuantity}) -->
 		<!-- SELECT fpl.fpl_no, work.work_order_no, work.work_quantity
@@ -87,11 +92,14 @@
         	   fpc.fpc_status,
         	   fpc.fpc_yield,
         	   work.work_order_no,
-        	   work.work_quantity,
+        	   work.work_quantity * bom.bom_ratio as work_quantity,
         	   fpc.fpc_quantity,
         	   work.work_id
 		FROM finished_products_control fpc
    	    JOIN work_orders work on work.work_order_no = fpc.work_order_no
+   	    JOIN lot_history lh ON lh.work_id = work.work_id
+        JOIN products p ON p.p_name = work.p_name
+        JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
     </select>
     
     
@@ -170,6 +178,8 @@
     	fpc_expirydate = NULL
     	WHERE fpc_bno = #{fpcBno}
     </update>
+    
+    <!--  -->
 
     
     

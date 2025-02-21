@@ -16,36 +16,52 @@ public class FinishedProductsOutgoingController {
     @Autowired
     private FinishedProductsOutgoingService finishedProductsOutgoingService;  // 서비스 주입
 
-    // 출고 등록 페이지 (GET 요청) http://localhost:8088/finishedproductsoutgoing/register
+ // 출고 등록 페이지 (GET 요청)
     @GetMapping("/register")
     public String registerForm(Model model) {
-        // 로트 번호, 제품 코드, 창고 코드 등 조회
-        // 여기서 조회하는 값들은 서비스에서 호출하여 가져옵니다.
-        model.addAttribute("lotNumbers", finishedProductsOutgoingService.getLotNumbers());  // 로트 번호 조회
-        model.addAttribute("productCodes", finishedProductsOutgoingService.getProductCodes());  // 제품 코드 조회
-        model.addAttribute("warehouseCodes", finishedProductsOutgoingService.getWarehouseCodes());  // 창고 코드 조회
+        // COMPLETED 상태의 작업지시 번호 조회
+        model.addAttribute("workOrderNumbers", finishedProductsOutgoingService.getCompletedWorkOrderNumbers());
         
-        return "finishedproductsoutgoing/register";  // 출고 등록 폼 페이지 (register.jsp)
+        // 로트 번호, 제품 코드, 창고 코드 조회
+        model.addAttribute("lotNumbers", finishedProductsOutgoingService.getLotNumbers());
+        model.addAttribute("productCodes", finishedProductsOutgoingService.getProductCodes());
+        model.addAttribute("warehouseCodes", finishedProductsOutgoingService.getWarehouseCodes());
+
+        return "finishedproductsoutgoing/register";  // register.jsp로 이동
     }
 
-    // 출고 등록 처리 (POST 요청)
     @PostMapping("/register")
     public String registerFinishedProduct(@ModelAttribute FinishedProductsOutgoingVO finishedProduct, Model model) {
         try {
+        	
+        	System.out.println(finishedProduct);
+            // 출고번호 자동 생성
+            String generatedFoNo = "FO-" + System.currentTimeMillis();
+            finishedProduct.setFoNo(generatedFoNo);
+
             // 출고 정보 등록 서비스 호출
             finishedProductsOutgoingService.registerFinishedProduct(finishedProduct);
 
-            // 성공 메시지 모델에 추가
-            model.addAttribute("successMessage", "완제품 출고가 성공적으로 등록되었습니다.");
+            // ✅ 성공 메시지와 등록된 정보 세션에 저장 (리다이렉트 후에도 데이터 유지)
+            model.addAttribute("successMessage", "완제품 출고가 성공적으로 등록되었습니다. 출고번호: " + generatedFoNo);
+            model.addAttribute("finishedProduct", finishedProduct);
+
+            // ✅ 성공 후 result 페이지로 리다이렉트
+            return "redirect:/finishedproductsoutgoing/result";
         } catch (Exception e) {
             // 예외 발생 시 오류 메시지 모델에 추가
-            model.addAttribute("errorMessage", "출고 등록 중 오류가 발생했습니다.");
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "출고 등록 중 오류가 발생했습니다: " + e.getMessage());
+
+            // ✅ 실패 시 result 페이지로 이동 (redirect 필요 없음)
+            return "finishedproductsoutgoing/result";
         }
-        
-        // 결과 페이지로 이동 (result.jsp)
-        return "finishedproductsoutgoing/result";
     }
 
+    
+    
+    
+    
     // 출고 목록 페이지 (GET 요청)
     @GetMapping("/list")
     public String listFinishedProducts(Model model) {
@@ -141,4 +157,11 @@ public class FinishedProductsOutgoingController {
         model.addAttribute("warehouseCodes", finishedProductsOutgoingService.getWarehouseCodes());
         return "finishedproductsoutgoing/warehouseCodes";  // 창고 코드 조회 페이지
     }
+    
+    @GetMapping("/result")
+    public String showResultPage(Model model) {
+        return "finishedproductsoutgoing/result";
+    }
+
+
 }

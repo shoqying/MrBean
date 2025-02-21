@@ -17,6 +17,8 @@ public class FinishedProductsOutgoingDAOImpl implements FinishedProductsOutgoing
     // 출고 정보 등록
     @Override
     public void registerFinishedProduct(FinishedProductsOutgoingVO finishedProduct) {
+    	
+    	System.out.println(finishedProduct);
         sqlSession.insert(NAMESPACE + ".registerFinishedProduct", finishedProduct);
     }
 
@@ -61,4 +63,10 @@ public class FinishedProductsOutgoingDAOImpl implements FinishedProductsOutgoing
     public List<String> getWarehouseCodes() {
         return sqlSession.selectList(NAMESPACE + ".getWarehouseCodes");
     }
+    
+    @Override
+    public List<String> getCompletedWorkOrderNumbers() {
+        return sqlSession.selectList(NAMESPACE + ".getCompletedWorkOrderNumbers");
+    }
+
 }
