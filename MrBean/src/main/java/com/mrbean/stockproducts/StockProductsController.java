@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mrbean.stockmaterials.StockTotalVO;
+
 @Controller
 @RequestMapping("/stockP")
 public class StockProductsController {
@@ -18,7 +20,7 @@ public class StockProductsController {
     private static final Logger logger = LoggerFactory.getLogger(StockProductsController.class);
 
     @Autowired
-    private StockProductsService stockProductsService;
+    private StockProductsService sps;
 
     @RequestMapping(value = "/splist", method = RequestMethod.GET)
     public String getStockMaterials(
@@ -50,9 +52,12 @@ public class StockProductsController {
          int offset = (page - 1) * pageSize;
 
         // 데이터 조회
-        List<StockProductsVO> stockProducts = stockProductsService.getStockProducts(sortColumn, sortDirection, pageSize, offset);
-        int totalCount = stockProductsService.getTotalCount();
+        List<StockProductsVO> stockProducts = sps.getStockProducts(sortColumn, sortDirection, pageSize, offset);
+        int totalCount = sps.getTotalCount();
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        
+        // 재고 총 수량
+        List<StockpTotalVO> totalp = sps.selectAllStockpTotal();
 
         // Model에 데이터 추가
         // 모델에 데이터 추가
@@ -61,6 +66,7 @@ public class StockProductsController {
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("page", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalp",totalp);
 
         // list.jsp로 이동
         return "stockP/splist";

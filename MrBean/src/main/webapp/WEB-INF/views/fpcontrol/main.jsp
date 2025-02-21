@@ -54,10 +54,7 @@
                     	</c:choose>
                     </td>
                   	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.workOrdersList[0].PName}">${vo.workOrdersList[0].PName}</c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
+                  		<span id="pName_${vo.fpcBno}">${vo.workOrdersList[0].PName != null ? vo.workOrdersList[0].PName : '-'}</span>
                     </td>
                   	<td>
                     	<c:choose>
@@ -107,10 +104,7 @@
                     	</c:choose>
                     </td>
                   	<td>
-                    	<c:choose>
-                    		<c:when test="${not empty vo.fpcQuantity}"><fmt:formatNumber value="${vo.fpcQuantity}" type="number" maxFractionDigits="0" /></c:when>
-                    		<c:otherwise>-</c:otherwise>
-                    	</c:choose>
+                  		<span id="fpcQuantity_${vo.fpcBno}">${vo.fpcQuantity != null ? vo.fpcQuantity : '-'}</span>
                     </td>
                        <td><button type="button" class="btn btn-danger" onclick="confirmDelete(${vo.fpcBno})">삭제</button></td>                  
                   </tr>
@@ -179,12 +173,22 @@
     	
     	var workOrderNo = document.getElementById('workOrderNo_' + fpcBno).textContent;
     	var workId = document.getElementById('row_' + fpcBno).getAttribute('data-work-id'); // work_id 가져오기
+    	var pName = document.getElementById('pName_' + fpcBno).textContent;
+    	var fpcQuantity = document.getElementById('fpcQuantity_' + fpcBno).textContent;
     	
         $.ajax({
             url: '/fpcontrol/updateStatus',  // 서버 URL (컨트롤러의 매핑 URL)
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ fpcBno: fpcBno, fpcStatus: fpcStatus, workOrderNo: workOrderNo, workId: workId }),
+            data: JSON.stringify({ 
+            	fpcBno: fpcBno, 
+            	fpcStatus: fpcStatus, 
+            	workOrderNo: workOrderNo, 
+            	workId: workId,
+            	pName: pName,
+            	fpcQuantity: fpcQuantity
+            	
+            	}),
             success: function(response) {
                 alert("상태가 업데이트되었습니다.");
                 location.reload();  // 페이지 새로고침

@@ -30,6 +30,7 @@ public class FinishedProductsControlVO {
 	private int planQuantity; // 검사량
 	private String workOrderNo;
 	private int workId;
+	private String pName;
 	private String wCode;
 	
 	// join 매핑

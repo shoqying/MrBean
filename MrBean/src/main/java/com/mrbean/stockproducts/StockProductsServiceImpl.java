@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mrbean.finishedproductscontrol.FinishedProductsControlController;
 import com.mrbean.finishedproductscontrol.FinishedProductsControlVO;
+import com.mrbean.stockmaterials.StockTotalVO;
 
 
 	@Service
@@ -38,15 +39,18 @@ import com.mrbean.finishedproductscontrol.FinishedProductsControlVO;
 			}
 		    
 		    
-		    
+			@Override
+			public List<StockpTotalVO> selectAllStockpTotal() {
+				return stockProductsDAO.selectAllStockpTotal();
+			}
 
-//			@Override
-//			public void insertStockProducts(FinishedProductsControlVO vo) {
-//				stockProductsDAO.insertStockProducts(vo);
-//				logger.info("######################################3"+vo);
-//				System.out.println("" + vo);
-//			}
+			@Override
+			public void updateStockpTotal(FinishedProductsControlVO vo) {
+				stockProductsDAO.updateStockpTotal(vo);
+				
+			}
 		    
+			
 		    
 
 }
