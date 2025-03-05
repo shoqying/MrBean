@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mrbean.mappers.rawMaterialsQualityControlMapper">
+
+	<resultMap type="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO" id="RMQCMap">
+		<id property="rqcBno" column="rqc_bno"/> <!-- PK 값 -->
+		<result property="rmlCode" column="rml_code"/>
+		<result property="rqcDate" column="rqc_date"/>
+		<result property="rqcQualityCheck" column="rqc_quality_check"/>
+		<result property="rqcStatus" column="rqc_status"/>
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="rmlNo" column="rml_no"/>
+		<result property="bomId" column="bom_id"/>
+		<result property="fpcBno" column="fpc_bno"/>
+			
+		<collection property="rawMaterialsLotList" resultMap="rawMaterialsLotMap"/>
+		<collection property="workOrdersList" resultMap="workOrdersMap"/>
+		<collection property="rawMaterialsList" resultMap="rawMaterialsMap"/>
+		<collection property="productsList" resultMap="productsMap"/>
+		<collection property="bomList" resultMap="bomMap"/>
+		<collection property="lotHistoryList" resultMap="lotHistoryMap"/>
+		
+	</resultMap>
+		
+	<resultMap type="com.mrbean.rawmaterialslot.RawMaterialsLotVO" id="rawMaterialsLotMap">
+		<result property="rmlNo" column="rml_no"/>
+		<result property="rmCode" column="rm_code"/>
+		<result property="rmlDate" column="rml_date"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="workQuantity" column="work_quantity"/>
+		<result property="workId" column="work_id"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.rawmaterials.RawMaterialsVO" id="rawMaterialsMap">
+		<result property="rmName" column="rm_name"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.products.ProductsVO" id="productsMap">
+		<result property="pName" column="p_name"/>
+	</resultMap>
+
+	<resultMap type="com.mrbean.billofmaterials.domain.BillOfMaterialsDTO" id="bomMap">
+		<result property="bomId" column="bom_id"/>
+		<result property="rmCode" column="rm_code"/>
+		<result property="bomRatio" column="bom_ratio"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.lothistory.LotHistoryVO" id="lotHistoryMap">
+		<result property="workId" column="work_id"/>
+		<result property="rmlNo" column="rml_no"/>		
+	</resultMap>
+	
+	
+
+
+	<!-- 원자재 검사 관리 데이터 조회 -->
+    <select id="selectRawMaterialsData" resultType="map">
+	    SELECT lh.rml_no AS rml_no,
+	    	   work.work_order_no AS work_order_no,
+	    	   work.work_id AS work_id
+	    FROM work_orders work
+	    JOIN lot_history lh ON work.work_id = lh.work_id
+        WHERE work.work_id = #{workId};
+	</select>
+
+	<!-- 원자재 검사 관리 목록 저장 -->
+	<insert id="insertRawMaterialsQualityControl" parameterType="map">
+	    INSERT IGNORE INTO rawmaterials_quality_control (rml_no, work_order_no, work_id)
+		VALUES (#{rml_no}, #{work_order_no}, #{work_id})
+	</insert>
+	
+
+	<!-- 원자재 검사 관리 목록 -->
+    <select id="getRawMaterialsQualityControlList" resultMap="RMQCMap">
+ 		SELECT rqc.rqc_bno, 
+        	   bom.rm_code,
+        	   rqc.rqc_date,
+        	   rqc.rqc_quality_check,
+        	   rqc.rqc_status,
+        	   work.work_order_no,
+        	   work.work_quantity * bom.bom_ratio as work_quantity,
+        	   lh.rml_no
+        	   FROM rawmaterials_quality_control rqc
+        	   LEFT JOIN work_orders work on rqc.work_order_no = work.work_order_no
+        	   JOIN lot_history lh ON lh.work_id = work.work_id
+        	   JOIN products p ON p.p_name = work.p_name
+        	   JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
+    </select>
+    
+    
+    <!-- 품질 검사 상태 업데이트 -->
+    <update id="updateQualityCheck" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+        UPDATE rawmaterials_quality_control
+        SET rqc_quality_check = #{rqcQualityCheck},
+        	rqc_date = now()
+        WHERE rqc_bno = #{rqcBno}
+    </update>
+
+    <!-- 상태 업데이트 -->
+    <update id="updateStatus" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+        UPDATE rawmaterials_quality_control
+        SET rqc_status = #{rqcStatus}
+        WHERE rqc_bno = #{rqcBno}
+    </update>
+    
+    <!-- 원자재 검사 일자 삭제 -->
+    <update id="deleteRawmaterialsDate" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+    	UPDATE rawmaterials_quality_control
+    	SET rqc_date = NULL
+    	WHERE rqc_bno = #{rqcBno}
+    </update>
+    
+    <!-- 원자재 검사 목록 삭제 -->
+    <delete id="deleteRawMaterial">
+    	DELETE FROM rawmaterials_quality_control
+    	WHERE rqc_bno = #{rqcBno}
+    </delete>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</mapper>

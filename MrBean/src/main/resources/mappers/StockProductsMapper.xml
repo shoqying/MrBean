@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.mapper.StockProductsMapper">
+
+    <!-- resultMap 정의 -->
+    <resultMap id="StockProductsResultMap" type="com.mrbean.stockproducts.StockProductsVO">
+        <id property="spBno" column="sp_bno" />
+        <result property="fpcQuantity" column="fpc_quantity" />
+        <result property="spUnit" column="sp_unit" />
+        <result property="spDate" column="sp_date" />
+        
+        <!-- wCode만 매핑 -->
+        <result property="wCode" column="w_code" />
+        
+        <result property="fplNo" column="fpl_no" />
+        <result property="pCode" column="p_code" />
+        <result property="fpcExpirydate" column="fpc_expirydate" />
+        <result property="fpcBno" column="fpc_bno" />
+        <result property="planId" column="plan_id" />
+         <result property="spTotal" column="sp_total" />
+    </resultMap>
+    
+      <!-- StockpTotal -->
+   <resultMap id="StockpTotalResultMap" type="com.mrbean.stockproducts.StockpTotalVO">
+       <id property="sptBno" column="spt_bno" />
+       <result property="pName" column="p_name" />
+       <result property="sptTotal" column="spt_total" />
+      
+   </resultMap>
+    
+    <insert id="insertStockProducts" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	insert into stock_products (fpc_quantity, w_code, fpl_no, p_code, fpc_expirydate, fpc_bno)
+    	select fpc_quantity, w_code, fpl_no, p_code, fpc_expirydate, fpc_bno
+    	from finished_products_control
+    	where work_id = #{workId}
+    </insert>
+    
+      <!-- 원자재 입고 전체 목록 조회 -->
+   <select id="selectAllStockpTotal" resultMap="StockpTotalResultMap">
+       SELECT * FROM stockp_total
+   </select>
+    
+    <!-- 완제품 p_name 조인  -->
+    <insert id="insertStockpTotal">
+    	insert ignore into stockp_total(p_name)
+    	select p_name
+    	from products
+    </insert>
+    
+    <!-- 완제품 수량 삽입 -->
+    <update id="updateStockpTotal" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	update stockp_total set spt_total = spt_total + #{fpcQuantity}
+    	where p_name = #{pName}
+    </update>
+
+    <!-- 재고 목록 조회 -->
+ <select id="selectStockProducts" resultMap="StockProductsResultMap">
+    SELECT * FROM stock_products
+    
+    
+    <!-- SELECT 
+        sp.sp_bno,
+        fpc.fpc_quantity,
+        sp.sp_unit,
+        sp.sp_date,
+        w.w_code, 
+        fpl.fpl_no,
+        p.p_code,
+        fpc.fpc_expirydate,
+        fpc.fpc_bno,
+        COALESCE(total_stockp.sp_total, 0) AS sp_total
+    FROM 
+        stock_products sp
+        
+    JOIN warehouses w ON sp.w_code = w.w_code
+    JOIN products p ON sp.p_code = p.p_code
+    LEFT JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+    LEFT JOIN production_plan plan ON sp.plan_id = plan.plan_id
+    LEFT JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
+    LEFT JOIN (
+        SELECT p_code, SUM(fpc_quantity) AS sp_total
+        FROM stock_products
+        GROUP BY p_code
+    ) total_stockp 
+    ON sp.p_code = total_stockp.p_code
+    <choose>
+        <when test="sortColumn == 'sp_date'">ORDER BY sp.sp_date ${sortDirection}</when>
+        <when test="sortColumn == 'fpc_quantity'">ORDER BY fpc.fpc_quantity ${sortDirection}</when>
+        <otherwise>ORDER BY sp.sp_bno ${sortDirection}</otherwise>
+    </choose>
+    LIMIT #{limit} OFFSET #{offset} -->
+</select>
+
+
+    <!-- 총 항목 수 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM stock_products sp
+        
+        JOIN warehouses w ON sp.w_code = w.w_code
+        JOIN products p ON sp.p_code = p.p_code
+        JOIN finished_products_control fpc ON sp.fpc_bno = fpc.fpc_bno
+        JOIN production_plan plan ON sp.plan_id = plan.plan_id
+        JOIN finished_products_lot fpl ON sp.fpl_no = fpl.fpl_no
+    </select>
+
+</mapper>

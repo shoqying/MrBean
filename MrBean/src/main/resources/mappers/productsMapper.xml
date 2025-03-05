@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.products.productsMapper">
+
+    <!-- 완제품 정보를 조회할 때 사용할 resultMap (선택 사항) -->
+    <resultMap id="productsResultMap" type="com.mrbean.products.ProductsVO">
+        <result property="pCode" column="p_code"/>
+        <result property="pName" column="p_name"/>
+        <result property="pDescription" column="p_description"/>
+        <result property="rmCode" column="rm_code"/>
+        <result property="bomId" column="bom_id"/>
+    </resultMap>
+    
+    <resultMap id="BomDropdownResultMap" type="com.mrbean.billofmaterials.domain.BomDropdownDTO">
+	    <result property="bomId" column="bom_id" />
+	    <result property="bomName" column="bom_name" />
+	</resultMap>
+
+    <!-- BOM 목록을 가져오는 쿼리 (bom_id와 bom_name을 반환) -->
+    <select id="getBomListForDropdown" resultMap="BomDropdownResultMap">
+        SELECT bom_id, bom_name
+        FROM bill_of_materials
+    </select>
+
+    <!-- 완제품을 등록하는 쿼리 -->
+    <insert id="insertProduct" parameterType="com.mrbean.products.ProductsVO">
+        INSERT INTO products (p_code, p_name, p_description, bom_id)
+        VALUES (#{pCode}, #{pName}, #{pDescription}, #{bomId})
+    </insert>
+
+	<!-- 완제품 목록을 가져오는 쿼리 -->
+    <select id="getProductList" resultMap="productsResultMap">
+        SELECT p_code, p_name, p_description, bom_id
+        FROM products
+    </select>
+    
+    <!-- 완제품 수정 쿼리 -->
+    <update id="updateProduct" parameterType="com.mrbean.products.ProductsVO">
+        UPDATE products
+        SET p_name = #{pName},
+            p_description = #{pDescription},
+            bom_id = #{bomId}
+        WHERE p_code = #{pCode}
+    </update>
+
+    <!-- 완제품 삭제 쿼리 -->
+    <delete id="deleteProduct" parameterType="String">
+        DELETE FROM products
+        WHERE p_code = #{pCode}
+    </delete>
+    
+</mapper>

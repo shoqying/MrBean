@@ -1,0 +1,116 @@
+/* Chat container */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat messages container */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-right: 15px;
+}
+
+/* Message style */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+/* User message */
+.user-message {
+    align-self: flex-end;
+    background-color: #d4f0d6;
+    border-radius: 10px;
+    padding: 12px;
+    max-width: 75%;
+}
+
+/* Bot message */
+.bot-message {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    padding: 12px;
+    max-width: 75%;
+}
+
+/* Input container */
+.chat-input-container {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Input field */
+.chatbot-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 89%;
+}
+
+/* Send button */
+.send-chatbot {
+    padding: 10px;
+    opacity: 0.7;
+    background: #4154f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 10%;
+    float: right;
+}
+
+.send-chatbot:hover {
+    background: #0056b3;
+}
+
+.chat-send-btn.loading span {
+    visibility: hidden;  /* Hide button text when loading */
+}
+
+/* Smaller timestamp */
+.message-time {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* Typing animation */
+@keyframes typing {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Smaller timestamp */
+.message-time {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+}

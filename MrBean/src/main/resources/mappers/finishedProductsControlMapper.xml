@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mrbean.mappers.finishedProductsControlMapper">
+
+	<resultMap type="com.mrbean.finishedproductscontrol.FinishedProductsControlVO" id="FPCMap">
+		<id property="fpcBno" column="fpc_bno"/> <!-- PK 값 -->
+		<result property="fpcDate" column="fpc_date"/>
+		<result property="fplNo" column="fpl_no"/>
+		<result property="fpcExpirydate" column="fpc_expirydate"/>
+		<result property="fpcCheckdate" column="fpc_checkdate"/>		
+		<result property="fpcQualityCheck" column="fpc_quality_check"/>
+		<result property="fpcStatus" column="fpc_status"/>
+		<result property="fpcYield" column="fpc_yield"/>
+		<result property="fpcQuantity" column="fpc_quantity"/>
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="workId" column="work_id"/>
+		<result property="pName" column="p_name"/>
+		<result property="wCode" column="w_code"/>
+
+		
+		<collection property="workOrdersList" resultMap="workOrdersMap"/>
+		<collection property="productionPlanList" resultMap="productionPlanMap"/>
+		<collection property="productsList" resultMap="productsMap"/>
+		<collection property="warehouseList" resultMap="warehouseMap"/>		
+		<collection property="finishedProductsLotList" resultMap="finishedProductsLotMap"/>		
+	</resultMap>
+		
+	<resultMap type="com.mrbean.productionplan.ProductionPlanVO" id="productionPlanMap">
+		<result property="planId" column="plan_id"/>
+		<result property="planQuantity" column="plan_quantity"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.products.ProductsVO" id="productsMap">
+		<result property="pCode" column="p_code"/>
+		<result property="pName" column="p_name"/>
+		<result property="bomId" column="bom_id"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.warehouse.WarehouseDTO" id="warehouseMap">
+		<result property="wCode" column="w_code"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.finishedproductslot.FinishedProductsLotVO" id="finishedProductsLotMap">
+		<result property="fplNo" column="fpl_no"/>
+		<result property="wCode" column="w_code"/>
+		<result property="pCode" column="p_code"/>
+		<result property="planId" column="plan_id"/>
+	</resultMap>
+	
+	<resultMap type="com.mrbean.workorders.WorkOrdersVO" id="workOrdersMap">
+		<result property="workQuantity" column="work_quantity"/>
+		<result property="workOrderNo" column="work_order_no"/>
+		<result property="workId" column="work_id"/>
+		<result property="pName" column="p_name"/>
+	</resultMap>
+
+
+	<!-- 완재품 검사 관리 목록 저장 -->
+	<insert id="insertFinishedProductControl" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+	    INSERT IGNORE INTO finished_products_control (fpl_no, work_order_no, work_quantity, work_id, p_code, w_code)
+	    SELECT fpl.fpl_no, work.work_order_no, work.work_quantity * bom.bom_ratio as work_quantity, work.work_id, work.p_name, work.w_code
+	    FROM finished_products_lot fpl
+	    JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+	    JOIN lot_history lh ON lh.work_id = work.work_id
+        JOIN products p ON p.p_name = work.p_name
+        JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
+	    WHERE work.work_order_no = #{workOrderNo}
+		<!-- VALUES(#{fplNO}, #{workOrderNo}, #{workQuantity}) -->
+		<!-- SELECT fpl.fpl_no, work.work_order_no, work.work_quantity
+		FROM finished_products_lot fpl
+		LEFT JOIN work_orders work ON work.work_order_no = fpl.work_order_no
+		WHERE NOT EXISTS (
+		    SELECT 1 
+		    FROM finished_products_control fpc 
+		    WHERE fpc.fpl_no = fpl.fpl_no
+		)
+		ORDER BY work.work_id DESC
+		LIMIT 1; -->
+	</insert>
+
+
+	<!-- 완제품 검사 관리 목록 -->
+    <select id="getFinishedProductsControlList" resultMap="FPCMap">
+        SELECT fpc.fpc_bno, 
+        	   fpc.fpc_date,
+        	   fpc.fpl_no,
+        	   work.p_name,
+        	   fpc.fpc_expirydate,
+        	   fpc.fpc_checkdate,
+        	   fpc.fpc_quality_check,
+        	   fpc.fpc_status,
+        	   fpc.fpc_yield,
+        	   work.work_order_no,
+        	   work.work_quantity * bom.bom_ratio as work_quantity,
+        	   fpc.fpc_quantity,
+        	   work.work_id
+		FROM finished_products_control fpc
+   	    JOIN work_orders work on work.work_order_no = fpc.work_order_no
+   	    JOIN lot_history lh ON lh.work_id = work.work_id
+        JOIN products p ON p.p_name = work.p_name
+        JOIN bill_of_materials bom ON bom.bom_id = p.bom_id
+    </select>
+    
+    
+    <!-- 품질 검사 상태 업데이트 -->
+    <update id="updateQualityCheck" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+        UPDATE finished_products_control
+        SET fpc_quality_check = #{fpcQualityCheck}
+        WHERE fpc_bno = #{fpcBno}
+    </update>
+
+    <!-- 상태 업데이트 -->
+    <update id="updateStatus" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+        UPDATE finished_products_control
+        SET fpc_status = #{fpcStatus}
+        WHERE fpc_bno = #{fpcBno}
+    </update>
+    
+    <!-- 검사 완료 시간 업데이트 -->
+    <update id="updateCheckDate" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	UPDATE finished_products_control
+    	SET fpc_checkdate = now(),
+    	fpc_expirydate = DATE_ADD(NOW(), INTERVAL 6 MONTH)
+    	WHERE fpc_bno = #{fpcBno}
+    </update>
+    
+    <!-- 원자재 검사 목록 삭제 -->
+    <delete id="deleteFinishedProduct">
+    	DELETE FROM finished_products_control
+    	WHERE fpc_bno = #{fpcBno}
+    </delete>
+    
+    <!-- 워크 오더 넘버 가져오기 -->
+    <select id="getWorkOrdersNo" resultMap="FPCMap">
+    	SELECT work_order_no
+    	FROM rawmaterials_quality_control
+    	WHERE work_order_no = #{workOrderNo}
+    </select>
+    
+    <!-- 완제품 LOT 번호 생성 -->
+    <insert id="insertFinishedProductLot" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+        INSERT INTO finished_products_lot (fpl_no, fpl_batch, work_order_no)
+			SELECT 
+			    CONCAT(
+			        'FLOT-',
+			        DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
+			        LPAD(COALESCE(MAX(fpl.fpl_batch), -1) + 1, 3, '0')
+			    ) AS fpl_no,
+			    COALESCE(MAX(fpl.fpl_batch), -1) + 1 AS fpl_batch,
+			    #{workOrderNo}
+			FROM 
+			    work_orders work
+			JOIN 
+			    finished_products_lot fpl ON work.work_order_no = fpl.work_order_no 
+			AND DATE(fpl.fpl_finished_date) = CURDATE()
+			ORDER BY fpl_no DESC
+			LIMIT 1;
+    </insert>
+    
+    <!-- 완제품 LOT 번호 삭제 -->
+    <update id="deleteFinishedProductLot" parameterType="com.mrbean.rawmaterialsqualitycontrol.RawMaterialsQualityControlVO">
+    	UPDATE finished_products_control
+    	SET fpl_no = NULL
+    	WHERE fpc_bno = #{fpcBno}
+    </update>
+    
+    <!-- 원자재 대기중으로 변경시 완제품 삭제 -->
+    <delete id="deleteFinishedProductControl">
+    	DELETE FROM finished_products_control
+    	WHERE work_order_no = #{workOrderNo}
+    </delete>
+    
+    <!-- 검사 시간 삭제 -->
+    <update id="deleteCheckDate" parameterType="com.mrbean.finishedproductscontrol.FinishedProductsControlVO">
+    	UPDATE finished_products_control
+    	SET fpc_checkdate = NULL,
+    	fpc_expirydate = NULL
+    	WHERE fpc_bno = #{fpcBno}
+    </update>
+    
+    <!--  -->
+
+    
+    
+    
+    
+    
+    
+    
+</mapper>

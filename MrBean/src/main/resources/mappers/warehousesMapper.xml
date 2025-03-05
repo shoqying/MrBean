@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrbean.Mapper.WarehousesMapper">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="warehouseResultMap" type="com.mrbean.warehouse.WarehouseVO">
+        <id property="wCode" column="w_code"/>
+        <result property="wName" column="w_name"/>
+        <result property="wRoadFullAddr" column="w_road_full_addr"/>
+        <result property="wAddrDetail" column="w_addr_detail"/>
+        <result property="wZipNo" column="w_zip_no"/>
+        <result property="wDescription" column="w_description"/>
+    </resultMap>
+
+    <!-- 창고 등록 -->
+    <insert id="insertWarehouse" parameterType="com.mrbean.warehouse.WarehouseVO">
+        INSERT INTO warehouses (
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        )
+        VALUES (
+            #{wCode},
+            #{wName},
+            #{wRoadFullAddr},
+            #{wAddrDetail},
+            #{wZipNo},
+            #{wDescription}
+        )
+    </insert>
+
+    <!-- 창고 코드 중복 체크 -->
+    <select id="checkWarehouseCodeExists" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM warehouses
+        WHERE w_code = #{warehouseCode}
+    </select>
+
+    <!-- 창고 이름 중복 체크 -->
+    <select id="checkWarehouseNameExists" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM warehouses
+        WHERE w_name = #{warehouseName}
+    </select>
+
+    <!-- 창고 코드로 창고 조회 -->
+    <select id="selectWarehouseByCode" parameterType="String" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+        WHERE w_code = #{wCode}
+    </select>
+
+    <!-- 창고 목록 조회 -->
+    <select id="selectWarehouseList" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+    </select>
+
+    <!-- 창고 상세 정보 조회 -->
+    <select id="selectWarehouseDetails" parameterType="String" resultMap="warehouseResultMap">
+        SELECT
+            w_code,
+            w_name,
+            w_road_full_addr,
+            w_addr_detail,
+            w_zip_no,
+            w_description
+        FROM warehouses
+        WHERE w_code = #{wCode}
+    </select>
+
+    <!-- 창고 정보 수정 -->
+    <update id="updateWarehouse" parameterType="com.mrbean.warehouse.WarehouseVO">
+        UPDATE warehouses
+        SET
+            w_name = #{wName},
+            w_road_full_addr = #{wRoadFullAddr},
+            w_addr_detail = #{wAddrDetail},
+            w_zip_no = #{wZipNo},
+            w_description = #{wDescription}
+        WHERE w_code = #{wCode}
+    </update>
+
+    <!-- 창고 삭제 -->
+    <delete id="deleteWarehouse" parameterType="String">
+        DELETE FROM warehouses
+        WHERE w_code = #{wCode}
+    </delete>
+
+</mapper>
